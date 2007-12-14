@@ -152,7 +152,13 @@
   </dependencies>
 
 <!-- ******************************************************************************* -->
-
+  <repositories>
+    <repository>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Repository</name>
+      <url>http://maven.seasar.org/maven2</url>
+    </repository>
+	</repositories>
   <distributionManagement>
     <repository>
       <uniqueVersion>false</uniqueVersion>
@@ -189,7 +195,6 @@
           <encoding>UTF-8</encoding>          
           <docencoding>UTF-8</docencoding>          
           <splitindex>true</splitindex>
-          <sourcepath>src-ses/main/java;src/main/java</sourcepath>
 					<links>
 						<link>http://java.sun.com/j2se/1.5.0/ja/docs/ja/api/</link>
 				    <link>http://java.sun.com/j2ee/1.4/docs/api/</link>
@@ -209,11 +214,12 @@
       -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-      	<artifactId>maven-jxr-plugin</artifactId>
-      	<configuration>
+				<artifactId>maven-jxr-plugin</artifactId>
+      	<configuration>      		
 					<inputEncoding>UTF-8</inputEncoding>
 					<outputEncoding>UTF-8</outputEncoding> 
-      	</configuration>
+					<linkJavadoc>true</linkJavadoc>
+      	</configuration>      	
       </plugin>
     </plugins>
   </reporting>  
