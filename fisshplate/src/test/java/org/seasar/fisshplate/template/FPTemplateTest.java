@@ -1,0 +1,128 @@
+package org.seasar.fisshplate.template;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import junit.framework.TestCase;
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.seasar.fisshplate.exception.FPMergeException;
+import org.seasar.fisshplate.exception.FPParseException;
+
+public class FPTemplateTest extends TestCase {
+	private FPTemplate template;
+
+	public FPTemplateTest(String name) {
+		super(name);
+	}
+
+	protected void setUp() throws Exception {		
+		super.setUp();
+	}
+	
+	public void test行の要素がリストの場合() throws Exception  {
+		InputStream is = getClass().getResourceAsStream("/FPTemplateTest.xls");		
+		try {
+			template = new FPTemplate(is);
+		} catch (FPParseException e) {
+			throw e;
+		} catch (IOException e) {
+			throw e;
+		}finally{
+			is.close();
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("title", "タイトルである");
+		List<A> aList = new ArrayList<A>();
+		aList.add(new A("1行目",10,new Date()));
+		aList.add(new A("2行目",20,new Date()));
+		aList.add(new A("3行目",30,new Date()));
+		aList.add(new A("4行目",10,new Date()));
+		aList.add(new A("5行目",20,new Date()));
+		aList.add(new A("6行目",30,new Date()));
+		map.put("b", aList);
+		
+		HSSFWorkbook wb;
+		try {
+			wb = template.process(map);
+		} catch (FPMergeException e) {		
+			throw e;
+		}
+		
+		FileOutputStream fos = new FileOutputStream("out.xls");		
+		wb.write(fos);
+		fos.close();
+		
+	}
+	
+	public void test行の要素が配列の場合() throws Exception  {
+		InputStream is = getClass().getResourceAsStream("/FPTemplateTest.xls");
+		try {
+			template = new FPTemplate(is);
+		} catch (FPParseException e) {
+			throw e;
+		} catch (IOException e) {
+			throw e;
+		}finally{
+			is.close();
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("title", "配列のテストである");
+		A[] aList = new A[]{
+		new A("1行目",10,new Date()),
+		new A("2行目",20,new Date()),
+		new A("3行目",30,new Date()),
+		new A("4行目",10,new Date())
+		};		
+		map.put("b", aList);
+		
+		HSSFWorkbook wb;
+		try {
+			wb = template.process(map);
+		} catch (FPMergeException e) {		
+			throw e;
+		}
+		
+		FileOutputStream fos = new FileOutputStream("out_array.xls");		
+		wb.write(fos);
+		
+	}
+	
+	public class A{
+		private String name;
+		private int num;
+		private Date date;
+		A(String name, int num, Date date){
+			this.name = name;
+			this.num = num;
+			this.date = date;			
+		}
+		public Date getDate() {
+			return date;
+		}
+		public void setDate(Date date) {
+			this.date = date;
+		}
+		public String getName() {
+			return name;
+		}
+		public void setName(String name) {
+			this.name = name;
+		}
+		public int getNum() {
+			return num;
+		}
+		public void setNum(int num) {
+			this.num = num;
+		}
+		
+		
+	}
+
+}
