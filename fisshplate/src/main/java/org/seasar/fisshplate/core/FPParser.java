@@ -30,9 +30,11 @@ import org.seasar.fisshplate.exception.FPParseException;
 /**
  * テンプレート側のシートを解析し、要素クラスの構造を組み立てて保持します。
  * @author rokugen
+ * @author a-conv
  *
  */
 public class FPParser {	
+
 	private List<TemplateElement> elementList = new ArrayList<TemplateElement>();
 	private Stack<AbstractBlock> blockStack = new Stack<AbstractBlock>();
 	
@@ -42,6 +44,7 @@ public class FPParser {
 	private static final Pattern patElseIf = Pattern.compile("^\\s*#else\\s+if\\s*\\(\\s*(.+)\\s*\\)");
 	private static final Pattern patElse = Pattern.compile("^\\s*#else\\s*$");	
 	private static final Pattern patComment = Pattern.compile("^\\s*#\\.*");
+	private static final Pattern patPageBreak = Pattern.compile("#pageBreak");
 		
 	
 	/**
@@ -113,6 +116,8 @@ public class FPParser {
 			elseIfBlock(mat);			
 		}else if((mat = patElse.matcher(value)).find()){
 			elseBlock();
+		}else if((mat = patPageBreak.matcher(value)).find()) {
+			breakBlock();
 		}else if((mat = patComment.matcher(value)).find()){
 			//コメント行はパス
 		}else{
@@ -122,6 +127,16 @@ public class FPParser {
 		return isControlRow;
 	}
 	
+	private void breakBlock() {
+		AbstractBlock block = new PageBreakBlock();
+		if(blockStack.size() > 0 ){
+			AbstractBlock parentBlock = blockStack.lastElement();
+			parentBlock.addChild(block);
+			return;
+		}
+		elementList.add(block);
+	}
+
 	private void iteratorBlock(Matcher mat){
 		String varName = mat.group(1);
 		String iteratorName = mat.group(2);
