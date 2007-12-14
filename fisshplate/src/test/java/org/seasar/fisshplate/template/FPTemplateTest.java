@@ -70,7 +70,7 @@ public class FPTemplateTest extends TestCase {
 			throw e;
 		}
 		
-		FileOutputStream fos = new FileOutputStream("out.xls");		
+		FileOutputStream fos = new FileOutputStream("target/out.xls");		
 		wb.write(fos);
 		fos.close();
 		
@@ -104,7 +104,7 @@ public class FPTemplateTest extends TestCase {
 			throw e;
 		}
 		
-		FileOutputStream fos = new FileOutputStream("out_array.xls");		
+		FileOutputStream fos = new FileOutputStream("target/out_array.xls");		
 		wb.write(fos);
 		
 	}
