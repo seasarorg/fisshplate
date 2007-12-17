@@ -65,6 +65,10 @@ public class El extends AbstractCell {
 	}
 	
 	private boolean isNumber(Object value){
+		if(value instanceof String){
+			return false;
+		}
+		
 		try{
 			Double.valueOf(value.toString());
 			return true;
