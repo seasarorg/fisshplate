@@ -52,7 +52,10 @@ public abstract class AbstractCell implements TemplateElement {
 		for(int i=0; i < templateSheet.getNumMergedRegions();i++){
 			Region reg = templateSheet.getMergedRegionAt(i);
 			setUpMergedCellInfo(templateCell.getCellNum(), rowNum, reg);
-		}		
+			if(isMergedCell){
+				break;
+			}
+		}
 	}
 	
 	private void setUpMergedCellInfo(short cellNum, int rowNum, Region reg){
