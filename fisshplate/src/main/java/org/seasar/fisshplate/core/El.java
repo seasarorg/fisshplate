@@ -80,12 +80,12 @@ public class El extends AbstractCell {
 	private Object getValue(FPContext context) throws FPMergeException{
 		
 		int idx = expression.indexOf(FPConsts.NULL_VALUE_OPERATOR);
-		boolean nullAllowed = (idx < 1); 
+		boolean nullAllowed = (idx >= 1); 
 		String exp;
-		if(nullAllowed){
-			exp = expression;
+		if(nullAllowed){			
+			exp = expression.substring(0, idx);
 		}else{
-			exp = expression.substring(0, idx);			
+			exp = expression;						
 		}
 		
 		Map<String,Object> data = context.getData();

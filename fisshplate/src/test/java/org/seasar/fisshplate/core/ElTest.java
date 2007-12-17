@@ -102,7 +102,11 @@ public class ElTest extends TestCase {
 		actual = out.getSheetAt(0).getRow(0).getCell((short) 1);
 		assertEquals("default value","NULL時デフォルト値", actual.getRichStringCellValue().getString());
 		
+		data.put("hoge", null);	
+		el = new El(sheet, sheet.getRow(0).getCell((short) 0), 0,"hoge!");
+		el.merge(context);
+		actual = out.getSheetAt(0).getRow(0).getCell((short) 2);
+		assertEquals("null value","", actual.getRichStringCellValue().getString());
 	}
 	
-
 }
