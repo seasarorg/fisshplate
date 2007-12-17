@@ -32,7 +32,7 @@ import org.seasar.fisshplate.util.OgnlUtil;
  *
  */
 public class El extends AbstractCell {
-	private String expression;
+	private ElExpression expression;
 
 	/**
 	 * コンストラクタです。
@@ -43,7 +43,7 @@ public class El extends AbstractCell {
 	 */
 	El(HSSFSheet sheet, HSSFCell cell,  int rowNum, String expression) {
 		super(sheet, cell, rowNum);
-		this.expression = expression;
+		this.expression = new ElExpression(expression);
 	}
 
 	/* (non-Javadoc)
@@ -79,27 +79,19 @@ public class El extends AbstractCell {
 	
 	private Object getValue(FPContext context) throws FPMergeException{
 		
-		int idx = expression.indexOf(FPConsts.NULL_VALUE_OPERATOR);
-		boolean nullAllowed = (idx >= 1); 
-		String exp;
-		if(nullAllowed){			
-			exp = expression.substring(0, idx);
-		}else{
-			exp = expression;						
-		}
-		
 		Map<String,Object> data = context.getData();
 		
-		Object value = OgnlUtil.getValue(exp, data);
+		Object value = OgnlUtil.getValue(expression.getExpression(), data);
 		
 		if(value == null){
-			if(nullAllowed){
-				return expression.substring(idx + 1);
+			if(expression.isNullAllowed()){
+				return expression.getNullValue();
 			}else{		
 				throw new FPMergeException(FPConsts.MESSAGE_ID_EL_EXPRESSION_UNDEFINED,new Object[]{expression});
 			}
 		}
 		return value;
-	}
+	}	
+	
 
 }
