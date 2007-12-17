@@ -28,7 +28,7 @@ public class ElExpression {
 	/**
 	 * <p>コンストラクタです。セル上に記載された評価式を受け取ります。</p>
 	 * <p>式の中に!がある場合は、NULLを許可します。</p>
-	 * <p>!の後に値が続く場合は、NULL時のデフォルト値とします。
+	 * <p>!の後に値が続く場合は、NULL時のデフォルト値とします。</p>
 	 * @param exp 評価式
 	 */
 	ElExpression(String exp){
