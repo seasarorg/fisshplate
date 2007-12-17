@@ -18,12 +18,19 @@ package org.seasar.fisshplate.core;
 import org.seasar.fisshplate.consts.FPConsts;
 
 /**
+ * 評価式を表すクラスです。
  * @author rokugen
  */
 public class ElExpression {
 	private String expression;
 	private boolean nullAllowed;
-	private String nullValue;
+	private Object nullValue;
+	/**
+	 * <p>コンストラクタです。セル上に記載された評価式を受け取ります。</p>
+	 * <p>式の中に!がある場合は、NULLを許可します。</p>
+	 * <p>!の後に値が続く場合は、NULL時のデフォルト値とします。
+	 * @param exp 評価式
+	 */
 	ElExpression(String exp){
 		int idx = exp.indexOf(FPConsts.NULL_VALUE_OPERATOR);
 		nullAllowed = (idx >= 1);
