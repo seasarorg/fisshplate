@@ -15,7 +15,6 @@
  */
 package org.seasar.fisshplate.core;
 
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,29 +25,36 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.seasar.fisshplate.context.FPContext;
+import org.seasar.fisshplate.exception.FPMergeException;
 
 /**
  * @author rokugen
  */
 public class ElTest extends TestCase {
-	private El el;
-	private HSSFWorkbook template;
+	private El el;	
 	
 	public ElTest(String name) {
 		super(name);
 	}
 
-	protected void setUp() throws Exception {
-		InputStream is = getClass().getResourceAsStream("/ElTest.xls");
-		template = new HSSFWorkbook(is);
-		is.close();
+	protected void setUp() throws Exception {		
 		super.setUp();
 	}
 	
+	private HSSFWorkbook getTemplate(String path) throws Exception{
+		InputStream is = getClass().getResourceAsStream(path);
+		HSSFWorkbook template = new HSSFWorkbook(is);
+		is.close();
+		return template;
+	}
+	
 	public void testデータが数字だけど文字列型の場合は文字列型で埋め込む() throws Exception{
+		HSSFWorkbook template = getTemplate("/ElTest.xls");
+		
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("code", "01234");
 		data.put("num", -1234);
+		
 		HSSFWorkbook out = new HSSFWorkbook();
 		FPContext context = new FPContext(template,out,data);
 		
@@ -66,6 +72,36 @@ public class ElTest extends TestCase {
 		actual = out.getSheetAt(0).getRow(0).getCell((short) 1);
 		assertEquals("celltype",HSSFCell.CELL_TYPE_NUMERIC, actual.getCellType());
 		assertEquals("value",(double)-1234, actual.getNumericCellValue());		
+	}
+	
+	public void testOGN式の変数名にびっくりマークをつけた場合はNULL回避する() throws Exception{
+		HSSFWorkbook template = getTemplate("/ElTest.xls");
+		
+		Map<String, Object> data = new HashMap<String, Object>();
+		
+		HSSFWorkbook out = new HSSFWorkbook();
+		FPContext context = new FPContext(template,out,data);
+		
+		HSSFSheet sheet = template.getSheetAt(0);		
+		
+		el = new El(sheet, sheet.getRow(0).getCell((short) 0), 0,"hoge");
+		try{
+			el.merge(context);
+			fail();
+		}catch (FPMergeException e) {
+			assertTrue(true);
+		}
+		
+		el = new El(sheet, sheet.getRow(0).getCell((short) 0), 0,"hoge!");
+		el.merge(context);
+		HSSFCell actual = out.getSheetAt(0).getRow(0).getCell((short) 0);
+		assertEquals("nullString","", actual.getRichStringCellValue().getString());
+		
+		el = new El(sheet, sheet.getRow(0).getCell((short) 0), 0,"hoge!NULL時デフォルト値");
+		el.merge(context);
+		actual = out.getSheetAt(0).getRow(0).getCell((short) 1);
+		assertEquals("default value","NULL時デフォルト値", actual.getRichStringCellValue().getString());
+		
 	}
 	
 

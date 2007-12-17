@@ -77,13 +77,27 @@ public class El extends AbstractCell {
 		}
 	}
 	
-	private Object getValue(FPContext context) throws FPMergeException{	
-		//TODO NULL許可、COALESCHE機能を追加
+	private Object getValue(FPContext context) throws FPMergeException{
+		
+		int idx = expression.indexOf(FPConsts.NULL_VALUE_OPERATOR);
+		boolean nullAllowed = (idx < 1); 
+		String exp;
+		if(nullAllowed){
+			exp = expression;
+		}else{
+			exp = expression.substring(0, idx);			
+		}
+		
 		Map<String,Object> data = context.getData();
 		
-		Object value = OgnlUtil.getValue(expression, data);
+		Object value = OgnlUtil.getValue(exp, data);
+		
 		if(value == null){
-			throw new FPMergeException(FPConsts.MESSAGE_ID_EL_EXPRESSION_UNDEFINED,new Object[]{expression});
+			if(nullAllowed){
+				return expression.substring(idx + 1);
+			}else{		
+				throw new FPMergeException(FPConsts.MESSAGE_ID_EL_EXPRESSION_UNDEFINED,new Object[]{expression});
+			}
 		}
 		return value;
 	}
