@@ -20,6 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -70,7 +71,7 @@ public abstract class AbstractCell implements TemplateElement {
 	
 
 	/**
-	 * テンプレート側のセルのスタイルを出力側へコピーします。フォントも反映されます。
+	 * テンプレート側のセルのスタイルを出力側へコピーします。フォントやデータフォーマットも反映されます。
 	 * @param context コンテキスト
 	 * @param outCell 出力するセル
 	 */
@@ -78,10 +79,14 @@ public abstract class AbstractCell implements TemplateElement {
 
 		HSSFWorkbook outWb = context.getOutWorkBook();
 		HSSFCellStyle outStyle = outWb.createCellStyle();
-		copyProperties(outStyle, templateCell.getCellStyle());
+		HSSFCellStyle templateStyle = templateCell.getCellStyle(); 
+		copyProperties(outStyle, templateStyle);
 
 		HSSFFont font = getCopiedFont(context, outWb);
 		outStyle.setFont(font);
+		
+		copyDataFormat(context, templateStyle, outStyle,outWb); 
+		
 		outCell.setCellStyle(outStyle);
 		if(isMergedCell){
 			mergeCell(context, outWb);
@@ -94,6 +99,15 @@ public abstract class AbstractCell implements TemplateElement {
 		HSSFFont font = outWb.createFont();
 		copyProperties(font, context.getTemplate().getFontAt(fontIndex));
 		return font;
+	}
+	
+	private void copyDataFormat(FPContext context, HSSFCellStyle templateStyle,HSSFCellStyle outStyle,HSSFWorkbook outWb){
+		short dfIdx =  templateStyle.getDataFormat();
+		HSSFWorkbook templateWb = context.getTemplate();
+		HSSFDataFormat templateDf = templateWb.createDataFormat();
+		HSSFDataFormat outDf = outWb.createDataFormat();
+		short outDfIdx = outDf.getFormat(templateDf.getFormat(dfIdx));
+		outStyle.setDataFormat(outDfIdx);
 	}
 
 	private void copyProperties(Object dest, Object src) {
