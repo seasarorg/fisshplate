@@ -61,14 +61,14 @@ public class IteratorBlock extends AbstractBlock{
 	public void merge(FPContext context) throws FPMergeException {
 		Map<String,Object> data = context.getData();
 		Object o = OgnlUtil.getValue(iteratorName, data);
-		Iterator ite = getIterator(o);
+		Iterator<?> ite = getIterator(o);
 		mergeIteratively(context, ite, data);
 	}
 	
 	private Iterator<?> getIterator(Object o) throws FPMergeException{
-		Iterator ite;
+		Iterator<?> ite;
 		if(o instanceof List){
-			ite = ((List)o).iterator();
+			ite = ((List<?>)o).iterator();
 		} else if(o instanceof Object[]){
 			ite = getIterator(Arrays.asList((Object[])o));
 		} else{
