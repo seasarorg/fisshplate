@@ -48,7 +48,11 @@ public class IteratorBlock extends AbstractBlock{
 	IteratorBlock(String varName, String iteratorName, String indexName){
 		this.varName = varName;
 		this.iteratorName = iteratorName;
-		this.indexName = indexName;	
+		if(indexName == null || "".equals(indexName.trim())){
+			this.indexName = FPConsts.DEFAULT_ITERATOR_INDEX_NAME;
+		}else{
+			this.indexName = indexName;
+		}
 	}
 
 	/* (non-Javadoc)

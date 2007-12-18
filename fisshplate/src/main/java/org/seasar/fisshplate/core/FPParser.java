@@ -141,13 +141,8 @@ public class FPParser {
 	private void iteratorBlock(Matcher mat){
 		String varName = mat.group(1);
 		String iteratorName = mat.group(2);
-		AbstractBlock block;
-		if(mat.group(3) == null){
-			block = new IteratorBlock(varName, iteratorName);
-		}else{
-			String indexName = mat.group(4);
-			block = new IteratorBlock(varName, iteratorName, indexName);
-		}
+		String indexName = mat.group(4);
+		AbstractBlock block = new IteratorBlock(varName, iteratorName,indexName);		
 		pushBlockToStack(block);
 	}
 	
