@@ -19,11 +19,11 @@ import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
 
 /**
- * テンプレートのセルの値がヘッダーの場合の要素クラスです。
+ * テンプレートのセルの値がフッターの場合の要素クラスです。
  * 
  * @author a-conv
  */
-public class PageHeaderBlock extends AbstractBlock {
+public class PageFooterBlock extends AbstractBlock {
 
 	public void merge(FPContext context) throws FPMergeException {
 		for (int i = 0; i < childList.size(); i++) {

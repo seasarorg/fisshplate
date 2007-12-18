@@ -29,6 +29,7 @@ import org.seasar.fisshplate.exception.FPMergeException;
 public class PageBreakBlock extends AbstractBlock {
 
 	private List<TemplateElement> headerList;
+	private List<TemplateElement> footerList;
 
 	/*
 	 * (non-Javadoc)
@@ -36,15 +37,35 @@ public class PageBreakBlock extends AbstractBlock {
 	 * @see org.seasar.fisshplate.core.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
 	 */
 	public void merge(FPContext context) throws FPMergeException {
+		writeFooter(context);
+		pageBreak(context);
+		writeHeader(context);
+	}
+
+	private void writeFooter(FPContext context) throws FPMergeException {
+		if (context.isUseFooter()) {
+			footerList = context.getFooterList();
+			if (footerList == null) {
+				throw new FPMergeException("フッターの設定に失敗しています。");
+			}
+			for (TemplateElement elem : footerList) {
+				elem.merge(context);
+			}
+		}
+	}
+
+	private void pageBreak(FPContext context) {
 		HSSFSheet sheet = context.getOutSheet();
 		int currentRowNum = context.getCurrentRowNum();
 		sheet.setRowBreak(currentRowNum - 1);
-		writeHeader(context);
 	}
 
 	private void writeHeader(FPContext context) throws FPMergeException {
 		if (context.isUseHeader()) {
 			headerList = context.getHeaderList();
+			if (footerList == null) {
+				throw new FPMergeException("ヘッダーの設定に失敗しています。");
+			}
 			for (TemplateElement elem : headerList) {
 				elem.merge(context);
 			}

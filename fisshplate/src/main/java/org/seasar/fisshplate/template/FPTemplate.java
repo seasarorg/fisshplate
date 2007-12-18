@@ -85,6 +85,10 @@ public class FPTemplate {
 			context.setUseHeader(parser.isUseHeader());
 			context.setHeaderList(parser.getHeaderList());
 		}
+		if (parser.isUseFooter()) {
+			context.setUseFooter(parser.isUseFooter());
+			context.setFooterList(parser.getFooterList());
+		}
 		List<TemplateElement> elementList = parser.getRoot();
 		for (TemplateElement elem : elementList) {
 			elem.merge(context);

@@ -39,8 +39,10 @@ public class FPContext {
 	private short currentCellNum;
 	private Map<String, Object> data;
 
-	private boolean isUseHeader;
+	private boolean isUseHeader = false;
+	private boolean isUseFooter = false;
 	private List<TemplateElement> headerList = null;
+	private List<TemplateElement> footerList = null;
 
 	/**
 	 * コンストラクタです。
@@ -199,11 +201,59 @@ public class FPContext {
 		this.isUseHeader = isUseHeader;
 	}
 
+	/**
+	 * ヘッダーの内容を設定します
+	 * 
+	 * @param headerList
+	 */
 	public void setHeaderList(List<TemplateElement> headerList) {
 		this.headerList = headerList;
 	}
-	
+
+	/**
+	 * ヘッダーの内容を返却します
+	 * 
+	 * @param headerList
+	 */
 	public List<TemplateElement> getHeaderList() {
 		return this.headerList;
 	}
+
+	/**
+	 * フッターの有無を返却します
+	 * 
+	 * @return フッターの有無
+	 */
+	public boolean isUseFooter() {
+		return isUseFooter;
+	}
+
+	/**
+	 * フッターの有無を設定します
+	 * 
+	 * @param isUseFooter
+	 *            フッターの有無
+	 */
+	public void setUseFooter(boolean isUseFooter) {
+		this.isUseFooter = isUseFooter;
+	}
+
+	/**
+	 * フッターの内容を設定します
+	 * 
+	 * @param footerList
+	 */
+	public void setFooterList(List<TemplateElement> footerList) {
+		this.footerList = footerList;
+	}
+
+	/**
+	 * フッターの内容を返却します
+	 * 
+	 * @param footerList
+	 */
+	public List<TemplateElement> getFooterList() {
+		return this.footerList;
+	}
+
 }
