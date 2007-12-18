@@ -23,7 +23,6 @@ import java.util.Map;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.seasar.fisshplate.consts.S2FPConsts;
-import org.seasar.fisshplate.template.FPTemplate;
 import org.seasar.fisshplate.util.FisshplateUtil;
 import org.seasar.framework.aop.interceptors.AbstractInterceptor;
 import org.seasar.framework.util.MethodUtil;

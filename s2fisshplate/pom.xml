@@ -132,6 +132,14 @@
       <version>3.8.2</version>
       <scope>test</scope>
     </dependency>
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-servlet_2.4_spec</artifactId>
+			<version>1.0</version>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>    
+    
     <dependency>
     	<groupId>org.seasar.container</groupId>
     	<artifactId>s2-extension</artifactId>
@@ -140,7 +148,13 @@
     <dependency>
     	<groupId>org.seasar.fisshplate</groupId>
     	<artifactId>fisshplate</artifactId>
-    	<version>0.0.1-SNAPSHOT</version>
+    	<version>0.0.1-SNAPSHOT</version>    	
+    	<exclusions>
+    		<exclusion>
+    			<groupId>ognl</groupId>
+    			<artifactId>ognl</artifactId>
+    		</exclusion>
+    	</exclusions>
     </dependency>
   </dependencies>
 <!-- ******************************************************************************* -->
