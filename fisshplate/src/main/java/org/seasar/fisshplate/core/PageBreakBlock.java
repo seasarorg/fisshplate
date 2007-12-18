@@ -43,15 +43,11 @@ public class PageBreakBlock extends AbstractBlock {
 	}
 
 	private void writeHeader(FPContext context) throws FPMergeException {
-		// Headerを書くか?
 		if (context.isUseHeader()) {
+			headerList = context.getHeaderList();
 			for (TemplateElement elem : headerList) {
 				elem.merge(context);
 			}
 		}
-	}
-
-	public void setHeaderList(List<TemplateElement> headerList) {
-		this.headerList = headerList;
 	}
 }

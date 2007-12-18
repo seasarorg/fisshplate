@@ -42,7 +42,7 @@ public class FPTemplateHeaderTest extends TestCase {
 	}
 	
 	public void test行の要素がリストの場合() throws Exception  {
-		InputStream is = getClass().getResourceAsStream("/FPTemplateHeaderTest.xls");		
+		InputStream is = getClass().getResourceAsStream("/FPTemplateHeaderTest2.xls");		
 		try {
 			template = new FPTemplate(is);
 		} catch (FPParseException e) {

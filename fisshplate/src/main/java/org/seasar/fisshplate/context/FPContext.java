@@ -15,12 +15,14 @@
  */
 package org.seasar.fisshplate.context;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.seasar.fisshplate.core.TemplateElement;
 
 /**
  * 解析やデータ埋め込み時に参照される、グローバル値を保持するクラスです。
@@ -38,6 +40,7 @@ public class FPContext {
 	private Map<String, Object> data;
 
 	private boolean isUseHeader;
+	private List<TemplateElement> headerList = null;
 
 	/**
 	 * コンストラクタです。
@@ -189,9 +192,18 @@ public class FPContext {
 	/**
 	 * ヘッダーの有無を設定します
 	 * 
-	 * @param isUseHeader ヘッダーの有無
+	 * @param isUseHeader
+	 *            ヘッダーの有無
 	 */
 	public void setUseHeader(boolean isUseHeader) {
 		this.isUseHeader = isUseHeader;
+	}
+
+	public void setHeaderList(List<TemplateElement> headerList) {
+		this.headerList = headerList;
+	}
+	
+	public List<TemplateElement> getHeaderList() {
+		return this.headerList;
 	}
 }
