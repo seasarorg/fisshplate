@@ -15,6 +15,8 @@
  */
 package org.seasar.fisshplate.core;
 
+import java.util.List;
+
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
@@ -26,6 +28,8 @@ import org.seasar.fisshplate.exception.FPMergeException;
  */
 public class PageBreakBlock extends AbstractBlock {
 
+	private List<TemplateElement> headerList;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -35,6 +39,19 @@ public class PageBreakBlock extends AbstractBlock {
 		HSSFSheet sheet = context.getOutSheet();
 		int currentRowNum = context.getCurrentRowNum();
 		sheet.setRowBreak(currentRowNum - 1);
+		writeHeader(context);
 	}
 
+	private void writeHeader(FPContext context) throws FPMergeException {
+		// Headerを書くか?
+		if (context.isUseHeader()) {
+			for (TemplateElement elem : headerList) {
+				elem.merge(context);
+			}
+		}
+	}
+
+	public void setHeaderList(List<TemplateElement> headerList) {
+		this.headerList = headerList;
+	}
 }

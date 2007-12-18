@@ -37,6 +37,8 @@ public class FPContext {
 	private short currentCellNum;
 	private Map<String, Object> data;
 
+	private boolean isUseHeader;
+
 	/**
 	 * コンストラクタです。
 	 * 
@@ -173,5 +175,23 @@ public class FPContext {
 	 */
 	public HSSFSheet getOutSheet() {
 		return outSheet;
+	}
+
+	/**
+	 * ヘッダーの有無を返却します
+	 * 
+	 * @return ヘッダーの有無
+	 */
+	public boolean isUseHeader() {
+		return isUseHeader;
+	}
+
+	/**
+	 * ヘッダーの有無を設定します
+	 * 
+	 * @param isUseHeader ヘッダーの有無
+	 */
+	public void setUseHeader(boolean isUseHeader) {
+		this.isUseHeader = isUseHeader;
 	}
 }

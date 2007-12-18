@@ -24,6 +24,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.core.FPParser;
+import org.seasar.fisshplate.core.PageBreakBlock;
 import org.seasar.fisshplate.core.TemplateElement;
 import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.exception.FPParseException;
@@ -32,6 +33,7 @@ import org.seasar.fisshplate.exception.FPParseException;
  * FiSSH Plateで{@link HSSFWorkbook}を生成する際のエントリポイントとなるクラスです。
  * 
  * @author rokugen
+ * @author a-conv
  * 
  */
 public class FPTemplate {
@@ -76,14 +78,22 @@ public class FPTemplate {
 	 * @throws FPMergeException
 	 *             データ埋め込み時にエラーが発生した際に投げられます。
 	 */
-	public HSSFWorkbook process(Map<String, Object> data)
-			throws FPMergeException {
+	public HSSFWorkbook process(Map<String, Object> data) throws FPMergeException {
 
 		HSSFWorkbook out = new HSSFWorkbook();
 		FPContext context = new FPContext(templateWb, out, data);
+
+		List<TemplateElement> headerList = null;
+		if (parser.isUseHeader()) {
+			context.setUseHeader(parser.isUseHeader());
+			headerList = parser.getHeaderList();
+		}
 		List<TemplateElement> elementList = parser.getRoot();
 
 		for (TemplateElement elem : elementList) {
+			if (elem.getClass() == PageBreakBlock.class) {
+				((PageBreakBlock) elem).setHeaderList(headerList);
+			}
 			elem.merge(context);
 		}
 		return out;
