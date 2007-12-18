@@ -86,16 +86,11 @@ public class FPParser {
 		for (int i = 0; i <= sheet.getLastRowNum(); i++) {
 			parseRow(sheet, sheet.getRow(i));
 		}
-
-		if (isUseFooter) {
-			TemplateElement footerElem = footerList.get(0);
-			elementList.add(footerElem);
-		}
-
 		// スタックにまだブロックが残ってたら#end不足
 		if (blockStack.size() > 0) {
 			throw new FPParseException(FPConsts.MESSAGE_ID_END_ELEMENT);
 		}
+		finalCheck();
 	}
 
 	private void parseRow(HSSFSheet sheet, HSSFRow row) throws FPParseException {
@@ -176,9 +171,22 @@ public class FPParser {
 		return isControlRow;
 	}
 
+	private void finalCheck() {
+		// Headerを設定している場合
+		if (isUseHeader) {
+			TemplateElement headerElem = headerList.get(0);
+			elementList.add(0, headerElem);
+		}
+
+		// Footerを設定している場合
+		if (isUseFooter) {
+			TemplateElement footerElem = footerList.get(0);
+			elementList.add(footerElem);
+		}
+	}
+
 	private void pageFooterEnd() {
 		AbstractBlock block = footerStack.pop();
-		elementList.add(block);
 		footerList.add(block);
 		isProcessFooter = false;
 	}
@@ -192,7 +200,6 @@ public class FPParser {
 
 	private void pageHeaderEnd() {
 		AbstractBlock block = headerStack.pop();
-		elementList.add(block);
 		headerList.add(block);
 		isProcessHeader = false;
 	}
