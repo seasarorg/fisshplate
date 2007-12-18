@@ -28,14 +28,27 @@ import org.seasar.fisshplate.util.OgnlUtil;
 public class IteratorBlock extends AbstractBlock{	
 	private String varName;
 	private String iteratorName;
+	private String indexName;
 	
 	/**
+	 * 要素を保持する変数名とイテレータ自身の名前を受け取ります。ループのインデックス名はデフォルト値「index」になります。
 	 * @param varName イテレータ内の要素を保持する変数名
 	 * @param iteratorName イテレータ名
 	 */
 	IteratorBlock(String varName, String iteratorName){
+				this(varName, iteratorName, FPConsts.DEFAULT_ITERATOR_INDEX_NAME);
+	}
+	
+	/**
+	 * 要素を保持する変数名とイテレータ自身の名前とループのインデックス名を受け取ります。
+	 * @param varName イテレータ内の要素を保持する変数名
+	 * @param iteratorName イテレータ名
+	 * @param indexName ループのインデックス名
+	 */
+	IteratorBlock(String varName, String iteratorName, String indexName){
 		this.varName = varName;
-		this.iteratorName = iteratorName;		
+		this.iteratorName = iteratorName;
+		this.indexName = indexName;	
 	}
 
 	/* (non-Javadoc)
@@ -65,7 +78,7 @@ public class IteratorBlock extends AbstractBlock{
 		while(ite.hasNext()){
 			Object var = ite.next();
 			data.put(varName, var);	
-			data.put(FPConsts.ITERATOR_INDEX_NAME, line);
+			data.put(indexName, line);
 			for(TemplateElement elem : childList){
 				elem.merge(context);
 			}			

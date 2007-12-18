@@ -38,7 +38,8 @@ public class FPParser {
 	private List<TemplateElement> elementList = new ArrayList<TemplateElement>();
 	private Stack<AbstractBlock> blockStack = new Stack<AbstractBlock>();
 	
-	private static final Pattern patIterator = Pattern.compile("^\\s*#foreach\\s+(\\w+)\\s*:\\s*(\\w+)\\s*$");	
+	//private static final Pattern patIterator = Pattern.compile("^\\s*#foreach\\s+(\\w+)\\s*:\\s*(\\w+)\\s*$");	
+	private static final Pattern patIterator = Pattern.compile("^\\s*#foreach\\s+(\\w+)\\s*:\\s*(\\w+)(\\s+index=(\\w+))*\\s*$");
 	private static final Pattern patEnd = Pattern.compile("^\\s*#end\\s*$");
 	private static final Pattern patIf = Pattern.compile("^\\s*#if\\s*\\(\\s*(.+)\\s*\\)");
 	private static final Pattern patElseIf = Pattern.compile("^\\s*#else\\s+if\\s*\\(\\s*(.+)\\s*\\)");
@@ -140,7 +141,13 @@ public class FPParser {
 	private void iteratorBlock(Matcher mat){
 		String varName = mat.group(1);
 		String iteratorName = mat.group(2);
-		AbstractBlock block = new IteratorBlock(varName, iteratorName);
+		AbstractBlock block;
+		if(mat.group(3) == null){
+			block = new IteratorBlock(varName, iteratorName);
+		}else{
+			String indexName = mat.group(4);
+			block = new IteratorBlock(varName, iteratorName, indexName);
+		}
 		pushBlockToStack(block);
 	}
 	

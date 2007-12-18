@@ -25,7 +25,7 @@ public interface FPConsts {
 	/**
 	 * イテレータ要素内で参照する現在行のインデックスの変数名です。「index」になります。
 	 */
-	final static String ITERATOR_INDEX_NAME = "index";
+	final static String DEFAULT_ITERATOR_INDEX_NAME = "index";
 
 	/**
 	 * 出力されるシート内の行番号を表す変数名です。「rownum」になります。

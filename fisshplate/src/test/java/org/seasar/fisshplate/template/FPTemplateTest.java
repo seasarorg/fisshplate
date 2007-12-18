@@ -109,6 +109,37 @@ public class FPTemplateTest extends TestCase {
 		
 	}
 	
+	public void testループのネスト() throws Exception  {
+		InputStream is = getClass().getResourceAsStream("/FPTemplateTest_nestedLoop.xls");
+		try {
+			template = new FPTemplate(is);
+		} catch (FPParseException e) {
+			throw e;
+		} catch (IOException e) {
+			throw e;
+		}finally{
+			is.close();
+		}
+		Object[] parentList = new Object[]{
+				new String[]{"子供1","子供2","子供3","子供4"},
+				new String[]{"子供5","子供6","子供7","子供8"},
+				new String[]{"子供9","子供10","子供11","子供12"}
+		};
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("parentList", parentList);
+		
+		HSSFWorkbook wb;
+		try {
+			wb = template.process(map);
+		} catch (FPMergeException e) {		
+			throw e;
+		}
+		
+		FileOutputStream fos = new FileOutputStream("target/out_nestedLoop.xls");		
+		wb.write(fos);
+		
+	}
+	
 	public class A{
 		private String name;
 		private int num;
