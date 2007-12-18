@@ -87,7 +87,7 @@ public class El extends AbstractCell {
 			if(expression.isNullAllowed()){
 				return expression.getNullValue();
 			}else{		
-				throw new FPMergeException(FPConsts.MESSAGE_ID_EL_EXPRESSION_UNDEFINED,new Object[]{expression});
+				throw new FPMergeException(FPConsts.MESSAGE_ID_EL_EXPRESSION_UNDEFINED,new Object[]{expression.getExpression()});
 			}
 		}
 		return value;
