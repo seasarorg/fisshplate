@@ -46,13 +46,6 @@ public class ElExpression {
 	 *            評価式
 	 */
 	ElExpression(String exp) {
-
-		int pageAccessIdx = exp.indexOf(FPConsts.PAGE_NUMBER_NAME);
-		if (pageAccessIdx != -1) {
-			expression = FPConsts.PAGE_CONTEXT_NAME + "." + FPConsts.PAGE_NUMBER_NAME;
-			return;
-		}
-
 		int idx = exp.indexOf(FPConsts.NULL_VALUE_OPERATOR);
 		nullAllowed = (idx >= 1);
 		if (nullAllowed) {
@@ -61,6 +54,7 @@ public class ElExpression {
 		} else {
 			expression = exp;
 		}
+		System.out.println(expression);
 	}
 
 	public String getExpression() {

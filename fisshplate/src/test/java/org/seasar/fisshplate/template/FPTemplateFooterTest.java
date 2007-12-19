@@ -63,6 +63,8 @@ public class FPTemplateFooterTest extends TestCase {
 		aList.add(new A("6行目", 60, new Date()));
 		map.put("b", aList);
 
+		map.put("type", "B");
+
 		HSSFWorkbook wb;
 		try {
 			wb = template.process(map);

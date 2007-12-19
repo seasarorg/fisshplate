@@ -38,9 +38,9 @@ public interface FPConsts {
 	final static String PAGE_NUMBER_NAME = "pagenum";
 
 	/**
-	 * 出力されるページのコンテキスト名です「pageContextになります」。
+	 * 出力されるページのコンテキスト名です「pageになります」。
 	 */
-	final static String PAGE_CONTEXT_NAME = "pageContext";
+	final static String PAGE_CONTEXT_NAME = "page";
 
 	/**
 	 * 埋め込みデータのNULL制御演算子
