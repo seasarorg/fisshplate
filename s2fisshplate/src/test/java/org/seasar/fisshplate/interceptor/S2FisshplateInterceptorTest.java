@@ -42,10 +42,17 @@ public class S2FisshplateInterceptorTest extends S2TestCase {
 		TestFisshplateDto dto =new TestFisshplateDto();
 		dto.setTitle("テストです");
 		List<TestItem> itemList = new ArrayList<TestItem>();
-		itemList.add(new TestItem("1行目",10,new Date()));
-		itemList.add(new TestItem("2行目",20,new Date()));
-		itemList.add(new TestItem("3行目",30,new Date()));
+//		itemList.add(new TestItem("1行目",10,new Date()));
+//		itemList.add(new TestItem("2行目",20,new Date()));
+//		itemList.add(new TestItem("3行目",30,new Date()));
 		
+		TestItem item = new TestItem();
+		item.setDate(new Date());
+		item.setName("1行目");
+		item.setNum(10);
+		
+		itemList.add(item);
+//		
 		dto.setItemList(itemList);
 		
 		HSSFWorkbook wb = fisshplate.getTestWb(dto);

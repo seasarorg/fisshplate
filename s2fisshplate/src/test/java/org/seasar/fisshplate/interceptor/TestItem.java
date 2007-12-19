@@ -25,12 +25,12 @@ public class TestItem {
 	private String name;
 	private Date date;
 	
-	public TestItem(String name, int num, Date date){
-		this.name = name;
-		this.num = num;
-		this.date = date;	
-	}
-	
+//	public TestItem(String name, int num, Date date){
+//		this.name = name;
+//		this.num = num;
+//		this.date = date;	
+//	}
+//	
 	public int getNum() {
 		return num;
 	}
