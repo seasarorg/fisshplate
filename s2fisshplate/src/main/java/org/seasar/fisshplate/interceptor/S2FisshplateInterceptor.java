@@ -15,7 +15,6 @@
  */
 package org.seasar.fisshplate.interceptor;
 
-import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +27,6 @@ import org.seasar.fisshplate.meta.TemplateMetaDataFactory;
 import org.seasar.fisshplate.util.FisshplateUtil;
 import org.seasar.framework.aop.interceptors.AbstractInterceptor;
 import org.seasar.framework.util.MethodUtil;
-import org.seasar.framework.util.ResourceUtil;
 
 /**
  * @author rokugen
