@@ -23,6 +23,8 @@ import java.util.Map;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.seasar.fisshplate.consts.S2FPConsts;
+import org.seasar.fisshplate.meta.TemplateMetaData;
+import org.seasar.fisshplate.meta.TemplateMetaDataFactory;
 import org.seasar.fisshplate.util.FisshplateUtil;
 import org.seasar.framework.aop.interceptors.AbstractInterceptor;
 import org.seasar.framework.util.MethodUtil;
@@ -33,6 +35,7 @@ import org.seasar.framework.util.ResourceUtil;
  * 
  */
 public class S2FisshplateInterceptor extends AbstractInterceptor {
+	private TemplateMetaDataFactory metaDataFactory;
 
 	private static final long serialVersionUID = 983269897377553526L;
 
@@ -42,7 +45,7 @@ public class S2FisshplateInterceptor extends AbstractInterceptor {
 			return invocation.proceed();
 		}
 
-		Object[] arguments = invocation.getArguments();
+		Object[] arguments = invocation.getArguments();		
 		if (arguments == null || arguments.length == 0) {
 			return null;
 		}
@@ -52,16 +55,14 @@ public class S2FisshplateInterceptor extends AbstractInterceptor {
 		map.put(S2FPConsts.DATA_MAP_KEY_FOR_BEAN, bean);
 
 		Class<?> clazz = method.getDeclaringClass();
-		String templatePath = clazz.getName().replaceAll("\\.", "/") + "_"
-				+ method.getName() + "." + S2FPConsts.EXCEL_EXTENSION;
-		InputStream is = ResourceUtil.getResourceAsStream(templatePath);
-		HSSFWorkbook templateWb = null;
-		try {
-			templateWb = new HSSFWorkbook(is);
-		} finally {
-			is.close();
-		}		
+		TemplateMetaData metaData = metaDataFactory.getMetaData(clazz);
+		HSSFWorkbook templateWb = metaData.getTemplateWorkbook(method);
+				
 		return FisshplateUtil.createTemplateAndProcess(templateWb, map);
+	}
+
+	public void setMetaDataFactory(TemplateMetaDataFactory metaDataFactory) {
+		this.metaDataFactory = metaDataFactory;
 	}
 
 }

@@ -38,13 +38,13 @@ public class S2FisshplateInterceptorTest extends S2TestCase {
 		
 	}
 	
-	public void testƒCƒ“ƒ^ƒZƒvƒ^‚ÌƒeƒXƒg() throws Exception{
+	public void testã‚¤ãƒ³ã‚¿ãƒ¼ã‚»ãƒ—ã‚¿ãƒ†ã‚¹ãƒˆ() throws Exception{
 		TestFisshplateDto dto =new TestFisshplateDto();
-		dto.setTitle("ƒ^ƒCƒgƒ‹‚Å‚·");
+		dto.setTitle("ãƒ†ã‚¹ãƒˆã§ã™");
 		List<TestItem> itemList = new ArrayList<TestItem>();
-		itemList.add(new TestItem("1s–Ú",10,new Date()));
-		itemList.add(new TestItem("2s–Ú",20,new Date()));
-		itemList.add(new TestItem("3s–Ú",30,new Date()));
+		itemList.add(new TestItem("1è¡Œç›®",10,new Date()));
+		itemList.add(new TestItem("2è¡Œç›®",20,new Date()));
+		itemList.add(new TestItem("3è¡Œç›®",30,new Date()));
 		
 		dto.setItemList(itemList);
 		

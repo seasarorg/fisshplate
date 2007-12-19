@@ -18,14 +18,14 @@ package org.seasar.fisshplate.exception;
 import org.seasar.framework.exception.SRuntimeException;
 
 /**
- * {@link FPMergeException}をラップする実行時例外です。
+ * {@link FPMergeException}繧偵Λ繝�繝励☆繧句ｮ溯｡梧凾萓句､悶〒縺吶�
  * @author rokugen
  */
 public class FPMergeRuntimeException extends SRuntimeException {
 	private static final long serialVersionUID = 2037875540340213759L;
 
 	public FPMergeRuntimeException(FPMergeException cause){
-		super("EFSSHPLT0002",new Object[]{cause},cause);				
+		super("EFSSHPLT0002",new Object[]{cause},cause);
 	}
 
 }

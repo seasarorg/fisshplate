@@ -18,7 +18,7 @@ package org.seasar.fisshplate.exception;
 import org.seasar.framework.exception.SRuntimeException;
 
 /**
- * {@link FPParseException}をラップする実行時例外です。
+ * {@link FPParseException}繧偵Λ繝�繝励☆繧句ｮ溯｡梧凾萓句､悶〒縺吶�
  * @author rokugen
  */
 public class FPParseRuntimeException extends SRuntimeException {

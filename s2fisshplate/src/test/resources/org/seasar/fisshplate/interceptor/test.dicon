@@ -2,9 +2,8 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
 	"http://www.seasar.org/dtd/components24.dtd">
 <components>
+	<include path="s2fisshplate.dicon"/>
 	<component class="org.seasar.fisshplate.interceptor.TestFisshplate" >
-		<aspect>
-			<component class="org.seasar.fisshplate.interceptor.S2FisshplateInterceptor" />
-		</aspect>
+		<aspect>fisshplate.interceptor</aspect>
 	</component>
 </components>	

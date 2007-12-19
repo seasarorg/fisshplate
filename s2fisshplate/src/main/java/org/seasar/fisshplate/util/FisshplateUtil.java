@@ -32,11 +32,11 @@ public class FisshplateUtil {
 	private FisshplateUtil(){}
 	
 	/**
-	 * <p>{@link FPParser}���g���āA�e���v���[�g�I�u�W�F�N�g�𐶐��A�f�[�^�𖄂ߍ��݂܂��B</p>
-	 * <p>��O�����s����O�Ƀ��b�v���܂��B</p>
-	 * @param templateWb �e���v���[�g�p���[�N�u�b�N
-	 * @param data ���ߍ��݃f�[�^
-	 * @return �o�͂��郏�[�N�u�b�N
+	 * <p>{@link FPParser}を使って、テンプレートオブジェクトを生成、データを埋め込みます。</p>
+	 * <p>例外を実行時例外にラップします。</p>
+	 * @param templateWb テンプレート用ワークブック
+	 * @param data 埋め込みデータ
+	 * @return 出力するワークブック
 	 */
 	public static final HSSFWorkbook createTemplateAndProcess(HSSFWorkbook templateWb,Map<String, Object> data){		
 		try {
