@@ -31,7 +31,7 @@ public interface FPConsts {
 	 * 出力されるシート内の行番号を表す変数名です。「rownum」になります。
 	 */
 	final static String ROW_NUMBER_NAME = "rownum";
-	
+
 	/**
 	 * 埋め込みデータのNULL制御演算子
 	 */
@@ -43,6 +43,10 @@ public interface FPConsts {
 
 	static final String MESSAGE_ID_NOT_ITERATABLE = "EFP00003";
 
-	static final String MESSAGE_ID_EL_EXPRESSION_UNDEFINED = "EFP00004";	
+	static final String MESSAGE_ID_EL_EXPRESSION_UNDEFINED = "EFP00004";
+
+	static final String MESSAGE_HEADER_INVALID = "EFP00005";
+
+	static final String MESSAGE_FOOTER_INVALID = "EFP00006";
 
 }

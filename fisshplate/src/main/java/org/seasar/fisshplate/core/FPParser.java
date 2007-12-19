@@ -48,18 +48,14 @@ public class FPParser {
 	private static final Pattern patPageBreak = Pattern.compile("#pageBreak");
 
 	// Header情報
-	private Stack<AbstractBlock> headerStack = new Stack<AbstractBlock>();
 	private static final Pattern patPageHeaderStart = Pattern.compile("#pageHeaderStart");
 	private static final Pattern patPageHeaderEnd = Pattern.compile("#pageHeaderEnd");
-	private boolean isProcessHeader = false;
 	private boolean isUseHeader = false;
 	private List<TemplateElement> headerList = new ArrayList<TemplateElement>();
 
 	// Footer情報
-	private Stack<AbstractBlock> footerStack = new Stack<AbstractBlock>();
 	private static final Pattern patPageFooterStart = Pattern.compile("#pageFooterStart");
 	private static final Pattern patPageFooterEnd = Pattern.compile("#pageFooterEnd");
-	private boolean isProcessFooter = false;
 	private boolean isUseFooter = false;
 	private List<TemplateElement> footerList = new ArrayList<TemplateElement>();
 
@@ -88,6 +84,7 @@ public class FPParser {
 		if (blockStack.size() > 0) {
 			throw new FPParseException(FPConsts.MESSAGE_ID_END_ELEMENT);
 		}
+		// Header&Footerの強制追加
 		finalCheck();
 	}
 
@@ -96,18 +93,6 @@ public class FPParser {
 			return;
 		}
 		Row rowElem = new Row(sheet, row);
-		// Header内にいる場合はHeaderブロック内の子要素とする。
-		if (isProcessHeader) {
-			AbstractBlock block = headerStack.lastElement();
-			block.addChild(rowElem);
-			return;
-		}
-		// Footer内にいる場合はHeaderブロック内の子要素とする。
-		if (isProcessFooter) {
-			AbstractBlock block = footerStack.lastElement();
-			block.addChild(rowElem);
-			return;
-		}
 		// ブロック内に居る場合は、そのブロック内の子要素とする。そうでない場合はルートに行を追加する。
 		if (blockStack.size() > 0) {
 			AbstractBlock block = blockStack.lastElement();
@@ -155,11 +140,11 @@ public class FPParser {
 		} else if ((mat = patPageHeaderStart.matcher(value)).find()) {
 			pageHeaderBlock();
 		} else if ((mat = patPageHeaderEnd.matcher(value)).find()) {
-			pageHeaderEnd();
+			end();
 		} else if ((mat = patPageFooterStart.matcher(value)).find()) {
 			pageFooterBlock();
 		} else if ((mat = patPageFooterEnd.matcher(value)).find()) {
-			pageFooterEnd();
+			end();
 		} else if ((mat = patComment.matcher(value)).find()) {
 			// コメント行はパス
 		} else {
@@ -183,30 +168,18 @@ public class FPParser {
 		}
 	}
 
-	private void pageFooterEnd() {
-		AbstractBlock block = footerStack.pop();
-		footerList.add(block);
-		isProcessFooter = false;
-	}
-
 	private void pageFooterBlock() {
-		AbstractBlock block = new PageHeaderBlock();
-		footerStack.push(block);
-		isProcessFooter = true;
 		isUseFooter = true;
-	}
-
-	private void pageHeaderEnd() {
-		AbstractBlock block = headerStack.pop();
-		headerList.add(block);
-		isProcessHeader = false;
+		AbstractBlock block = new PageFooterBlock();
+		// 上位のBlockに追加しない
+		blockStack.push(block);
 	}
 
 	private void pageHeaderBlock() {
-		AbstractBlock block = new PageHeaderBlock();
-		headerStack.push(block);
-		isProcessHeader = true;
 		isUseHeader = true;
+		AbstractBlock block = new PageHeaderBlock();
+		// 上位のBlockに追加しない
+		blockStack.push(block);
 	}
 
 	private void breakBlock() {
@@ -273,6 +246,14 @@ public class FPParser {
 			while (block.getClass() != IfBlock.class) {
 				block = blockStack.pop();
 			}
+		} else if ((clazz == PageHeaderBlock.class)) {
+			headerList.add(block);
+			// Header自体はElementに追加しない
+			return;
+		} else if ((clazz == PageFooterBlock.class)) {
+			footerList.add(block);
+			// Footer自体はElementに追加しない
+			return;
 		}
 		// ブロックのネストがルートまで戻ったらルートの要素リストに追加する。
 		if (blockStack.size() < 1) {

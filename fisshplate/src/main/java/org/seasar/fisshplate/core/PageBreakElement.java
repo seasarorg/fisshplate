@@ -18,6 +18,7 @@ package org.seasar.fisshplate.core;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
 
@@ -46,7 +47,7 @@ public class PageBreakElement implements TemplateElement {
 		if (context.isUseFooter()) {
 			footerList = context.getFooterList();
 			if (footerList == null) {
-				throw new FPMergeException("フッターの設定に失敗しています。");
+				throw new FPMergeException(FPConsts.MESSAGE_FOOTER_INVALID);
 			}
 			for (TemplateElement elem : footerList) {
 				elem.merge(context);
@@ -63,8 +64,8 @@ public class PageBreakElement implements TemplateElement {
 	private void writeHeader(FPContext context) throws FPMergeException {
 		if (context.isUseHeader()) {
 			headerList = context.getHeaderList();
-			if (footerList == null) {
-				throw new FPMergeException("ヘッダーの設定に失敗しています。");
+			if (headerList == null) {
+				throw new FPMergeException(FPConsts.MESSAGE_HEADER_INVALID);
 			}
 			for (TemplateElement elem : headerList) {
 				elem.merge(context);
