@@ -24,7 +24,7 @@
       <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
       <distribution>repo</distribution>
     </license>
-  </licenses>
+  </licenses> 
   <scm>
     <connection>scm:svn:https://www.seasar.org/svn/sandbox/fisshplate/trunk/fisshplate/</connection>
     <developerConnection>scm:svn:https://www.seasar.org/svn/sandbox/fisshplate/trunk/fisshplate/</developerConnection>

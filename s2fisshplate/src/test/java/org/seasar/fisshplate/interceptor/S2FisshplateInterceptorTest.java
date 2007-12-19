@@ -15,6 +15,8 @@
  */
 package org.seasar.fisshplate.interceptor;
 
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,7 +38,7 @@ public class S2FisshplateInterceptorTest extends S2TestCase {
 		
 	}
 	
-	public void testインタセプタのテスト(){
+	public void testインタセプタのテスト() throws Exception{
 		TestFisshplateDto dto =new TestFisshplateDto();
 		dto.setTitle("タイトルです");
 		List<TestItem> itemList = new ArrayList<TestItem>();
@@ -47,7 +49,11 @@ public class S2FisshplateInterceptorTest extends S2TestCase {
 		dto.setItemList(itemList);
 		
 		HSSFWorkbook wb = fisshplate.getTestWb(dto);
+		OutputStream os = new FileOutputStream("target/out.xls");
 		
+		wb.write(os);
+		os.flush();
+		os.close();
 	}
 
 }
