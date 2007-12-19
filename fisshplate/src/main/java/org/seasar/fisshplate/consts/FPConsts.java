@@ -33,6 +33,16 @@ public interface FPConsts {
 	final static String ROW_NUMBER_NAME = "rownum";
 
 	/**
+	 * 出力されるシート内のページ番号を表す変数名です。「pagenum」になります。
+	 */
+	final static String PAGE_NUMBER_NAME = "pagenum";
+
+	/**
+	 * 出力されるページのコンテキスト名です「pageContextになります」。
+	 */
+	final static String PAGE_CONTEXT_NAME = "pageContext";
+
+	/**
 	 * 埋め込みデータのNULL制御演算子
 	 */
 	static final String NULL_VALUE_OPERATOR = "!";

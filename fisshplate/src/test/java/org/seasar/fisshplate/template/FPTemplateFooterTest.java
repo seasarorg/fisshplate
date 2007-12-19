@@ -53,14 +53,14 @@ public class FPTemplateFooterTest extends TestCase {
 			is.close();
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("title", "タイトルである");
+		map.put("title", "Fisshplateサンプル");
 		List<A> aList = new ArrayList<A>();
 		aList.add(new A("1行目", 10, new Date()));
 		aList.add(new A("2行目", 20, new Date()));
 		aList.add(new A("3行目", 30, new Date()));
-		aList.add(new A("4行目", 10, new Date()));
-		aList.add(new A("5行目", 20, new Date()));
-		aList.add(new A("6行目", 30, new Date()));
+		aList.add(new A("4行目", 40, new Date()));
+		aList.add(new A("5行目", 50, new Date()));
+		aList.add(new A("6行目", 60, new Date()));
 		map.put("b", aList);
 
 		HSSFWorkbook wb;

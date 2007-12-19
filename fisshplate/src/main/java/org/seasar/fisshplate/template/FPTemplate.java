@@ -22,7 +22,9 @@ import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
+import org.seasar.fisshplate.context.PageContext;
 import org.seasar.fisshplate.core.FPParser;
 import org.seasar.fisshplate.core.TemplateElement;
 import org.seasar.fisshplate.exception.FPMergeException;
@@ -89,6 +91,10 @@ public class FPTemplate {
 			context.setUseFooter(parser.isUseFooter());
 			context.setFooterList(parser.getFooterList());
 		}
+
+		PageContext pageContext = new PageContext();
+		data.put(FPConsts.PAGE_CONTEXT_NAME, pageContext);
+
 		List<TemplateElement> elementList = parser.getRoot();
 		for (TemplateElement elem : elementList) {
 			elem.merge(context);

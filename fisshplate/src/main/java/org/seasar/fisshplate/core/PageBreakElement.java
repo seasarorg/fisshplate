@@ -20,6 +20,7 @@ import java.util.List;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
+import org.seasar.fisshplate.context.PageContext;
 import org.seasar.fisshplate.exception.FPMergeException;
 
 /**
@@ -40,7 +41,12 @@ public class PageBreakElement implements TemplateElement {
 	public void merge(FPContext context) throws FPMergeException {
 		writeFooter(context);
 		pageBreak(context);
+		pageCountUp(context);
 		writeHeader(context);
+	}
+
+	private void pageCountUp(FPContext context) {
+		((PageContext) context.getData().get(FPConsts.PAGE_CONTEXT_NAME)).addPageNum();
 	}
 
 	private void writeFooter(FPContext context) throws FPMergeException {
