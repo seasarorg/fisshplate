@@ -22,11 +22,11 @@ import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
 
 /**
- * テンプレートのセルの値が改ページの場合の要素クラスです。
+ * {@link TemplateElement}を実装した改ページ用オブジェクトです。
  * 
  * @author a-conv
  */
-public class PageBreakBlock extends AbstractBlock {
+public class PageBreakElement implements TemplateElement {
 
 	private List<TemplateElement> headerList;
 	private List<TemplateElement> footerList;

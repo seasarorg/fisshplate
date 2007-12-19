@@ -210,13 +210,13 @@ public class FPParser {
 	}
 
 	private void breakBlock() {
-		AbstractBlock block = new PageBreakBlock();
+		TemplateElement elem = new PageBreakElement();
 		if (blockStack.size() > 0) {
 			AbstractBlock parentBlock = blockStack.lastElement();
-			parentBlock.addChild(block);
+			parentBlock.addChild(elem);
 			return;
 		}
-		elementList.add(block);
+		elementList.add(elem);
 	}
 
 	private void iteratorBlock(Matcher mat) {
