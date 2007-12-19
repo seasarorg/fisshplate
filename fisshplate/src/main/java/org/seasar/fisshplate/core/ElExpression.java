@@ -21,7 +21,6 @@ import org.seasar.fisshplate.consts.FPConsts;
  * 評価式を表すクラスです。
  * 
  * @author rokugen
- * @author a-conv
  */
 public class ElExpression {
 	private String expression;
@@ -37,9 +36,6 @@ public class ElExpression {
 	 * </p>
 	 * <p>
 	 * !の後に値が続く場合は、NULL時のデフォルト値とします。
-	 * </p>
-	 * <p>
-	 * 式の中にpagenumがある場合はページNo.を取得します
 	 * </p>
 	 * 
 	 * @param exp

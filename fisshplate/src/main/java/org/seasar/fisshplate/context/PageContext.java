@@ -16,20 +16,39 @@
 package org.seasar.fisshplate.context;
 
 /**
+ * シート単位の値を保管しています。
+ * 
  * @author a-conv
  */
 public class PageContext {
 
+	/**
+	 * ページカウント
+	 */
 	private int pagenum = 1;
 
+	/**
+	 * ページカウントを加算します
+	 */
 	public void addPageNum() {
 		pagenum++;
 	}
 
+	/**
+	 * ページカウントを返却します
+	 * 
+	 * @return ページ番号
+	 */
 	public int getPagenum() {
 		return pagenum;
 	}
 
+	/**
+	 * ページ番号を設定します
+	 * 
+	 * @param pagenum
+	 *            ページ番号
+	 */
 	public void setPagenum(int pagenum) {
 		this.pagenum = pagenum;
 	}
