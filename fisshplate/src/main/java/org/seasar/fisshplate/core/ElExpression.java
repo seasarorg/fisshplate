@@ -49,8 +49,7 @@ public class ElExpression {
 			nullValue = exp.substring(idx + 1);
 		} else {
 			expression = exp;
-		}
-		System.out.println(expression);
+		}		
 	}
 
 	public String getExpression() {
