@@ -75,10 +75,13 @@ public class Row implements TemplateElement {
 	}
 	
 	public void merge(FPContext context) throws FPMergeException {
+		//ヘッダ・フッタ制御
 		if(context.shouldHeaderOut()){
 			context.setShouldHeaderOut(false);
 			root.getPageHeader().merge(context);			
 		}
+		context.setShouldFooterOut(true);
+		
 		HSSFRow outRow = context.getcurrentRow();
 		if(templateRow != null){
 			outRow.setHeight(templateRow.getHeight());

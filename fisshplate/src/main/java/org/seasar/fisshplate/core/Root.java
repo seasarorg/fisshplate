@@ -22,6 +22,8 @@ import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
 
 /**
+ * <p>全ての要素のルートとなる要素クラスです。</p>
+ * <p>内部で、ヘッダ要素、ボディ要素のリスト、フッタ要素を保持します。</p>
  * @author rokugen
  */
 public class Root implements TemplateElement {
@@ -30,21 +32,31 @@ public class Root implements TemplateElement {
 	private TemplateElement pageFooterBlock = new NullElement();
 
 	public void merge(FPContext context) throws FPMergeException {
-		//pageHeaderBlock.merge(context);
+		context.setShouldHeaderOut(false);
+		pageHeaderBlock.merge(context);
+		
 		for(int i=0; i < bodyElementList.size(); i++){
 			TemplateElement elem = (TemplateElement) bodyElementList.get(i);
 			elem.merge(context);			
 		}
 		
-		if(context.getCurrentRowNum() != context.getLastPageBreakRowNum()){
+		if(context.shouldFooterOut()){
 			pageFooterBlock.merge(context);
 		}
 	}
 	
+	/**
+	 * ページヘッダの要素を戻します。
+	 * @return ページヘッダの要素
+	 */
 	public TemplateElement getPageHeader(){
 		return pageHeaderBlock;
 	}
 	
+	/**
+	 * ページヘッダの要素を設定します。
+	 * @param pageHeader ページヘッダの要素
+	 */
 	public void setPageHeader(PageHeaderBlock pageHeader){
 		this.pageHeaderBlock = pageHeader;
 	}
@@ -57,6 +69,10 @@ public class Root implements TemplateElement {
 		this.pageFooterBlock = pageFooter;
 	}
 	
+	/**
+	 * ボディの要素を追加します。
+	 * @param element ボディの要素
+	 */
 	public void addBody(TemplateElement element){
 		bodyElementList.add(element);		
 	}

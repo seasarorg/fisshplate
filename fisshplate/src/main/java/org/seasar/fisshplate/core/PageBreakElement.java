@@ -39,12 +39,13 @@ public class PageBreakElement implements TemplateElement {
 	 * @see org.seasar.fisshplate.core.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
 	 */
 	public void merge(FPContext context) throws FPMergeException {
-		writeFooter(context);
+		writeFooter(context);		
+		
 		pageBreak(context);
 		pageCountUp(context);
+		
 		context.setShouldHeaderOut(true);
-		//現在のRowNumを最終改ページ時のRowNumとして保存する。
-		context.saveLastPageBreakRowNum();
+		context.setShouldFooterOut(false);		
 	}
 
 	private void pageCountUp(FPContext context) {
