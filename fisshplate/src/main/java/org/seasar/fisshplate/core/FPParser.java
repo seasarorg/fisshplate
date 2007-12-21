@@ -85,7 +85,7 @@ public class FPParser {
 		if (isControlRow(row)) {
 			return;
 		}
-		Row rowElem = new Row(sheet, row);
+		Row rowElem = new Row(sheet, row, rootElement);
 		// ブロック内に居る場合は、そのブロック内の子要素とする。そうでない場合はルートに行を追加する。
 		if (blockStack.size() > 0) {
 			AbstractBlock block = (AbstractBlock) blockStack.lastElement();

@@ -30,12 +30,15 @@ public class Root implements TemplateElement {
 	private TemplateElement pageFooterBlock = new NullElement();
 
 	public void merge(FPContext context) throws FPMergeException {
-		pageHeaderBlock.merge(context);
+		//pageHeaderBlock.merge(context);
 		for(int i=0; i < bodyElementList.size(); i++){
 			TemplateElement elem = (TemplateElement) bodyElementList.get(i);
 			elem.merge(context);			
 		}
-		pageFooterBlock.merge(context);
+		
+		if(context.getCurrentRowNum() != context.getLastPageBreakRowNum()){
+			pageFooterBlock.merge(context);
+		}
 	}
 	
 	public TemplateElement getPageHeader(){

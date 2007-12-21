@@ -36,6 +36,7 @@ import org.seasar.fisshplate.exception.FPMergeException;
 public class Row implements TemplateElement {
 	private List cellElementList = new ArrayList();	
 	private HSSFRow templateRow;
+	private Root root;
 	
 	private static final Pattern patEl = Pattern.compile("^\\s*\\$\\{(.+)\\}");
 	
@@ -43,7 +44,8 @@ public class Row implements TemplateElement {
 	 * コンストラクタです。テンプレート側の行オブジェクトを受け取り、その行内のセル情報を解析して保持します。
 	 * @param templateRow テンプレート側の行オブジェクト
 	 */
-	Row(HSSFSheet templateSheet, HSSFRow templateRow){		
+	Row(HSSFSheet templateSheet, HSSFRow templateRow, Root root){		
+		this.root = root;
 		this.templateRow = templateRow;
 		if(templateRow == null){
 			return;
@@ -73,6 +75,10 @@ public class Row implements TemplateElement {
 	}
 	
 	public void merge(FPContext context) throws FPMergeException {
+		if(context.shouldHeaderOut()){
+			context.setShouldHeaderOut(false);
+			root.getPageHeader().merge(context);			
+		}
 		HSSFRow outRow = context.getcurrentRow();
 		if(templateRow != null){
 			outRow.setHeight(templateRow.getHeight());

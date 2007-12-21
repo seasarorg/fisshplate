@@ -36,6 +36,8 @@ public class FPContext {
 	private int currentRowNum;
 	private short currentCellNum;
 	private Map data;
+	private int lastPageBreakRowNum = 0;
+	private boolean shouldHeaderOut = true;
 
 	/**
 	 * コンストラクタです。
@@ -173,6 +175,29 @@ public class FPContext {
 	 */
 	public HSSFSheet getOutSheet() {
 		return outSheet;
+	}
+	
+	/**
+	 * 最後に改ページをし終わった時のRowNumを戻します。
+	 * @return RowNum
+	 */
+	public int getLastPageBreakRowNum(){
+		return lastPageBreakRowNum;
+	}
+	
+	/**
+	 * 最後に改ページし終わった時のRowNumを保存します。	 * 
+	 */
+	public void saveLastPageBreakRowNum(){
+		this.lastPageBreakRowNum = getCurrentRowNum();
+	}
+	
+	public boolean shouldHeaderOut(){
+		return shouldHeaderOut;
+	}
+	
+	public void setShouldHeaderOut(boolean should){
+		this.shouldHeaderOut = should;
 	}
 
 
