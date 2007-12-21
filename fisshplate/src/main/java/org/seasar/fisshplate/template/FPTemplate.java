@@ -17,7 +17,6 @@ package org.seasar.fisshplate.template;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -27,7 +26,6 @@ import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.context.PageContext;
 import org.seasar.fisshplate.core.FPParser;
 import org.seasar.fisshplate.core.Root;
-import org.seasar.fisshplate.core.TemplateElement;
 import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.exception.FPParseException;
 
