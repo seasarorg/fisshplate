@@ -59,16 +59,16 @@ public class IteratorBlock extends AbstractBlock{
 	 * @see org.seasar.fisshplate.core.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
 	 */
 	public void merge(FPContext context) throws FPMergeException {
-		Map<String,Object> data = context.getData();
+		Map data = context.getData();
 		Object o = OgnlUtil.getValue(iteratorName, data);
-		Iterator<?> ite = getIterator(o);
+		Iterator ite = getIterator(o);
 		mergeIteratively(context, ite, data);
 	}
 	
-	private Iterator<?> getIterator(Object o) throws FPMergeException{
-		Iterator<?> ite;
+	private Iterator getIterator(Object o) throws FPMergeException{
+		Iterator ite;
 		if(o instanceof List){
-			ite = ((List<?>)o).iterator();
+			ite = ((List)o).iterator();
 		} else if(o instanceof Object[]){
 			ite = getIterator(Arrays.asList((Object[])o));
 		} else{
@@ -77,13 +77,14 @@ public class IteratorBlock extends AbstractBlock{
 		return ite;	
 	}
 	
-	private void mergeIteratively(FPContext context, Iterator<?> ite,Map<String, Object> data) throws FPMergeException{
+	private void mergeIteratively(FPContext context, Iterator ite,Map data) throws FPMergeException{
 		int line = 0;
 		while(ite.hasNext()){
 			Object var = ite.next();
 			data.put(varName, var);	
-			data.put(indexName, line);
-			for(TemplateElement elem : childList){
+			data.put(indexName, Integer.valueOf(line));
+			for(int i=0; i < childList.size(); i++){
+				TemplateElement elem = (TemplateElement) childList.get(i);			
 				elem.merge(context);
 			}			
 			line ++;

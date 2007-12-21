@@ -52,9 +52,9 @@ public class FPTemplateHeaderTest extends TestCase {
 		}finally{
 			is.close();
 		}
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map map = new HashMap();
 		map.put("title", "タイトルである");
-		List<A> aList = new ArrayList<A>();
+		List aList = new ArrayList();
 		aList.add(new A("1行目",10,new Date()));
 		aList.add(new A("2行目",20,new Date()));
 		aList.add(new A("3行目",30,new Date()));

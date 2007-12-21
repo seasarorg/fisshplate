@@ -52,9 +52,9 @@ public class FPTemplateTest extends TestCase {
 		}finally{
 			is.close();
 		}
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map map = new HashMap();
 		map.put("title", "タイトルである");
-		List<A> aList = new ArrayList<A>();
+		List aList = new ArrayList();
 		aList.add(new A("1行目",10,new Date()));
 		aList.add(new A("2行目",20,new Date()));
 		aList.add(new A("3行目",30,new Date()));
@@ -87,7 +87,7 @@ public class FPTemplateTest extends TestCase {
 		}finally{
 			is.close();
 		}
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map map = new HashMap();
 		map.put("title", "配列のテストである");
 		A[] aList = new A[]{
 		new A("1行目",10,new Date()),
@@ -125,7 +125,7 @@ public class FPTemplateTest extends TestCase {
 				new String[]{"子供5","子供6","子供7","子供8"},
 				new String[]{"子供9","子供10","子供11","子供12"}
 		};
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map map = new HashMap();
 		map.put("parentList", parentList);
 		
 		HSSFWorkbook wb;

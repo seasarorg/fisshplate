@@ -36,8 +36,8 @@ import org.seasar.fisshplate.exception.FPParseException;
  */
 public class FPParser {
 
-	private List<TemplateElement> elementList = new ArrayList<TemplateElement>();
-	private Stack<AbstractBlock> blockStack = new Stack<AbstractBlock>();
+	private List elementList = new ArrayList();
+	private Stack blockStack = new Stack();
 
 	private static final Pattern patIterator = Pattern.compile("^\\s*#foreach\\s+(\\S+)\\s*:\\s*(\\S+)(\\s+index=(\\S+))*\\s*$");
 	private static final Pattern patEnd = Pattern.compile("^\\s*#end\\s*$");
@@ -51,20 +51,20 @@ public class FPParser {
 	private static final Pattern patPageHeaderStart = Pattern.compile("#pageHeaderStart");
 	private static final Pattern patPageHeaderEnd = Pattern.compile("#pageHeaderEnd");
 	private boolean isUseHeader = false;
-	private List<TemplateElement> headerList = new ArrayList<TemplateElement>();
+	private List headerList = new ArrayList();
 
 	// Footer情報
 	private static final Pattern patPageFooterStart = Pattern.compile("#pageFooterStart");
 	private static final Pattern patPageFooterEnd = Pattern.compile("#pageFooterEnd");
 	private boolean isUseFooter = false;
-	private List<TemplateElement> footerList = new ArrayList<TemplateElement>();
+	private List footerList = new ArrayList();
 
 	/**
 	 * ルートの要素リストを戻します。
 	 * 
 	 * @return 要素リスト
 	 */
-	public List<TemplateElement> getRoot() {
+	public List getRoot() {
 		return elementList;
 	}
 
@@ -95,7 +95,7 @@ public class FPParser {
 		Row rowElem = new Row(sheet, row);
 		// ブロック内に居る場合は、そのブロック内の子要素とする。そうでない場合はルートに行を追加する。
 		if (blockStack.size() > 0) {
-			AbstractBlock block = blockStack.lastElement();
+			AbstractBlock block = (AbstractBlock) blockStack.lastElement();
 			block.addChild(rowElem);
 		} else {
 			elementList.add(rowElem);
@@ -157,13 +157,13 @@ public class FPParser {
 	private void finalCheck() {
 		// Headerを設定している場合
 		if (isUseHeader) {
-			TemplateElement headerElem = headerList.get(0);
+			TemplateElement headerElem = (TemplateElement) headerList.get(0);
 			elementList.add(0, headerElem);
 		}
 
 		// Footerを設定している場合
 		if (isUseFooter) {
-			TemplateElement footerElem = footerList.get(0);
+			TemplateElement footerElem = (TemplateElement) footerList.get(0);
 			elementList.add(footerElem);
 		}
 	}
@@ -185,7 +185,7 @@ public class FPParser {
 	private void breakBlock() {
 		TemplateElement elem = new PageBreakElement();
 		if (blockStack.size() > 0) {
-			AbstractBlock parentBlock = blockStack.lastElement();
+			AbstractBlock parentBlock = (AbstractBlock) blockStack.lastElement();
 			parentBlock.addChild(elem);
 			return;
 		}
@@ -226,7 +226,7 @@ public class FPParser {
 			throw new FPParseException(FPConsts.MESSAGE_ID_LACK_IF);
 		}
 
-		AbstractBlock parent = blockStack.lastElement();
+		AbstractBlock parent = (AbstractBlock) blockStack.lastElement();
 
 		if (!(parent instanceof IfBlock)) {
 			throw new FPParseException(FPConsts.MESSAGE_ID_LACK_IF);
@@ -239,12 +239,12 @@ public class FPParser {
 		if (blockStack.size() < 1) {
 			throw new FPParseException(FPConsts.MESSAGE_ID_END_ELEMENT);
 		}
-		AbstractBlock block = blockStack.pop();
+		AbstractBlock block = (AbstractBlock) blockStack.pop();
 		// elseとelse ifの場合、ifが出るまでpop継続する
 		Class clazz = block.getClass();
 		if ((clazz == ElseBlock.class) || clazz == ElseIfBlock.class) {
 			while (block.getClass() != IfBlock.class) {
-				block = blockStack.pop();
+				block = (AbstractBlock) blockStack.pop();
 			}
 		} else if ((clazz == PageHeaderBlock.class)) {
 			headerList.add(block);
@@ -263,7 +263,7 @@ public class FPParser {
 
 	private void pushBlockToStack(AbstractBlock block) {
 		if (blockStack.size() > 0) {
-			AbstractBlock parentBlock = blockStack.lastElement();
+			AbstractBlock parentBlock = (AbstractBlock) blockStack.lastElement();
 			parentBlock.addChild(block);
 		}
 		blockStack.push(block);
@@ -283,7 +283,7 @@ public class FPParser {
 	 * 
 	 * @return headerList
 	 */
-	public List<TemplateElement> getHeaderList() {
+	public List getHeaderList() {
 		return headerList;
 	}
 
@@ -301,7 +301,7 @@ public class FPParser {
 	 * 
 	 * @return footerList
 	 */
-	public List<TemplateElement> getFooterList() {
+	public List getFooterList() {
 		return footerList;
 	}
 

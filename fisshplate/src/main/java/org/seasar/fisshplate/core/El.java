@@ -57,7 +57,7 @@ public class El extends AbstractCell {
 		if(value instanceof Date){
 			out.setCellValue((Date)value);			
 		}else if(isNumber(value)){
-			out.setCellValue(Double.valueOf(value.toString()));
+			out.setCellValue(Double.valueOf(value.toString()).doubleValue());
 		}else{
 			out.setCellValue(new HSSFRichTextString(value.toString()));			
 		}
@@ -79,7 +79,7 @@ public class El extends AbstractCell {
 	
 	private Object getValue(FPContext context) throws FPMergeException{
 		
-		Map<String,Object> data = context.getData();
+		Map data = context.getData();
 		
 		Object value = OgnlUtil.getValue(expression.getExpression(), data);
 		

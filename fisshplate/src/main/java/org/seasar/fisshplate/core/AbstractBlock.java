@@ -25,7 +25,7 @@ import java.util.List;
  *
  */
 public abstract class AbstractBlock implements TemplateElement {
-	protected List<TemplateElement> childList = new ArrayList<TemplateElement>();
+	protected List childList = new ArrayList();
 	
 	/**
 	 * ブロック内の子要素を追加します。

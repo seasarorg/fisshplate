@@ -22,7 +22,6 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.seasar.fisshplate.core.TemplateElement;
 
 /**
  * 解析やデータ埋め込み時に参照される、グローバル値を保持するクラスです。
@@ -37,12 +36,12 @@ public class FPContext {
 	private HSSFSheet outSheet;
 	private int currentRowNum;
 	private short currentCellNum;
-	private Map<String, Object> data;
+	private Map data;
 
 	private boolean isUseHeader = false;
 	private boolean isUseFooter = false;
-	private List<TemplateElement> headerList = null;
-	private List<TemplateElement> footerList = null;
+	private List headerList = null;
+	private List footerList = null;
 
 	/**
 	 * コンストラクタです。
@@ -54,7 +53,7 @@ public class FPContext {
 	 * @param data
 	 *            埋め込むデータ
 	 */
-	public FPContext(HSSFWorkbook template, HSSFWorkbook out, Map<String, Object> data) {
+	public FPContext(HSSFWorkbook template, HSSFWorkbook out, Map data) {
 		this.template = template;
 		this.outWorkBook = out;
 		this.outSheet = outWorkBook.createSheet();
@@ -95,7 +94,7 @@ public class FPContext {
 	 * 
 	 * @return 埋め込みデータ
 	 */
-	public Map<String, Object> getData() {
+	public Map getData() {
 		return data;
 	}
 
@@ -206,7 +205,7 @@ public class FPContext {
 	 * 
 	 * @param headerList
 	 */
-	public void setHeaderList(List<TemplateElement> headerList) {
+	public void setHeaderList(List headerList) {
 		this.headerList = headerList;
 	}
 
@@ -215,7 +214,7 @@ public class FPContext {
 	 * 
 	 * @param headerList
 	 */
-	public List<TemplateElement> getHeaderList() {
+	public List getHeaderList() {
 		return this.headerList;
 	}
 
@@ -243,7 +242,7 @@ public class FPContext {
 	 * 
 	 * @param footerList
 	 */
-	public void setFooterList(List<TemplateElement> footerList) {
+	public void setFooterList(List footerList) {
 		this.footerList = footerList;
 	}
 
@@ -252,7 +251,7 @@ public class FPContext {
 	 * 
 	 * @param footerList
 	 */
-	public List<TemplateElement> getFooterList() {
+	public List getFooterList() {
 		return this.footerList;
 	}
 

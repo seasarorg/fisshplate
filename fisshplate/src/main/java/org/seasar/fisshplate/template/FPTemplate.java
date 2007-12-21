@@ -79,7 +79,7 @@ public class FPTemplate {
 	 * @throws FPMergeException
 	 *             データ埋め込み時にエラーが発生した際に投げられます。
 	 */
-	public HSSFWorkbook process(Map<String, Object> data) throws FPMergeException {
+	public HSSFWorkbook process(Map data) throws FPMergeException {
 
 		HSSFWorkbook out = new HSSFWorkbook();
 		FPContext context = new FPContext(templateWb, out, data);
@@ -100,8 +100,9 @@ public class FPTemplate {
 		PageContext pageContext = new PageContext();
 		data.put(FPConsts.PAGE_CONTEXT_NAME, pageContext);
 
-		List<TemplateElement> elementList = parser.getRoot();
-		for (TemplateElement elem : elementList) {
+		List elementList = parser.getRoot();
+		for (int i=0; i<elementList.size(); i++){
+			TemplateElement elem = (TemplateElement) elementList.get(i);		
 			elem.merge(context);
 		}
 		return out;

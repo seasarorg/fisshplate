@@ -34,7 +34,7 @@ import org.seasar.fisshplate.exception.FPMergeException;
  *
  */
 public class Row implements TemplateElement {
-	private List<TemplateElement> cellElementList = new ArrayList<TemplateElement>();	
+	private List cellElementList = new ArrayList();	
 	private HSSFRow templateRow;
 	
 	private static final Pattern patEl = Pattern.compile("^\\s*\\$\\{(.+)\\}");
@@ -77,9 +77,10 @@ public class Row implements TemplateElement {
 		if(templateRow != null){
 			outRow.setHeight(templateRow.getHeight());
 		}
-		Map<String, Object> data = context.getData();
-		data.put(FPConsts.ROW_NUMBER_NAME, context.getCurrentRowNum() + 1);
-		for(TemplateElement elem: cellElementList){
+		Map data = context.getData();
+		data.put(FPConsts.ROW_NUMBER_NAME, Integer.valueOf(context.getCurrentRowNum() + 1));
+		for(int i=0; i < cellElementList.size(); i++){
+			TemplateElement elem = (TemplateElement) cellElementList.get(i);			
 			elem.merge(context);
 		}
 		context.nextRow();

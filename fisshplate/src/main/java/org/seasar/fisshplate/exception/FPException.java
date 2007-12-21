@@ -68,7 +68,7 @@ public class FPException extends Exception {
 		if(args == null){
 			this.args = null;
 		}else{
-			this.args = args.clone();
+			this.args = (Object[]) args.clone();
 		}
         
         ResourceBundle bundle = ResourceUtil.getAppExceptionBundle();
@@ -84,7 +84,7 @@ public class FPException extends Exception {
 		if(args == null){
 			return null;
 		}
-		return args.clone();
+		return (Object[]) args.clone();
 	}
 	
 	/**

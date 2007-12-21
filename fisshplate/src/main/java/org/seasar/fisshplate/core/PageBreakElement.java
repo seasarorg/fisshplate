@@ -30,8 +30,8 @@ import org.seasar.fisshplate.exception.FPMergeException;
  */
 public class PageBreakElement implements TemplateElement {
 
-	private List<TemplateElement> headerList;
-	private List<TemplateElement> footerList;
+	private List headerList;
+	private List footerList;
 
 	/*
 	 * (non-Javadoc)
@@ -55,7 +55,8 @@ public class PageBreakElement implements TemplateElement {
 			if (footerList == null) {
 				throw new FPMergeException(FPConsts.MESSAGE_FOOTER_INVALID);
 			}
-			for (TemplateElement elem : footerList) {
+			for (int i=0; i < footerList.size(); i++){
+				TemplateElement elem = (TemplateElement) footerList.get(i);			
 				elem.merge(context);
 			}
 		}
@@ -73,7 +74,8 @@ public class PageBreakElement implements TemplateElement {
 			if (headerList == null) {
 				throw new FPMergeException(FPConsts.MESSAGE_HEADER_INVALID);
 			}
-			for (TemplateElement elem : headerList) {
+			for (int i=0; i < headerList.size(); i++){
+				TemplateElement elem = (TemplateElement) headerList.get(i);
 				elem.merge(context);
 			}
 		}

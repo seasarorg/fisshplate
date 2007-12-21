@@ -51,9 +51,9 @@ public class ElTest extends TestCase {
 	public void testデータが数字だけど文字列型の場合は文字列型で埋め込む() throws Exception{
 		HSSFWorkbook template = getTemplate("/ElTest.xls");
 		
-		Map<String, Object> data = new HashMap<String, Object>();
+		Map data = new HashMap();
 		data.put("code", "01234");
-		data.put("num", -1234);
+		data.put("num", Integer.valueOf(-1234));
 		
 		HSSFWorkbook out = new HSSFWorkbook();
 		FPContext context = new FPContext(template,out,data);
@@ -71,13 +71,13 @@ public class ElTest extends TestCase {
 		
 		actual = out.getSheetAt(0).getRow(0).getCell((short) 1);
 		assertEquals("celltype",HSSFCell.CELL_TYPE_NUMERIC, actual.getCellType());
-		assertEquals("value",(double)-1234, actual.getNumericCellValue());		
+		assertEquals("value",-1234D, actual.getNumericCellValue(),0D);		
 	}
 	
 	public void testOGN式の変数名にびっくりマークをつけた場合はNULL回避する() throws Exception{
 		HSSFWorkbook template = getTemplate("/ElTest.xls");
 		
-		Map<String, Object> data = new HashMap<String, Object>();
+		Map data = new HashMap();
 		
 		HSSFWorkbook out = new HSSFWorkbook();
 		FPContext context = new FPContext(template,out,data);
