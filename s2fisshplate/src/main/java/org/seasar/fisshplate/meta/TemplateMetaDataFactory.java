@@ -27,5 +27,5 @@ public interface TemplateMetaDataFactory {
 	 * @param fisshplateClass 実行されたクラス
 	 * @return メタデータ
 	 */
-	TemplateMetaData getMetaData(Class<?> fisshplateClass);
+	TemplateMetaData getMetaData(Class fisshplateClass);
 }

@@ -49,10 +49,10 @@ public class S2FisshplateInterceptor extends AbstractInterceptor {
 		}
 
 		Object bean = arguments[0];
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map map = new HashMap();
 		map.put(S2FPConsts.DATA_MAP_KEY_FOR_BEAN, bean);
 
-		Class<?> clazz = method.getDeclaringClass();
+		Class clazz = method.getDeclaringClass();
 		TemplateMetaData metaData = metaDataFactory.getMetaData(clazz);
 		HSSFWorkbook templateWb = metaData.getTemplateWorkbook(method);
 				

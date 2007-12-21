@@ -38,7 +38,7 @@ public class FisshplateUtil {
 	 * @param data 埋め込みデータ
 	 * @return 出力するワークブック
 	 */
-	public static final HSSFWorkbook createTemplateAndProcess(HSSFWorkbook templateWb,Map<String, Object> data){		
+	public static final HSSFWorkbook createTemplateAndProcess(HSSFWorkbook templateWb,Map data){		
 		try {
 			FPTemplate template = new FPTemplate(templateWb);		
 			return template.process(data);

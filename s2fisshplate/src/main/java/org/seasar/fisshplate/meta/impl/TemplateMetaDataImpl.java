@@ -33,10 +33,10 @@ import org.seasar.framework.util.ResourceUtil;
  * @author rokugen
  */
 public class TemplateMetaDataImpl implements TemplateMetaData {
-	private Map<String, HSSFWorkbook> templateCache = new HashMap<String, HSSFWorkbook>();
+	private Map templateCache = new HashMap();
 
 	public synchronized HSSFWorkbook getTemplateWorkbook(Method method) {
-		HSSFWorkbook wb = templateCache.get(method.getName());
+		HSSFWorkbook wb = (HSSFWorkbook) templateCache.get(method.getName());
 		if(wb != null){
 			return wb;
 		}
@@ -44,7 +44,7 @@ public class TemplateMetaDataImpl implements TemplateMetaData {
 	}
 
 	protected HSSFWorkbook createTemplate(final Method method) {
-		Class<?> clazz = method.getDeclaringClass();
+		Class clazz = method.getDeclaringClass();
 		String templatePath = clazz.getName().replaceAll("\\.", "/") + "_"
 				+ method.getName() + "." + S2FPConsts.EXCEL_EXTENSION;
 		InputStream is = ResourceUtil.getResourceAsStream(templatePath);		

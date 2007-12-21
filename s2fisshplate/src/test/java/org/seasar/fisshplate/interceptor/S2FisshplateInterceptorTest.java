@@ -41,7 +41,7 @@ public class S2FisshplateInterceptorTest extends S2TestCase {
 	public void testインターセプタテスト() throws Exception{
 		TestFisshplateDto dto =new TestFisshplateDto();
 		dto.setTitle("テストです");
-		List<TestItem> itemList = new ArrayList<TestItem>();
+		List itemList = new ArrayList();
 //		itemList.add(new TestItem("1行目",10,new Date()));
 //		itemList.add(new TestItem("2行目",20,new Date()));
 //		itemList.add(new TestItem("3行目",30,new Date()));

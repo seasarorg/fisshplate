@@ -28,7 +28,7 @@ import org.seasar.framework.util.DisposableUtil;
  * @author rokugen
  */
 public class TemplateMetaDataFactoryImpl implements TemplateMetaDataFactory,Disposable {
-	private Map<String, TemplateMetaData> metaDataCache = new HashMap<String, TemplateMetaData>();
+	private Map metaDataCache = new HashMap();
 	private boolean initialized;
 	
 	public TemplateMetaDataFactoryImpl(){
@@ -38,17 +38,17 @@ public class TemplateMetaDataFactoryImpl implements TemplateMetaDataFactory,Disp
 	/* (non-Javadoc)
 	 * @see org.seasar.fisshplate.meta.TemplateMetaDataFactory#getMetaData(java.lang.reflect.Method)
 	 */
-	public synchronized TemplateMetaData getMetaData(final Class<?> fisshplateClass) {
+	public synchronized TemplateMetaData getMetaData(final Class fisshplateClass) {
 		initialize();
 		
-		TemplateMetaData metaData = metaDataCache.get(fisshplateClass.getName());
+		TemplateMetaData metaData = (TemplateMetaData) metaDataCache.get(fisshplateClass.getName());
 		if(metaData != null){
 			return metaData;
 		}
 		return createMetaData(fisshplateClass);
 	}
 	
-	protected TemplateMetaData createMetaData(final Class<?> fisshplateClass){
+	protected TemplateMetaData createMetaData(final Class fisshplateClass){
 		TemplateMetaData metaData = new TemplateMetaDataImpl();
 		metaDataCache.put(fisshplateClass.getName(), metaData);
 		return metaData;
