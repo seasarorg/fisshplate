@@ -70,8 +70,8 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <configuration>
-            <source>1.5</source>
-            <target>1.5</target>
+            <source>1.4</source>
+            <target>1.4</target>
             <encoding>UTF-8</encoding>
           </configuration>
         </plugin>
@@ -93,14 +93,17 @@
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
-          <source>1.5</source>
+          <source>1.4</source>
           <encoding>UTF-8</encoding>
           <docencoding>UTF-8</docencoding>
           <charset>UTF-8</charset>
           <links>
           	<link>http://java.sun.com/j2se/1.5.0/ja/docs/ja/api/</link>
             <link>http://java.sun.com/j2ee/1.4/docs/api/</link>
+            <link>http://s2container.seasar.org/2.4/s2-framework/ja/apidocs/</link>
+            <link>http://s2container.seasar.org/2.4/s2-extension/ja/apidocs/</link>
             <link>http://poi.apache.org/apidocs/</link>
+            <link>http://aopalliance.sourceforge.net/doc/</link>
           </links>
         </configuration>
         <executions>
@@ -143,7 +146,7 @@
     <dependency>
     	<groupId>org.seasar.container</groupId>
     	<artifactId>s2-extension</artifactId>
-    	<version>2.4.18</version>
+    	<version>2.4.19</version>
     </dependency>
     <dependency>
     	<groupId>org.seasar.fisshplate</groupId>
