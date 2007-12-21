@@ -34,7 +34,7 @@ import org.seasar.fisshplate.exception.FPMergeException;
  *
  */
 public class Row implements TemplateElement {
-	private List cellElementList = new ArrayList();	
+	protected List cellElementList = new ArrayList();	
 	private HSSFRow templateRow;
 	private Root root;
 	
@@ -42,43 +42,52 @@ public class Row implements TemplateElement {
 	
 	/**
 	 * コンストラクタです。テンプレート側の行オブジェクトを受け取り、その行内のセル情報を解析して保持します。
+	 * @param templateSheet テンプレート側のシート
 	 * @param templateRow テンプレート側の行オブジェクト
+	 * @param root 自分自身が属してるルート要素クラス
 	 */
 	Row(HSSFSheet templateSheet, HSSFRow templateRow, Root root){		
 		this.root = root;
 		this.templateRow = templateRow;
 		if(templateRow == null){
 			return;
-		}		
+		}
 		int rowNum = templateRow.getRowNum();
-		//TODO リファクタリングしましょうよ
 		for(int i=0; i <= templateRow.getLastCellNum();i++){
 			HSSFCell templateCell = templateRow.getCell((short) i);
-			if(templateCell == null){
-				continue;
-			}
-			TemplateElement elem = new NullElement();
-			if(templateCell.getCellType() == HSSFCell.CELL_TYPE_STRING){			
-				String value = templateCell.getRichStringCellValue().getString();
-				Matcher mat;			
-				if((mat = patEl.matcher(value)).find()){
-					String expression = mat.group(1);
-					elem = new El(templateSheet,templateCell, rowNum, expression);
-				}else{
-					elem = new Literal(templateSheet,templateCell,rowNum);
-				}
-			}else{
-				elem = new Literal(templateSheet,templateCell,rowNum);
-			}
-			cellElementList.add(elem);
+			TemplateElement element = getElement(templateSheet, templateCell,rowNum);
+			cellElementList.add(element);
 		}
 	}
 	
+	private TemplateElement getElement(HSSFSheet templateSheet,  HSSFCell templateCell, int rowNum){
+		if(templateCell == null){
+			return new NullElement();
+		}
+		
+		if(templateCell.getCellType() != HSSFCell.CELL_TYPE_STRING){
+			return new Literal(templateSheet,templateCell,rowNum); 
+		}
+		
+		String value = templateCell.getRichStringCellValue().getString();
+		Matcher mat = patEl.matcher(value);
+		if(mat.find()){
+			String expression = mat.group(1);
+			return new El(templateSheet,templateCell, rowNum, expression);
+		}else{
+			return new Literal(templateSheet,templateCell,rowNum);
+		}
+		
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.seasar.fisshplate.core.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
+	 */
 	public void merge(FPContext context) throws FPMergeException {
 		//ヘッダ・フッタ制御
 		if(context.shouldHeaderOut()){
 			context.setShouldHeaderOut(false);
-			root.getPageHeader().merge(context);			
+			root.getPageHeader().merge(context);
 		}
 		context.setShouldFooterOut(true);
 		
@@ -89,7 +98,7 @@ public class Row implements TemplateElement {
 		Map data = context.getData();
 		data.put(FPConsts.ROW_NUMBER_NAME, Integer.valueOf(context.getCurrentRowNum() + 1));
 		for(int i=0; i < cellElementList.size(); i++){
-			TemplateElement elem = (TemplateElement) cellElementList.get(i);			
+			TemplateElement elem = (TemplateElement) cellElementList.get(i);
 			elem.merge(context);
 		}
 		context.nextRow();
