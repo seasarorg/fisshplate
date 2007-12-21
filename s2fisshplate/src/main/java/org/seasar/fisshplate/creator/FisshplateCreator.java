@@ -24,7 +24,7 @@ import org.seasar.framework.convention.NamingConvention;
  * @author rokugen
  */
 public class FisshplateCreator extends ComponentCreatorImpl {
-	private static final String DEFAULT_SUFFIX = "FPao";
+	private static final String DEFAULT_SUFFIX = "Fpao";
 
 	public FisshplateCreator(NamingConvention namingConvention) {
 		super(namingConvention);
@@ -34,11 +34,11 @@ public class FisshplateCreator extends ComponentCreatorImpl {
         setInstanceDef(InstanceDefFactory.SINGLETON);
 	}
 	
-    public ComponentCustomizer getFPaoCustomizer() {
+    public ComponentCustomizer getFpaoCustomizer() {
         return getCustomizer();
     }
 
-    public void setFPaoCustomizer(ComponentCustomizer customizer) {
+    public void setFpaoCustomizer(ComponentCustomizer customizer) {
         setCustomizer(customizer);
     }
 
