@@ -15,8 +15,6 @@
  */
 package org.seasar.fisshplate.core;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,7 +34,7 @@ import org.seasar.fisshplate.exception.FPParseException;
  */
 public class FPParser {
 
-	private List elementList = new ArrayList();
+	private Root rootElement;
 	private Stack blockStack = new Stack();
 
 	private static final Pattern patIterator = Pattern.compile("^\\s*#foreach\\s+(\\S+)\\s*:\\s*(\\S+)(\\s+index=(\\S+))*\\s*$");
@@ -49,23 +47,19 @@ public class FPParser {
 
 	// Header情報
 	private static final Pattern patPageHeaderStart = Pattern.compile("#pageHeaderStart");
-	private static final Pattern patPageHeaderEnd = Pattern.compile("#pageHeaderEnd");
-	private boolean isUseHeader = false;
-	private List headerList = new ArrayList();
+	private static final Pattern patPageHeaderEnd = Pattern.compile("#pageHeaderEnd");		
 
 	// Footer情報
 	private static final Pattern patPageFooterStart = Pattern.compile("#pageFooterStart");
-	private static final Pattern patPageFooterEnd = Pattern.compile("#pageFooterEnd");
-	private boolean isUseFooter = false;
-	private List footerList = new ArrayList();
+	private static final Pattern patPageFooterEnd = Pattern.compile("#pageFooterEnd");		
 
 	/**
 	 * ルートの要素リストを戻します。
 	 * 
 	 * @return 要素リスト
 	 */
-	public List getRoot() {
-		return elementList;
+	public Root getRoot() {
+		return rootElement;
 	}
 
 	/**
@@ -77,6 +71,7 @@ public class FPParser {
 	 *             テンプレートの解析時に構文上のエラーが判明した際に投げられます。
 	 */
 	public FPParser(HSSFSheet sheet) throws FPParseException {
+		rootElement = new Root();
 		for (int i = 0; i <= sheet.getLastRowNum(); i++) {
 			parseRow(sheet, sheet.getRow(i));
 		}
@@ -84,8 +79,6 @@ public class FPParser {
 		if (blockStack.size() > 0) {
 			throw new FPParseException(FPConsts.MESSAGE_ID_END_ELEMENT);
 		}
-		// Header&Footerの強制追加
-		finalCheck();
 	}
 
 	private void parseRow(HSSFSheet sheet, HSSFRow row) throws FPParseException {
@@ -98,7 +91,7 @@ public class FPParser {
 			AbstractBlock block = (AbstractBlock) blockStack.lastElement();
 			block.addChild(rowElem);
 		} else {
-			elementList.add(rowElem);
+			rootElement.addBody(rowElem);			
 		}
 	}
 
@@ -154,42 +147,26 @@ public class FPParser {
 		return isControlRow;
 	}
 
-	private void finalCheck() {
-		// Headerを設定している場合
-		if (isUseHeader) {
-			TemplateElement headerElem = (TemplateElement) headerList.get(0);
-			elementList.add(0, headerElem);
-		}
-
-		// Footerを設定している場合
-		if (isUseFooter) {
-			TemplateElement footerElem = (TemplateElement) footerList.get(0);
-			elementList.add(footerElem);
-		}
-	}
-
-	private void pageFooterBlock() {
-		isUseFooter = true;
+	private void pageFooterBlock() {		
 		AbstractBlock block = new PageFooterBlock();
 		// 上位のBlockに追加しない
 		blockStack.push(block);
 	}
 
-	private void pageHeaderBlock() {
-		isUseHeader = true;
+	private void pageHeaderBlock() {		
 		AbstractBlock block = new PageHeaderBlock();
 		// 上位のBlockに追加しない
 		blockStack.push(block);
 	}
 
 	private void breakBlock() {
-		TemplateElement elem = new PageBreakElement();
+		TemplateElement elem = new PageBreakElement(rootElement);
 		if (blockStack.size() > 0) {
 			AbstractBlock parentBlock = (AbstractBlock) blockStack.lastElement();
 			parentBlock.addChild(elem);
 			return;
 		}
-		elementList.add(elem);
+		rootElement.addBody(elem);
 	}
 
 	private void iteratorBlock(Matcher mat) {
@@ -247,17 +224,17 @@ public class FPParser {
 				block = (AbstractBlock) blockStack.pop();
 			}
 		} else if ((clazz == PageHeaderBlock.class)) {
-			headerList.add(block);
-			// Header自体はElementに追加しない
+			rootElement.setPageHeader((PageHeaderBlock) block);
+			// Header自体はBodyに追加しない
 			return;
 		} else if ((clazz == PageFooterBlock.class)) {
-			footerList.add(block);
-			// Footer自体はElementに追加しない
+			rootElement.setPageFooter((PageFooterBlock) block);			
+			// Footer自体はBodyに追加しない
 			return;
 		}
 		// ブロックのネストがルートまで戻ったらルートの要素リストに追加する。
 		if (blockStack.size() < 1) {
-			elementList.add(block);
+			rootElement.addBody(block);			
 		}
 	}
 
@@ -267,42 +244,6 @@ public class FPParser {
 			parentBlock.addChild(block);
 		}
 		blockStack.push(block);
-	}
-
-	/**
-	 * ヘッダーの有無を返却します
-	 * 
-	 * @return ヘッダーの有無
-	 */
-	public boolean isUseHeader() {
-		return isUseHeader;
-	}
-
-	/**
-	 * ヘッダーの内容を返却します
-	 * 
-	 * @return headerList
-	 */
-	public List getHeaderList() {
-		return headerList;
-	}
-
-	/**
-	 * フッターの有無を返却します
-	 * 
-	 * @return フッターの有無
-	 */
-	public boolean isUseFooter() {
-		return isUseFooter;
-	}
-
-	/**
-	 * フッターの内容を返却します
-	 * 
-	 * @return footerList
-	 */
-	public List getFooterList() {
-		return footerList;
 	}
 
 }

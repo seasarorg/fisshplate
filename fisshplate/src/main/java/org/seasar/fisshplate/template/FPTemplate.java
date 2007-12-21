@@ -26,6 +26,7 @@ import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.context.PageContext;
 import org.seasar.fisshplate.core.FPParser;
+import org.seasar.fisshplate.core.Root;
 import org.seasar.fisshplate.core.TemplateElement;
 import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.exception.FPParseException;
@@ -84,27 +85,13 @@ public class FPTemplate {
 		HSSFWorkbook out = new HSSFWorkbook();
 		FPContext context = new FPContext(templateWb, out, data);
 
-		// Header情報
-		if (parser.isUseHeader()) {
-			context.setUseHeader(parser.isUseHeader());
-			context.setHeaderList(parser.getHeaderList());
-		}
-
-		// Footer情報
-		if (parser.isUseFooter()) {
-			context.setUseFooter(parser.isUseFooter());
-			context.setFooterList(parser.getFooterList());
-		}
-
 		// ページコンテキスト情報の追加
 		PageContext pageContext = new PageContext();
 		data.put(FPConsts.PAGE_CONTEXT_NAME, pageContext);
 
-		List elementList = parser.getRoot();
-		for (int i=0; i<elementList.size(); i++){
-			TemplateElement elem = (TemplateElement) elementList.get(i);		
-			elem.merge(context);
-		}
+		Root root = parser.getRoot();
+		root.merge(context);
+		
 		return out;
 	}
 

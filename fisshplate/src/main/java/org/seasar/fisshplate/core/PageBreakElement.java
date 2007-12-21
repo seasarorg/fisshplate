@@ -15,8 +15,6 @@
  */
 package org.seasar.fisshplate.core;
 
-import java.util.List;
-
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
@@ -29,9 +27,11 @@ import org.seasar.fisshplate.exception.FPMergeException;
  * @author a-conv
  */
 public class PageBreakElement implements TemplateElement {
-
-	private List headerList;
-	private List footerList;
+	private Root root;
+	
+	PageBreakElement(Root root){
+		this.root = root;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -50,16 +50,8 @@ public class PageBreakElement implements TemplateElement {
 	}
 
 	private void writeFooter(FPContext context) throws FPMergeException {
-		if (context.isUseFooter()) {
-			footerList = context.getFooterList();
-			if (footerList == null) {
-				throw new FPMergeException(FPConsts.MESSAGE_FOOTER_INVALID);
-			}
-			for (int i=0; i < footerList.size(); i++){
-				TemplateElement elem = (TemplateElement) footerList.get(i);			
-				elem.merge(context);
-			}
-		}
+		TemplateElement footer = root.getPageFooter();
+		footer.merge(context);
 	}
 
 	private void pageBreak(FPContext context) {
@@ -69,15 +61,7 @@ public class PageBreakElement implements TemplateElement {
 	}
 
 	private void writeHeader(FPContext context) throws FPMergeException {
-		if (context.isUseHeader()) {
-			headerList = context.getHeaderList();
-			if (headerList == null) {
-				throw new FPMergeException(FPConsts.MESSAGE_HEADER_INVALID);
-			}
-			for (int i=0; i < headerList.size(); i++){
-				TemplateElement elem = (TemplateElement) headerList.get(i);
-				elem.merge(context);
-			}
-		}
+		TemplateElement header = root.getPageHeader();
+		header.merge(context);
 	}
 }
