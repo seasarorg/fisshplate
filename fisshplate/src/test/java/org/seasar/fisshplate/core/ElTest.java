@@ -53,7 +53,7 @@ public class ElTest extends TestCase {
 		
 		Map data = new HashMap();
 		data.put("code", "01234");
-		data.put("num", Integer.valueOf(-1234));
+		data.put("num", new Integer(-1234));
 		
 		HSSFWorkbook out = new HSSFWorkbook();
 		FPContext context = new FPContext(template,out,data);

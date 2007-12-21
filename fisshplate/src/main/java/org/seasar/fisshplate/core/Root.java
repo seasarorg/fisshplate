@@ -57,7 +57,7 @@ public class Root implements TemplateElement {
 	 * ページヘッダの要素を設定します。
 	 * @param pageHeader ページヘッダの要素
 	 */
-	public void setPageHeader(PageHeaderBlock pageHeader){
+	public void setPageHeader(TemplateElement pageHeader){
 		this.pageHeaderBlock = pageHeader;
 	}
 	
@@ -65,7 +65,7 @@ public class Root implements TemplateElement {
 		return pageFooterBlock;
 	}
 	
-	public void setPageFooter(PageFooterBlock pageFooter){
+	public void setPageFooter(TemplateElement pageFooter){
 		this.pageFooterBlock = pageFooter;
 	}
 	

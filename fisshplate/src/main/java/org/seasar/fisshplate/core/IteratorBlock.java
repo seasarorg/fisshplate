@@ -82,7 +82,7 @@ public class IteratorBlock extends AbstractBlock{
 		while(ite.hasNext()){
 			Object var = ite.next();
 			data.put(varName, var);	
-			data.put(indexName, Integer.valueOf(line));
+			data.put(indexName, new Integer(line));
 			for(int i=0; i < childList.size(); i++){
 				TemplateElement elem = (TemplateElement) childList.get(i);			
 				elem.merge(context);

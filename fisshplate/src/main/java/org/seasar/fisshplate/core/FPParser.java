@@ -224,11 +224,11 @@ public class FPParser {
 				block = (AbstractBlock) blockStack.pop();
 			}
 		} else if ((clazz == PageHeaderBlock.class)) {
-			rootElement.setPageHeader((PageHeaderBlock) block);
+			rootElement.setPageHeader(block);
 			// Header自体はBodyに追加しない
 			return;
 		} else if ((clazz == PageFooterBlock.class)) {
-			rootElement.setPageFooter((PageFooterBlock) block);			
+			rootElement.setPageFooter(block);			
 			// Footer自体はBodyに追加しない
 			return;
 		}
