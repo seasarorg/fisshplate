@@ -42,8 +42,7 @@ public class PageBreakElement implements TemplateElement {
 		writeFooter(context);
 		pageBreak(context);
 		pageCountUp(context);
-		context.setShouldHeaderOut(true);				
-		//writeHeader(context);
+		context.setShouldHeaderOut(true);
 		//現在のRowNumを最終改ページ時のRowNumとして保存する。
 		context.saveLastPageBreakRowNum();
 	}
@@ -62,11 +61,5 @@ public class PageBreakElement implements TemplateElement {
 		int currentRowNum = context.getCurrentRowNum();
 		sheet.setRowBreak(currentRowNum - 1);
 	}
-	
-	private void writeHeader(FPContext context) throws FPMergeException {
-		TemplateElement header = root.getPageHeader();
-		header.merge(context);
-	}
-
 	
 }
