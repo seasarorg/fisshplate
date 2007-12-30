@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.seasar.fisshplate</groupId>
   <artifactId>fisshplate</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
   <name>Fisshplate</name>
   <description>Fisshplate is a template engine for HSSF of POI.</description>
 
@@ -115,6 +115,18 @@
           </execution>
         </executions>
       </plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>				
+				<configuration>
+				<finalName>
+					fisshplate
+				</finalName>
+				<outputDirectory>${project.build.directory}/assembly</outputDirectory>
+				<descriptors>
+					<descriptor>src/main/assembly/bin.xml</descriptor>
+				</descriptors>					
+				</configuration>
+			</plugin>      
     </plugins>
   	<extensions>
   		<extension>
