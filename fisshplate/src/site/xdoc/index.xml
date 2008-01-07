@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<properties>
+		<title>Fisshplate</title>
+	</properties>
+	<body>
+		<section name="Welcome to the Fisshplate project">
+			<p>Fisshplate is the template engine for Excel.</p>
+			<subsection name="download">
+				<dl>
+				  <dt>fisshplate</dt>
+				  <dd><a href="download/fisshplate-0.0.1.zip">ver. 0.0.1</a></dd>
+				</dl>
+			</subsection>
+		</section>
+	</body>
+</document>
