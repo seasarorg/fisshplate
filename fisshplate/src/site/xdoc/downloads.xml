@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<properties>
+		<title>Fisshplate</title>
+	</properties>
+	<body>
+		<section name="Download">
+			<dl>
+				<dt><a href="/download/fisshplate-0.0.1.zip">Fisshplate 0.0.1</a></dt>
+				<dd>Fisshplate Core</dd>
+			</dl>
+		</section>
+		<section name="All Release">
+			<subsection name="Fisshplate">			
+				<table>
+					<thead>
+						<tr>
+							<th>File</th>
+							<th>Rlease Date</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><a href="/download/fisshplate-0.0.1.zip">Fisshplate 0.0.1</a></td>				
+							<td>2007/12/31</td>
+						</tr>
+					</tbody>
+				</table>
+			</subsection>
+		</section>		
+	</body>
+</document>

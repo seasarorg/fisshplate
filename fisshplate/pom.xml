@@ -77,6 +77,15 @@
             <encoding>UTF-8</encoding>
           </configuration>
         </plugin>
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-site-plugin</artifactId>
+	        <configuration>
+						<inputEncoding>UTF-8</inputEncoding>
+						<outputEncoding>UTF-8</outputEncoding>
+	          <locales>en,ja</locales>
+	        </configuration>
+	      </plugin>
       </plugins>
     </pluginManagement>  
     <plugins>
@@ -99,6 +108,7 @@
           <encoding>UTF-8</encoding>
           <docencoding>UTF-8</docencoding>
           <charset>UTF-8</charset>
+          <outputDirectory>${project.reporting.outputDirectory}/apidocs/fisshplate</outputDirectory>
           <links>
           	<link>http://java.sun.com/j2se/1.5.0/ja/docs/ja/api/</link>
             <link>http://java.sun.com/j2ee/1.4/docs/api/</link>
@@ -113,8 +123,34 @@
               <goal>jar</goal>
             </goals>
           </execution>
+          <execution>
+          	<id>javadoc</id>
+            <phase>site</phase>
+            <goals>
+              <goal>javadoc</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>ant-dist</id>
+            <phase>site</phase>
+            <configuration>
+              <tasks>
+                <ant antfile="build.xml" target="dist">
+                  <property name="ver" value="${version}"/>
+                </ant>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>      
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>				
 				<configuration>
@@ -187,53 +223,5 @@
   </distributionManagement>
 
 <!-- ******************************************************************************* -->
-
-	<reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <configuration>
-					<inputEncoding>UTF-8</inputEncoding>
-					<outputEncoding>UTF-8</outputEncoding>
-          <locales>ja</locales>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <charset>UTF-8</charset>
-          <encoding>UTF-8</encoding>          
-          <docencoding>UTF-8</docencoding>          
-          <splitindex>true</splitindex>
-					<links>
-						<link>http://java.sun.com/j2se/1.5.0/ja/docs/ja/api/</link>
-				    <link>http://java.sun.com/j2ee/1.4/docs/api/</link>
-            <link>http://poi.apache.org/apidocs/</link>
-					</links>
-        </configuration>
-      </plugin>
-      <!-- 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-      	<artifactId>maven-surefire-report-plugin</artifactId>
-      	<configuration>
-					<inputEncoding>UTF-8</inputEncoding>
-					<outputEncoding>UTF-8</outputEncoding>      		
-      	</configuration>
-      </plugin>
-      -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jxr-plugin</artifactId>
-      	<configuration>      		
-					<inputEncoding>UTF-8</inputEncoding>
-					<outputEncoding>UTF-8</outputEncoding> 
-					<linkJavadoc>true</linkJavadoc>
-      	</configuration>      	
-      </plugin>
-    </plugins>
-  </reporting>  
   
 </project>
