@@ -8,14 +8,14 @@
 Welcome
 
   Fisshplateとは、Excelにテンプレート式を書くことによって、動的にデータが埋め込まれたExcelファイルを出力する事ができるライブラリです。
-
+  
 * 概要
 
   まず、Excelでテンプレートを作ります。
   
 [images/index01.png]
 
-  下記の様にテンプレートファイルを読み込み、POIのHFFSWorkbookを生成し、保存します。
+  下記の様にテンプレートファイルを読み込み、POIのHSSFWorkbookを生成し、保存します。
 
 +--
 public class A{
@@ -88,3 +88,15 @@ fos.close();
 
   このように、VelocityやFreeMarkerといったテンプレートエンジンと同じ様に、繰り返しや条件分岐などを反映してExcelを出力する事が出来ます。
   テンプレートに設定した背景色、罫線、セルのマージ、フォントなどの書式も反映されます。
+
+* 名前の由来
+
+  Fisshplateでは、{{{http://poi.apache.org/}Apache POI}}を用いています。POIのExcel用サブコンポーネントは、HSSF(Horrible SpreadSheet Format)という名前になっています。
+  これを逆さにするとFSSH、これだと読みにくいので、FiSSHとします。これにTemplateを組み合わせて、Fisshplateと命名しました。
+  
+  また、英語として正確なスペルに直した<<fishplate>>には、鉄道の線路と線路をつなぎとめる鉄板という意味があります。
+
+* 謝辞
+
+  FisshplateのExcelを使ったテンプレートエンジンと云うアイデアは、{{{http://d.hatena.ne.jp/nowokay/}きしだなおきさん}}の{{{http://d.hatena.ne.jp/nowokay/searchdiary?word=velopoi}VeloPoi}}を元にしています。
+  実装面においても、きしださんのアイデアからたくさんのものを戴きました。Fisshplate開発開始にあたっても快諾戴きました。有難う御座いました。

@@ -41,10 +41,10 @@
       <item name="一覧" href="documents.html"/>
       <item name="セットアップ" href="setup.html"/>
     </menu>
+-->
     <menu name="Javadoc">
       <item name="Fisshplate" href="apidocs/fisshplate/index.html"/>
     </menu>    
--->      
     ${reports}
   </body>
 </project>
