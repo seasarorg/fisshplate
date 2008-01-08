@@ -184,7 +184,7 @@ try {
 
 FileOutputStream fos = new FileOutputStream(&quot;out.xls&quot;);      
 wb.write(fos);
-fos.close();</pre></div><p>out.xlsというファイルが出力されます。そのファイルはテンプレートに上記のコードで設定したデータが埋め込まれています。</p><img src="images/index02.png" /><p>このように、VelocityやFreeMarkerといったテンプレートエンジンと同じ様に、繰り返しや条件分岐などを反映してExcelを出力する事が出来ます。 テンプレートに設定した背景色、罫線、セルのマージ、フォントなどの書式も反映されます。</p></div><div class="section"><h3>名前の由来</h3><p>Fisshplateでは、<a href="http://poi.apache.org/">Apache POI</a>を用いています。POIのExcel用サブコンポーネントは、HSSF(Horrible SpreadSheet Format)という名前になっています。 これを逆さにするとFSSH、これだと読みにくいので、FiSSHとします。これにTemplateを組み合わせて、Fisshplateと命名しました。</p><p>また、英語として正確なスペルである<b>fishplate</b>とは、鉄道の線路と線路をつなぎとめる鉄板という意味があります。</p></div></div>
+fos.close();</pre></div><p>out.xlsというファイルが出力されます。そのファイルはテンプレートに上記のコードで設定したデータが埋め込まれています。</p><img src="images/index02.png" /><p>このように、VelocityやFreeMarkerといったテンプレートエンジンと同じ様に、繰り返しや条件分岐などを反映してExcelを出力する事が出来ます。 テンプレートに設定した背景色、罫線、セルのマージ、フォントなどの書式も反映されます。</p></div><div class="section"><h3>名前の由来</h3><p>Fisshplateでは、<a href="http://poi.apache.org/">Apache POI</a>を用いています。POIのExcel用サブコンポーネントは、HSSF(Horrible SpreadSheet Format)という名前になっています。 これを逆さにするとFSSH、これだと読みにくいので、FiSSHとします。これにTemplateを組み合わせて、Fisshplateと命名しました。</p><p>また、英語として正確なスペルに直した<b>fishplate</b>には、鉄道の線路と線路をつなぎとめる鉄板という意味があります。</p></div><div class="section"><h3>謝辞</h3><p>FisshplateのExcelを使ったテンプレートエンジンと云うアイデアは、<a href="http://d.hatena.ne.jp/nowokay/">きしだなおきさん</a>の<a href="http://d.hatena.ne.jp/nowokay/searchdiary?word=velopoi">VeloPoi</a>を元にしています。 実装面においても、きしださんのアイデアからたくさんのものを戴きました。Fisshplate開発開始にあたっても快諾戴きました。有難う御座いました。</p></div></div>
 </div><!-- article -->
 
 </div><!-- contents_center -->
