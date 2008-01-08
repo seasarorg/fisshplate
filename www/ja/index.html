@@ -127,7 +127,7 @@
 <div id="contents_center">
 
 <div id="article">
-<div class="section"><h2>Welcome</h2><p>Fisshplateとは、Excelにテンプレート式を書くことによって、動的にデータが埋め込まれたExcelファイルを出力する事ができるライブラリです。</p><div class="section"><h3>概要</h3><p>まず、Excelでテンプレートを作ります。</p><img src="images/index01.png" /><p>下記の様にテンプレートファイルを読み込み、POIのHFFSWorkbookを生成し、保存します。</p><div class="source"><pre>public class A{
+<div class="section"><h2>Welcome</h2><p>Fisshplateとは、Excelにテンプレート式を書くことによって、動的にデータが埋め込まれたExcelファイルを出力する事ができるライブラリです。</p><div class="section"><h3>概要</h3><p>まず、Excelでテンプレートを作ります。</p><img src="images/index01.png" /><p>下記の様にテンプレートファイルを読み込み、POIのHSSFWorkbookを生成し、保存します。</p><div class="source"><pre>public class A{
     private String name;
     private int num;
     private Date date;
@@ -184,7 +184,7 @@ try {
 
 FileOutputStream fos = new FileOutputStream(&quot;out.xls&quot;);      
 wb.write(fos);
-fos.close();</pre></div><p>out.xlsというファイルが出力されます。そのファイルはテンプレートに上記のコードで設定したデータが埋め込まれています。</p><img src="images/index02.png" /><p>このように、VelocityやFreeMarkerといったテンプレートエンジンと同じ様に、繰り返しや条件分岐などを反映してExcelを出力する事が出来ます。 テンプレートに設定した背景色、罫線、セルのマージ、フォントなどの書式も反映されます。</p></div></div>
+fos.close();</pre></div><p>out.xlsというファイルが出力されます。そのファイルはテンプレートに上記のコードで設定したデータが埋め込まれています。</p><img src="images/index02.png" /><p>このように、VelocityやFreeMarkerといったテンプレートエンジンと同じ様に、繰り返しや条件分岐などを反映してExcelを出力する事が出来ます。 テンプレートに設定した背景色、罫線、セルのマージ、フォントなどの書式も反映されます。</p></div><div class="section"><h3>名前の由来</h3><p>Fisshplateでは、<a href="http://poi.apache.org/">Apache POI</a>を用いています。POIのExcel用サブコンポーネントは、HSSF(Horrible SpreadSheet Format)という名前になっています。 これを逆さにするとFSSH、これだと読みにくいので、FiSSHとします。これにTemplateを組み合わせて、Fisshplateと命名しました。</p><p>また、英語として正確なスペルである<b>fishplate</b>とは、鉄道の線路と線路をつなぎとめる鉄板という意味があります。</p></div></div>
 </div><!-- article -->
 
 </div><!-- contents_center -->
