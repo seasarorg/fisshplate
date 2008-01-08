@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+<meta http-equiv="Content-Language" content="ja" /> 
+<meta http-equiv="Content-Style-Type" content="text/css" /> 
+<title>Fisshplate - Fisshplate Home</title>
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/main.css" media="screen,projection" />
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/print.css" media="print" />
+<link href="./css/maven-base.css" type="text/css" rel="stylesheet" media="screen" />
+<link href="./css/maven-theme.css" type="text/css" rel="stylesheet" media="screen" />
+</head>
+
+<body>
+
+<div id="wrapper">
+
+<div id="header">
+
+<div class="line"><span class="hide">spacer</span></div>
+
+<div id="logo"><h1 id="h01" class="hide">The Seasar Foundation Project Site</h1><img src="http://www.seasar.org/images/seasar_logo_blue.gif" alt="The Seasar Foundation" width="390" height="180" /></div>
+
+<div id="tool">
+
+<h2><a href="http://search.seasar.org/">Site Search</a></h2>
+
+<form id="search" action="http://search.seasar.org/">
+<div>
+	<input id="search_phrase" type="text" name="phrase" size="20" />
+	<input type="hidden" name="perpage" value="30" />
+	<input type="hidden" name="enc" value="UTF-8" />
+	<input id="search_go" type="submit" value="Search" />
+</div>
+</form>
+
+<h2>Seasar Banner</h2>
+
+<p><a href="http://www.seasar.org/images/seasar_banner.gif"><img src="http://www.seasar.org/images/seasar_banner.gif" alt="Seasar Banner" title="Seasar Banner" width="146" height="33" /></a></p>
+
+</div>
+
+<div id="navi">
+<p><a href="../en/">English</a> | <a href="../ja/">Japanese</a></p>
+</div>
+
+</div><!-- header -->
+
+<div id="contents_left">
+           
+  
+
+  
+    
+  
+  
+                   <h2>About</h2>
+        <ul>
+              
+    <li class="none">
+              <strong>ホーム</strong>
+        </li>
+              
+    <li class="none">
+              <a href="license.html">ライセンス</a>
+        </li>
+              
+    <li class="none">
+              <a href="downloads.html">ダウンロード</a>
+        </li>
+          </ul>
+          <h2>プロジェクト文書</h2>
+        <ul>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+              <a href="project-info.html">プロジェクト情報</a>
+              </li>
+          </ul>
+                                       <a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy" name="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png" />
+          </a>
+                       
+  
+
+  
+    
+  
+  
+  </div><!-- contents_left -->
+
+<div id="contents_center">
+
+<div id="article">
+<div class="section"><h2>Welcome</h2><p>Fisshplateとは、Excelにテンプレート式を書くことによって、動的にデータが埋め込まれたExcelファイルを出力する事ができるライブラリです。</p><div class="section"><h3>概要</h3><p>まず、Excelでテンプレートを作ります。</p><img src="images/index01.png" /><p>下記の様にテンプレートファイルを読み込み、POIのHFFSWorkbookを生成し、保存します。</p><div class="source"><pre>public class A{
+    private String name;
+    private int num;
+    private Date date;
+    A(String name, int num, Date date){
+        this.name = name;
+        this.num = num;
+        this.date = date;           
+    }
+    public Date getDate() {
+        return date;
+    }
+    public void setDate(Date date) {
+        this.date = date;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public int getNum() {
+        return num;
+    }
+    public void setNum(int num) {
+        this.num = num;
+    }
+}</pre></div><div class="source"><pre>InputStream is = getClass().getResourceAsStream(&quot;/FPTemplateTest.xls&quot;);     
+try {
+    template = new FPTemplate(is);
+} catch (FPParseException e) {
+    throw e;
+} catch (IOException e) {
+    throw e;
+}finally{
+    is.close();
+}
+Map map = new HashMap();
+map.put(&quot;title&quot;, &quot;タイトルである&quot;);
+List aList = new ArrayList();
+aList.add(new A(&quot;1行目&quot;,10,new Date()));
+aList.add(new A(&quot;2行目&quot;,20,new Date()));
+aList.add(new A(&quot;3行目&quot;,30,new Date()));
+aList.add(new A(&quot;4行目&quot;,10,new Date()));
+aList.add(new A(&quot;5行目&quot;,20,new Date()));
+aList.add(new A(&quot;6行目&quot;,30,new Date()));
+map.put(&quot;b&quot;, aList);
+
+HSSFWorkbook wb;
+try {
+    wb = template.process(map);
+} catch (FPMergeException e) {      
+    throw e;
+}
+
+FileOutputStream fos = new FileOutputStream(&quot;out.xls&quot;);      
+wb.write(fos);
+fos.close();</pre></div><p>out.xlsというファイルが出力されます。そのファイルはテンプレートに上記のコードで設定したデータが埋め込まれています。</p><img src="images/index02.png" /><p>このように、VelocityやFreeMarkerといったテンプレートエンジンと同じ様に、繰り返しや条件分岐などを反映してExcelを出力する事が出来ます。 テンプレートに設定した背景色、罫線、セルのマージ、フォントなどの書式も反映されます。</p></div></div>
+</div><!-- article -->
+
+</div><!-- contents_center -->
+
+<div id="footer">
+<address>  &copy; Copyright
+  
+          2008,
+    
+          The Seasar Foundation and the others. All rights reserved.
+      </address>
+<div class="line"><span class="hide">spacer</span></div>
+</div><!-- footer -->
+
+</div><!-- wrapper -->
+
+</body>
+</html>
