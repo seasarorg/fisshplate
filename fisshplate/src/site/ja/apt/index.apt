@@ -1,0 +1,90 @@
+  ---
+  Fisshplate Home
+  ---
+  rokugen
+  ---
+  2008/01/08
+
+Welcome
+
+  Fisshplateとは、Excelにテンプレート式を書くことによって、動的にデータが埋め込まれたExcelファイルを出力する事ができるライブラリです。
+
+* 概要
+
+  まず、Excelでテンプレートを作ります。
+  
+[images/index01.png]
+
+  下記の様にテンプレートファイルを読み込み、POIのHFFSWorkbookを生成し、保存します。
+
++--
+public class A{
+    private String name;
+    private int num;
+    private Date date;
+    A(String name, int num, Date date){
+        this.name = name;
+        this.num = num;
+        this.date = date;           
+    }
+    public Date getDate() {
+        return date;
+    }
+    public void setDate(Date date) {
+        this.date = date;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public int getNum() {
+        return num;
+    }
+    public void setNum(int num) {
+        this.num = num;
+    }
+}
++--
+
++---
+InputStream is = getClass().getResourceAsStream("/FPTemplateTest.xls");     
+try {
+    template = new FPTemplate(is);
+} catch (FPParseException e) {
+    throw e;
+} catch (IOException e) {
+    throw e;
+}finally{
+    is.close();
+}
+Map map = new HashMap();
+map.put("title", "タイトルである");
+List aList = new ArrayList();
+aList.add(new A("1行目",10,new Date()));
+aList.add(new A("2行目",20,new Date()));
+aList.add(new A("3行目",30,new Date()));
+aList.add(new A("4行目",10,new Date()));
+aList.add(new A("5行目",20,new Date()));
+aList.add(new A("6行目",30,new Date()));
+map.put("b", aList);
+
+HSSFWorkbook wb;
+try {
+    wb = template.process(map);
+} catch (FPMergeException e) {      
+    throw e;
+}
+
+FileOutputStream fos = new FileOutputStream("out.xls");      
+wb.write(fos);
+fos.close();
++---
+
+  out.xlsというファイルが出力されます。そのファイルはテンプレートに上記のコードで設定したデータが埋め込まれています。
+
+[images/index02.png]
+
+  このように、VelocityやFreeMarkerといったテンプレートエンジンと同じ様に、繰り返しや条件分岐などを反映してExcelを出力する事が出来ます。
+  テンプレートに設定した背景色、罫線、セルのマージ、フォントなどの書式も反映されます。
