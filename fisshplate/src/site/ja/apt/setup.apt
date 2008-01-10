@@ -15,4 +15,4 @@
   
   {{http://m2eclipse.codehaus.org/}}
 
-  
+  Fisshplateの機能を利用するには、fisshplate-x.x.x.jarだけで可能です。S2と連携したい場合のみ、s2fisshplate-x.x.x.jarが必要となります。
