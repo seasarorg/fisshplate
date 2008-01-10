@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+<meta http-equiv="Content-Language" content="ja" /> 
+<meta http-equiv="Content-Style-Type" content="text/css" /> 
+<title>Fisshplate - 文法ガイド</title>
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/main.css" media="screen,projection" />
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/print.css" media="print" />
+<link href="./css/maven-base.css" type="text/css" rel="stylesheet" media="screen" />
+<link href="./css/maven-theme.css" type="text/css" rel="stylesheet" media="screen" />
+</head>
+
+<body>
+
+<div id="wrapper">
+
+<div id="header">
+
+<div class="line"><span class="hide">spacer</span></div>
+
+<div id="logo"><h1 id="h01" class="hide">The Seasar Foundation Project Site</h1><img src="http://www.seasar.org/images/seasar_logo_blue.gif" alt="The Seasar Foundation" width="390" height="180" /></div>
+
+<div id="tool">
+
+<h2><a href="http://search.seasar.org/">Site Search</a></h2>
+
+<form id="search" action="http://search.seasar.org/">
+<div>
+	<input id="search_phrase" type="text" name="phrase" size="20" />
+	<input type="hidden" name="perpage" value="30" />
+	<input type="hidden" name="enc" value="UTF-8" />
+	<input id="search_go" type="submit" value="Search" />
+</div>
+</form>
+
+<h2>Seasar Banner</h2>
+
+<p><a href="http://www.seasar.org/images/seasar_banner.gif"><img src="http://www.seasar.org/images/seasar_banner.gif" alt="Seasar Banner" title="Seasar Banner" width="146" height="33" /></a></p>
+
+</div>
+
+<div id="navi">
+<p><a href="../en/">English</a> | <a href="../ja/">Japanese</a></p>
+</div>
+
+</div><!-- header -->
+
+<div id="contents_left">
+           
+  
+
+  
+    
+  
+  
+                   <h2>About</h2>
+        <ul>
+              
+    <li class="none">
+              <a href="index.html">ホーム</a>
+        </li>
+              
+    <li class="none">
+              <a href="license.html">ライセンス</a>
+        </li>
+              
+    <li class="none">
+              <a href="downloads.html">ダウンロード</a>
+        </li>
+          </ul>
+          <h2>ドキュメント</h2>
+        <ul>
+              
+    <li class="none">
+              <a href="setup.html">セットアップ</a>
+        </li>
+              
+    <li class="none">
+              <a href="template.html">テンプレートの作り方</a>
+        </li>
+              
+    <li class="none">
+              <a href="process.html">ファイル出力の仕方</a>
+        </li>
+              
+    <li class="none">
+              <strong>文法ガイド</strong>
+        </li>
+              
+    <li class="none">
+              <a href="s2fisshplate.html">S2との連携</a>
+        </li>
+          </ul>
+          <h2>Javadoc</h2>
+        <ul>
+              
+    <li class="none">
+              <a href="apidocs/fisshplate/index.html">Fisshplate</a>
+        </li>
+              
+    <li class="none">
+              <a href="apidocs/s2fisshplate/index.html">S2Fisshplate</a>
+        </li>
+          </ul>
+          <h2>プロジェクト文書</h2>
+        <ul>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+              <a href="project-info.html">プロジェクト情報</a>
+              </li>
+          </ul>
+                                       <a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy" name="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png" />
+          </a>
+                       
+  
+
+  
+    
+  
+  
+  </div><!-- contents_left -->
+
+<div id="contents_center">
+
+<div id="article">
+<div class="section"><h2>目次</h2><ul><li><a href="##foreach">#foreach</a></li><li><a href="##if">#if</a></li></ul></div><div class="section"><h2>基本ルール</h2><ul><li>制御文は必ず「A列」に書いて下さい。他の列に書くと、通常のセルの値としてそのまま出力されます。</li><li>「A列」に制御文がある場合、その行の「B列」以降は出力されません。</li></ul></div><div class="section"><h2><a name="#foreach">#foreach</a></h2><p>取得したデータの一覧をExcelに出力する場合などに使います。ブロック要素なので、必ず「#end」で閉じる必要があります。</p><div class="section"><h3>構文</h3><div class="source"><pre>#foreach var : list index=indexname
+[繰り返す行]
+#end</pre></div><dl><dt>list</dt><dd>要素の集合データの名前です。データはListと配列をサポートしています。</dd><dt>var</dt><dd>上記listの各要素を受け取る変数名です。</dd><dt>indexname</dt><dd>ループ内で参照する、ループインデックス名です。0スタートになります。これは必須ではありません。 指定しない場合、「index」で参照する事が出来ます。</dd></dl></div><div class="section"><h3>例</h3><p>テンプレートを作ります。</p><img src="images/foreach01.png" /><p>Java側でデータを設定します。</p><div class="source"><pre>public class Foo{
+    private String name;
+    private int num;
+    A(String name, int num){
+        this.name = name;
+        this.num = num;           
+    }
+    (setter、getter省略)
+}</pre></div><div class="source"><pre>Map map = new HashMap();
+List list = new ArrayList();
+list.add(new A(&quot;1行目&quot;,10));
+list.add(new A(&quot;2行目&quot;,20));
+list.add(new A(&quot;3行目&quot;,30));
+list.add(new A(&quot;4行目&quot;,10));
+list.add(new A(&quot;5行目&quot;,20));
+list.add(new A(&quot;6行目&quot;,30));
+map.put(&quot;fooList&quot;, list);</pre></div><p>この場合、出力ファイルは以下の様になります。</p><img src="images/foreach02.png" /><p>「index=idx」を省略する事が出来ます。その場合、ループインデックスは「index」という名前で参照します。</p><img src="images/foreach03.png" /><p>出力結果は同じです。</p><div class="section"><h4>ループのネストと注意</h4><p>ループはネストする事が出来ます。その場合、ループ内でループインデックスを参照する場合は、必ず各ループで「index=」を指定して下さい。 指定しないと、ネストしたループでインデックスが共有されてしまうからです。</p><p>ループインデックスを参照する必要がない場合は、省略しても構いません。 </p></div></div></div><div class="section"><h2><a name="#if">#if</a></h2><p>ある条件によって、行の出力をする場合に使います。ブロック要素なので、必ず「#end」で閉じる必要があります。</p><div class="section"><h3>構文</h3><div class="source"><pre>#if ([条件式])
+[出力する行]
+#else if ([条件式])
+[出力する行]
+#else
+[出力する行]
+#end</pre></div><p>条件式はOGNLで評価されます。「#else if」と「#else」は任意です。</p></div><div class="section"><h3>例</h3><p>テンプレートを作ります。<a href="##foreach">#foreach</a>と併用してみます。</p><img src="images/if01.png" /><p>ループの中で、インデックスが奇数の場合、背景色を水色にかえて、縞模様で出力するようにしています。</p><p><a href="##foreach">#foreach</a>の例と同じデータを埋め込むと出力結果はこうなります。</p><img src="images/if02.png" /><p>また、「#else if」を使って、下記のようなテンプレートを作った場合は</p><img src="images/if03.png" /><p>同データでの出力結果はこの様になります。</p><img src="images/if04.png" /></div></div>
+</div><!-- article -->
+
+</div><!-- contents_center -->
+
+<div id="footer">
+<address>  &copy; Copyright
+  
+          2008,
+    
+          The Seasar Foundation and the others. All rights reserved.
+      </address>
+<div class="line"><span class="hide">spacer</span></div>
+</div><!-- footer -->
+
+</div><!-- wrapper -->
+
+</body>
+</html>

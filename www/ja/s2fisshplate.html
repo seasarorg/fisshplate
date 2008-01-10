@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+<meta http-equiv="Content-Language" content="ja" /> 
+<meta http-equiv="Content-Style-Type" content="text/css" /> 
+<title>Fisshplate - S2との連携</title>
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/main.css" media="screen,projection" />
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/print.css" media="print" />
+<link href="./css/maven-base.css" type="text/css" rel="stylesheet" media="screen" />
+<link href="./css/maven-theme.css" type="text/css" rel="stylesheet" media="screen" />
+</head>
+
+<body>
+
+<div id="wrapper">
+
+<div id="header">
+
+<div class="line"><span class="hide">spacer</span></div>
+
+<div id="logo"><h1 id="h01" class="hide">The Seasar Foundation Project Site</h1><img src="http://www.seasar.org/images/seasar_logo_blue.gif" alt="The Seasar Foundation" width="390" height="180" /></div>
+
+<div id="tool">
+
+<h2><a href="http://search.seasar.org/">Site Search</a></h2>
+
+<form id="search" action="http://search.seasar.org/">
+<div>
+	<input id="search_phrase" type="text" name="phrase" size="20" />
+	<input type="hidden" name="perpage" value="30" />
+	<input type="hidden" name="enc" value="UTF-8" />
+	<input id="search_go" type="submit" value="Search" />
+</div>
+</form>
+
+<h2>Seasar Banner</h2>
+
+<p><a href="http://www.seasar.org/images/seasar_banner.gif"><img src="http://www.seasar.org/images/seasar_banner.gif" alt="Seasar Banner" title="Seasar Banner" width="146" height="33" /></a></p>
+
+</div>
+
+<div id="navi">
+<p><a href="../en/">English</a> | <a href="../ja/">Japanese</a></p>
+</div>
+
+</div><!-- header -->
+
+<div id="contents_left">
+           
+  
+
+  
+    
+  
+  
+                   <h2>About</h2>
+        <ul>
+              
+    <li class="none">
+              <a href="index.html">ホーム</a>
+        </li>
+              
+    <li class="none">
+              <a href="license.html">ライセンス</a>
+        </li>
+              
+    <li class="none">
+              <a href="downloads.html">ダウンロード</a>
+        </li>
+          </ul>
+          <h2>ドキュメント</h2>
+        <ul>
+              
+    <li class="none">
+              <a href="setup.html">セットアップ</a>
+        </li>
+              
+    <li class="none">
+              <a href="template.html">テンプレートの作り方</a>
+        </li>
+              
+    <li class="none">
+              <a href="process.html">ファイル出力の仕方</a>
+        </li>
+              
+    <li class="none">
+              <a href="syntax.html">文法ガイド</a>
+        </li>
+              
+    <li class="none">
+              <strong>S2との連携</strong>
+        </li>
+          </ul>
+          <h2>Javadoc</h2>
+        <ul>
+              
+    <li class="none">
+              <a href="apidocs/fisshplate/index.html">Fisshplate</a>
+        </li>
+              
+    <li class="none">
+              <a href="apidocs/s2fisshplate/index.html">S2Fisshplate</a>
+        </li>
+          </ul>
+          <h2>プロジェクト文書</h2>
+        <ul>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+              <a href="project-info.html">プロジェクト情報</a>
+              </li>
+          </ul>
+                                       <a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy" name="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png" />
+          </a>
+                       
+  
+
+  
+    
+  
+  
+  </div><!-- contents_left -->
+
+<div id="contents_center">
+
+<div id="article">
+<div class="section"><h2>S2Fisshplateとは</h2><p>Fisshplateは、S2Containerには依存しておらず、汎用的に利用する事が出来ます。</p><p>S2Fisshplateを使う事によって、S2とFisshplateを連携して、インタフェースを定義するだけでFisshplateの機能を使う事が出来ます。</p></div><div class="section"><h2>基本的な使い方</h2><p>まず、テンプレートに埋め込むDtoを作ります。</p><div class="source"><pre>public class TestFisshplateDto {
+    private String title;
+    private List itemList;
+    
+    (setter、getter省略)
+} </pre></div><p>次に、インタフェースを定義します。メソッドはいくつあっても構いません。メソッドの戻り値は、必ず「HSSFWorkbook」にして下さい。</p><div class="source"><pre>
+public interface TestFisshplate {
+    HSSFWorkbook getTestWb(TestFisshplateDto dto);
+}</pre></div><p>diconファイルに、コンポーネントとして登録します。</p><div class="source"><pre>&lt;components&gt;
+    &lt;include path=&quot;s2fisshplate.dicon&quot;/&gt;
+    
+    &lt;component class=&quot;org.seasar.fisshplate.interceptor.TestFisshplate&quot; &gt;
+        &lt;aspect&gt;fisshplate.interceptor&lt;/aspect&gt;
+    &lt;/component&gt;
+&lt;/components&gt;   </pre></div><p>「s2fisshplate.dicon」をインクルードして下さい。そして、Fisshplate用インタフェースのコンポーネント定義に、 aspectで「fisshplate.interceptor」をかませます。</p><p>テンプレートファイルを作ります。ファイル名は、「インタフェース名_メソッド名.xls」にして、インタフェースと同じパッケージに置きます。 この場合ファイル名は「TestFisshplate_getTestWb.xls」になります。</p><img src="images/s2fisshplate01.png" /><p>引数のDtoのプロパティは、「data」という名前で参照出来ます。この場合、TestFisshplateDto#getTitle()は「${data.title}」で参照されます。</p><p>呼び出し側はこのようになります。</p><div class="source"><pre>public TestFisshplate fisshplate; //S2からインジェクションされます。
+
+public void Hoge(){
+    TestFisshplateDto dto =new TestFisshplateDto();
+    dto.setTitle(&quot;テストです&quot;);
+    List itemList = new ArrayList();
+    TestItem item = new TestItem();
+    item.setDate(new Date());
+    item.setName(&quot;1行目&quot;);
+    item.setNum(10);
+    itemList.add(item);
+    // 適宜明細行を追加     
+    dto.setItemList(itemList);
+            
+    HSSFWorkbook wb = fisshplate.getTestWb(dto);
+    //以下略
+}</pre></div><p>このようにして、データ埋め込み済みのHSSFWorkbookを取得する事が出来ます。</p></div><div class="section"><h2>SMART deploy</h2><p>S2Fisshplateは、S2のSMART deployをサポートしています。</p><p>SMART deployでS2Fisshplateを使うには、いくつかの設定とルールが必要になります。</p><div class="section"><h3>creator.diconの編集</h3><p>creator.diconに、FisshplateCreatorを登録します。</p><div class="source"><pre>&lt;components&gt;
+    &lt;include path=&quot;convention.dicon&quot;/&gt;
+    &lt;include path=&quot;customizer.dicon&quot;/&gt;
+    &lt;component class=&quot;org.seasar.framework.container.creator.PageCreator&quot;/&gt;
+    &lt;component class=&quot;org.seasar.framework.container.creator.ActionCreator&quot;/&gt;
+    (中略、以下を追記)  
+    &lt;component class=&quot;org.seasar.fisshplate.creator.FisshplateCreator&quot; /&gt;
+&lt;/components&gt;</pre></div></div><div class="section"><h3>customizer.diconの編集</h3><p>customizer.diconに、「fpaoCustomizer」の名前でCustomizerを登録します。</p><div class="source"><pre>&lt;component name=&quot;fpaoAspectCustomizer&quot; class=&quot;org.seasar.framework.container.customizer.AspectCustomizer&quot;&gt;
+    &lt;property name=&quot;interceptorName&quot;&gt;&quot;fisshplate.interceptor&quot;&lt;/property&gt;
+&lt;/component&gt;
+
+&lt;component name=&quot;fpaoCustomizer&quot; class=&quot;org.seasar.framework.container.customizer.CustomizerChain&quot;&gt;
+    &lt;initMethod name=&quot;addCustomizer&quot;&gt;
+        &lt;arg&gt;fpaoAspectCustomizer&lt;/arg&gt;
+    &lt;/initMethod&gt;
+&lt;/component&gt;</pre></div></div><div class="section"><h3>app.diconの編集</h3><p>app.diconにincludeを追加します。</p><div class="source"><pre>&lt;include path=&quot;s2fisshplate.dicon&quot;/&gt;</pre></div></div><div class="section"><h3>インタフェースのルール</h3><p>SMART deployの場合、Fisshplateアクセス用のインタフェースのパッケージと名前を規約通りにする必要があります。</p><p>インタフェースのサフィックスを「Fpao」にして下さい。「Fpao」は、「<b>F</b>issh<b>p</b>late <b>A</b>ccess <b>O</b>bject」の略です。</p><p>また、インタフェースのパッケージを「(convention.diconのrootPackageName).fpao」にして下さい。</p><p>以上で、特にdiconファイルに書かなくても、「xxxxFpao」というインタフェースを作るだけで、S2Fisshplateの機能が使えるようになります。</p></div></div>
+</div><!-- article -->
+
+</div><!-- contents_center -->
+
+<div id="footer">
+<address>  &copy; Copyright
+  
+          2008,
+    
+          The Seasar Foundation and the others. All rights reserved.
+      </address>
+<div class="line"><span class="hide">spacer</span></div>
+</div><!-- footer -->
+
+</div><!-- wrapper -->
+
+</body>
+</html>
