@@ -44,7 +44,8 @@
 -->
     <menu name="Javadoc">
       <item name="Fisshplate" href="apidocs/fisshplate/index.html"/>
-    </menu>    
+      <item name="S2Fisshplate" href="apidocs/s2fisshplate/index.html"/>
+    </menu>
     ${reports}
   </body>
 </project>

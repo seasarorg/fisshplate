@@ -8,6 +8,44 @@
 Download
 
   [{{{/download/fisshplate-0.0.1.zip}Fissplate 0.0.1}}] Fisshplate Core
+  
+  [{{{/download/s2fisshplate-0.0.1.zip}S2Fissplate 0.0.1}}] Library to work together Fisshplate and S2.
+  
+using Maven2
+
+  please edit pom.xml as below.
+
+* adding repository
+
++--
+<repositories>
+  <repository>
+    <id>maven.seasar.org</id>
+    <name>The Seasar Foundation Maven2 Repository</name>
+    <url>http://maven.seasar.org/maven2</url>
+  </repository>
+</repositories>
++--  
+
+* Fisshplate
+
++--
+<dependency>
+  <groupId>org.seasar.fisshplate</groupId>
+  <artifactId>fisshplate</artifactId>
+  <version>(version no.)</version>
+</dependency>
++--
+
+* S2Fisshplate
+
++--
+<dependency>
+  <groupId>org.seasar.fisshplate</groupId>
+  <artifactId>s2fisshplate</artifactId>
+  <version>(version no.)</version>
+</dependency>
++-- 
 
 All Release
 
@@ -16,5 +54,13 @@ All Release
 *------------------------------------------------------+------------------+
 | <<Files>>                                            | <<Release Date>> |
 *------------------------------------------------------+------------------+
-| {{{/download/fisshplate-0.0.1.zip}Fisshplate 0.0.1}} | 2007/12/31     |
+| {{{/download/fisshplate-0.0.1.zip}ver. 0.0.1}} | 2007/12/31     |
+*------------------------------------------------------+----------------+
+
+* S2Fisshplate
+
+*------------------------------------------------------+------------------+
+| <<Files>>                                            | <<Release Date>> |
+*------------------------------------------------------+------------------+
+| {{{/download/s2fisshplate-0.0.1.zip}ver. 0.0.1}} | 2008/01/10     |
 *------------------------------------------------------+----------------+

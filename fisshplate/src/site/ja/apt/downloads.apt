@@ -7,7 +7,45 @@
   
 ダウンロード
 
-  [{{{/download/fisshplate-0.0.1.zip}Fisshplate 0.0.1}}] Fisshplate 本体 
+  [{{{/download/fisshplate-0.0.1.zip}Fisshplate 0.0.1}}] Fisshplate 本体
+   
+  [{{{/download/s2fisshplate-0.0.1.zip}S2Fisshplate 0.0.1}}] FisshplateとSeasarを連携するためのライブラリ
+
+Maven2をご利用の場合
+
+  pom.xmlに以下を追記して下さい。
+
+* リポジトリの追加
+
++--
+<repositories>
+  <repository>
+    <id>maven.seasar.org</id>
+    <name>The Seasar Foundation Maven2 Repository</name>
+    <url>http://maven.seasar.org/maven2</url>
+  </repository>
+</repositories>
++--  
+
+* Fisshplateの場合
+
++--
+<dependency>
+  <groupId>org.seasar.fisshplate</groupId>
+  <artifactId>fisshplate</artifactId>
+  <version>(取得するバージョン)</version>
+</dependency>
++--
+
+* S2Fisshplateの場合
+
++--
+<dependency>
+  <groupId>org.seasar.fisshplate</groupId>
+  <artifactId>s2fisshplate</artifactId>
+  <version>(取得するバージョン)</version>
+</dependency>
++--
 
 全てのリリース
 
@@ -16,5 +54,13 @@
 *------------------------------------------------------+----------------+
 | <<配布ファイル>>                                     | <<リリース日>> |
 *------------------------------------------------------+----------------+
-| {{{/download/fisshplate-0.0.1.zip}Fisshplate 0.0.1}} | 2007/12/31     |
+| {{{/download/fisshplate-0.0.1.zip}ver. 0.0.1}} | 2007/12/31     |
+*------------------------------------------------------+----------------+
+
+* S2Fisshplate
+
+*------------------------------------------------------+----------------+
+| <<配布ファイル>>                                     | <<リリース日>> |
+*------------------------------------------------------+----------------+
+| {{{/download/s2fisshplate-0.0.1.zip}ver. 0.0.1}} | 2008/01/10 |
 *------------------------------------------------------+----------------+
