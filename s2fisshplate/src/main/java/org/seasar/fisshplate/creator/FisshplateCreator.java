@@ -21,6 +21,7 @@ import org.seasar.framework.container.deployer.InstanceDefFactory;
 import org.seasar.framework.convention.NamingConvention;
 
 /**
+ * SMART deployでS2Fisshplateを利用するためのCreatorクラスです。
  * @author rokugen
  */
 public class FisshplateCreator extends ComponentCreatorImpl {
@@ -34,10 +35,20 @@ public class FisshplateCreator extends ComponentCreatorImpl {
         setInstanceDef(InstanceDefFactory.SINGLETON);
 	}
 	
+    /**
+     * {@link ComponentCustomizer}を戻します。
+     * customizer.dicon上でコンポーネント名を<code>fpaoCustomizer</code>とする必要があります。
+     * @return Fpao用ComponentCustomizer
+     */
     public ComponentCustomizer getFpaoCustomizer() {
         return getCustomizer();
     }
 
+    /**
+     * {@link ComponentCustomizer}を設定します。
+     * customizer.dicon上でコンポーネント名を<code>fpaoCustomizer</code>とする必要があります。
+     * @param customizer Fpao用ComponentCustomizer
+     */
     public void setFpaoCustomizer(ComponentCustomizer customizer) {
         setCustomizer(customizer);
     }

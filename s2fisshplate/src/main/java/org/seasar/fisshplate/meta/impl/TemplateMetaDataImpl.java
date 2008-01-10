@@ -24,6 +24,8 @@ import java.util.Map;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.seasar.fisshplate.consts.S2FPConsts;
 import org.seasar.fisshplate.meta.TemplateMetaData;
+import org.seasar.fisshplate.template.FPTemplate;
+import org.seasar.fisshplate.util.FisshplateUtil;
 import org.seasar.framework.exception.IORuntimeException;
 import org.seasar.framework.util.InputStreamUtil;
 import org.seasar.framework.util.ResourceUtil;
@@ -34,23 +36,34 @@ import org.seasar.framework.util.ResourceUtil;
  */
 public class TemplateMetaDataImpl implements TemplateMetaData {
 	private Map templateCache = new HashMap();
-
-	public synchronized HSSFWorkbook getTemplateWorkbook(Method method) {
-		HSSFWorkbook wb = (HSSFWorkbook) templateCache.get(method.getName());
-		if(wb != null){
-			return wb;
+	
+	/* (non-Javadoc)
+	 * @see org.seasar.fisshplate.meta.TemplateMetaData#getTemplate(java.lang.reflect.Method)
+	 */
+	public synchronized  FPTemplate getTemplate(Method method) {
+		FPTemplate template = (FPTemplate) templateCache.get(method.getName());
+		if(template != null){
+			return template;
 		}
-		return createTemplate(method);
+		HSSFWorkbook wb = getTemplateWorkbook(method);
+		
+		template = FisshplateUtil.createTemplate(wb);
+		templateCache.put(method.getName(), template);		
+		return template;
 	}
-
-	protected HSSFWorkbook createTemplate(final Method method) {
+	
+	/**
+	 * 実行されたメソッドからテンプレートを読み込み、{@link HSSFWorkbook}を戻します。
+	 * @param method 実行されたメソッド
+	 * @return テンプレート用ワークブック
+	 */
+	protected HSSFWorkbook getTemplateWorkbook(final Method method) {
 		Class clazz = method.getDeclaringClass();
 		String templatePath = clazz.getName().replaceAll("\\.", "/") + "_"
 				+ method.getName() + "." + S2FPConsts.EXCEL_EXTENSION;
 		InputStream is = ResourceUtil.getResourceAsStream(templatePath);		
 		try {
-			HSSFWorkbook wb =  new HSSFWorkbook(is);
-			templateCache.put(method.getName(), wb);
+			HSSFWorkbook wb =  new HSSFWorkbook(is);			
 			return wb;
 		}catch(IOException e){
 			throw new IORuntimeException(e);
@@ -58,5 +71,7 @@ public class TemplateMetaDataImpl implements TemplateMetaData {
 			InputStreamUtil.close(is);
 		}
 	}
+
+	
 
 }

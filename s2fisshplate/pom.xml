@@ -4,7 +4,7 @@
   <groupId>org.seasar.fisshplate</groupId>
   <artifactId>s2fisshplate</artifactId>
   <packaging>jar</packaging>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.1</version>
   <name>S2 Fisshplate</name>
   
   <!-- ******************************************************************************* -->
@@ -97,6 +97,7 @@
           <encoding>UTF-8</encoding>
           <docencoding>UTF-8</docencoding>
           <charset>UTF-8</charset>
+					<outputDirectory>${project.reporting.outputDirectory}/apidocs/s2fisshplate</outputDirectory>          
           <links>
           	<link>http://java.sun.com/j2se/1.5.0/ja/docs/ja/api/</link>
             <link>http://java.sun.com/j2ee/1.4/docs/api/</link>
@@ -104,6 +105,7 @@
             <link>http://s2container.seasar.org/2.4/s2-extension/ja/apidocs/</link>
             <link>http://poi.apache.org/apidocs/</link>
             <link>http://aopalliance.sourceforge.net/doc/</link>
+            <link>http://fisshplate.sandbox.seasar.org/ja/apidocs/fisshplate/</link>
           </links>
         </configuration>
         <executions>
@@ -116,6 +118,18 @@
           </execution>
         </executions>
       </plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>				
+				<configuration>
+				<finalName>
+					s2fisshplate
+				</finalName>
+				<outputDirectory>${project.build.directory}/assembly</outputDirectory>
+				<descriptors>
+					<descriptor>src/main/assembly/bin.xml</descriptor>
+				</descriptors>					
+				</configuration>
+			</plugin>
     </plugins>
   	<extensions>
   		<extension>
@@ -151,7 +165,7 @@
     <dependency>
     	<groupId>org.seasar.fisshplate</groupId>
     	<artifactId>fisshplate</artifactId>
-    	<version>0.0.2-SNAPSHOT</version>    	
+    	<version>0.0.1</version>    	
     	<exclusions>
     		<exclusion>
     			<groupId>ognl</groupId>

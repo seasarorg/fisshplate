@@ -16,10 +16,17 @@
 package org.seasar.fisshplate.consts;
 
 /**
+ * S2Fisshplate内で使用される定数です。
  * @author rokugen
  */
 public interface S2FPConsts {
+	/**
+	 * テンプレート内でBeanを参照する変数名です。「data」になります。
+	 */
 	static final String DATA_MAP_KEY_FOR_BEAN = "data";
+	/**
+	 * Excelファイルの拡張子です。
+	 */
 	static final String EXCEL_EXTENSION = "xls";
 
 }

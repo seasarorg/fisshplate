@@ -18,7 +18,6 @@ package org.seasar.fisshplate.util;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.seasar.fisshplate.core.FPParser;
 import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.exception.FPMergeRuntimeException;
 import org.seasar.fisshplate.exception.FPParseException;
@@ -29,21 +28,29 @@ import org.seasar.fisshplate.template.FPTemplate;
  * @author rokugen
  */
 public class FisshplateUtil {
-	private FisshplateUtil(){}
-	
+	private FisshplateUtil(){}	
 	/**
-	 * <p>{@link FPParser}を使って、テンプレートオブジェクトを生成、データを埋め込みます。</p>
-	 * <p>例外を実行時例外にラップします。</p>
+	 * テンプレート用の{@link HSSFWorkbook}から{@link FPTemplate}を生成します。
 	 * @param templateWb テンプレート用ワークブック
-	 * @param data 埋め込みデータ
-	 * @return 出力するワークブック
+	 * @return テンプレートオブジェクト
 	 */
-	public static final HSSFWorkbook createTemplateAndProcess(HSSFWorkbook templateWb,Map data){		
+	public static final FPTemplate createTemplate(HSSFWorkbook templateWb){
 		try {
-			FPTemplate template = new FPTemplate(templateWb);		
-			return template.process(data);
+			return new FPTemplate(templateWb);
 		} catch (FPParseException e1) {
 			throw new FPParseRuntimeException(e1);
+		}
+	}
+	
+	/**
+	 * テンプレートにデータを埋め込みます。
+	 * @param template テンプレートオブジェクト
+	 * @param data 埋め込み用データ
+	 * @return 出力するワークブック
+	 */
+	public static final HSSFWorkbook process(FPTemplate template, Map data){
+		try {					
+			return template.process(data);		
 		} catch (FPMergeException e) {
 			throw new FPMergeRuntimeException(e);
 		}
