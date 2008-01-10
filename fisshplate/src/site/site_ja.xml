@@ -36,12 +36,13 @@
       <item name="ライセンス" href="license.html"/>
       <item name="ダウンロード" href="downloads.html"/>
     </menu>
-<!--     
-		<menu name="ドキュメント">
-      <item name="一覧" href="documents.html"/>
-      <item name="セットアップ" href="setup.html"/>
+    <menu name="ドキュメント">
+    	<item name="セットアップ" href="setup.html" />
+    	<item name="テンプレートの作り方" href="template.html"/>
+    	<item name="ファイル出力の仕方" href="process.html"/>
+    	<item name="文法ガイド" href="syntax.html"/>
+    	<item name="S2との連携" href="s2fisshplate.html"/>
     </menu>
--->
     <menu name="Javadoc">
       <item name="Fisshplate" href="apidocs/fisshplate/index.html"/>
       <item name="S2Fisshplate" href="apidocs/s2fisshplate/index.html"/>

@@ -1,0 +1,68 @@
+  ---
+  ファイル出力の仕方
+  ---
+  rokugen
+  ---
+  2008/01/10
+
+テンプレートファイルの読み込み
+  
+  テンプレートファイルを読み込んで、テンプレートオブジェクト「FPTemplate」を生成します。
+  
+  コンストラクタには
+  
+  * FPTemplate(HSSFWorkbook)
+  
+  * FPTemplate(InputStream)
+  
+  の2種類があります。
+  
+  「FPTemplateTest.xls」というテンプレートファイルを、ルートパッケージに置いたとします。
+  
++---
+FPTemplate template = null;
+InputStream is = getClass().getResourceAsStream("/FPTemplateTest.xls");     
+try {
+    template = new FPTemplate(is);
+} catch (FPParseException e) {
+    throw e;
+} catch (IOException e) {
+    throw e;
+}finally{
+    is.close();
+}
++---
+
+  一度テンプレートオブジェクトを生成したら、InputStreamはcloseして構いません。
+  
+  テンプレートに文法上の誤りがあった場合、FPParseExceptionが投げられます。
+  
+データの埋め込み
+
+  テンプレートに埋め込むデータは、Mapで作ります。キーはテンプレートから評価式で参照するため、文字列にします。
+  
++--
+Map data = new HashMap();
+data.put("title", "タイトルです");
+Foo foo = new Foo();
+foo.setBar("テスト");
+data.put("fooTest", foo);
++--
+
+  このMapをFPTemplateに渡します。
+
++---  
+HSSFWorkbook wb;
+try {
+    wb = template.process(data);
+} catch (FPMergeException e) {
+    throw e;
+}
++---
+
+  データが埋め込まれたHSSFWorkbookが出力されます。
+  
+  データ埋め込み時にエラーが発生した場合、FPMergeExceptionが投げられます。
+  
+  一度FPTemplateのインスタンスを生成すれば、同じインスタンスを使って何度でもデータ埋め込みが可能です。
+  一度の処理で同じテンプレートで違うデータで複数ファイルを出力する場合、FPTemplateの生成は1回で構いません。
