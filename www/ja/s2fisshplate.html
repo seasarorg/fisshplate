@@ -154,12 +154,12 @@
 <div id="contents_center">
 
 <div id="article">
-<div class="section"><h2>S2Fisshplateとは</h2><p>Fisshplateは、S2Containerには依存しておらず、汎用的に利用する事が出来ます。</p><p>S2Fisshplateを使う事によって、S2とFisshplateを連携して、インタフェースを定義するだけでFisshplateの機能を使う事が出来ます。</p></div><div class="section"><h2>基本的な使い方</h2><p>まず、テンプレートに埋め込むDtoを作ります。</p><div class="source"><pre>public class TestFisshplateDto {
+<ul><li><a href="#S2Fisshplateとは">S2Fisshplateとは</a></li><li><a href="#基本的な使い方">基本的な使い方</a>}</li><li><a href="#SMART deploy">SMART deploy</a>} </li></ul><div class="section"><h2><a name="S2Fisshplateとは">S2Fisshplateとは</a></h2><p>Fisshplateは、S2Containerには依存しておらず、汎用的に利用する事が出来ます。</p><p>S2Fisshplateを使う事によって、S2とFisshplateを連携して、インタフェースを定義するだけでFisshplateの機能を使う事が出来ます。</p></div><div class="section"><h2><a name="基本的な使い方">基本的な使い方</a></h2><p>まず、テンプレートに埋め込むDtoを作ります。</p><ul><li>プロパティのsetter、getterを必ず作って下さい。publicフィールドの動作は確認していません。</li></ul><div class="source"><pre>public class TestFisshplateDto {
     private String title;
     private List itemList;
     
     (setter、getter省略)
-} </pre></div><p>次に、インタフェースを定義します。メソッドはいくつあっても構いません。メソッドの戻り値は、必ず「HSSFWorkbook」にして下さい。</p><div class="source"><pre>
+} </pre></div><p>次に、インタフェースを定義します。 </p><ul><li>メソッドの戻り値は、必ず「HSSFWorkbook」にして下さい。</li><li>引数は1つにして下さい。引数が複数の場合、第1引数のみが埋め込み用データとして扱われ、他は無視されます。</li><li>メソッドはいくつあっても構いません。が、オーバーロードするとテンプレートのファイル名との対応が出来なくなるので、 メソッド名はそれぞれ一意になるようにして下さい。</li></ul><div class="source"><pre>
 public interface TestFisshplate {
     HSSFWorkbook getTestWb(TestFisshplateDto dto);
 }</pre></div><p>diconファイルに、コンポーネントとして登録します。</p><div class="source"><pre>&lt;components&gt;
@@ -168,7 +168,7 @@ public interface TestFisshplate {
     &lt;component class=&quot;org.seasar.fisshplate.interceptor.TestFisshplate&quot; &gt;
         &lt;aspect&gt;fisshplate.interceptor&lt;/aspect&gt;
     &lt;/component&gt;
-&lt;/components&gt;   </pre></div><p>「s2fisshplate.dicon」をインクルードして下さい。そして、Fisshplate用インタフェースのコンポーネント定義に、 aspectで「fisshplate.interceptor」をかませます。</p><p>テンプレートファイルを作ります。ファイル名は、「インタフェース名_メソッド名.xls」にして、インタフェースと同じパッケージに置きます。 この場合ファイル名は「TestFisshplate_getTestWb.xls」になります。</p><img src="images/s2fisshplate01.png" /><p>引数のDtoのプロパティは、「data」という名前で参照出来ます。この場合、TestFisshplateDto#getTitle()は「${data.title}」で参照されます。</p><p>呼び出し側はこのようになります。</p><div class="source"><pre>public TestFisshplate fisshplate; //S2からインジェクションされます。
+&lt;/components&gt;   </pre></div><p>「s2fisshplate.dicon」をインクルードして下さい。そして、Fisshplate用インタフェースのコンポーネント定義に、 aspectで「fisshplate.interceptor」をかませます。</p><p>テンプレートファイルを作ります。</p><ul><li>ファイル名は、「インタフェース名_メソッド名.xls」にして、インタフェースと同じパッケージに置きます。<ul><li>この規約通りのファイル名、パッケージにする事で、S2Fisshplate側でテンプレートの読み込みを自動で行う事が出来ます。</li><li><b>TestFisshplate#getTestWb()</b>の場合ファイル名は「<b>TestFisshplate_getTestWb.xls</b>」になります。</li></ul></li><li>引数のDtoのプロパティは、「data」という名前で参照出来ます。<ul><li>この場合、<b>TestFisshplateDto#getTitle()</b>は「<b>${data.title}</b>」で参照されます。 </li></ul></li></ul><img src="images/s2fisshplate01.png" /><p>呼び出し側はこのようになります。 テンプレートファイルの読み込み、解析、ファイル出力などの処理が自動で実行され、出力ファイルが戻されます。</p><div class="source"><pre>public TestFisshplate fisshplate; //S2からインジェクションされます。
 
 public void Hoge(){
     TestFisshplateDto dto =new TestFisshplateDto();
@@ -179,12 +179,12 @@ public void Hoge(){
     item.setName(&quot;1行目&quot;);
     item.setNum(10);
     itemList.add(item);
-    // 適宜明細行を追加     
+    // 適宜明細行を追加
     dto.setItemList(itemList);
             
     HSSFWorkbook wb = fisshplate.getTestWb(dto);
     //以下略
-}</pre></div><p>このようにして、データ埋め込み済みのHSSFWorkbookを取得する事が出来ます。</p></div><div class="section"><h2>SMART deploy</h2><p>S2Fisshplateは、S2のSMART deployをサポートしています。</p><p>SMART deployでS2Fisshplateを使うには、いくつかの設定とルールが必要になります。</p><div class="section"><h3>creator.diconの編集</h3><p>creator.diconに、FisshplateCreatorを登録します。</p><div class="source"><pre>&lt;components&gt;
+}</pre></div><p>このようにして、データ埋め込み済みのHSSFWorkbookを取得する事が出来ます。</p></div><div class="section"><h2><a name="SMART deploy">SMART deploy</a></h2><p>S2Fisshplateは、S2のSMART deployをサポートしています。</p><p>SMART deployでS2Fisshplateを使うには、いくつかの設定とルールが必要になります。</p><div class="section"><h3>creator.diconの編集</h3><p>creator.diconに、FisshplateCreatorを登録します。</p><div class="source"><pre>&lt;components&gt;
     &lt;include path=&quot;convention.dicon&quot;/&gt;
     &lt;include path=&quot;customizer.dicon&quot;/&gt;
     &lt;component class=&quot;org.seasar.framework.container.creator.PageCreator&quot;/&gt;
