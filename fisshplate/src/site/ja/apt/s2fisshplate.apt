@@ -4,16 +4,26 @@
   rokugen
   ---
   2008/01/10
+  
+  * {{{#S2Fisshplateとは}S2Fisshplateとは}}
+  
+  * {{{#基本的な使い方}基本的な使い方}}
+  
+  * {{{#SMART deploy}SMART deploy}}
 
-S2Fisshplateとは
+{S2Fisshplateとは}
 
   Fisshplateは、S2Containerには依存しておらず、汎用的に利用する事が出来ます。
   
   S2Fisshplateを使う事によって、S2とFisshplateを連携して、インタフェースを定義するだけでFisshplateの機能を使う事が出来ます。
   
-基本的な使い方
+{基本的な使い方}
 
   まず、テンプレートに埋め込むDtoを作ります。
+  
+  * プロパティのsetter、getterを必ず作って下さい。publicフィールドの動作は確認していません。
+  
+  []
   
 +--
 public class TestFisshplateDto {
@@ -24,7 +34,16 @@ public class TestFisshplateDto {
 } 
 +--
 
-  次に、インタフェースを定義します。メソッドはいくつあっても構いません。メソッドの戻り値は、必ず「HSSFWorkbook」にして下さい。
+  次に、インタフェースを定義します。  
+  
+  * メソッドの戻り値は、必ず「HSSFWorkbook」にして下さい。
+  
+  * 引数は1つにして下さい。引数が複数の場合、第1引数のみが埋め込み用データとして扱われ、他は無視されます。
+  
+  * メソッドはいくつあっても構いません。が、オーバーロードするとテンプレートのファイル名との対応が出来なくなるので、
+  メソッド名はそれぞれ一意になるようにして下さい。
+  
+  []
 
 +--
 
@@ -48,14 +67,25 @@ public interface TestFisshplate {
   「s2fisshplate.dicon」をインクルードして下さい。そして、Fisshplate用インタフェースのコンポーネント定義に、
   aspectで「fisshplate.interceptor」をかませます。
   
-  テンプレートファイルを作ります。ファイル名は、「インタフェース名_メソッド名.xls」にして、インタフェースと同じパッケージに置きます。
-  この場合ファイル名は「TestFisshplate_getTestWb.xls」になります。
+  テンプレートファイルを作ります。
+  
+  * ファイル名は、「インタフェース名_メソッド名.xls」にして、インタフェースと同じパッケージに置きます。
+  
+      * この規約通りのファイル名、パッケージにする事で、S2Fisshplate側でテンプレートの読み込みを自動で行う事が出来ます。
+      
+      * <<TestFisshplate#getTestWb()>>の場合ファイル名は「<<TestFisshplate_getTestWb.xls>>」になります。
+      
+  * 引数のDtoのプロパティは、「data」という名前で参照出来ます。
+  
+      * この場合、<<TestFisshplateDto#getTitle()>>は「<<$\{data.title\}>>」で参照されます。  
+  
+  []
   
 [images/s2fisshplate01.png]  
-
-  引数のDtoのプロパティは、「data」という名前で参照出来ます。この場合、TestFisshplateDto#getTitle()は「$\{data.title\}」で参照されます。
+  
   
   呼び出し側はこのようになります。
+  テンプレートファイルの読み込み、解析、ファイル出力などの処理が自動で実行され、出力ファイルが戻されます。
   
 +--
 public TestFisshplate fisshplate; //S2からインジェクションされます。
@@ -69,7 +99,7 @@ public void Hoge(){
     item.setName("1行目");
     item.setNum(10);
     itemList.add(item);
-    // 適宜明細行を追加     
+    // 適宜明細行を追加
     dto.setItemList(itemList);
             
     HSSFWorkbook wb = fisshplate.getTestWb(dto);
@@ -79,7 +109,7 @@ public void Hoge(){
 
   このようにして、データ埋め込み済みのHSSFWorkbookを取得する事が出来ます。
 
-SMART deploy
+{SMART deploy}
 
   S2Fisshplateは、S2のSMART deployをサポートしています。
   
