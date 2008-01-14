@@ -30,74 +30,94 @@ import org.seasar.fisshplate.exception.FPMergeException;
 
 /**
  * 行要素クラスです。行の中にあるセルの情報を保持します。
+ * 
  * @author rokugen
- *
+ * 
  */
 public class Row implements TemplateElement {
-	protected List cellElementList = new ArrayList();	
+	protected List cellElementList = new ArrayList();
+
 	private HSSFRow templateRow;
+
 	private Root root;
-	
+
 	private static final Pattern patEl = Pattern.compile("^\\s*\\$\\{(.+)\\}");
-	
+
+	//#picture(${data.picture})
+	private static final Pattern patPicture = Pattern.compile("^\\#picture\\(\\$\\{(.+)\\}\\)");
+
 	/**
 	 * コンストラクタです。テンプレート側の行オブジェクトを受け取り、その行内のセル情報を解析して保持します。
-	 * @param templateSheet テンプレート側のシート
-	 * @param templateRow テンプレート側の行オブジェクト
-	 * @param root 自分自身が属してるルート要素クラス
+	 * 
+	 * @param templateSheet
+	 *            テンプレート側のシート
+	 * @param templateRow
+	 *            テンプレート側の行オブジェクト
+	 * @param root
+	 *            自分自身が属してるルート要素クラス
 	 */
-	Row(HSSFSheet templateSheet, HSSFRow templateRow, Root root){		
+	Row(HSSFSheet templateSheet, HSSFRow templateRow, Root root) {
 		this.root = root;
 		this.templateRow = templateRow;
-		if(templateRow == null){
+		if (templateRow == null) {
 			return;
 		}
 		int rowNum = templateRow.getRowNum();
-		for(int i=0; i <= templateRow.getLastCellNum();i++){
+		for (int i = 0; i <= templateRow.getLastCellNum(); i++) {
 			HSSFCell templateCell = templateRow.getCell((short) i);
-			TemplateElement element = getElement(templateSheet, templateCell,rowNum);
+			TemplateElement element = getElement(templateSheet, templateCell, rowNum);
 			cellElementList.add(element);
 		}
 	}
-	
-	private TemplateElement getElement(HSSFSheet templateSheet,  HSSFCell templateCell, int rowNum){
-		if(templateCell == null){
+
+	private TemplateElement getElement(HSSFSheet templateSheet, HSSFCell templateCell, int rowNum) {
+		if (templateCell == null) {
 			return new NullElement();
 		}
-		
-		if(templateCell.getCellType() != HSSFCell.CELL_TYPE_STRING){
-			return new Literal(templateSheet,templateCell,rowNum); 
+
+		if (templateCell.getCellType() != HSSFCell.CELL_TYPE_STRING) {
+			return new Literal(templateSheet, templateCell, rowNum);
+		}
+
+		// 画像の場合
+		String pictureValue = templateCell.getRichStringCellValue().getString();
+		Matcher pictureMat = patPicture.matcher(pictureValue);
+		if (pictureMat.find()) {
+			String picturePathExpression = pictureMat.group(1);
+			return new Picture(templateSheet, templateCell, rowNum, picturePathExpression);
 		}
 		
 		String value = templateCell.getRichStringCellValue().getString();
 		Matcher mat = patEl.matcher(value);
-		if(mat.find()){
+		if (mat.find()) {
 			String expression = mat.group(1);
-			return new El(templateSheet,templateCell, rowNum, expression);
-		}else{
-			return new Literal(templateSheet,templateCell,rowNum);
+			return new El(templateSheet, templateCell, rowNum, expression);
+		} else {
+			return new Literal(templateSheet, templateCell, rowNum);
 		}
-		
+
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.seasar.fisshplate.core.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
 	 */
 	public void merge(FPContext context) throws FPMergeException {
-		//ヘッダ・フッタ制御
-		if(context.shouldHeaderOut()){
+		// ヘッダ・フッタ制御
+		if (context.shouldHeaderOut()) {
 			context.setShouldHeaderOut(false);
 			root.getPageHeader().merge(context);
 		}
 		context.setShouldFooterOut(true);
-		
+
 		HSSFRow outRow = context.getcurrentRow();
-		if(templateRow != null){
+		if (templateRow != null) {
 			outRow.setHeight(templateRow.getHeight());
 		}
 		Map data = context.getData();
 		data.put(FPConsts.ROW_NUMBER_NAME, new Integer(context.getCurrentRowNum() + 1));
-		for(int i=0; i < cellElementList.size(); i++){
+		for (int i = 0; i < cellElementList.size(); i++) {
 			TemplateElement elem = (TemplateElement) cellElementList.get(i);
 			elem.merge(context);
 		}
