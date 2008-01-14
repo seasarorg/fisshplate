@@ -68,7 +68,12 @@ public class Picture extends AbstractCell {
 		copyCellStyle(context, out);
 		Object value = getValue(context);
 		String picturepath = (String) value;
-		writePicture(picturepath, context);
+		System.out.println(picturepath);
+		if (!picturepath.equals("") && picturepath.length() > 0) {
+			System.out.println("処理開始");
+			writePicture(picturepath, context);
+			System.out.println("処理終了");
+		}
 		context.nextCell();
 	}
 

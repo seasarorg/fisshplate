@@ -56,7 +56,7 @@ public class FPTemplatePictureTest extends TestCase {
 		map.put("title", "タイトルである");
 		List aList = new ArrayList();
 		aList.add(new A("1行目", 10, new Date(), "image/logoKarmokar4.png"));
-		aList.add(new A("2行目", 20, new Date(), "image/logoKarmokar4.png"));
+		aList.add(new A("2行目", 20, new Date(), null));
 		aList.add(new A("3行目", 30, new Date(), "image/logoKarmokar5.png"));
 		aList.add(new A("4行目", 10, new Date(), "image/logoKarmokar4.png"));
 		aList.add(new A("5行目", 20, new Date(), "image/logoKarmokar4.png"));
