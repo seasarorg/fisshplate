@@ -19,28 +19,26 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.seasar.fisshplate.exception.FPMergeException;
-
 /**
  * @author a-conv
  */
 public class FileInputStreamUtil {
 
-	public static FileInputStream createFileInputStream(String filePath) throws FPMergeException {
+	public static FileInputStream createFileInputStream(String filePath) {
 		try {
 			return new FileInputStream(filePath);
 		} catch (FileNotFoundException e) {
-			throw new FPMergeException("対象ファイルが見つかりません");
+			throw new RuntimeException("対象" + filePath + "ファイルが見つかりません", e);
 		}
 	}
 
-	public static void close(FileInputStream fis) throws FPMergeException {
+	public static void close(FileInputStream fis) {
 		try {
 			if (fis != null) {
 				fis.close();
 			}
 		} catch (IOException e) {
-			throw new FPMergeException("対象ファイルを閉じる際にエラーが発生しました。");
+			throw new RuntimeException("ファイルを閉じる際にエラーが発生しました", e);
 		}
 	}
 

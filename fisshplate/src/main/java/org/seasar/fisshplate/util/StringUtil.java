@@ -16,7 +16,7 @@
 package org.seasar.fisshplate.util;
 
 /**
- * @author taktak
+ * @author a-conv
  */
 public class StringUtil {
 

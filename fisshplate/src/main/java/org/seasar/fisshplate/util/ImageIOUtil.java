@@ -22,36 +22,34 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import org.seasar.fisshplate.exception.FPMergeException;
-
 /**
  * @author a-conv
  */
 public class ImageIOUtil {
 
-	public static BufferedImage read(FileInputStream fis) throws FPMergeException {
+	public static BufferedImage read(FileInputStream fis) {
 		try {
 			return ImageIO.read(fis);
 		} catch (IOException e) {
-			throw new FPMergeException("対象ファイルを開く際にエラーが発生しました。");
+			throw new RuntimeException("対象ファイルを開く際にエラーが発生しました", e);
 		}
 	}
 
-	public static void write(BufferedImage img, String suffix, ByteArrayOutputStream baos) throws FPMergeException {
+	public static void write(BufferedImage img, String suffix, ByteArrayOutputStream baos) {
 		try {
 			ImageIO.write(img, suffix, baos);
 		} catch (IOException e) {
-			throw new FPMergeException("対象ファイルを開く際にエラーが発生しました。");
+			throw new RuntimeException("対象ファイルを開く際にエラーが発生しました", e);
 		}
 	}
 
-	public static void close(ByteArrayOutputStream baos) throws FPMergeException {
+	public static void close(ByteArrayOutputStream baos) {
 		try {
 			if (baos != null) {
 				baos.close();
 			}
 		} catch (IOException e) {
-			throw new FPMergeException("対象ファイルを閉じる際にエラーが発生しました。");
+			throw new RuntimeException("対象ファイルを閉じる際にエラーが発生しました", e);
 		}
 	}
 

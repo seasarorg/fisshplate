@@ -34,6 +34,8 @@ import org.seasar.fisshplate.util.OgnlUtil;
 import org.seasar.fisshplate.util.StringUtil;
 
 /**
+ * 画像処理用の要素クラスです
+ * 
  * @author a-conv
  */
 public class Picture extends AbstractCell {
