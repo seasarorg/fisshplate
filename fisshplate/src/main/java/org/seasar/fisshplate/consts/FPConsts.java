@@ -59,4 +59,6 @@ public interface FPConsts {
 
 	static final String MESSAGE_FOOTER_INVALID = "EFP00006";
 
+	static final String MESSAGE_PICTURE_TYPE_INVALID = "EFP00007";
+
 }

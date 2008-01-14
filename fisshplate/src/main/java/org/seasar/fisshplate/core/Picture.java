@@ -18,11 +18,7 @@ package org.seasar.fisshplate.core;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Map;
-
-import javax.imageio.ImageIO;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
@@ -32,13 +28,18 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
+import org.seasar.fisshplate.util.FileInputStreamUtil;
+import org.seasar.fisshplate.util.ImageIOUtil;
 import org.seasar.fisshplate.util.OgnlUtil;
+import org.seasar.fisshplate.util.StringUtil;
 
 /**
  * @author a-conv
  */
 public class Picture extends AbstractCell {
 	private ElExpression expression;
+
+	private HSSFPatriarch patriarch;
 
 	/**
 	 * コンストラクタです。
@@ -55,7 +56,6 @@ public class Picture extends AbstractCell {
 	Picture(HSSFSheet sheet, HSSFCell cell, int rowNum, String expression) {
 		super(sheet, cell, rowNum);
 		this.expression = new ElExpression(expression);
-		System.out.println(expression);
 	}
 
 	/*
@@ -72,85 +72,95 @@ public class Picture extends AbstractCell {
 		context.nextCell();
 	}
 
-	private FileInputStream createFileInputStream(String filePath) throws FPMergeException {
-		try {
-			return new FileInputStream(filePath);
-		} catch (FileNotFoundException e) {
-			throw new FPMergeException("対象ファイルが見つかりません");
-		}
+	/**
+	 * 画像用オブジェクトを作成する
+	 * 
+	 * @param width
+	 * @param height
+	 * @param cellNo
+	 * @param rowNo
+	 * @return
+	 */
+	private HSSFClientAnchor createAnchor(int width, int height, int cellNo, int rowNo) {
+		HSSFClientAnchor anchor = new HSSFClientAnchor();
+		// TODO サイズを指定が利かないので最大値で初期化
+		anchor.setDx1(0);
+		anchor.setDx2(0);
+		anchor.setDy1(0);
+		anchor.setDy2(255);
+		// TODO カラムサイズの指定方法を検討する
+		int fromCellNo = cellNo;
+		int toCellNo = cellNo + 1;
+		int fromRowNo = rowNo;
+		int toRowNo = rowNo + 5;
+		//
+		anchor.setCol1((short) fromCellNo);
+		anchor.setCol2((short) toCellNo);
+		anchor.setRow1(fromRowNo);
+		anchor.setRow2(toRowNo);
+		anchor.setAnchorType(2);
+		return anchor;
 	}
 
-	private void close(FileInputStream fis) throws FPMergeException {
-		try {
-			fis.close();
-		} catch (IOException e) {
-			throw new FPMergeException("対象ファイルを閉じる際にエラーが発生しました。");
+	/**
+	 * 画像タイプ取得
+	 * 
+	 * @param suffix
+	 * @return
+	 * @throws FPMergeException
+	 */
+	private int setupPictureType(String suffix) throws FPMergeException {
+		if (suffix.toLowerCase().equals("jpg")) {
+			return HSSFWorkbook.PICTURE_TYPE_JPEG;
 		}
+		if (suffix.toLowerCase().equals("png")) {
+			return HSSFWorkbook.PICTURE_TYPE_PNG;
+		}
+		throw new FPMergeException(FPConsts.MESSAGE_PICTURE_TYPE_INVALID);
 	}
 
-	private BufferedImage read(FileInputStream fis) throws FPMergeException {
-		try {
-			return ImageIO.read(fis);
-		} catch (IOException e) {
-			throw new FPMergeException("対象ファイルを開く際にエラーが発生しました。");
-		}
-	}
-
-	private void write(BufferedImage img, String suffix, ByteArrayOutputStream baos) throws FPMergeException {
-		try {
-			ImageIO.write(img, suffix, baos);
-		} catch (IOException e) {
-			throw new FPMergeException("対象ファイルを開く際にエラーが発生しました。");
-		}
-	}
-
-	private void close(ByteArrayOutputStream baos) throws FPMergeException {
-		try {
-			baos.close();
-		} catch (IOException e) {
-			throw new FPMergeException("対象ファイルを閉じる際にエラーが発生しました。");
-		}
-	}
-
+	/**
+	 * 画像貼り付け
+	 * 
+	 * @param picturepath
+	 * @param context
+	 * @throws FPMergeException
+	 */
 	private void writePicture(String picturepath, FPContext context) throws FPMergeException {
-		FileInputStream imgFis = createFileInputStream(picturepath);
-		BufferedImage img = read(imgFis);
-		int imgWidth = 0;
-		int imgHeight = 0;
-		imgWidth = img.getWidth();
-		imgHeight = img.getHeight();
-		close(imgFis);
 
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		write(img, "jpg", baos);
+		FileInputStream imgFis = FileInputStreamUtil.createFileInputStream(picturepath);
+		BufferedImage img = ImageIOUtil.read(imgFis);
+		FileInputStreamUtil.close(imgFis);
 
 		HSSFWorkbook workbook = context.getOutWorkBook();
 		HSSFSheet worksheet = context.getOutSheet();
+		if (patriarch == null) {
+			patriarch = worksheet.createDrawingPatriarch();
+		}
+		HSSFClientAnchor anchor = createAnchor(img.getWidth(), img.getHeight(), context.getCurrentCellNum(), context.getCurrentRowNum());
 
-		HSSFPatriarch patriarch = worksheet.createDrawingPatriarch();
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		String suffix = StringUtil.parseSuffix(picturepath);
+		ImageIOUtil.write(img, suffix, baos);
 
-		HSSFClientAnchor anchor = new HSSFClientAnchor();
-		anchor.setDx1(0);
-		anchor.setDx2(imgWidth);
-		anchor.setDy1(0);
-		anchor.setDy2(imgHeight);
-		anchor.setCol1(context.getCurrentCellNum());
-		anchor.setCol2(context.getCurrentCellNum());
-		anchor.setRow1(context.getCurrentRowNum());
-		anchor.setRow2(context.getCurrentRowNum());
 		byte[] pictureData = baos.toByteArray();
-		int pictureIndex = workbook.addPicture(pictureData, HSSFWorkbook.PICTURE_TYPE_JPEG);
+		int pictureType = setupPictureType(suffix);
+		int pictureIndex = workbook.addPicture(pictureData, pictureType);
+
+		System.out.println("*[Anchor]=========================");
+		System.out.println("cellNo:=" + context.getCurrentCellNum());
+		System.out.println("rowNo:=" + context.getCurrentRowNum());
+		System.out.println("PictureType:=" + pictureType);
+		System.out.println("PictureIndex:=" + pictureIndex);
+
 		patriarch.createPicture(anchor, pictureIndex);
 
-		close(baos);
+		ImageIOUtil.close(baos);
 	}
 
 	private Object getValue(FPContext context) throws FPMergeException {
-
 		Map data = context.getData();
-
 		Object value = OgnlUtil.getValue(expression.getExpression(), data);
-
 		if (value == null) {
 			if (expression.isNullAllowed()) {
 				return expression.getNullValue();

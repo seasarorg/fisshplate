@@ -18,7 +18,10 @@ package org.seasar.fisshplate.template;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import junit.framework.TestCase;
@@ -38,6 +41,41 @@ public class FPTemplatePictureTest extends TestCase {
 		super.setUp();
 	}
 
+	public void test行の要素がリストの場合() throws Exception {
+		InputStream is = getClass().getResourceAsStream("/FPTemplatePictureTest2.xls");
+		try {
+			template = new FPTemplate(is);
+		} catch (FPParseException e) {
+			throw e;
+		} catch (IOException e) {
+			throw e;
+		} finally {
+			is.close();
+		}
+		Map map = new HashMap();
+		map.put("title", "タイトルである");
+		List aList = new ArrayList();
+		aList.add(new A("1行目", 10, new Date(), "image/logoKarmokar4.png"));
+		aList.add(new A("2行目", 20, new Date(), "image/logoKarmokar4.png"));
+		aList.add(new A("3行目", 30, new Date(), "image/logoKarmokar5.png"));
+		aList.add(new A("4行目", 10, new Date(), "image/logoKarmokar4.png"));
+		aList.add(new A("5行目", 20, new Date(), "image/logoKarmokar4.png"));
+		aList.add(new A("6行目", 30, new Date(), "image/logoKarmokar5.png"));
+		map.put("b", aList);
+
+		HSSFWorkbook wb;
+		try {
+			wb = template.process(map);
+		} catch (FPMergeException e) {
+			throw e;
+		}
+
+		FileOutputStream fos = new FileOutputStream("target/out_picture2.xls");
+		wb.write(fos);
+		fos.close();
+
+	}
+
 	public void test画像出力() throws Exception {
 		InputStream is = getClass().getResourceAsStream("/FPTemplatePictureTest.xls");
 		try {
@@ -51,7 +89,7 @@ public class FPTemplatePictureTest extends TestCase {
 		}
 		Map map = new HashMap();
 
-		map.put("data", new A("image/sample.jpg"));
+		map.put("data", new A("1行目", 10, new Date(), "image/logoKarmokar4.png"));
 
 		HSSFWorkbook wb;
 		try {
@@ -67,16 +105,53 @@ public class FPTemplatePictureTest extends TestCase {
 	}
 
 	public class A {
+		private String name;
+		private int num;
+		private Date date;
 		private String picture;
 
-		A(String picture) {
+		A(String name, int num, Date date, String picture) {
+			this.name = name;
+			this.num = num;
+			this.date = date;
 			this.picture = picture;
 		}
 
-		public String getPicture() {
-			return picture;
+		public Date getDate() {
+			return date;
 		}
 
+		public void setDate(Date date) {
+			this.date = date;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public int getNum() {
+			return num;
+		}
+
+		public void setNum(int num) {
+			this.num = num;
+		}
+
+		/**
+		 * @return picture
+		 */
+		public String getPicture() {
+			return this.picture;
+		}
+
+		/**
+		 * @param picture
+		 *            設定する picture
+		 */
 		public void setPicture(String picture) {
 			this.picture = picture;
 		}
