@@ -21,6 +21,7 @@ import java.io.FileOutputStream;
 import junit.framework.TestCase;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -61,6 +62,9 @@ public class LearningPoiTest extends TestCase {
 				}
 				HSSFRichTextString richText = new HSSFRichTextString(null);
 				cell.setCellValue(richText);
+				HSSFCellStyle style = input.createCellStyle();
+				style.setFillPattern(HSSFCellStyle.NO_FILL);
+				cell.setCellStyle(style);
 			}
 		}
 
