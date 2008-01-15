@@ -61,4 +61,6 @@ public interface FPConsts {
 
 	static final String MESSAGE_PICTURE_TYPE_INVALID = "EFP00007";
 
+	static final String MESSAGE_ID_NOT_ITERATOR_INVALID_MAX = "EFP00008";
+
 }

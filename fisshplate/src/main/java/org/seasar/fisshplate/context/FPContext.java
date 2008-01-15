@@ -38,6 +38,7 @@ public class FPContext {
 	private Map data;	
 	private boolean shouldHeaderOut;
 	private boolean shouldFooterOut;
+	private boolean skipMerge = false;
 
 	/**
 	 * コンストラクタです。
@@ -192,6 +193,14 @@ public class FPContext {
 	
 	public void setShouldFooterOut(boolean should){
 		this.shouldFooterOut = should;
+	}
+
+	public boolean isSkipMerge() {
+		return skipMerge;
+	}
+
+	public void setSkipMerge(boolean skipMerge) {
+		this.skipMerge = skipMerge;
 	}
 
 

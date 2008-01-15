@@ -53,13 +53,15 @@ public class El extends AbstractCell {
 		HSSFCell out = context.getCurrentCell();		
 		copyCellStyle(context, out);
 		
-		Object value = getValue(context);		
-		if(value instanceof Date){
-			out.setCellValue((Date)value);			
-		}else if(isNumber(value)){
-			out.setCellValue(Double.valueOf(value.toString()).doubleValue());
-		}else{
-			out.setCellValue(new HSSFRichTextString(value.toString()));			
+		if(!context.isSkipMerge()){
+			Object value = getValue(context);		
+			if(value instanceof Date){
+				out.setCellValue((Date)value);			
+			}else if(isNumber(value)){
+				out.setCellValue(Double.valueOf(value.toString()).doubleValue());
+			}else{
+				out.setCellValue(new HSSFRichTextString(value.toString()));			
+			}
 		}
 		context.nextCell();
 	}

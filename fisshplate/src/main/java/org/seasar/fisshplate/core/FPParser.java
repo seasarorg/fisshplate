@@ -37,7 +37,7 @@ public class FPParser {
 	private Root rootElement;
 	private Stack blockStack = new Stack();
 
-	private static final Pattern patIterator = Pattern.compile("^\\s*#foreach\\s+(\\S+)\\s*:\\s*(\\S+)(\\s+index=(\\S+))*\\s*$");
+	private static final Pattern patIterator = Pattern.compile("^\\s*#foreach\\s+(\\S+)\\s*:\\s*(\\S+)(\\s+index=(\\S+))*(\\s+max=(\\S+))*\\s*$");
 	private static final Pattern patEnd = Pattern.compile("^\\s*#end\\s*$");
 	private static final Pattern patIf = Pattern.compile("^\\s*#if\\s*\\(\\s*(.+)\\s*\\)");
 	private static final Pattern patElseIf = Pattern.compile("^\\s*#else\\s+if\\s*\\(\\s*(.+)\\s*\\)");
@@ -169,11 +169,21 @@ public class FPParser {
 		rootElement.addBody(elem);
 	}
 
-	private void iteratorBlock(Matcher mat) {
+	private void iteratorBlock(Matcher mat) throws FPParseException{
 		String varName = mat.group(1);
 		String iteratorName = mat.group(2);
 		String indexName = mat.group(4);
-		AbstractBlock block = new IteratorBlock(varName, iteratorName, indexName);
+		String maxString = mat.group(6);
+		int max = 0;
+		if(maxString != null){
+			try{
+				max = Integer.parseInt(maxString);
+			}catch(NumberFormatException ex){
+				throw new FPParseException(FPConsts.MESSAGE_ID_NOT_ITERATOR_INVALID_MAX);
+			}
+		}
+		
+		AbstractBlock block = new IteratorBlock(varName, iteratorName, indexName, max);
 		pushBlockToStack(block);
 	}
 

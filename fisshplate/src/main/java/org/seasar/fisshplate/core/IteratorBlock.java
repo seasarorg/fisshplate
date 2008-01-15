@@ -29,25 +29,19 @@ public class IteratorBlock extends AbstractBlock{
 	private String varName;
 	private String iteratorName;
 	private String indexName;
+	private int max;
 	
 	/**
-	 * 要素を保持する変数名とイテレータ自身の名前を受け取ります。ループのインデックス名はデフォルト値「index」になります。
-	 * @param varName イテレータ内の要素を保持する変数名
-	 * @param iteratorName イテレータ名
-	 */
-	IteratorBlock(String varName, String iteratorName){
-				this(varName, iteratorName, FPConsts.DEFAULT_ITERATOR_INDEX_NAME);
-	}
-	
-	/**
-	 * 要素を保持する変数名とイテレータ自身の名前とループのインデックス名を受け取ります。
+	 * 要素を保持する変数名とイテレータ自身の名前とループのインデックス名とループの最大繰り返し回数を受け取ります。
 	 * @param varName イテレータ内の要素を保持する変数名
 	 * @param iteratorName イテレータ名
 	 * @param indexName ループのインデックス名
+	 * @param max ループの最大繰り返し回数 
 	 */
-	IteratorBlock(String varName, String iteratorName, String indexName){
+	IteratorBlock(String varName, String iteratorName, String indexName, int max){
 		this.varName = varName;
 		this.iteratorName = iteratorName;
+		this.max = max;
 		if(indexName == null || "".equals(indexName.trim())){
 			this.indexName = FPConsts.DEFAULT_ITERATOR_INDEX_NAME;
 		}else{
@@ -83,12 +77,24 @@ public class IteratorBlock extends AbstractBlock{
 			Object var = ite.next();
 			data.put(varName, var);	
 			data.put(indexName, new Integer(line));
-			for(int i=0; i < childList.size(); i++){
-				TemplateElement elem = (TemplateElement) childList.get(i);			
-				elem.merge(context);
-			}			
+			mergeChildren(context);
 			line ++;
 		}		
+		
+		context.setSkipMerge(true);
+		while (max > line){
+			data.put(indexName, new Integer(line));
+			mergeChildren(context);			
+			line ++;
+		}
+		context.setSkipMerge(false);
+	}
+	
+	private  void mergeChildren(FPContext context) throws FPMergeException{
+		for(int i=0; i < childList.size(); i++){
+			TemplateElement elem = (TemplateElement) childList.get(i);			
+			elem.merge(context);
+		}
 	}
 
 }

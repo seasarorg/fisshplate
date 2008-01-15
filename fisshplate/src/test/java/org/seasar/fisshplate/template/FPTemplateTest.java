@@ -214,6 +214,39 @@ public class FPTemplateTest extends TestCase {
 		
 	}
 	
+	public void test空行指定テスト() throws Exception{
+		InputStream is = getClass().getResourceAsStream("/FPTemplateTest_iteratorMax.xls");
+		try {
+			template = new FPTemplate(is);
+		} catch (FPParseException e) {
+			throw e;
+		} catch (IOException e) {
+			throw e;
+		}finally{
+			is.close();
+		}
+		Map map = new HashMap();
+		map.put("title", "タイトルである");
+		List aList = new ArrayList();
+		aList.add(new A("1行目",10,new Date()));
+		aList.add(new A("2行目",20,new Date()));
+		aList.add(new A("3行目",30,new Date()));
+		aList.add(new A("4行目",10,new Date()));
+		aList.add(new A("5行目",20,new Date()));
+		aList.add(new A("6行目",30,new Date()));		
+		map.put("b", aList);
+		
+		HSSFWorkbook wb;
+		try {
+			wb = template.process(map);
+		} catch (FPMergeException e) {		
+			throw e;
+		}
+		
+		FileOutputStream fos = new FileOutputStream("target/out_iteratorMax.xls");		
+		wb.write(fos);
+	}
+	
 	public class A{
 		private String name;
 		private int num;
