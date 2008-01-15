@@ -61,8 +61,10 @@ public class FPContext {
 		outSheet.setDefaultRowHeight(templateSheet.getDefaultRowHeight());
 		PoiUtil.copyPrintSetup(templateSheet, outSheet);
 		PoiUtil.copyPaneInfo(templateSheet, outSheet);
-		outWorkBook.setPrintArea(0, template.getPrintArea(0));		
-
+		String printArea = template.getPrintArea(0);
+		if(printArea != null){
+			outWorkBook.setPrintArea(0, printArea);
+		}
 		this.data = data;
 		init();
 	}
