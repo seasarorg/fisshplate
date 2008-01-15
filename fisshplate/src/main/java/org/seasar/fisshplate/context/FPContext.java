@@ -21,6 +21,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.seasar.fisshplate.util.PoiUtil;
 
 /**
  * 解析やデータ埋め込み時に参照される、グローバル値を保持するクラスです。
@@ -58,6 +59,9 @@ public class FPContext {
 		HSSFSheet templateSheet = template.getSheetAt(0);
 		outSheet.setDefaultColumnWidth(templateSheet.getDefaultColumnWidth());
 		outSheet.setDefaultRowHeight(templateSheet.getDefaultRowHeight());
+		PoiUtil.copyPrintSetup(templateSheet, outSheet);
+		PoiUtil.copyPaneInfo(templateSheet, outSheet);
+		outWorkBook.setPrintArea(0, template.getPrintArea(0));		
 
 		this.data = data;
 		init();
