@@ -15,6 +15,9 @@
  */
 package org.seasar.fisshplate.util;
 
+import java.lang.reflect.InvocationTargetException;
+
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.hssf.usermodel.HSSFFooter;
 import org.apache.poi.hssf.usermodel.HSSFHeader;
 import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
@@ -40,45 +43,38 @@ public class PoiUtil {
 		}
 	}
 	
-	public static void copyPrintSetup(HSSFSheet srcSheet, HSSFSheet destSheet){		
-		HSSFPrintSetup srcPs = srcSheet.getPrintSetup();
-		HSSFPrintSetup destPs = destSheet.getPrintSetup();
-		destPs.setLandscape(srcPs.getLandscape());
-		destPs.setHeaderMargin(srcPs.getHeaderMargin());
-		destPs.setFooterMargin(srcPs.getFooterMargin());
-		destPs.setLeftToRight(srcPs.getLeftToRight());
-		destPs.setScale(srcPs.getScale());
-		destPs.setCopies(srcPs.getCopies());
-		destPs.setFitHeight(srcPs.getFitHeight());
-		destPs.setFitWidth(srcPs.getFitWidth());
-		destPs.setValidSettings(srcPs.getValidSettings());
-		destPs.setNoOrientation(srcPs.getNoOrientation());
-		destPs.setPaperSize(srcPs.getPaperSize());
-		destPs.setHResolution(srcPs.getHResolution());
-		destPs.setVResolution(srcPs.getVResolution());
+	public static void copyPrintSetup(HSSFSheet srcSheet, HSSFSheet destSheet){
+		try {
+			HSSFPrintSetup srcPs = srcSheet.getPrintSetup();
+			HSSFPrintSetup destPs = destSheet.getPrintSetup();
+			
+			BeanUtils.copyProperties(destPs, srcPs);
 		
-		copyMargin(srcSheet, destSheet, HSSFSheet.TopMargin);
-		copyMargin(srcSheet, destSheet, HSSFSheet.BottomMargin);
-		copyMargin(srcSheet, destSheet, HSSFSheet.LeftMargin);
-		copyMargin(srcSheet, destSheet, HSSFSheet.RightMargin);
 		
-		destSheet.setHorizontallyCenter(srcSheet.getHorizontallyCenter());
-		destSheet.setVerticallyCenter(srcSheet.getVerticallyCenter(false));
+			copyMargin(srcSheet, destSheet, HSSFSheet.TopMargin);
+			copyMargin(srcSheet, destSheet, HSSFSheet.BottomMargin);
+			copyMargin(srcSheet, destSheet, HSSFSheet.LeftMargin);
+			copyMargin(srcSheet, destSheet, HSSFSheet.RightMargin);
+			
+			destSheet.setHorizontallyCenter(srcSheet.getHorizontallyCenter());
+			destSheet.setVerticallyCenter(srcSheet.getVerticallyCenter(false));
+			
+			HSSFHeader srcHeader = srcSheet.getHeader();
+			HSSFHeader destHeader = destSheet.getHeader();
+			
+			BeanUtils.copyProperties(destHeader, srcHeader);
+			
+			HSSFFooter srcFooter = srcSheet.getFooter();
+			HSSFFooter destFooter = destSheet.getFooter();
+			
+			BeanUtils.copyProperties(destFooter, srcFooter);
+			
 		
-		HSSFHeader srcHeader = srcSheet.getHeader();
-		HSSFHeader destHeader = destSheet.getHeader();
-		
-		destHeader.setCenter(srcHeader.getCenter());
-		destHeader.setLeft(srcHeader.getLeft());
-		destHeader.setRight(srcHeader.getRight());
-		
-		HSSFFooter srcFooter = srcSheet.getFooter();
-		HSSFFooter destFooter = destSheet.getFooter();
-		
-		destFooter.setCenter(srcFooter.getCenter());
-		destFooter.setLeft(srcFooter.getLeft());
-		destFooter.setRight(srcFooter.getRight());		
-		
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		} catch (InvocationTargetException e) {
+			throw new RuntimeException(e);
+		}		
 		
 	}
 	
