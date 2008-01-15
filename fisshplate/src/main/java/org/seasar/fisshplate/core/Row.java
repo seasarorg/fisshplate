@@ -44,7 +44,7 @@ public class Row implements TemplateElement {
 	private static final Pattern patEl = Pattern.compile("^\\s*\\$\\{(.+)\\}");
 
 	//#picture(${data.picture})
-	private static final Pattern patPicture = Pattern.compile("^\\#picture\\(\\$\\{(.+)\\}\\)");
+	private static final Pattern patPicture = Pattern.compile("^\\#picture\\(\\$\\{(.+)}\\s+cell=(.+)\\s*\\s+row=(.+)\\)");
 
 	/**
 	 * コンストラクタです。テンプレート側の行オブジェクトを受け取り、その行内のセル情報を解析して保持します。
@@ -84,7 +84,9 @@ public class Row implements TemplateElement {
 		Matcher pictureMat = patPicture.matcher(pictureValue);
 		if (pictureMat.find()) {
 			String picturePathExpression = pictureMat.group(1);
-			return new Picture(templateSheet, templateCell, rowNum, picturePathExpression);
+			String cellRange = pictureMat.group(2);
+			String rowRange = pictureMat.group(3);
+			return new Picture(templateSheet, templateCell, rowNum, picturePathExpression,cellRange,rowRange);
 		}
 		
 		String value = templateCell.getRichStringCellValue().getString();

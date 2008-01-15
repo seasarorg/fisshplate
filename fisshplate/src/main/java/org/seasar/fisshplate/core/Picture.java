@@ -43,6 +43,10 @@ public class Picture extends AbstractCell {
 
 	private HSSFPatriarch patriarch;
 
+	private String cellRange;
+
+	private String rowRange;
+
 	/**
 	 * コンストラクタです。
 	 * 
@@ -54,10 +58,16 @@ public class Picture extends AbstractCell {
 	 *            行番号
 	 * @param expression
 	 *            評価式
+	 * @param rowRange
+	 *            画像ファイルの縦幅
+	 * @param cellRange
+	 *            画像ファイルの横幅
 	 */
-	Picture(HSSFSheet sheet, HSSFCell cell, int rowNum, String expression) {
+	Picture(HSSFSheet sheet, HSSFCell cell, int rowNum, String expression, String cellRange, String rowRange) {
 		super(sheet, cell, rowNum);
 		this.expression = new ElExpression(expression);
+		this.cellRange = cellRange;
+		this.rowRange = rowRange;
 	}
 
 	/*
@@ -69,14 +79,23 @@ public class Picture extends AbstractCell {
 		HSSFCell out = context.getCurrentCell();
 		copyCellStyle(context, out);
 		Object value = getValue(context);
-		String picturepath = (String) value;
-		System.out.println(picturepath);
-		if (!picturepath.equals("") && picturepath.length() > 0) {
-			System.out.println("処理開始");
-			writePicture(picturepath, context);
-			System.out.println("処理終了");
+		String picturePath = (String) value;
+		int cellRangeIntVal = Integer.parseInt(cellRange);
+		int rowRangeIntVal = Integer.parseInt(rowRange);
+		if (isWritePicture(picturePath)) {
+			writePicture(picturePath, cellRangeIntVal, rowRangeIntVal, context);
 		}
 		context.nextCell();
+	}
+
+	private boolean isWritePicture(String picturePath) {
+		if (picturePath.equals("")) {
+			return false;
+		}
+		if (picturePath.length() <= 0) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -86,21 +105,23 @@ public class Picture extends AbstractCell {
 	 * @param height
 	 * @param cellNo
 	 * @param rowNo
+	 * @param rowRangeIntVal
+	 * @param cellRangeIntVal
 	 * @return
 	 */
-	private HSSFClientAnchor createAnchor(int width, int height, int cellNo, int rowNo) {
+	private HSSFClientAnchor createAnchor(int width, int height, int cellNo, int rowNo, int cellRangeIntVal, int rowRangeIntVal) {
 		HSSFClientAnchor anchor = new HSSFClientAnchor();
 		// TODO サイズを指定が利かないので最大値で初期化
 		anchor.setDx1(0);
 		anchor.setDx2(0);
 		anchor.setDy1(0);
 		anchor.setDy2(255);
-		// TODO カラムサイズの指定方法を検討する
+
 		int fromCellNo = cellNo;
-		int toCellNo = cellNo + 1;
+		int toCellNo = cellNo + cellRangeIntVal;
 		int fromRowNo = rowNo;
-		int toRowNo = rowNo + 5;
-		//
+		int toRowNo = rowNo + rowRangeIntVal;
+
 		anchor.setCol1((short) fromCellNo);
 		anchor.setCol2((short) toCellNo);
 		anchor.setRow1(fromRowNo);
@@ -130,10 +151,12 @@ public class Picture extends AbstractCell {
 	 * 画像貼り付け
 	 * 
 	 * @param picturepath
+	 * @param rowRangeIntVal
+	 * @param cellRangeIntVal
 	 * @param context
 	 * @throws FPMergeException
 	 */
-	private void writePicture(String picturepath, FPContext context) throws FPMergeException {
+	private void writePicture(String picturepath, int cellRangeIntVal, int rowRangeIntVal, FPContext context) throws FPMergeException {
 
 		FileInputStream imgFis = FileInputStreamUtil.createFileInputStream(picturepath);
 		BufferedImage img = ImageIOUtil.read(imgFis);
@@ -144,7 +167,12 @@ public class Picture extends AbstractCell {
 		if (patriarch == null) {
 			patriarch = worksheet.createDrawingPatriarch();
 		}
-		HSSFClientAnchor anchor = createAnchor(img.getWidth(), img.getHeight(), context.getCurrentCellNum(), context.getCurrentRowNum());
+
+		int imgWidth = img.getWidth();
+		int imgHeight = img.getHeight();
+		int cellNo = context.getCurrentCellNum();
+		int rowNo = context.getCurrentRowNum();
+		HSSFClientAnchor anchor = createAnchor(imgWidth, imgHeight, cellNo, rowNo, cellRangeIntVal, rowRangeIntVal);
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		String suffix = StringUtil.parseSuffix(picturepath);
