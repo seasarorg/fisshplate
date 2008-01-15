@@ -39,6 +39,11 @@ public class LearningPoiTest extends TestCase {
 		return new HSSFWorkbook(poifs);
 	}
 
+	/**
+	 * シート初期化処理テスト
+	 * 
+	 * @throws Exception
+	 */
 	public void testInithialize() throws Exception {
 		String filePath = "src/test/resources/LearningPOITest.xls";
 		HSSFWorkbook input = setupInputWorkbook(filePath);
