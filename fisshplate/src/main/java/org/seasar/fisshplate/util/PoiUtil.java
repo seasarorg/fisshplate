@@ -58,6 +58,7 @@ public class PoiUtil {
 			
 			destSheet.setHorizontallyCenter(srcSheet.getHorizontallyCenter());
 			destSheet.setVerticallyCenter(srcSheet.getVerticallyCenter(false));
+			destSheet.setAutobreaks(srcSheet.getAutobreaks());
 			
 			HSSFHeader srcHeader = srcSheet.getHeader();
 			HSSFHeader destHeader = destSheet.getHeader();
