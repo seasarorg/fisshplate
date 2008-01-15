@@ -42,7 +42,7 @@ public class FPParser {
 	private static final Pattern patIf = Pattern.compile("^\\s*#if\\s*\\(\\s*(.+)\\s*\\)");
 	private static final Pattern patElseIf = Pattern.compile("^\\s*#else\\s+if\\s*\\(\\s*(.+)\\s*\\)");
 	private static final Pattern patElse = Pattern.compile("^\\s*#else\\s*$");
-	private static final Pattern patComment = Pattern.compile("^\\s*#\\.*");
+	private static final Pattern patComment = Pattern.compile("^\\s*#comment\\.*");
 	private static final Pattern patPageBreak = Pattern.compile("#pageBreak");
 
 	// Header情報
