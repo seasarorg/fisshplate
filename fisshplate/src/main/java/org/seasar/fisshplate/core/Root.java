@@ -18,6 +18,7 @@ package org.seasar.fisshplate.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
 
@@ -42,6 +43,15 @@ public class Root implements TemplateElement {
 		
 		if(context.shouldFooterOut()){
 			pageFooterBlock.merge(context);
+		}
+		
+		//ゴミ清掃
+		HSSFSheet outSheet = context.getOutSheet();
+		int currentRowNum = context.getCurrentRowNum();
+		int lastRowNum = outSheet.getLastRowNum();
+		
+		for(int i = currentRowNum; i <= lastRowNum; i++){
+			outSheet.removeRow(outSheet.getRow(i));
 		}
 	}
 	

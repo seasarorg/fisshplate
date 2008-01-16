@@ -24,6 +24,7 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.seasar.fisshplate.wrapper.WorkbookWrapper;
 
 /**
  * @author rokugen
@@ -49,9 +50,11 @@ public class RowTest extends TestCase {
 		cell.setCellValue(10D);
 		//cellNum 2 は設定しない。
 		cell = templateRow.createCell((short)3);
-		cell.setCellValue(new HSSFRichTextString("${data}"));				
+		cell.setCellValue(new HSSFRichTextString("${data}"));
 		
-		Row row = new Row(templateSheet, templateRow, root);
+		WorkbookWrapper workbook = new WorkbookWrapper(templateWb);
+		
+		Row row = new Row(workbook.getSheetAt(0).getRow(0), root);
 		List elementList = row.cellElementList;		
 		
 		TemplateElement elem = (TemplateElement) elementList.get(0);
@@ -59,7 +62,7 @@ public class RowTest extends TestCase {
 		elem = (TemplateElement) elementList.get(1);
 		assertTrue(elem.getClass() == Literal.class);
 		elem = (TemplateElement) elementList.get(2);
-		assertTrue(elem.getClass() == NullElement.class);
+		assertTrue(elem.getClass() == NullCell.class);
 		elem = (TemplateElement) elementList.get(3);
 		assertTrue(elem.getClass() == El.class);
 		

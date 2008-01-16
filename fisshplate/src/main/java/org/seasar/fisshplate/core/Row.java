@@ -23,10 +23,11 @@ import java.util.regex.Pattern;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
+import org.seasar.fisshplate.wrapper.CellWrapper;
+import org.seasar.fisshplate.wrapper.RowWrapper;
 
 /**
  * 行要素クラスです。行の中にあるセルの情報を保持します。
@@ -36,9 +37,7 @@ import org.seasar.fisshplate.exception.FPMergeException;
  */
 public class Row implements TemplateElement {
 	protected List cellElementList = new ArrayList();
-
-	private HSSFRow templateRow;
-
+	private short rowHeight;
 	private Root root;
 
 	private static final Pattern patEl = Pattern.compile("^\\s*\\$\\{(.+)\\}");
@@ -56,46 +55,49 @@ public class Row implements TemplateElement {
 	 * @param root
 	 *            自分自身が属してるルート要素クラス
 	 */
-	Row(HSSFSheet templateSheet, HSSFRow templateRow, Root root) {
-		this.root = root;
-		this.templateRow = templateRow;
-		if (templateRow == null) {
+	Row(RowWrapper templateRow, Root root) {
+		this.root = root;				
+		if (templateRow.isNullRow()) {
+			this.rowHeight = templateRow.getSheet().getHSSFSheet().getDefaultRowHeight();
+			cellElementList.add(new NullElement());
 			return;
 		}
-		int rowNum = templateRow.getRowNum();
-		for (int i = 0; i <= templateRow.getLastCellNum(); i++) {
-			HSSFCell templateCell = templateRow.getCell((short) i);
-			TemplateElement element = getElement(templateSheet, templateCell, rowNum);
+		HSSFRow hssfRow = templateRow.getHSSFRow();
+		this.rowHeight = hssfRow.getHeight();		
+		for (int i = 0; i < templateRow.getCellCount(); i++) {
+			CellWrapper templateCell = templateRow.getCell(i);
+			TemplateElement element = getElement(templateCell);
 			cellElementList.add(element);
 		}
 	}
 
-	private TemplateElement getElement(HSSFSheet templateSheet, HSSFCell templateCell, int rowNum) {
-		if (templateCell == null) {
-			return new NullElement();
+	private TemplateElement getElement(CellWrapper cell) {
+		HSSFCell hssfCell = cell.getHSSFCell();
+		if (hssfCell == null) {
+			return new NullCell();
 		}
 
-		if (templateCell.getCellType() != HSSFCell.CELL_TYPE_STRING) {
-			return new Literal(templateSheet, templateCell, rowNum);
+		if (hssfCell.getCellType() != HSSFCell.CELL_TYPE_STRING) {
+			return new Literal(cell);
 		}
 
 		// 画像の場合
-		String pictureValue = templateCell.getRichStringCellValue().getString();
+		String pictureValue = hssfCell.getRichStringCellValue().getString();
 		Matcher pictureMat = patPicture.matcher(pictureValue);
 		if (pictureMat.find()) {
 			String picturePathExpression = pictureMat.group(1);
 			String cellRange = pictureMat.group(2);
 			String rowRange = pictureMat.group(3);
-			return new Picture(templateSheet, templateCell, rowNum, picturePathExpression,cellRange,rowRange);
+			return new Picture(cell, picturePathExpression,cellRange,rowRange);
 		}
 		
-		String value = templateCell.getRichStringCellValue().getString();
+		String value = hssfCell.getRichStringCellValue().getString();
 		Matcher mat = patEl.matcher(value);
 		if (mat.find()) {
 			String expression = mat.group(1);
-			return new El(templateSheet, templateCell, rowNum, expression);
+			return new El(cell, expression);
 		} else {
-			return new Literal(templateSheet, templateCell, rowNum);
+			return new Literal(cell);
 		}
 
 	}
@@ -113,10 +115,8 @@ public class Row implements TemplateElement {
 		}
 		context.setShouldFooterOut(true);
 
-		HSSFRow outRow = context.getcurrentRow();
-		if (templateRow != null) {
-			outRow.setHeight(templateRow.getHeight());
-		}
+		HSSFRow outRow = context.createCurrentRow();
+		outRow.setHeight(rowHeight);
 		Map data = context.getData();
 		data.put(FPConsts.ROW_NUMBER_NAME, new Integer(context.getCurrentRowNum() + 1));
 		for (int i = 0; i < cellElementList.size(); i++) {

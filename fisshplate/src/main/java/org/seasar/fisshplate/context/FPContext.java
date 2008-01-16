@@ -20,8 +20,6 @@ import java.util.Map;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.seasar.fisshplate.util.PoiUtil;
 
 /**
  * 解析やデータ埋め込み時に参照される、グローバル値を保持するクラスです。
@@ -30,9 +28,7 @@ import org.seasar.fisshplate.util.PoiUtil;
  * @author a-conv
  * 
  */
-public class FPContext {
-	private HSSFWorkbook template;
-	private HSSFWorkbook outWorkBook;
+public class FPContext {	
 	private HSSFSheet outSheet;
 	private int currentRowNum;
 	private short currentCellNum;
@@ -43,28 +39,13 @@ public class FPContext {
 
 	/**
 	 * コンストラクタです。
-	 * 
-	 * @param template
-	 *            テンプレートとなるワークブック
 	 * @param out
-	 *            出力するワークブック
+	 *            出力するシート
 	 * @param data
 	 *            埋め込むデータ
 	 */
-	public FPContext(HSSFWorkbook template, HSSFWorkbook out, Map data) {
-		this.template = template;
-		this.outWorkBook = out;
-		this.outSheet = outWorkBook.createSheet();
-		outWorkBook.setSheetName(0, template.getSheetName(0));
-		HSSFSheet templateSheet = template.getSheetAt(0);
-		outSheet.setDefaultColumnWidth(templateSheet.getDefaultColumnWidth());
-		outSheet.setDefaultRowHeight(templateSheet.getDefaultRowHeight());
-		PoiUtil.copyPrintSetup(templateSheet, outSheet);
-		PoiUtil.copyPaneInfo(templateSheet, outSheet);
-		String printArea = template.getPrintArea(0);
-		if(printArea != null){
-			outWorkBook.setPrintArea(0, printArea);
-		}
+	public FPContext(HSSFSheet out, Map data) {		 
+		this.outSheet = out;
 		this.data = data;
 		init();
 	}
@@ -103,15 +84,25 @@ public class FPContext {
 
 	/**
 	 * 現在の出力対象行を戻します。
+	 * まだ無ければ生成します。
 	 * 
 	 * @return 出力対象行
 	 */
-	public HSSFRow getcurrentRow() {
+	public HSSFRow getCurrentRow() {
 		HSSFRow row = outSheet.getRow(currentRowNum);
 		if (row == null) {
 			row = outSheet.createRow(currentRowNum);
-		}
+		}				
 		return row;
+	}
+	
+	/**
+	 * 現在の出力対象行を新たに生成します。
+	 * @return
+	 */
+	public HSSFRow createCurrentRow(){
+		outSheet.removeRow(getCurrentRow());
+		return outSheet.createRow(currentRowNum);
 	}
 
 	/**
@@ -120,41 +111,13 @@ public class FPContext {
 	 * @return 出力対象セル
 	 */
 	public HSSFCell getCurrentCell() {
-		HSSFRow row = getcurrentRow();
+		HSSFRow row = getCurrentRow();
 
 		HSSFCell cell = row.getCell(currentCellNum);
 		if (cell == null) {
 			cell = row.createCell(currentCellNum);
 		}
-		HSSFSheet templateSheet = template.getSheetAt(0);
-		short width = templateSheet.getColumnWidth(currentCellNum);
-		short defaultWidth = templateSheet.getDefaultColumnWidth();
-		// テンプレート上で列幅がデフォルトのまんまだと、HSSFSheet#getDefaultColumnWidth()の値が
-		// 戻って来ちゃうので、苦肉の策でデフォルトと同じだったら256倍してます。
-		// TODO フォント設定前なので若干狂う。シートのデフォルトのフォントが取れればいいんだけど・・・
-		if (width == defaultWidth) {
-			width *= 256;
-		}
-		outSheet.setColumnWidth(currentCellNum, width);
 		return cell;
-	}
-
-	/**
-	 * 出力するワークブックを戻します。
-	 * 
-	 * @return 出力するワークブック
-	 */
-	public HSSFWorkbook getOutWorkBook() {
-		return outWorkBook;
-	}
-
-	/**
-	 * テンプレートとなるワークブックを戻します。
-	 * 
-	 * @return テンプレートワークブック
-	 */
-	public HSSFWorkbook getTemplate() {
-		return template;
 	}
 
 	/**

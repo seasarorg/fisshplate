@@ -27,8 +27,7 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.seasar.fisshplate.exception.FPMergeException;
-import org.seasar.fisshplate.exception.FPParseException;
+import org.seasar.fisshplate.exception.FPException;
 
 public class FPTemplateHeaderTest extends TestCase {
 	private FPTemplate template;
@@ -42,32 +41,28 @@ public class FPTemplateHeaderTest extends TestCase {
 	}
 	
 	public void test行の要素がリストの場合() throws Exception  {
-		InputStream is = getClass().getResourceAsStream("/FPTemplateHeaderTest2.xls");		
+		InputStream is = getClass().getResourceAsStream("/FPTemplateHeaderTest2.xls");
+		HSSFWorkbook wb = null;
 		try {
-			template = new FPTemplate(is);
-		} catch (FPParseException e) {
+			template = new FPTemplate();
+			Map map = new HashMap();
+			map.put("title", "タイトルである");
+			List aList = new ArrayList();
+			aList.add(new A("1行目",10,new Date()));
+			aList.add(new A("2行目",20,new Date()));
+			aList.add(new A("3行目",30,new Date()));
+			aList.add(new A("4行目",10,new Date()));
+			aList.add(new A("5行目",20,new Date()));
+			aList.add(new A("6行目",30,new Date()));
+			map.put("b", aList);			
+		
+			wb = template.process(is,map);	
+		} catch (FPException e) {
 			throw e;
 		} catch (IOException e) {
 			throw e;
 		}finally{
 			is.close();
-		}
-		Map map = new HashMap();
-		map.put("title", "タイトルである");
-		List aList = new ArrayList();
-		aList.add(new A("1行目",10,new Date()));
-		aList.add(new A("2行目",20,new Date()));
-		aList.add(new A("3行目",30,new Date()));
-		aList.add(new A("4行目",10,new Date()));
-		aList.add(new A("5行目",20,new Date()));
-		aList.add(new A("6行目",30,new Date()));
-		map.put("b", aList);
-		
-		HSSFWorkbook wb;
-		try {
-			wb = template.process(map);
-		} catch (FPMergeException e) {		
-			throw e;
 		}
 		
 		FileOutputStream fos = new FileOutputStream("target/out_header.xls");		

@@ -20,12 +20,12 @@ import java.lang.reflect.InvocationTargetException;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.Region;
 import org.seasar.fisshplate.context.FPContext;
+import org.seasar.fisshplate.wrapper.CellWrapper;
 
 /**
  * セル要素の基底抽象クラスです。
@@ -36,7 +36,7 @@ public abstract class AbstractCell implements TemplateElement {
 	/**
 	 * テンプレート側のセル
 	 */
-	protected HSSFCell templateCell;
+	protected CellWrapper cell;
 	private boolean isMergedCell;
 	private short relativeMergedColumnTo;
 	private int relativeMergedRowNumTo;
@@ -45,14 +45,20 @@ public abstract class AbstractCell implements TemplateElement {
 	/**
 	 * コンストラクタです。
 	 * 
-	 * @param templateCell
+	 * @param cell
 	 */
-	AbstractCell( HSSFSheet templateSheet,HSSFCell templateCell,int rowNum) {
-		this.templateCell = templateCell;
+	AbstractCell(CellWrapper cell) {
+		this.cell = cell;
+		HSSFSheet templateSheet = cell.getRow().getSheet().getHSSFSheet();
+		int rowNum = cell.getRow().getHSSFRow().getRowNum();
+//		if(cell.isNullCell()){
+//			return;
+//		}
+		
 		//マージ情報をなめて、スタート地点が合致すれば保存しておく。
 		for(int i=0; i < templateSheet.getNumMergedRegions();i++){
-			Region reg = templateSheet.getMergedRegionAt(i);
-			setUpMergedCellInfo(templateCell.getCellNum(), rowNum, reg);
+			Region reg = templateSheet.getMergedRegionAt(i);			
+			setUpMergedCellInfo(cell.getHSSFCell().getCellNum(), rowNum, reg);
 			if(isMergedCell){
 				break;
 			}
@@ -76,39 +82,26 @@ public abstract class AbstractCell implements TemplateElement {
 	 * @param outCell 出力するセル
 	 */
 	protected void copyCellStyle(FPContext context, HSSFCell outCell) {
+//		if(cell.isNullCell()){
+//			return;
+//		}
+		HSSFCell hssfCell = cell.getHSSFCell();
 
-		HSSFWorkbook outWb = context.getOutWorkBook();
+		HSSFWorkbook outWb = cell.getRow().getSheet().getWorkbook().getHSSFWorkbook();
 		HSSFCellStyle outStyle = outWb.createCellStyle();
-		HSSFCellStyle templateStyle = templateCell.getCellStyle(); 
+		HSSFCellStyle templateStyle = hssfCell.getCellStyle(); 
 		copyProperties(outStyle, templateStyle);
 
-		HSSFFont font = getCopiedFont(context, outWb);
+		short fontIndex = cell.getHSSFCell().getCellStyle().getFontIndex();
+		HSSFFont font = outWb.getFontAt(fontIndex);
 		outStyle.setFont(font);
-		
-		copyDataFormat(context, templateStyle, outStyle,outWb); 
 		
 		outCell.setCellStyle(outStyle);
 		if(isMergedCell){
-			mergeCell(context, outWb);
+			mergeCell(context);
 		}
 		
-	}
-
-	private HSSFFont getCopiedFont(FPContext context, HSSFWorkbook outWb) {
-		short fontIndex = templateCell.getCellStyle().getFontIndex();
-		HSSFFont font = outWb.createFont();
-		copyProperties(font, context.getTemplate().getFontAt(fontIndex));
-		return font;
-	}
-	
-	private void copyDataFormat(FPContext context, HSSFCellStyle templateStyle,HSSFCellStyle outStyle,HSSFWorkbook outWb){
-		short dfIdx =  templateStyle.getDataFormat();
-		HSSFWorkbook templateWb = context.getTemplate();
-		HSSFDataFormat templateDf = templateWb.createDataFormat();
-		HSSFDataFormat outDf = outWb.createDataFormat();
-		short outDfIdx = outDf.getFormat(templateDf.getFormat(dfIdx));
-		outStyle.setDataFormat(outDfIdx);
-	}
+	}	
 
 	private void copyProperties(Object dest, Object src) {
 		try {
@@ -120,7 +113,7 @@ public abstract class AbstractCell implements TemplateElement {
 		}
 	}
 	
-	private void mergeCell(FPContext context, HSSFWorkbook wb){		
+	private void mergeCell(FPContext context){		
 		short columnFrom = context.getCurrentCellNum();
 		int rowFrom = context.getCurrentRowNum();
 		
@@ -129,7 +122,8 @@ public abstract class AbstractCell implements TemplateElement {
 		reg.setColumnTo((short) (columnFrom + relativeMergedColumnTo));
 		reg.setRowFrom(rowFrom);
 		reg.setRowTo(rowFrom + relativeMergedRowNumTo);
-		wb.getSheetAt(0).addMergedRegion(reg);		
+		HSSFSheet hssfSheet = cell.getRow().getSheet().getHSSFSheet();
+		hssfSheet.addMergedRegion(reg);		
 	}
 
 }

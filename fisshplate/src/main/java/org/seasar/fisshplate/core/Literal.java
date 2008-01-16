@@ -16,8 +16,8 @@
 package org.seasar.fisshplate.core;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.seasar.fisshplate.context.FPContext;
+import org.seasar.fisshplate.wrapper.CellWrapper;
 
 /**
  * リテラル値を持つセル情報を保持する要素クラスです。
@@ -28,20 +28,20 @@ public class Literal extends AbstractCell {
 
 	/**
 	 * コンストラクタです。
-	 * @param sheet テンプレート側のシート
 	 * @param cell 保持するテンプレート側のセル
-	 * @param rowNum 行番号
 	 */
-	Literal(HSSFSheet sheet, HSSFCell cell, int rowNum) {
-		super(sheet, cell,rowNum);
+	Literal(CellWrapper cell) {
+		super(cell);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.seasar.fisshplate.element.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
 	 */
 	public void merge(FPContext context) {
-		HSSFCell out = context.getCurrentCell();		
+		HSSFCell out = context.getCurrentCell();
 		copyCellStyle(context, out);
+		
+		HSSFCell templateCell = cell.getHSSFCell();
 		
 		int cellType = templateCell.getCellType();
 		out.setCellType(cellType);
@@ -65,6 +65,7 @@ public class Literal extends AbstractCell {
 			break;
 		default:
 		}
+		
 		context.nextCell();
 	}
 

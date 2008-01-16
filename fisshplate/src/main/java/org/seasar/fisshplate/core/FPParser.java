@@ -20,10 +20,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.exception.FPParseException;
+import org.seasar.fisshplate.wrapper.RowWrapper;
+import org.seasar.fisshplate.wrapper.SheetWrapper;
 
 /**
  * テンプレート側のシートを解析し、要素クラスの構造を組み立てて保持します。
@@ -70,10 +70,10 @@ public class FPParser {
 	 * @throws FPParseException
 	 *             テンプレートの解析時に構文上のエラーが判明した際に投げられます。
 	 */
-	public FPParser(HSSFSheet sheet) throws FPParseException {
+	public FPParser(SheetWrapper sheet) throws FPParseException {
 		rootElement = new Root();
-		for (int i = 0; i <= sheet.getLastRowNum(); i++) {
-			parseRow(sheet, sheet.getRow(i));
+		for (int i = 0; i < sheet.getRowCount(); i++) {
+			parseRow(sheet.getRow(i));
 		}
 		// スタックにまだブロックが残ってたら#end不足
 		if (blockStack.size() > 0) {
@@ -81,11 +81,11 @@ public class FPParser {
 		}
 	}
 
-	private void parseRow(HSSFSheet sheet, HSSFRow row) throws FPParseException {
+	private void parseRow(RowWrapper row) throws FPParseException {
 		if (isControlRow(row)) {
 			return;
 		}
-		Row rowElem = new Row(sheet, row, rootElement);
+		Row rowElem = new Row(row, rootElement);
 		// ブロック内に居る場合は、そのブロック内の子要素とする。そうでない場合はルートに行を追加する。
 		if (blockStack.size() > 0) {
 			AbstractBlock block = (AbstractBlock) blockStack.lastElement();
@@ -103,13 +103,13 @@ public class FPParser {
 	 * @return 制御行なら<code>true</code>。出力行なら<code>false</code>。
 	 * @throws FPParseException
 	 */
-	private boolean isControlRow(HSSFRow row) throws FPParseException {
+	private boolean isControlRow(RowWrapper row) throws FPParseException {
 
-		if (row == null) {
+		if (row.isNullRow()) {
 			return false;
 		}
 
-		HSSFCell cell = row.getCell((short) 0);
+		HSSFCell cell = row.getCell(0).getHSSFCell();
 		if (cell == null || (cell.getCellType() != HSSFCell.CELL_TYPE_STRING)) {
 			return false;
 		}

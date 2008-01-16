@@ -20,11 +20,11 @@ import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.util.OgnlUtil;
+import org.seasar.fisshplate.wrapper.CellWrapper;
 
 /**
  * テンプレートのセルの値が評価式の場合の要素クラスです。OGNLで評価します。
@@ -36,13 +36,11 @@ public class El extends AbstractCell {
 
 	/**
 	 * コンストラクタです。
-	 * @param sheet テンプレート側のシート
 	 * @param cell テンプレート側のセル
-	 * @param rowNum 行番号
 	 * @param expression 評価式
 	 */
-	El(HSSFSheet sheet, HSSFCell cell,  int rowNum, String expression) {
-		super(sheet, cell, rowNum);
+	El(CellWrapper cell,String expression) {
+		super(cell);
 		this.expression = new ElExpression(expression);
 	}
 

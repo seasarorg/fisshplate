@@ -22,10 +22,11 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
+import org.seasar.fisshplate.wrapper.CellWrapper;
+import org.seasar.fisshplate.wrapper.WorkbookWrapper;
 
 /**
  * @author rokugen
@@ -50,41 +51,42 @@ public class ElTest extends TestCase {
 	
 	public void testデータが数字だけど文字列型の場合は文字列型で埋め込む() throws Exception{
 		HSSFWorkbook template = getTemplate("/ElTest.xls");
+		WorkbookWrapper workbook = new WorkbookWrapper(template);
 		
 		Map data = new HashMap();
 		data.put("code", "01234");
 		data.put("num", new Integer(-1234));
+	
+		FPContext context = new FPContext(template.getSheetAt(0),data);
 		
-		HSSFWorkbook out = new HSSFWorkbook();
-		FPContext context = new FPContext(template,out,data);
+		CellWrapper cell0 = workbook.getSheetAt(0).getRow(0).getCell(0);		
+		CellWrapper cell1 = workbook.getSheetAt(0).getRow(0).getCell(1);
 		
-		HSSFSheet sheet = template.getSheetAt(0);		
-		
-		el = new El(sheet, sheet.getRow(0).getCell((short) 0), 0,"code");
+		el = new El(cell0,"code");
 		el.merge(context);
-		el = new El(sheet, sheet.getRow(0).getCell((short) 1), 0,"num");
+		el = new El(cell1,"num");
 		el.merge(context);
 		
-		HSSFCell actual = out.getSheetAt(0).getRow(0).getCell((short) 0);
+		HSSFCell actual = template.getSheetAt(0).getRow(0).getCell((short) 0);
 		assertEquals("celltype",HSSFCell.CELL_TYPE_STRING, actual.getCellType());		
 		assertEquals("value", "01234", actual.getRichStringCellValue().getString());
 		
-		actual = out.getSheetAt(0).getRow(0).getCell((short) 1);
+		actual = template.getSheetAt(0).getRow(0).getCell((short) 1);
 		assertEquals("celltype",HSSFCell.CELL_TYPE_NUMERIC, actual.getCellType());
 		assertEquals("value",-1234D, actual.getNumericCellValue(),0D);		
 	}
 	
 	public void testOGN式の変数名にびっくりマークをつけた場合はNULL回避する() throws Exception{
 		HSSFWorkbook template = getTemplate("/ElTest.xls");
+		WorkbookWrapper workbook = new WorkbookWrapper(template);
 		
 		Map data = new HashMap();
 		
-		HSSFWorkbook out = new HSSFWorkbook();
-		FPContext context = new FPContext(template,out,data);
+		FPContext context = new FPContext(template.getSheetAt(0),data);
 		
-		HSSFSheet sheet = template.getSheetAt(0);		
+		CellWrapper cell = workbook.getSheetAt(0).getRow(0).getCell(0);
 		
-		el = new El(sheet, sheet.getRow(0).getCell((short) 0), 0,"hoge");
+		el = new El(cell,"hoge");
 		try{
 			el.merge(context);
 			fail();
@@ -92,20 +94,20 @@ public class ElTest extends TestCase {
 			assertTrue(true);
 		}
 		
-		el = new El(sheet, sheet.getRow(0).getCell((short) 0), 0,"hoge!");
+		el = new El(cell,"hoge!");
 		el.merge(context);
-		HSSFCell actual = out.getSheetAt(0).getRow(0).getCell((short) 0);
+		HSSFCell actual = template.getSheetAt(0).getRow(0).getCell((short) 0);
 		assertEquals("nullString","", actual.getRichStringCellValue().getString());
 		
-		el = new El(sheet, sheet.getRow(0).getCell((short) 0), 0,"hoge!NULL時デフォルト値");
+		el = new El(cell,"hoge!NULL時デフォルト値");
 		el.merge(context);
-		actual = out.getSheetAt(0).getRow(0).getCell((short) 1);
+		actual = template.getSheetAt(0).getRow(0).getCell((short) 1);
 		assertEquals("default value","NULL時デフォルト値", actual.getRichStringCellValue().getString());
 		
 		data.put("hoge", null);	
-		el = new El(sheet, sheet.getRow(0).getCell((short) 0), 0,"hoge!");
+		el = new El(cell,"hoge!");
 		el.merge(context);
-		actual = out.getSheetAt(0).getRow(0).getCell((short) 2);
+		actual = template.getSheetAt(0).getRow(0).getCell((short) 2);
 		assertEquals("null value","", actual.getRichStringCellValue().getString());
 	}
 	

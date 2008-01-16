@@ -32,6 +32,7 @@ import org.seasar.fisshplate.util.FileInputStreamUtil;
 import org.seasar.fisshplate.util.ImageIOUtil;
 import org.seasar.fisshplate.util.OgnlUtil;
 import org.seasar.fisshplate.util.StringUtil;
+import org.seasar.fisshplate.wrapper.CellWrapper;
 
 /**
  * 画像処理用の要素クラスです
@@ -50,12 +51,8 @@ public class Picture extends AbstractCell {
 	/**
 	 * コンストラクタです。
 	 * 
-	 * @param sheet
-	 *            テンプレート側のシート
 	 * @param cell
 	 *            テンプレート側のセル
-	 * @param rowNum
-	 *            行番号
 	 * @param expression
 	 *            評価式
 	 * @param rowRange
@@ -63,8 +60,8 @@ public class Picture extends AbstractCell {
 	 * @param cellRange
 	 *            画像ファイルの横幅
 	 */
-	Picture(HSSFSheet sheet, HSSFCell cell, int rowNum, String expression, String cellRange, String rowRange) {
-		super(sheet, cell, rowNum);
+	Picture(CellWrapper cell, String expression, String cellRange, String rowRange) {
+		super(cell);
 		this.expression = new ElExpression(expression);
 		this.cellRange = cellRange;
 		this.rowRange = rowRange;
@@ -162,7 +159,7 @@ public class Picture extends AbstractCell {
 		BufferedImage img = ImageIOUtil.read(imgFis);
 		FileInputStreamUtil.close(imgFis);
 
-		HSSFWorkbook workbook = context.getOutWorkBook();
+		HSSFWorkbook workbook = cell.getRow().getSheet().getWorkbook().getHSSFWorkbook();
 		HSSFSheet worksheet = context.getOutSheet();
 		if (patriarch == null) {
 			patriarch = worksheet.createDrawingPatriarch();

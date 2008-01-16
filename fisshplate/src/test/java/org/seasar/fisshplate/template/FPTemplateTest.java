@@ -26,10 +26,8 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.seasar.fisshplate.exception.FPMergeException;
+import org.seasar.fisshplate.exception.FPException;
 import org.seasar.fisshplate.exception.FPParseException;
 
 public class FPTemplateTest extends TestCase {
@@ -45,31 +43,27 @@ public class FPTemplateTest extends TestCase {
 	
 	public void test行の要素がリストの場合() throws Exception  {
 		InputStream is = getClass().getResourceAsStream("/FPTemplateTest.xls");		
+		HSSFWorkbook wb;
 		try {
-			template = new FPTemplate(is);
+			template = new FPTemplate();
+			Map map = new HashMap();
+			map.put("title", "タイトルである");
+			List aList = new ArrayList();
+			aList.add(new A("1行目",10,new Date()));
+			aList.add(new A("2行目",20,new Date()));
+			aList.add(new A("3行目",30,new Date()));
+			aList.add(new A("4行目",10,new Date()));
+			aList.add(new A("5行目",20,new Date()));
+			aList.add(new A("6行目",30,new Date()));
+			map.put("b", aList);
+			
+			wb = template.process(is,map);
 		} catch (FPParseException e) {
 			throw e;
 		} catch (IOException e) {
 			throw e;
 		}finally{
 			is.close();
-		}
-		Map map = new HashMap();
-		map.put("title", "タイトルである");
-		List aList = new ArrayList();
-		aList.add(new A("1行目",10,new Date()));
-		aList.add(new A("2行目",20,new Date()));
-		aList.add(new A("3行目",30,new Date()));
-		aList.add(new A("4行目",10,new Date()));
-		aList.add(new A("5行目",20,new Date()));
-		aList.add(new A("6行目",30,new Date()));
-		map.put("b", aList);
-		
-		HSSFWorkbook wb;
-		try {
-			wb = template.process(map);
-		} catch (FPMergeException e) {		
-			throw e;
 		}
 		
 		FileOutputStream fos = new FileOutputStream("target/out.xls");		
@@ -80,30 +74,26 @@ public class FPTemplateTest extends TestCase {
 	
 	public void test行の要素が配列の場合() throws Exception  {
 		InputStream is = getClass().getResourceAsStream("/FPTemplateTest.xls");
+		HSSFWorkbook wb;
 		try {
-			template = new FPTemplate(is);
+			template = new FPTemplate();
+			Map map = new HashMap();
+			map.put("title", "配列のテストである");
+			A[] aList = new A[]{
+			new A("1行目",10,new Date()),
+			new A("2行目",20,new Date()),
+			new A("3行目",30,new Date()),
+			new A("4行目",10,new Date())
+			};		
+			map.put("b", aList);
+		
+			wb = template.process(is, map);
 		} catch (FPParseException e) {
 			throw e;
 		} catch (IOException e) {
 			throw e;
 		}finally{
 			is.close();
-		}
-		Map map = new HashMap();
-		map.put("title", "配列のテストである");
-		A[] aList = new A[]{
-		new A("1行目",10,new Date()),
-		new A("2行目",20,new Date()),
-		new A("3行目",30,new Date()),
-		new A("4行目",10,new Date())
-		};		
-		map.put("b", aList);
-		
-		HSSFWorkbook wb;
-		try {
-			wb = template.process(map);
-		} catch (FPMergeException e) {		
-			throw e;
 		}
 		
 		FileOutputStream fos = new FileOutputStream("target/out_array.xls");		
@@ -113,28 +103,24 @@ public class FPTemplateTest extends TestCase {
 	
 	public void testループのネスト() throws Exception  {
 		InputStream is = getClass().getResourceAsStream("/FPTemplateTest_nestedLoop.xls");
+		HSSFWorkbook wb;
 		try {
-			template = new FPTemplate(is);
-		} catch (FPParseException e) {
+			template = new FPTemplate();
+			Object[] parentList = new Object[]{
+					new String[]{"子供1","子供2","子供3","子供4"},
+					new String[]{"子供5","子供6","子供7","子供8"},
+					new String[]{"子供9","子供10","子供11","子供12"}
+			};
+			Map map = new HashMap();
+			map.put("parentList", parentList);
+			
+				wb = template.process(is,map);
+		} catch (FPException e) {
 			throw e;
 		} catch (IOException e) {
 			throw e;
 		}finally{
 			is.close();
-		}
-		Object[] parentList = new Object[]{
-				new String[]{"子供1","子供2","子供3","子供4"},
-				new String[]{"子供5","子供6","子供7","子供8"},
-				new String[]{"子供9","子供10","子供11","子供12"}
-		};
-		Map map = new HashMap();
-		map.put("parentList", parentList);
-		
-		HSSFWorkbook wb;
-		try {
-			wb = template.process(map);
-		} catch (FPMergeException e) {		
-			throw e;
 		}
 		
 		FileOutputStream fos = new FileOutputStream("target/out_nestedLoop.xls");		
@@ -144,34 +130,30 @@ public class FPTemplateTest extends TestCase {
 	
 	public void test最後のヘッダフッタ制御のテスト_ぴったり収まっちゃう場合() throws Exception{
 		InputStream is = getClass().getResourceAsStream("/FPTemplateTest_lastPageHandling.xls");
+		HSSFWorkbook wb;
 		try {
-			template = new FPTemplate(is);
-		} catch (FPParseException e) {
+			template = new FPTemplate();
+			Map map = new HashMap();
+			map.put("title", "タイトルである");
+			List aList = new ArrayList();
+			aList.add(new A("1行目",10,new Date()));
+			aList.add(new A("2行目",20,new Date()));
+			aList.add(new A("3行目",30,new Date()));
+			aList.add(new A("4行目",10,new Date()));
+			aList.add(new A("5行目",20,new Date()));
+			aList.add(new A("6行目",30,new Date()));
+			aList.add(new A("7行目",10,new Date()));
+			aList.add(new A("8行目",20,new Date()));
+			aList.add(new A("9行目",30,new Date()));
+			map.put("b", aList);
+		
+			wb = template.process(is,map);
+		} catch (FPException e) {
 			throw e;
 		} catch (IOException e) {
 			throw e;
 		}finally{
 			is.close();
-		}
-		Map map = new HashMap();
-		map.put("title", "タイトルである");
-		List aList = new ArrayList();
-		aList.add(new A("1行目",10,new Date()));
-		aList.add(new A("2行目",20,new Date()));
-		aList.add(new A("3行目",30,new Date()));
-		aList.add(new A("4行目",10,new Date()));
-		aList.add(new A("5行目",20,new Date()));
-		aList.add(new A("6行目",30,new Date()));
-		aList.add(new A("7行目",10,new Date()));
-		aList.add(new A("8行目",20,new Date()));
-		aList.add(new A("9行目",30,new Date()));
-		map.put("b", aList);
-		
-		HSSFWorkbook wb;
-		try {
-			wb = template.process(map);
-		} catch (FPMergeException e) {		
-			throw e;
 		}
 		
 		FileOutputStream fos = new FileOutputStream("target/out_lastPageHandling.xls");		
@@ -181,34 +163,30 @@ public class FPTemplateTest extends TestCase {
 	
 	public void test最後のヘッダフッタ制御のテスト_あまる場合() throws Exception{
 		InputStream is = getClass().getResourceAsStream("/FPTemplateTest_lastPageHandling2.xls");
+		HSSFWorkbook wb;
 		try {
-			template = new FPTemplate(is);
-		} catch (FPParseException e) {
+			template = new FPTemplate();
+			Map map = new HashMap();
+			map.put("title", "タイトルである");
+			List aList = new ArrayList();
+			aList.add(new A("1行目",10,new Date()));
+			aList.add(new A("2行目",20,new Date()));
+			aList.add(new A("3行目",30,new Date()));
+			aList.add(new A("4行目",10,new Date()));
+			aList.add(new A("5行目",20,new Date()));
+			aList.add(new A("6行目",30,new Date()));
+			aList.add(new A("7行目",10,new Date()));
+			aList.add(new A("8行目",20,new Date()));
+			aList.add(new A("9行目",30,new Date()));
+			map.put("b", aList);
+		
+			wb = template.process(is,map);
+		} catch (FPException e) {
 			throw e;
 		} catch (IOException e) {
 			throw e;
 		}finally{
 			is.close();
-		}
-		Map map = new HashMap();
-		map.put("title", "タイトルである");
-		List aList = new ArrayList();
-		aList.add(new A("1行目",10,new Date()));
-		aList.add(new A("2行目",20,new Date()));
-		aList.add(new A("3行目",30,new Date()));
-		aList.add(new A("4行目",10,new Date()));
-		aList.add(new A("5行目",20,new Date()));
-		aList.add(new A("6行目",30,new Date()));
-		aList.add(new A("7行目",10,new Date()));
-		aList.add(new A("8行目",20,new Date()));
-		aList.add(new A("9行目",30,new Date()));
-		map.put("b", aList);
-		
-		HSSFWorkbook wb;
-		try {
-			wb = template.process(map);
-		} catch (FPMergeException e) {		
-			throw e;
 		}
 		
 		FileOutputStream fos = new FileOutputStream("target/out_lastPageHandling2.xls");		
@@ -218,31 +196,27 @@ public class FPTemplateTest extends TestCase {
 	
 	public void test空行指定テスト() throws Exception{
 		InputStream is = getClass().getResourceAsStream("/FPTemplateTest_iteratorMax.xls");
+		HSSFWorkbook wb;
 		try {
-			template = new FPTemplate(is);
-		} catch (FPParseException e) {
+			template = new FPTemplate();
+			Map map = new HashMap();
+			map.put("title", "タイトルである");
+			List aList = new ArrayList();
+			aList.add(new A("1行目",10,new Date()));
+			aList.add(new A("2行目",20,new Date()));
+			aList.add(new A("3行目",30,new Date()));
+			aList.add(new A("4行目",10,new Date()));
+			aList.add(new A("5行目",20,new Date()));
+			aList.add(new A("6行目",30,new Date()));		
+			map.put("b", aList);
+			
+			wb = template.process(is,map);
+		} catch (FPException e) {
 			throw e;
 		} catch (IOException e) {
 			throw e;
 		}finally{
 			is.close();
-		}
-		Map map = new HashMap();
-		map.put("title", "タイトルである");
-		List aList = new ArrayList();
-		aList.add(new A("1行目",10,new Date()));
-		aList.add(new A("2行目",20,new Date()));
-		aList.add(new A("3行目",30,new Date()));
-		aList.add(new A("4行目",10,new Date()));
-		aList.add(new A("5行目",20,new Date()));
-		aList.add(new A("6行目",30,new Date()));		
-		map.put("b", aList);
-		
-		HSSFWorkbook wb;
-		try {
-			wb = template.process(map);
-		} catch (FPMergeException e) {		
-			throw e;
 		}
 		
 		FileOutputStream fos = new FileOutputStream("target/out_iteratorMax.xls");		

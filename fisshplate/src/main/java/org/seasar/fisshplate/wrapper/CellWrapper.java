@@ -13,23 +13,33 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.fisshplate.core;
+package org.seasar.fisshplate.wrapper;
 
-import org.seasar.fisshplate.context.FPContext;
+import org.apache.poi.hssf.usermodel.HSSFCell;
 
 /**
- * {@link TemplateElement}を実装したNULLオブジェクトです。何も処理を行いません。
+ * HSSFCellのラッパークラスです。
  * @author rokugen
- *
  */
-public class NullElement implements TemplateElement {
-	NullElement(){}
+public class CellWrapper {
+	private HSSFCell hssfCell;
+	private RowWrapper row;
+	
+	public CellWrapper(HSSFCell cell, RowWrapper row){
+		this.row = row;
+		this.hssfCell = cell;
+	}
+	
+	public HSSFCell getHSSFCell(){
+		return hssfCell;
+	}
+	
+	public RowWrapper getRow(){
+		return row;
+	}
 
-	/* (non-Javadoc)
-	 * @see org.seasar.fisshplate.core.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
-	 */
-	public void merge(FPContext context) {
-		//no code;
+	public boolean isNullCell() {
+		return hssfCell == null;
 	}
 
 }
