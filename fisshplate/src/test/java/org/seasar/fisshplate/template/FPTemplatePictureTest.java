@@ -55,7 +55,7 @@ public class FPTemplatePictureTest extends TestCase {
 			aList.add(new A("5行目", 20, new Date(), "image/logoKarmokar4.png"));
 			aList.add(new A("6行目", 30, new Date(), "image/logoKarmokar5.png"));
 			map.put("b", aList);
-	
+
 			wb = template.process(is, map);
 		} catch (FPException e) {
 			throw e;
@@ -72,23 +72,19 @@ public class FPTemplatePictureTest extends TestCase {
 	}
 
 	public void test画像出力() throws Exception {
-		InputStream is = getClass().getResourceAsStream("/FPTemplatePictureTest.xls");
 		HSSFWorkbook wb;
 		try {
 			template = new FPTemplate();
 			Map map = new HashMap();
-	
 			map.put("data", new A("1行目", 10, new Date(), "image/logoKarmokar4.png"));
-	
-				wb = template.process(is,map);
+			wb = template.process("FPTemplatePictureTest.xls", map);
 		} catch (FPException e) {
 			throw e;
 		} catch (IOException e) {
 			throw e;
 		} finally {
-			is.close();
 		}
-		
+
 		FileOutputStream fos = new FileOutputStream("target/out_picture.xls");
 		wb.write(fos);
 		fos.close();

@@ -20,12 +20,14 @@ import java.io.InputStream;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.context.PageContext;
 import org.seasar.fisshplate.core.FPParser;
 import org.seasar.fisshplate.core.Root;
 import org.seasar.fisshplate.exception.FPException;
+import org.seasar.fisshplate.util.InputStreamUtil;
 import org.seasar.fisshplate.wrapper.WorkbookWrapper;
 
 /**
@@ -37,36 +39,57 @@ import org.seasar.fisshplate.wrapper.WorkbookWrapper;
  */
 public class FPTemplate {
 
-	public FPTemplate(){
-		
+	public FPTemplate() {
+
 	}
-	
+
+	/**
+	 * @param templateName
+	 *            テンプレートファイル名
+	 * @param data
+	 *            埋め込みデータ
+	 * @return 出力するデータ埋め込み済みの{@link HSSFWorkbook}
+	 * @throws FPException
+	 *             解析時、データ埋め込み時にエラーが発生した際に投げられます。
+	 * @throws IOException
+	 *             ファイルIOでエラーが発生した際に投げられます。
+	 */
+	public HSSFWorkbook process(String templateName, Map data) throws FPException, IOException {
+		InputStream is = InputStreamUtil.getResourceAsStream(templateName);
+		HSSFWorkbook workbook = new HSSFWorkbook(new POIFSFileSystem(is));
+		InputStreamUtil.close(is);
+		return process(workbook, data);
+	}
+
 	/**
 	 * @param is
 	 *            テンプレートファイルの{@link InputStream}。
 	 * @param data
 	 *            埋め込み用データ
 	 * @return 出力するデータ埋め込み済みの{@link HSSFWorkbook}
-	 * @throws FPException 解析時、データ埋め込み時にエラーが発生した際に投げられます。
+	 * @throws FPException
+	 *             解析時、データ埋め込み時にエラーが発生した際に投げられます。
 	 * @throws IOException
 	 *             ファイルIOでエラーが発生した際に投げられます。
 	 */
-	public HSSFWorkbook process(InputStream is, Map data) throws FPException,IOException {
-		return process(new HSSFWorkbook(is), data);		
+	public HSSFWorkbook process(InputStream is, Map data) throws FPException, IOException {
+		return process(new HSSFWorkbook(is), data);
 	}
 
 	/**
 	 * テンプレート用ワークブックと埋め込み用データを受け取り、出力用{@link HSSFWorkbook}を生成して戻します。
-	 * @param hssfWorkbook 
+	 * 
+	 * @param hssfWorkbook
 	 *            テンプレート用{@link HSSFWorkbook}。
 	 * @param data
 	 *            埋め込み用データ
 	 * @return 出力するデータ埋め込み済みの{@link HSSFWorkbook}
-	 * @throws FPException 解析時、データ埋め込み時にエラーが発生した際に投げられます。
+	 * @throws FPException
+	 *             解析時、データ埋め込み時にエラーが発生した際に投げられます。
 	 */
 	public HSSFWorkbook process(HSSFWorkbook hssfWorkbook, Map data) throws FPException {
 		WorkbookWrapper workbook = new WorkbookWrapper(hssfWorkbook);
-		FPParser parser = new FPParser(workbook.getSheetAt(0));		
+		FPParser parser = new FPParser(workbook.getSheetAt(0));
 		FPContext context = new FPContext(hssfWorkbook.getSheetAt(0), data);
 		// ページコンテキスト情報の追加
 		PageContext pageContext = new PageContext();
@@ -74,7 +97,7 @@ public class FPTemplate {
 
 		Root root = parser.getRoot();
 		root.merge(context);
-		
+
 		return hssfWorkbook;
 	}
 

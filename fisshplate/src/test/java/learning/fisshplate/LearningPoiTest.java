@@ -18,6 +18,7 @@ package learning.fisshplate;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -33,6 +34,12 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
  */
 public class LearningPoiTest extends TestCase {
 
+	public void test() throws Exception {
+		ClassLoader loader = null;
+		loader = Thread.currentThread().getContextClassLoader();
+		Assert.assertNotNull(loader.getResourceAsStream("FPTemplateTest.xls"));
+	}
+	
 	private HSSFWorkbook setupInputWorkbook(String filePath) throws Exception {
 		FileInputStream fis = new FileInputStream(filePath);
 		POIFSFileSystem poifs = new POIFSFileSystem(fis);
