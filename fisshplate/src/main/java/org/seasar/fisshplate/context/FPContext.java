@@ -101,7 +101,6 @@ public class FPContext {
 	 * @return
 	 */
 	public HSSFRow createCurrentRow(){
-		outSheet.removeRow(getCurrentRow());
 		return outSheet.createRow(currentRowNum);
 	}
 

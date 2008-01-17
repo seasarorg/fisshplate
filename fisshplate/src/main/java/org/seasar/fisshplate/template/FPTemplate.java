@@ -26,8 +26,10 @@ import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.context.PageContext;
 import org.seasar.fisshplate.core.FPParser;
 import org.seasar.fisshplate.core.Root;
-import org.seasar.fisshplate.exception.FPException;
+import org.seasar.fisshplate.exception.FPMergeException;
+import org.seasar.fisshplate.exception.FPParseException;
 import org.seasar.fisshplate.util.InputStreamUtil;
+import org.seasar.fisshplate.wrapper.SheetWrapper;
 import org.seasar.fisshplate.wrapper.WorkbookWrapper;
 
 /**
@@ -49,12 +51,12 @@ public class FPTemplate {
 	 * @param data
 	 *            埋め込みデータ
 	 * @return 出力するデータ埋め込み済みの{@link HSSFWorkbook}
-	 * @throws FPException
-	 *             解析時、データ埋め込み時にエラーが発生した際に投げられます。
+	 * @throws FPParseException 解析時にエラーが発生した際に投げられます。
+	 * @throws FPMergeException データ埋め込み時にエラーが発生した際に投げられます。
 	 * @throws IOException
 	 *             ファイルIOでエラーが発生した際に投げられます。
 	 */
-	public HSSFWorkbook process(String templateName, Map data) throws FPException, IOException {
+	public HSSFWorkbook process(String templateName, Map data) throws FPParseException, FPMergeException,IOException {
 		InputStream is = InputStreamUtil.getResourceAsStream(templateName);
 		HSSFWorkbook workbook = new HSSFWorkbook(new POIFSFileSystem(is));
 		InputStreamUtil.close(is);
@@ -67,13 +69,13 @@ public class FPTemplate {
 	 * @param data
 	 *            埋め込み用データ
 	 * @return 出力するデータ埋め込み済みの{@link HSSFWorkbook}
-	 * @throws FPException
-	 *             解析時、データ埋め込み時にエラーが発生した際に投げられます。
+	 * @throws FPParseException 解析時にエラーが発生した際に投げられます。
+	 * @throws FPMergeException データ埋め込み時にエラーが発生した際に投げられます。
 	 * @throws IOException
 	 *             ファイルIOでエラーが発生した際に投げられます。
 	 */
-	public HSSFWorkbook process(InputStream is, Map data) throws FPException, IOException {
-		return process(new HSSFWorkbook(is), data);
+	public HSSFWorkbook process(InputStream is, Map data) throws FPParseException,FPMergeException,IOException {
+		return process(new HSSFWorkbook(is), data);		
 	}
 
 	/**
@@ -84,21 +86,27 @@ public class FPTemplate {
 	 * @param data
 	 *            埋め込み用データ
 	 * @return 出力するデータ埋め込み済みの{@link HSSFWorkbook}
-	 * @throws FPException
-	 *             解析時、データ埋め込み時にエラーが発生した際に投げられます。
+	 * @throws FPParseException 解析時にエラーが発生した際に投げられます。
+	 * @throws FPMergeException データ埋め込み時にエラーが発生した際に投げられます。
 	 */
-	public HSSFWorkbook process(HSSFWorkbook hssfWorkbook, Map data) throws FPException {
+	public HSSFWorkbook process(HSSFWorkbook hssfWorkbook, Map data) throws FPParseException,FPMergeException {
 		WorkbookWrapper workbook = new WorkbookWrapper(hssfWorkbook);
-		FPParser parser = new FPParser(workbook.getSheetAt(0));
-		FPContext context = new FPContext(hssfWorkbook.getSheetAt(0), data);
+		SheetWrapper sheet = workbook.getSheetAt(0);
+		FPParser parser = new FPParser(sheet);
+		
+		sheet.prepareForMerge();
+		
+		FPContext context = new FPContext(sheet.getHSSFSheet(), data);
 		// ページコンテキスト情報の追加
 		PageContext pageContext = new PageContext();
 		data.put(FPConsts.PAGE_CONTEXT_NAME, pageContext);
 
 		Root root = parser.getRoot();
 		root.merge(context);
-
+		
 		return hssfWorkbook;
 	}
+		
+	
 
 }

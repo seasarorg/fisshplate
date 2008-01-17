@@ -72,6 +72,32 @@ public class FPTemplateTest extends TestCase {
 		
 	}
 	
+	public void test行の要素がリストの場合_1件だけ() throws Exception  {
+		InputStream is = getClass().getResourceAsStream("/FPTemplateTest.xls");		
+		HSSFWorkbook wb;
+		try {
+			template = new FPTemplate();
+			Map map = new HashMap();
+			map.put("title", "タイトルである");
+			List aList = new ArrayList();
+			aList.add(new A("1行目",10,new Date()));
+			map.put("b", aList);
+			
+			wb = template.process(is,map);
+		} catch (FPParseException e) {
+			throw e;
+		} catch (IOException e) {
+			throw e;
+		}finally{
+			is.close();
+		}
+		
+		FileOutputStream fos = new FileOutputStream("target/out_1.xls");		
+		wb.write(fos);
+		fos.close();
+		
+	}
+	
 	public void test行の要素が配列の場合() throws Exception  {
 		InputStream is = getClass().getResourceAsStream("/FPTemplateTest.xls");
 		HSSFWorkbook wb;

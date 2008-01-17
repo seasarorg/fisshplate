@@ -18,6 +18,7 @@ package org.seasar.fisshplate.wrapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 
 /**
@@ -56,6 +57,22 @@ public class SheetWrapper {
 	}
 	public int getSheetIndex() {
 		return sheetIndex;
+	}
+	
+	/**
+	 * データ埋め込みの準備のために、シートを初期化します。
+	 */
+	public void prepareForMerge(){		
+		
+		for(int i=0; i < getRowCount();i++){
+			HSSFRow hssfRow = getRow(i).getHSSFRow();
+			hssfSheet.removeRow(hssfRow);
+		}		
+				
+		for(int i=0; 0 < hssfSheet.getNumMergedRegions();i++){
+			hssfSheet.removeMergedRegion(0);			
+		}
+
 	}
 
 }
