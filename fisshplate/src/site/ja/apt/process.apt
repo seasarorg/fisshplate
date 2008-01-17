@@ -4,42 +4,20 @@
   rokugen
   ---
   2008/01/10
+  
+テンプレートファイルから出力ファイルの取得の仕方
 
-テンプレートファイルの読み込み
-  
-  テンプレートファイルを読み込んで、テンプレートオブジェクト「FPTemplate」を生成します。
-  
-  コンストラクタには
-  
-  * FPTemplate(HSSFWorkbook)
-  
-  * FPTemplate(InputStream)
-  
-  []
-  
-  の2種類があります。
-  
-  「FPTemplateTest.xls」というテンプレートファイルを、ルートパッケージに置いたとします。
-  
-+---
-FPTemplate template = null;
-InputStream is = getClass().getResourceAsStream("/FPTemplateTest.xls");     
-try {
-    template = new FPTemplate(is);
-} catch (FPParseException e) {
-    throw e;
-} catch (IOException e) {
-    throw e;
-}finally{
-    is.close();
-}
-+---
+* テンプレートオブジェクトの生成
 
-  一度テンプレートオブジェクトを生成したら、InputStreamはcloseして構いません。
+  まず、ファイルを出力するオブジェクト、「FPTemplate」を生成します。
   
-  テンプレートに文法上の誤りがあった場合、FPParseExceptionが投げられます。
++--
+
+FPTemplate template = new FPTemplate();
+
++--
   
-データの埋め込み
+* 埋め込みデータ生成
 
   テンプレートに埋め込むデータは、Mapで作ります。キーはテンプレートから評価式で参照するため、文字列にします。
   
@@ -52,19 +30,44 @@ data.put("fooTest", foo);
 +--
 
   このMapをFPTemplateに渡します。
+  
+* テンプレートファイル読み込み・ファイル出力
 
-+---  
+  「FPTemplateTest.xls」というテンプレートファイルを、ルートパッケージに置いたとします。
+  
+  InputStreamとして読み、先程用意した埋め込みデータと一緒にFPTemplateに渡します。
+  
++---
+InputStream is = getClass().getResourceAsStream("/FPTemplateTest.xls");
+  
 HSSFWorkbook wb;
 try {
-    wb = template.process(data);
-} catch (FPMergeException e) {
+    wb = template.process(is, data);
+} catch (FPParseException e) {
+    //例外処理
     throw e;
+} catch (FPMergeException e) {
+    //例外処理
+    throw e;
+}finally{
+    is.close();
 }
 +---
-
-  データが埋め込まれたHSSFWorkbookが出力されます。
+  
+  テンプレートに文法上の誤りがあった場合、FPParseExceptionが投げられます。
   
   データ埋め込み時にエラーが発生した場合、FPMergeExceptionが投げられます。
   
-  一度FPTemplateのインスタンスを生成すれば、同じインスタンスを使って何度でもデータ埋め込みが可能です。
-  一度の処理で同じテンプレートで違うデータで複数ファイルを出力する場合、FPTemplateの生成は1回で構いません。
+  他に、FPTemplate#process(InputStream, Map)は、IOExceptionも投げますが、上記では省略しています。
+
+  正常に処理が終了すると、データが埋め込まれたHSSFWorkbookが戻されます。
+  
+  データ埋め込みメソッドには他に、
+  
+  * process(String,Map)
+  
+  * process(HSSFWorkbook, Map)
+  
+  []
+  
+  があります。

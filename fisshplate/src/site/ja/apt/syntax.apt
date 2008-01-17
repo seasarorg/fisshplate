@@ -11,6 +11,8 @@
 
   * {{{##if}#if}}
 
+  * {{{##pageBreak}#pageBreak}}
+  
 基本ルール
   
   * 制御文は必ず「A列」に書いて下さい。他の列に書くと、通常のセルの値としてそのまま出力されます。
@@ -24,7 +26,7 @@
 * 構文
 
 +--
-#foreach var : list index=indexname
+#foreach var : list index=indexname max=maxrowcount
 [繰り返す行]
 #end
 +--
@@ -35,6 +37,9 @@
   
   [indexname] ループ内で参照する、ループインデックス名です。0スタートになります。これは必須ではありません。
   指定しない場合、「index」で参照する事が出来ます。
+  
+  [maxrowcount] ループの最大回数です。データの件数がこれに満たない場合、満たすまで空データを埋め込んだ行を出力します。
+  これは必須ではありません。指定しない場合はデータ件数通りの行数を出力します。
 
 * 例
   
@@ -77,6 +82,14 @@ map.put("fooList", list);
 [images/foreach03.png]
 
   出力結果は同じです。
+  
+  「max=maxrowcount」を書くと、空行を出力する事が出来ます。罫線など書式をともなった行数固定の表などを出力するのに有効です。
+
+[images/foreach04.png]
+
+  テンプレートにこう書いた場合、出力されるファイルは以下の様になります。
+
+[images/foreach05.png]
 
 ** ループのネストと注意
 
@@ -122,3 +135,9 @@ map.put("fooList", list);
   同データでの出力結果はこの様になります。
   
 [images/if04.png]
+
+{#pageBreak}
+
+  この位置に改ページを挿入します。
+  
+  

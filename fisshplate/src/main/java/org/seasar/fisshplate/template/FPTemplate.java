@@ -75,7 +75,7 @@ public class FPTemplate {
 	 *             ファイルIOでエラーが発生した際に投げられます。
 	 */
 	public HSSFWorkbook process(InputStream is, Map data) throws FPParseException,FPMergeException,IOException {
-		return process(new HSSFWorkbook(is), data);		
+		return process(new HSSFWorkbook(new POIFSFileSystem(is)), data);		
 	}
 
 	/**

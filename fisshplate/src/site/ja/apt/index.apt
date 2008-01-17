@@ -8,6 +8,8 @@
 Welcome
 
   Fisshplateとは、Excelにテンプレート式を書くことによって、動的にデータが埋め込まれたExcelファイルを出力する事ができるライブラリです。
+
+  テンプレートを用いる事で、Excel帳票を簡単に出力する事が出来ます。
   
 * 概要
 
@@ -49,16 +51,7 @@ public class A{
 +--
 
 +---
-InputStream is = getClass().getResourceAsStream("/FPTemplateTest.xls");     
-try {
-    template = new FPTemplate(is);
-} catch (FPParseException e) {
-    throw e;
-} catch (IOException e) {
-    throw e;
-}finally{
-    is.close();
-}
+//データ作成
 Map map = new HashMap();
 map.put("title", "タイトルである");
 List aList = new ArrayList();
@@ -70,10 +63,13 @@ aList.add(new A("5行目",20,new Date()));
 aList.add(new A("6行目",30,new Date()));
 map.put("b", aList);
 
+InputStream is = getClass().getResourceAsStream("/FPTemplateTest.xls");
+FPTemplate template = new FPTemplate();
 HSSFWorkbook wb;
 try {
-    wb = template.process(map);
-} catch (FPMergeException e) {      
+    wb = template.process(is, map);
+} catch (Exception e) {
+    //例外処理
     throw e;
 }
 
