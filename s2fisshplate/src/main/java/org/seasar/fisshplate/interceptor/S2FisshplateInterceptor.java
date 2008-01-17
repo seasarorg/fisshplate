@@ -20,10 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.aopalliance.intercept.MethodInvocation;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.seasar.fisshplate.consts.S2FPConsts;
 import org.seasar.fisshplate.meta.TemplateMetaData;
 import org.seasar.fisshplate.meta.TemplateMetaDataFactory;
-import org.seasar.fisshplate.template.FPTemplate;
 import org.seasar.fisshplate.util.FisshplateUtil;
 import org.seasar.framework.aop.interceptors.AbstractInterceptor;
 import org.seasar.framework.util.MethodUtil;
@@ -58,8 +58,8 @@ public class S2FisshplateInterceptor extends AbstractInterceptor {
 
 		Class clazz = method.getDeclaringClass();
 		TemplateMetaData metaData = metaDataFactory.getMetaData(clazz);
-		FPTemplate template = metaData.getTemplate(method);				
-		return FisshplateUtil.process(template, map);
+		HSSFWorkbook workbook = metaData.getWorkbook(method);				
+		return FisshplateUtil.process(workbook, map);
 	}
 
 	/**

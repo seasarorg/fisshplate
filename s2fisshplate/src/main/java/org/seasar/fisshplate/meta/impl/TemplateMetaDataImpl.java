@@ -24,8 +24,6 @@ import java.util.Map;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.seasar.fisshplate.consts.S2FPConsts;
 import org.seasar.fisshplate.meta.TemplateMetaData;
-import org.seasar.fisshplate.template.FPTemplate;
-import org.seasar.fisshplate.util.FisshplateUtil;
 import org.seasar.framework.exception.IORuntimeException;
 import org.seasar.framework.util.InputStreamUtil;
 import org.seasar.framework.util.ResourceUtil;
@@ -35,33 +33,22 @@ import org.seasar.framework.util.ResourceUtil;
  * @author rokugen
  */
 public class TemplateMetaDataImpl implements TemplateMetaData {
-	private Map templateCache = new HashMap();
+	private Map filePathCache = new HashMap();
 	
 	/* (non-Javadoc)
 	 * @see org.seasar.fisshplate.meta.TemplateMetaData#getTemplate(java.lang.reflect.Method)
 	 */
-	public synchronized  FPTemplate getTemplate(Method method) {
-		FPTemplate template = (FPTemplate) templateCache.get(method.getName());
-		if(template != null){
-			return template;
-		}
-		HSSFWorkbook wb = getTemplateWorkbook(method);
-		
-		template = FisshplateUtil.createTemplate(wb);
-		templateCache.put(method.getName(), template);		
-		return template;
+	public synchronized  HSSFWorkbook getWorkbook(Method method) {
+		String filePath = (String) filePathCache.get(method.getName());
+		if(filePath == null){
+			filePath = getFilePath(method);
+			filePathCache.put(method.getName(), filePath);			
+		}				
+		return getTemplateWorkbook(filePath);
 	}
 	
-	/**
-	 * 実行されたメソッドからテンプレートを読み込み、{@link HSSFWorkbook}を戻します。
-	 * @param method 実行されたメソッド
-	 * @return テンプレート用ワークブック
-	 */
-	protected HSSFWorkbook getTemplateWorkbook(final Method method) {
-		Class clazz = method.getDeclaringClass();
-		String templatePath = clazz.getName().replaceAll("\\.", "/") + "_"
-				+ method.getName() + "." + S2FPConsts.EXCEL_EXTENSION;
-		InputStream is = ResourceUtil.getResourceAsStream(templatePath);		
+	protected HSSFWorkbook getTemplateWorkbook(String filePath) {
+		InputStream is = ResourceUtil.getResourceAsStream(filePath);		
 		try {
 			HSSFWorkbook wb =  new HSSFWorkbook(is);			
 			return wb;
@@ -70,6 +57,14 @@ public class TemplateMetaDataImpl implements TemplateMetaData {
 		} finally {
 			InputStreamUtil.close(is);
 		}
+	}
+	
+	protected String getFilePath(final Method method){
+		Class clazz = method.getDeclaringClass();
+		String templatePath = clazz.getName().replaceAll("\\.", "/") + "_"
+				+ method.getName() + "." + S2FPConsts.EXCEL_EXTENSION;
+		
+		return templatePath;
 	}
 
 	

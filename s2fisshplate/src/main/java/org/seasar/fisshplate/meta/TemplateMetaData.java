@@ -17,7 +17,7 @@ package org.seasar.fisshplate.meta;
 
 import java.lang.reflect.Method;
 
-import org.seasar.fisshplate.template.FPTemplate;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 /**
  * テンプレートのメタデータクラスです。
@@ -25,10 +25,10 @@ import org.seasar.fisshplate.template.FPTemplate;
  */
 public interface TemplateMetaData {
 	/**
-	 * メソッドに紐付いた{@link FPTemplate}を戻します。
+	 * メソッドに紐付いた{@link HSSFWorkbook}を戻します。
 	 * @param method 実行されたメソッド
-	 * @return メソッドに紐付いたテンプレート
+	 * @return メソッドに紐付いたテンプレート用{@link HSSFWorkbook}
 	 */
-	FPTemplate getTemplate(Method method);
+	HSSFWorkbook getWorkbook(Method method);
 
 }

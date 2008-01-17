@@ -29,18 +29,6 @@ import org.seasar.fisshplate.template.FPTemplate;
  */
 public class FisshplateUtil {
 	private FisshplateUtil(){}	
-	/**
-	 * テンプレート用の{@link HSSFWorkbook}から{@link FPTemplate}を生成します。
-	 * @param templateWb テンプレート用ワークブック
-	 * @return テンプレートオブジェクト
-	 */
-	public static final FPTemplate createTemplate(HSSFWorkbook templateWb){
-		try {
-			return new FPTemplate(templateWb);
-		} catch (FPParseException e1) {
-			throw new FPParseRuntimeException(e1);
-		}
-	}
 	
 	/**
 	 * テンプレートにデータを埋め込みます。
@@ -48,11 +36,14 @@ public class FisshplateUtil {
 	 * @param data 埋め込み用データ
 	 * @return 出力するワークブック
 	 */
-	public static final HSSFWorkbook process(FPTemplate template, Map data){
+	public static final HSSFWorkbook process(HSSFWorkbook workbook, Map data){
 		try {					
-			return template.process(data);		
+			FPTemplate template = new FPTemplate();			
+			return template.process(workbook,data);					
 		} catch (FPMergeException e) {
 			throw new FPMergeRuntimeException(e);
+		}catch(FPParseException e){
+			throw new FPParseRuntimeException(e);
 		}
 	}
 
