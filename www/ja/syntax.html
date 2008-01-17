@@ -154,9 +154,9 @@
 <div id="contents_center">
 
 <div id="article">
-<div class="section"><h2>目次</h2><ul><li><a href="##foreach">#foreach</a></li><li><a href="##if">#if</a></li><li><a href="##pageBreak">#pageBreak</a></li></ul></div><div class="section"><h2>基本ルール</h2><ul><li>制御文は必ず「A列」に書いて下さい。他の列に書くと、通常のセルの値としてそのまま出力されます。</li><li>「A列」に制御文がある場合、その行の「B列」以降は出力されません。</li></ul></div><div class="section"><h2><a name="#foreach">#foreach</a></h2><p>取得したデータの一覧をExcelに出力する場合などに使います。ブロック要素なので、必ず「#end」で閉じる必要があります。</p><div class="section"><h3>構文</h3><div class="source"><pre>#foreach var : list index=indexname max=maxrowcount
+<div class="section"><h2>目次</h2><ul><li><a href="##foreach">#foreach</a></li><li><a href="##if">#if</a></li></ul></div><div class="section"><h2>基本ルール</h2><ul><li>制御文は必ず「A列」に書いて下さい。他の列に書くと、通常のセルの値としてそのまま出力されます。</li><li>「A列」に制御文がある場合、その行の「B列」以降は出力されません。</li></ul></div><div class="section"><h2><a name="#foreach">#foreach</a></h2><p>取得したデータの一覧をExcelに出力する場合などに使います。ブロック要素なので、必ず「#end」で閉じる必要があります。</p><div class="section"><h3>構文</h3><div class="source"><pre>#foreach var : list index=indexname
 [繰り返す行]
-#end</pre></div><dl><dt>list</dt><dd>要素の集合データの名前です。データはListと配列をサポートしています。</dd><dt>var</dt><dd>上記listの各要素を受け取る変数名です。</dd><dt>indexname</dt><dd>ループ内で参照する、ループインデックス名です。0スタートになります。これは必須ではありません。 指定しない場合、「index」で参照する事が出来ます。</dd><dt>maxrowcount</dt><dd>ループの最大回数です。データの件数がこれに満たない場合、満たすまで空データを埋め込んだ行を出力します。 これは必須ではありません。指定しない場合はデータ件数通りの行数を出力します。</dd></dl></div><div class="section"><h3>例</h3><p>テンプレートを作ります。</p><img src="images/foreach01.png" /><p>Java側でデータを設定します。</p><div class="source"><pre>public class Foo{
+#end</pre></div><dl><dt>list</dt><dd>要素の集合データの名前です。データはListと配列をサポートしています。</dd><dt>var</dt><dd>上記listの各要素を受け取る変数名です。</dd><dt>indexname</dt><dd>ループ内で参照する、ループインデックス名です。0スタートになります。これは必須ではありません。 指定しない場合、「index」で参照する事が出来ます。</dd></dl></div><div class="section"><h3>例</h3><p>テンプレートを作ります。</p><img src="images/foreach01.png" /><p>Java側でデータを設定します。</p><div class="source"><pre>public class Foo{
     private String name;
     private int num;
     A(String name, int num){
@@ -172,13 +172,13 @@ list.add(new A(&quot;3行目&quot;,30));
 list.add(new A(&quot;4行目&quot;,10));
 list.add(new A(&quot;5行目&quot;,20));
 list.add(new A(&quot;6行目&quot;,30));
-map.put(&quot;fooList&quot;, list);</pre></div><p>この場合、出力ファイルは以下の様になります。</p><img src="images/foreach02.png" /><p>「index=idx」を省略する事が出来ます。その場合、ループインデックスは「index」という名前で参照します。</p><img src="images/foreach03.png" /><p>出力結果は同じです。</p><p>「max=maxrowcount」を書くと、空行を出力する事が出来ます。罫線など書式をともなった行数固定の表などを出力するのに有効です。</p><img src="images/foreach04.png" /><p>テンプレートにこう書いた場合、出力されるファイルは以下の様になります。</p><img src="images/foreach05.png" /><div class="section"><h4>ループのネストと注意</h4><p>ループはネストする事が出来ます。その場合、ループ内でループインデックスを参照する場合は、必ず各ループで「index=」を指定して下さい。 指定しないと、ネストしたループでインデックスが共有されてしまうからです。</p><p>ループインデックスを参照する必要がない場合は、省略しても構いません。 </p></div></div></div><div class="section"><h2><a name="#if">#if</a></h2><p>ある条件によって、行の出力をする場合に使います。ブロック要素なので、必ず「#end」で閉じる必要があります。</p><div class="section"><h3>構文</h3><div class="source"><pre>#if ([条件式])
+map.put(&quot;fooList&quot;, list);</pre></div><p>この場合、出力ファイルは以下の様になります。</p><img src="images/foreach02.png" /><p>「index=idx」を省略する事が出来ます。その場合、ループインデックスは「index」という名前で参照します。</p><img src="images/foreach03.png" /><p>出力結果は同じです。</p><div class="section"><h4>ループのネストと注意</h4><p>ループはネストする事が出来ます。その場合、ループ内でループインデックスを参照する場合は、必ず各ループで「index=」を指定して下さい。 指定しないと、ネストしたループでインデックスが共有されてしまうからです。</p><p>ループインデックスを参照する必要がない場合は、省略しても構いません。 </p></div></div></div><div class="section"><h2><a name="#if">#if</a></h2><p>ある条件によって、行の出力をする場合に使います。ブロック要素なので、必ず「#end」で閉じる必要があります。</p><div class="section"><h3>構文</h3><div class="source"><pre>#if ([条件式])
 [出力する行]
 #else if ([条件式])
 [出力する行]
 #else
 [出力する行]
-#end</pre></div><p>条件式はOGNLで評価されます。「#else if」と「#else」は任意です。</p></div><div class="section"><h3>例</h3><p>テンプレートを作ります。<a href="##foreach">#foreach</a>と併用してみます。</p><img src="images/if01.png" /><p>ループの中で、インデックスが奇数の場合、背景色を水色にかえて、縞模様で出力するようにしています。</p><p><a href="##foreach">#foreach</a>の例と同じデータを埋め込むと出力結果はこうなります。</p><img src="images/if02.png" /><p>また、「#else if」を使って、下記のようなテンプレートを作った場合は</p><img src="images/if03.png" /><p>同データでの出力結果はこの様になります。</p><img src="images/if04.png" /></div></div><div class="section"><h2><a name="#pageBreak">#pageBreak</a></h2><p>この位置に改ページを挿入します。</p></div>
+#end</pre></div><p>条件式はOGNLで評価されます。「#else if」と「#else」は任意です。</p></div><div class="section"><h3>例</h3><p>テンプレートを作ります。<a href="##foreach">#foreach</a>と併用してみます。</p><img src="images/if01.png" /><p>ループの中で、インデックスが奇数の場合、背景色を水色にかえて、縞模様で出力するようにしています。</p><p><a href="##foreach">#foreach</a>の例と同じデータを埋め込むと出力結果はこうなります。</p><img src="images/if02.png" /><p>また、「#else if」を使って、下記のようなテンプレートを作った場合は</p><img src="images/if03.png" /><p>同データでの出力結果はこの様になります。</p><img src="images/if04.png" /></div></div>
 </div><!-- article -->
 
 </div><!-- contents_center -->

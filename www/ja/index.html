@@ -154,7 +154,7 @@
 <div id="contents_center">
 
 <div id="article">
-<div class="section"><h2>Welcome</h2><p>Fisshplateとは、Excelにテンプレート式を書くことによって、動的にデータが埋め込まれたExcelファイルを出力する事ができるライブラリです。</p><p>テンプレートを用いる事で、Excel帳票を簡単に出力する事が出来ます。</p><div class="section"><h3>概要</h3><p>まず、Excelでテンプレートを作ります。</p><img src="images/index01.png" /><p>下記の様にテンプレートファイルを読み込み、POIのHSSFWorkbookを生成し、保存します。</p><div class="source"><pre>public class A{
+<div class="section"><h2>Welcome</h2><p>Fisshplateとは、Excelにテンプレート式を書くことによって、動的にデータが埋め込まれたExcelファイルを出力する事ができるライブラリです。</p><div class="section"><h3>概要</h3><p>まず、Excelでテンプレートを作ります。</p><img src="images/index01.png" /><p>下記の様にテンプレートファイルを読み込み、POIのHSSFWorkbookを生成し、保存します。</p><div class="source"><pre>public class A{
     private String name;
     private int num;
     private Date date;
@@ -181,7 +181,16 @@
     public void setNum(int num) {
         this.num = num;
     }
-}</pre></div><div class="source"><pre>//データ作成
+}</pre></div><div class="source"><pre>InputStream is = getClass().getResourceAsStream(&quot;/FPTemplateTest.xls&quot;);     
+try {
+    template = new FPTemplate(is);
+} catch (FPParseException e) {
+    throw e;
+} catch (IOException e) {
+    throw e;
+}finally{
+    is.close();
+}
 Map map = new HashMap();
 map.put(&quot;title&quot;, &quot;タイトルである&quot;);
 List aList = new ArrayList();
@@ -193,13 +202,10 @@ aList.add(new A(&quot;5行目&quot;,20,new Date()));
 aList.add(new A(&quot;6行目&quot;,30,new Date()));
 map.put(&quot;b&quot;, aList);
 
-InputStream is = getClass().getResourceAsStream(&quot;/FPTemplateTest.xls&quot;);
-FPTemplate template = new FPTemplate();
 HSSFWorkbook wb;
 try {
-    wb = template.process(is, map);
-} catch (Exception e) {
-    //例外処理
+    wb = template.process(map);
+} catch (FPMergeException e) {      
     throw e;
 }
 

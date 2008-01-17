@@ -4,4 +4,3 @@ org.seasar.fisshplate.core
 org.seasar.fisshplate.exception
 org.seasar.fisshplate.template
 org.seasar.fisshplate.util
-org.seasar.fisshplate.wrapper
