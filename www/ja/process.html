@@ -154,26 +154,26 @@
 <div id="contents_center">
 
 <div id="article">
-<div class="section"><h2>テンプレートファイルの読み込み</h2><p>テンプレートファイルを読み込んで、テンプレートオブジェクト「FPTemplate」を生成します。</p><p>コンストラクタには</p><ul><li>FPTemplate(HSSFWorkbook)</li><li>FPTemplate(InputStream)</li></ul><p>の2種類があります。</p><p>「FPTemplateTest.xls」というテンプレートファイルを、ルートパッケージに置いたとします。</p><div class="source"><pre>FPTemplate template = null;
-InputStream is = getClass().getResourceAsStream(&quot;/FPTemplateTest.xls&quot;);     
-try {
-    template = new FPTemplate(is);
-} catch (FPParseException e) {
-    throw e;
-} catch (IOException e) {
-    throw e;
-}finally{
-    is.close();
-}</pre></div><p>一度テンプレートオブジェクトを生成したら、InputStreamはcloseして構いません。</p><p>テンプレートに文法上の誤りがあった場合、FPParseExceptionが投げられます。</p></div><div class="section"><h2>データの埋め込み</h2><p>テンプレートに埋め込むデータは、Mapで作ります。キーはテンプレートから評価式で参照するため、文字列にします。</p><div class="source"><pre>Map data = new HashMap();
+<div class="section"><h2>テンプレートファイルから出力ファイルの取得の仕方</h2><div class="section"><h3>テンプレートオブジェクトの生成</h3><p>まず、ファイルを出力するオブジェクト、「FPTemplate」を生成します。</p><div class="source"><pre>
+FPTemplate template = new FPTemplate();
+</pre></div></div><div class="section"><h3>埋め込みデータ生成</h3><p>テンプレートに埋め込むデータは、Mapで作ります。キーはテンプレートから評価式で参照するため、文字列にします。</p><div class="source"><pre>Map data = new HashMap();
 data.put(&quot;title&quot;, &quot;タイトルです&quot;);
 Foo foo = new Foo();
 foo.setBar(&quot;テスト&quot;);
-data.put(&quot;fooTest&quot;, foo);</pre></div><p>このMapをFPTemplateに渡します。</p><div class="source"><pre>HSSFWorkbook wb;
+data.put(&quot;fooTest&quot;, foo);</pre></div><p>このMapをFPTemplateに渡します。</p></div><div class="section"><h3>テンプレートファイル読み込み・ファイル出力</h3><p>「FPTemplateTest.xls」というテンプレートファイルを、ルートパッケージに置いたとします。</p><p>InputStreamとして読み、先程用意した埋め込みデータと一緒にFPTemplateに渡します。</p><div class="source"><pre>InputStream is = getClass().getResourceAsStream(&quot;/FPTemplateTest.xls&quot;);
+  
+HSSFWorkbook wb;
 try {
-    wb = template.process(data);
-} catch (FPMergeException e) {
+    wb = template.process(is, data);
+} catch (FPParseException e) {
+    //例外処理
     throw e;
-}</pre></div><p>データが埋め込まれたHSSFWorkbookが出力されます。</p><p>データ埋め込み時にエラーが発生した場合、FPMergeExceptionが投げられます。</p><p>一度FPTemplateのインスタンスを生成すれば、同じインスタンスを使って何度でもデータ埋め込みが可能です。 一度の処理で同じテンプレートで違うデータで複数ファイルを出力する場合、FPTemplateの生成は1回で構いません。</p></div>
+} catch (FPMergeException e) {
+    //例外処理
+    throw e;
+}finally{
+    is.close();
+}</pre></div><p>テンプレートに文法上の誤りがあった場合、FPParseExceptionが投げられます。</p><p>データ埋め込み時にエラーが発生した場合、FPMergeExceptionが投げられます。</p><p>他に、FPTemplate#process(InputStream, Map)は、IOExceptionも投げますが、上記では省略しています。</p><p>正常に処理が終了すると、データが埋め込まれたHSSFWorkbookが戻されます。</p><p>データ埋め込みメソッドには他に、</p><ul><li>process(String,Map)</li><li>process(HSSFWorkbook, Map)</li></ul><p>があります。</p></div></div>
 </div><!-- article -->
 
 </div><!-- contents_center -->
