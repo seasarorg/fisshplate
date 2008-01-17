@@ -66,7 +66,9 @@ public class SheetWrapper {
 		
 		for(int i=0; i < getRowCount();i++){
 			HSSFRow hssfRow = getRow(i).getHSSFRow();
-			hssfSheet.removeRow(hssfRow);
+			if(hssfRow != null){
+				hssfSheet.removeRow(hssfRow);
+			}
 		}		
 				
 		for(int i=0; 0 < hssfSheet.getNumMergedRegions();i++){
