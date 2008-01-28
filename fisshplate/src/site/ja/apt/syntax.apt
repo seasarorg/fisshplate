@@ -12,6 +12,12 @@
   * {{{##if}#if}}
 
   * {{{##pageBreak}#pageBreak}}
+ 
+  * {{{##pageHeaderStart}#pageHeaderStart}}
+  
+  * {{{##pageFooterStart}#pageFooterStart}}
+  
+  []
   
 基本ルール
   
@@ -138,6 +144,65 @@ map.put("fooList", list);
 
 {#pageBreak}
 
-  この位置に改ページを挿入します。
+  この位置に改ページを挿入します。「#pageHeader」か「#pageFooter」が指定されている場合は、それぞれを出力します。
   
+*例
+
+  ここでは、後述する{{{##pageHeaderStart}#pageHeaderStart}}と{{{##pageFooterStart}#pageFooterStart}}と合わせて使用してみます。
   
+  テンプレートにこのように記述するとします。
+  
+[images/pagebreak01.png]
+
+  4行ごとに改ページを強制的に挿入するようになっており、ヘッダとフッタを指定してあります。
+
+  データを埋め込むとこうなります。
+  
+[images/pagebreak02.png]
+  
+
+{#pageHeaderStart}
+
+  「#pageBreak」により改ページが挿入された際に、ヘッダとして出力されるブロックを指定します。ブロック要素なので、必ず「#end」で閉じる必要があります。
+  
+  EXCELの印刷設定により改ページした場合には出力されません。また、ここでのヘッダとは通常のセルの事ですので、EXCELの印刷設定でのヘッダ設定とは関係りません。
+
+* 構文
+
++--
+#pageHeaderStart
+[出力する行]
+#end
++--
+
+  ヘッダは1つのシートに1つだけ指定する事が出来ます。ある条件でヘッダの内容を変えたい場合は、ブロック内で{{{##if}#if}}を使って切り替えます。
+
+
+  例えば、偶数ページと奇数ページでヘッダを切り替える場合は下記のように記述します。
+    
++--
+#pageHeaderStart
+#if(page.pagenum%2 == 0)
+[奇数ページに出力する行]
+#else
+[偶数ページに出力する行]
+#end
+#end
++--
+
+{#pageFooterStart}
+  
+  「#pageBreak」により改ページが挿入された際に、フッタとして出力されるブロックを指定します。ブロック要素なので、必ず「#end」で閉じる必要があります。
+  
+  EXCELの印刷設定により改ページした場合には出力されません。また、ここでのフッタとは通常のセルの事ですので、EXCELの印刷設定でのフッタ設定とは関係ありません。
+  
+* 構文
+
++--
+#pageFooterStart
+[出力する行]
+#end
++--
+  
+  フッタは1つのシートに1つだけ指定する事が出来ます。ある条件でフッタの内容を変えたい場合は、{{{##pageHeaderStart}#pageHeaderStart}}と同様に、{{{##if}#if}}で切り替えます。
+  詳細は{{{##pageHeaderStart}#pageHeaderStart}}を参照して下さい。
