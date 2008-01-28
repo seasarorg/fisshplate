@@ -154,7 +154,7 @@
 <div id="contents_center">
 
 <div id="article">
-<div class="section"><h2>目次</h2><ul><li><a href="##foreach">#foreach</a></li><li><a href="##if">#if</a></li><li><a href="##pageBreak">#pageBreak</a></li></ul></div><div class="section"><h2>基本ルール</h2><ul><li>制御文は必ず「A列」に書いて下さい。他の列に書くと、通常のセルの値としてそのまま出力されます。</li><li>「A列」に制御文がある場合、その行の「B列」以降は出力されません。</li></ul></div><div class="section"><h2><a name="#foreach">#foreach</a></h2><p>取得したデータの一覧をExcelに出力する場合などに使います。ブロック要素なので、必ず「#end」で閉じる必要があります。</p><div class="section"><h3>構文</h3><div class="source"><pre>#foreach var : list index=indexname max=maxrowcount
+<div class="section"><h2>目次</h2><ul><li><a href="##foreach">#foreach</a></li><li><a href="##if">#if</a></li><li><a href="##pageBreak">#pageBreak</a></li><li><a href="##pageHeaderStart">#pageHeaderStart</a></li><li><a href="##pageFooterStart">#pageFooterStart</a></li></ul></div><div class="section"><h2>基本ルール</h2><ul><li>制御文は必ず「A列」に書いて下さい。他の列に書くと、通常のセルの値としてそのまま出力されます。</li><li>「A列」に制御文がある場合、その行の「B列」以降は出力されません。</li></ul></div><div class="section"><h2><a name="#foreach">#foreach</a></h2><p>取得したデータの一覧をExcelに出力する場合などに使います。ブロック要素なので、必ず「#end」で閉じる必要があります。</p><div class="section"><h3>構文</h3><div class="source"><pre>#foreach var : list index=indexname max=maxrowcount
 [繰り返す行]
 #end</pre></div><dl><dt>list</dt><dd>要素の集合データの名前です。データはListと配列をサポートしています。</dd><dt>var</dt><dd>上記listの各要素を受け取る変数名です。</dd><dt>indexname</dt><dd>ループ内で参照する、ループインデックス名です。0スタートになります。これは必須ではありません。 指定しない場合、「index」で参照する事が出来ます。</dd><dt>maxrowcount</dt><dd>ループの最大回数です。データの件数がこれに満たない場合、満たすまで空データを埋め込んだ行を出力します。 これは必須ではありません。指定しない場合はデータ件数通りの行数を出力します。</dd></dl></div><div class="section"><h3>例</h3><p>テンプレートを作ります。</p><img src="images/foreach01.png" /><p>Java側でデータを設定します。</p><div class="source"><pre>public class Foo{
     private String name;
@@ -178,7 +178,17 @@ map.put(&quot;fooList&quot;, list);</pre></div><p>この場合、出力ファ�
 [出力する行]
 #else
 [出力する行]
-#end</pre></div><p>条件式はOGNLで評価されます。「#else if」と「#else」は任意です。</p></div><div class="section"><h3>例</h3><p>テンプレートを作ります。<a href="##foreach">#foreach</a>と併用してみます。</p><img src="images/if01.png" /><p>ループの中で、インデックスが奇数の場合、背景色を水色にかえて、縞模様で出力するようにしています。</p><p><a href="##foreach">#foreach</a>の例と同じデータを埋め込むと出力結果はこうなります。</p><img src="images/if02.png" /><p>また、「#else if」を使って、下記のようなテンプレートを作った場合は</p><img src="images/if03.png" /><p>同データでの出力結果はこの様になります。</p><img src="images/if04.png" /></div></div><div class="section"><h2><a name="#pageBreak">#pageBreak</a></h2><p>この位置に改ページを挿入します。</p></div>
+#end</pre></div><p>条件式はOGNLで評価されます。「#else if」と「#else」は任意です。</p></div><div class="section"><h3>例</h3><p>テンプレートを作ります。<a href="##foreach">#foreach</a>と併用してみます。</p><img src="images/if01.png" /><p>ループの中で、インデックスが奇数の場合、背景色を水色にかえて、縞模様で出力するようにしています。</p><p><a href="##foreach">#foreach</a>の例と同じデータを埋め込むと出力結果はこうなります。</p><img src="images/if02.png" /><p>また、「#else if」を使って、下記のようなテンプレートを作った場合は</p><img src="images/if03.png" /><p>同データでの出力結果はこの様になります。</p><img src="images/if04.png" /></div></div><div class="section"><h2><a name="#pageBreak">#pageBreak</a></h2><p>この位置に改ページを挿入します。「#pageHeader」か「#pageFooter」が指定されている場合は、それぞれを出力します。</p><div class="section"><h3>例</h3><p>ここでは、後述する<a href="##pageHeaderStart">#pageHeaderStart</a>と<a href="##pageFooterStart">#pageFooterStart</a>と合わせて使用してみます。</p><p>テンプレートにこのように記述するとします。</p><img src="images/pagebreak01.png" /><p>4行ごとに改ページを強制的に挿入するようになっており、ヘッダとフッタを指定してあります。</p><p>データを埋め込むとこうなります。</p><img src="images/pagebreak02.png" /></div></div><div class="section"><h2><a name="#pageHeaderStart">#pageHeaderStart</a></h2><p>「#pageBreak」により改ページが挿入された際に、ヘッダとして出力されるブロックを指定します。ブロック要素なので、必ず「#end」で閉じる必要があります。</p><p>EXCELの印刷設定により改ページした場合には出力されません。また、ここでのヘッダとは通常のセルの事ですので、EXCELの印刷設定でのヘッダ設定とは関係りません。</p><div class="section"><h3>構文</h3><div class="source"><pre>#pageHeaderStart
+[出力する行]
+#end</pre></div><p>ヘッダは1つのシートに1つだけ指定する事が出来ます。ある条件でヘッダの内容を変えたい場合は、ブロック内で<a href="##if">#if</a>を使って切り替えます。</p><p>例えば、偶数ページと奇数ページでヘッダを切り替える場合は下記のように記述します。</p><div class="source"><pre>#pageHeaderStart
+#if(page.pagenum%2 == 0)
+[奇数ページに出力する行]
+#else
+[偶数ページに出力する行]
+#end
+#end</pre></div></div></div><div class="section"><h2><a name="#pageFooterStart">#pageFooterStart</a></h2><p>「#pageBreak」により改ページが挿入された際に、フッタとして出力されるブロックを指定します。ブロック要素なので、必ず「#end」で閉じる必要があります。</p><p>EXCELの印刷設定により改ページした場合には出力されません。また、ここでのフッタとは通常のセルの事ですので、EXCELの印刷設定でのフッタ設定とは関係ありません。</p><div class="section"><h3>構文</h3><div class="source"><pre>#pageFooterStart
+[出力する行]
+#end</pre></div><p>フッタは1つのシートに1つだけ指定する事が出来ます。ある条件でフッタの内容を変えたい場合は、<a href="##pageHeaderStart">#pageHeaderStart</a>と同様に、<a href="##if">#if</a>で切り替えます。 詳細は<a href="##pageHeaderStart">#pageHeaderStart</a>を参照して下さい。</p></div></div>
 </div><!-- article -->
 
 </div><!-- contents_center -->
