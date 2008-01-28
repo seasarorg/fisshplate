@@ -42,6 +42,22 @@ public class WorkbookWrapper {
 	public SheetWrapper getSheetAt(int index){
 		return (SheetWrapper) sheetList.get(index);
 	}
+
+	public SheetWrapper getSheetByName(String sheetName) {
+		for(int i=0; i < sheetList.size(); i++){
+			SheetWrapper sheet = (SheetWrapper) sheetList.get(i);
+			String name = sheet.getSheetName();
+			if(name.equals(sheetName)){
+				return sheet;
+			}			
+		}
+
+		return null;
+	}
+
+	public int getSheetCount() {
+		return sheetList.size();
+	}
 	
 
 }

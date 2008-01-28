@@ -51,9 +51,6 @@ public abstract class AbstractCell implements TemplateElement {
 		this.cell = cell;
 		HSSFSheet templateSheet = cell.getRow().getSheet().getHSSFSheet();
 		int rowNum = cell.getRow().getHSSFRow().getRowNum();
-//		if(cell.isNullCell()){
-//			return;
-//		}
 		
 		//マージ情報をなめて、スタート地点が合致すれば保存しておく。
 		for(int i=0; i < templateSheet.getNumMergedRegions();i++){
@@ -82,9 +79,6 @@ public abstract class AbstractCell implements TemplateElement {
 	 * @param outCell 出力するセル
 	 */
 	protected void copyCellStyle(FPContext context, HSSFCell outCell) {
-//		if(cell.isNullCell()){
-//			return;
-//		}
 		HSSFCell hssfCell = cell.getHSSFCell();
 
 		HSSFWorkbook outWb = cell.getRow().getSheet().getWorkbook().getHSSFWorkbook();

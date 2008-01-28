@@ -59,6 +59,10 @@ public class SheetWrapper {
 		return sheetIndex;
 	}
 	
+	public String getSheetName(){
+		return workbook.getHSSFWorkbook().getSheetName(sheetIndex);
+	}
+	
 	/**
 	 * データ埋め込みの準備のために、シートを初期化します。
 	 */
