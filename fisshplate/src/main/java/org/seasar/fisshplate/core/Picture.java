@@ -179,12 +179,6 @@ public class Picture extends AbstractCell {
 		int pictureType = setupPictureType(suffix);
 		int pictureIndex = workbook.addPicture(pictureData, pictureType);
 
-		System.out.println("*[Anchor]=========================");
-		System.out.println("cellNo:=" + context.getCurrentCellNum());
-		System.out.println("rowNo:=" + context.getCurrentRowNum());
-		System.out.println("PictureType:=" + pictureType);
-		System.out.println("PictureIndex:=" + pictureIndex);
-
 		patriarch.createPicture(anchor, pictureIndex);
 
 		ImageIOUtil.close(baos);
