@@ -15,7 +15,6 @@
  */
 package org.seasar.fisshplate.unit;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -64,8 +63,34 @@ public class MapBuilderTest extends TestCase {
 		
 		List itemList = (List) actual.get("itemList");
 		assertEquals(10, itemList.size());
+		for(int i=0; i < itemList.size();i++){
+			Map item = (Map) itemList.get(i);
+			assertEquals(Double.valueOf(i + 1), item.get("num"));
+		}
 		
-		is.close();
+		Map item = (Map) itemList.get(0);
+		List childList = (List) item.get("childList");
+		
+		assertEquals(5, childList.size());
+		
+		
+		Map data = (Map) actual.get("data");
+		assertEquals("ループじゃないの", data.get("val"));
+		itemList = (List) data.get("itemList");
+		assertEquals(6, itemList.size());
+		
+		Map dataChild = (Map) data.get("child");
+		assertEquals("子供のデータ", dataChild.get("childVal"));
+		
+		Map dataGrandChild = (Map) dataChild.get("grandChild");
+		assertEquals("dataの孫の値", dataGrandChild.get("grandChildVal"));
+		
+		Map dataGrand2 = (Map) dataGrandChild.get("grand2");
+		assertEquals("dataのひ孫", dataGrand2.get("val"));
+		
+		
+		
+		
 		
 	}
 	
