@@ -13,11 +13,12 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.fisshplate.unit;
+package org.seasar.fisshplate.preview;
 
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,9 +58,9 @@ public class MapBuilderTest extends TestCase {
 		Map actual = builder.buildMapFrom(wb);
 		
 		assertEquals(expected.get("repnum"), actual.get("repnum"));
-		assertEquals(expected.get("title"), actual.get("title"));		
-		SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");		
-		assertEquals("2008/01/28", df.format(actual.get("date")));
+		assertEquals(expected.get("title"), actual.get("title"));
+		//日付が数値になりますが、テンプレート埋め込み時の書式で日付になります。
+		assertEquals(Double.valueOf(39475D), actual.get("date"));
 		
 		List itemList = (List) actual.get("itemList");
 		assertEquals(10, itemList.size());

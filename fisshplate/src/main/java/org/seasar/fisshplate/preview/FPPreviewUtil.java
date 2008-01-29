@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.fisshplate.unit;
+package org.seasar.fisshplate.preview;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,11 +24,18 @@ import org.seasar.fisshplate.exception.FPException;
 import org.seasar.fisshplate.template.FPTemplate;
 
 /**
+ * テンプレートファイルと埋め込みデータファイルから出力ファイルを生成するユーティリティクラスです。
  * @author rokugen
  */
 public class FPPreviewUtil {
 	private FPPreviewUtil(){}
 	
+	/**
+	 * @param template
+	 * @param data
+	 * @return
+	 * @throws FPException
+	 */
 	public static final HSSFWorkbook getWorkbook(HSSFWorkbook template, HSSFWorkbook data) throws FPException{
 		FPTemplate fptemp = new FPTemplate();
 		MapBuilder mb = new MapBuilder();
@@ -36,6 +43,13 @@ public class FPPreviewUtil {
 		return fptemp.process(template, map);
 	}
 	
+	/**
+	 * @param template
+	 * @param data
+	 * @return
+	 * @throws FPException
+	 * @throws IOException
+	 */
 	public static final HSSFWorkbook getWorkbook(InputStream template, InputStream data) throws FPException, IOException{
 		HSSFWorkbook tempWb = new HSSFWorkbook(template);
 		HSSFWorkbook dataWb = new HSSFWorkbook(data);

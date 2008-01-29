@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.fisshplate.unit;
+package org.seasar.fisshplate.preview;
 
 import java.util.Map;
 
@@ -29,13 +29,16 @@ import org.seasar.fisshplate.wrapper.WorkbookWrapper;
 public class MapBuilder {
 	private static final String ROOT_SHEET_NAME = "root";
 
+	/**
+	 * EXCELに記載されたデータから、テンプレート埋め込み用{@link Map}を生成して戻します。
+	 * @param wb 埋め込みデータが記載された{@link HSSFWorkbook}
+	 * @return テンプレート埋め込み用{@link Map}
+	 */
 	public Map buildMapFrom(HSSFWorkbook wb) {
 		WorkbookWrapper workbook = new WorkbookWrapper(wb);
 		
 		SheetWrapper sheet = workbook.getSheetByName(ROOT_SHEET_NAME);
 		FPMapData root = new FPMapData(sheet, ROOT_SHEET_NAME);
-		
-		
 		
 		for(int i=0; i < workbook.getSheetCount(); i++){
 			sheet = workbook.getSheetAt(i);
@@ -43,8 +46,7 @@ public class MapBuilder {
 				continue;
 			}
 			
-			buildMapData(root, sheet, sheet.getSheetName());				
-			
+			buildMapData(root, sheet, sheet.getSheetName());
 		}
 
 		return (Map) root.buildData();

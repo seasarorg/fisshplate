@@ -77,7 +77,8 @@ public class FPParser {
 		}
 		// スタックにまだブロックが残ってたら#end不足
 		if (blockStack.size() > 0) {
-			throw new FPParseException(FPConsts.MESSAGE_ID_END_ELEMENT);
+			throw new FPParseException(FPConsts.MESSAGE_ID_END_ELEMENT	,
+					new Object[]{"?"});
 		}
 	}
 
@@ -91,7 +92,7 @@ public class FPParser {
 			AbstractBlock block = (AbstractBlock) blockStack.lastElement();
 			block.addChild(rowElem);
 		} else {
-			rootElement.addBody(rowElem);			
+			rootElement.addBody(rowElem);
 		}
 	}
 
@@ -119,25 +120,25 @@ public class FPParser {
 
 		Matcher mat;
 		if ((mat = patIterator.matcher(value)).find()) {
-			iteratorBlock(mat);
+			iteratorBlock(mat, row);
 		} else if ((mat = patEnd.matcher(value)).find()) {
-			end();
+			end(row);
 		} else if ((mat = patIf.matcher(value)).find()) {
 			ifBlock(mat);
 		} else if ((mat = patElseIf.matcher(value)).find()) {
-			elseIfBlock(mat);
+			elseIfBlock(mat,row);
 		} else if ((mat = patElse.matcher(value)).find()) {
-			elseBlock();
+			elseBlock(row);
 		} else if ((mat = patPageBreak.matcher(value)).find()) {
 			breakBlock();
 		} else if ((mat = patPageHeaderStart.matcher(value)).find()) {
 			pageHeaderBlock();
 		} else if ((mat = patPageHeaderEnd.matcher(value)).find()) {
-			end();
+			end(row);
 		} else if ((mat = patPageFooterStart.matcher(value)).find()) {
 			pageFooterBlock();
 		} else if ((mat = patPageFooterEnd.matcher(value)).find()) {
-			end();
+			end(row);
 		} else if ((mat = patComment.matcher(value)).find()) {
 			// コメント行はパス
 		} else {
@@ -169,7 +170,7 @@ public class FPParser {
 		rootElement.addBody(elem);
 	}
 
-	private void iteratorBlock(Matcher mat) throws FPParseException{
+	private void iteratorBlock(Matcher mat, RowWrapper row) throws FPParseException{
 		String varName = mat.group(1);
 		String iteratorName = mat.group(2);
 		String indexName = mat.group(4);
@@ -179,11 +180,12 @@ public class FPParser {
 			try{
 				max = Integer.parseInt(maxString);
 			}catch(NumberFormatException ex){
-				throw new FPParseException(FPConsts.MESSAGE_ID_NOT_ITERATOR_INVALID_MAX);
+				throw new FPParseException(FPConsts.MESSAGE_ID_NOT_ITERATOR_INVALID_MAX,
+						new Object[]{new Integer(row.getHSSFRow().getRowNum() + 1)});
 			}
 		}
 		
-		AbstractBlock block = new IteratorBlock(varName, iteratorName, indexName, max);
+		AbstractBlock block = new IteratorBlock(row, varName, iteratorName, indexName, max);
 		pushBlockToStack(block);
 	}
 
@@ -193,38 +195,41 @@ public class FPParser {
 		pushBlockToStack(block);
 	}
 
-	private void elseIfBlock(Matcher mat) throws FPParseException {
-		AbstractBlock parent = getParentIfBlock();
+	private void elseIfBlock(Matcher mat,RowWrapper row) throws FPParseException {
+		AbstractBlock parent = getParentIfBlock(row);
 		String condition = mat.group(1);
 		AbstractBlock block = new ElseIfBlock(condition);
 		((IfBlock) parent).setNextBlock(block);
 		blockStack.push(block);
 	}
 
-	private void elseBlock() throws FPParseException {
-		AbstractBlock parent = getParentIfBlock();
+	private void elseBlock(RowWrapper row) throws FPParseException {
+		AbstractBlock parent = getParentIfBlock(row);
 		AbstractBlock block = new ElseBlock();
 		((IfBlock) parent).setNextBlock(block);
 		blockStack.push(block);
 	}
 
-	private AbstractBlock getParentIfBlock() throws FPParseException {
+	private AbstractBlock getParentIfBlock(RowWrapper row) throws FPParseException {
 		if (blockStack.size() < 1) {
-			throw new FPParseException(FPConsts.MESSAGE_ID_LACK_IF);
+			throw new FPParseException(FPConsts.MESSAGE_ID_LACK_IF,
+					new Object[]{new Integer(row.getHSSFRow().getRowNum() + 1)});
 		}
 
 		AbstractBlock parent = (AbstractBlock) blockStack.lastElement();
 
 		if (!(parent instanceof IfBlock)) {
-			throw new FPParseException(FPConsts.MESSAGE_ID_LACK_IF);
+			throw new FPParseException(FPConsts.MESSAGE_ID_LACK_IF,
+					new Object[]{new Integer(row.getHSSFRow().getRowNum() + 1)});
 		}
 		return parent;
 
 	}
 
-	private void end() throws FPParseException {
+	private void end(RowWrapper row) throws FPParseException {
 		if (blockStack.size() < 1) {
-			throw new FPParseException(FPConsts.MESSAGE_ID_END_ELEMENT);
+			throw new FPParseException(FPConsts.MESSAGE_ID_END_ELEMENT,
+					new Object[]{new Integer(row.getHSSFRow().getRowNum() + 1)});
 		}
 		AbstractBlock block = (AbstractBlock) blockStack.pop();
 		// elseとelse ifの場合、ifが出るまでpop継続する

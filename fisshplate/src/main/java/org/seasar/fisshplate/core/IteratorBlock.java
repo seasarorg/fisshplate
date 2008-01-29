@@ -24,24 +24,28 @@ import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.util.OgnlUtil;
+import org.seasar.fisshplate.wrapper.RowWrapper;
 
 public class IteratorBlock extends AbstractBlock{	
 	private String varName;
 	private String iteratorName;
 	private String indexName;
 	private int max;
+	private RowWrapper row;
 	
 	/**
 	 * 要素を保持する変数名とイテレータ自身の名前とループのインデックス名とループの最大繰り返し回数を受け取ります。
+	 * @param row テンプレート上の行
 	 * @param varName イテレータ内の要素を保持する変数名
 	 * @param iteratorName イテレータ名
 	 * @param indexName ループのインデックス名
 	 * @param max ループの最大繰り返し回数 
 	 */
-	IteratorBlock(String varName, String iteratorName, String indexName, int max){
+	IteratorBlock(RowWrapper row, String varName, String iteratorName, String indexName, int max){
 		this.varName = varName;
 		this.iteratorName = iteratorName;
 		this.max = max;
+		this.row = row;
 		if(indexName == null || "".equals(indexName.trim())){
 			this.indexName = FPConsts.DEFAULT_ITERATOR_INDEX_NAME;
 		}else{
@@ -66,7 +70,8 @@ public class IteratorBlock extends AbstractBlock{
 		} else if(o instanceof Object[]){
 			ite = getIterator(Arrays.asList((Object[])o));
 		} else{
-			throw new FPMergeException(FPConsts.MESSAGE_ID_NOT_ITERATABLE,new Object[]{iteratorName});			
+			throw new FPMergeException(FPConsts.MESSAGE_ID_NOT_ITERATABLE,
+					new Object[]{iteratorName,new Integer(row.getHSSFRow().getRowNum() + 1)});			
 		}
 		return ite;	
 	}
