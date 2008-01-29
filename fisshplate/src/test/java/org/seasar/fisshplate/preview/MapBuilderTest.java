@@ -17,8 +17,6 @@ package org.seasar.fisshplate.preview;
 
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,6 +104,26 @@ public class MapBuilderTest extends TestCase {
 		HSSFWorkbook out = template.process(new HSSFWorkbook(tempIs), data);
 		
 		FileOutputStream os = new FileOutputStream("target/MapBuilderTest_template_out.xls");
+		out.write(os);
+		is.close();
+		tempIs.close();
+		os.close();
+		
+		
+		
+	}
+	
+	public void testテンプレートへ埋め込み_rootなし()throws Exception{
+		InputStream is = getClass().getResourceAsStream("/MapBuilderTest_without_root.xls");
+		InputStream tempIs = getClass().getResourceAsStream("/MapBuilderTest_without_root_template.xls");
+		HSSFWorkbook wb = new HSSFWorkbook(is);
+		MapBuilder builder = new MapBuilder();
+		Map data = builder.buildMapFrom(wb);
+		
+		FPTemplate template = new FPTemplate();
+		HSSFWorkbook out = template.process(new HSSFWorkbook(tempIs), data);
+		
+		FileOutputStream os = new FileOutputStream("target/MapBuilderTest_without_root_template_out.xls");
 		out.write(os);
 		is.close();
 		tempIs.close();
