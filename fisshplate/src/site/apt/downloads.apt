@@ -7,9 +7,9 @@
   
 Download
 
-  [{{{/download/fisshplate-0.1.0.zip}Fissplate 0.1.0}}] Fisshplate Core
+  [{{{/download/fisshplate-0.1.1.zip}Fissplate 0.1.1}}] Fisshplate Core
   
-  [{{{/download/s2fisshplate-0.1.0.zip}S2Fissplate 0.1.0}}] Library to work together Fisshplate and S2.
+  [{{{/download/s2fisshplate-0.1.1.zip}S2Fissplate 0.1.1}}] Library to work together Fisshplate and S2.
   
 using Maven2
 
@@ -54,6 +54,8 @@ All Release
 *------------------------------------------------------+------------------+
 | <<Files>>                                            | <<Release Date>> |
 *------------------------------------------------------+------------------+
+| {{{/download/fisshplate-0.1.1.zip}ver. 0.1.1}}       | 2008/01/31       |
+*------------------------------------------------------+------------------+
 | {{{/download/fisshplate-0.1.0.zip}ver. 0.1.0}}       | 2008/01/17       |
 *------------------------------------------------------+------------------+
 | {{{/download/fisshplate-0.0.1.zip}ver. 0.0.1}}       | 2007/12/31       |
@@ -63,6 +65,8 @@ All Release
 
 *------------------------------------------------------+------------------+
 | <<Files>>                                            | <<Release Date>> |
+*------------------------------------------------------+------------------+
+| {{{/download/s2fisshplate-0.1.1.zip}ver. 0.1.1}}     | 2008/01/31       |
 *------------------------------------------------------+------------------+
 | {{{/download/s2fisshplate-0.1.0.zip}ver. 0.1.0}}     | 2008/01/17       |
 *------------------------------------------------------+------------------+
