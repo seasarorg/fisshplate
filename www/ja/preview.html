@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+<meta http-equiv="Content-Language" content="ja" /> 
+<meta http-equiv="Content-Style-Type" content="text/css" /> 
+<title>Fisshplate - プレビュー機能</title>
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/main.css" media="screen,projection" />
+<link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/print.css" media="print" />
+<link href="./css/maven-base.css" type="text/css" rel="stylesheet" media="screen" />
+<link href="./css/maven-theme.css" type="text/css" rel="stylesheet" media="screen" />
+</head>
+
+<body>
+
+<div id="wrapper">
+
+<div id="header">
+
+<div class="line"><span class="hide">spacer</span></div>
+
+<div id="logo"><h1 id="h01" class="hide">The Seasar Foundation Project Site</h1><img src="http://www.seasar.org/images/seasar_logo_blue.gif" alt="The Seasar Foundation" width="390" height="180" /></div>
+
+<div id="tool">
+
+<h2><a href="http://search.seasar.org/">Site Search</a></h2>
+
+<form id="search" action="http://search.seasar.org/">
+<div>
+	<input id="search_phrase" type="text" name="phrase" size="20" />
+	<input type="hidden" name="perpage" value="30" />
+	<input type="hidden" name="enc" value="UTF-8" />
+	<input id="search_go" type="submit" value="Search" />
+</div>
+</form>
+
+<h2>Seasar Banner</h2>
+
+<p><a href="http://www.seasar.org/images/seasar_banner.gif"><img src="http://www.seasar.org/images/seasar_banner.gif" alt="Seasar Banner" title="Seasar Banner" width="146" height="33" /></a></p>
+
+</div>
+
+<div id="navi">
+<p><a href="../en/">English</a> | <a href="../ja/">Japanese</a></p>
+</div>
+
+</div><!-- header -->
+
+<div id="contents_left">
+           
+  
+
+  
+    
+  
+  
+                   <h2>About</h2>
+        <ul>
+              
+    <li class="none">
+              <a href="index.html">ホーム</a>
+        </li>
+              
+    <li class="none">
+              <a href="license.html">ライセンス</a>
+        </li>
+              
+    <li class="none">
+              <a href="downloads.html">ダウンロード</a>
+        </li>
+          </ul>
+          <h2>ドキュメント</h2>
+        <ul>
+              
+    <li class="none">
+              <a href="setup.html">セットアップ</a>
+        </li>
+              
+    <li class="none">
+              <a href="template.html">テンプレートの作り方</a>
+        </li>
+              
+    <li class="none">
+              <a href="process.html">ファイル出力の仕方</a>
+        </li>
+              
+    <li class="none">
+              <strong>プレビュー機能</strong>
+        </li>
+              
+    <li class="none">
+              <a href="syntax.html">文法ガイド</a>
+        </li>
+              
+    <li class="none">
+              <a href="s2fisshplate.html">S2との連携</a>
+        </li>
+          </ul>
+          <h2>Javadoc</h2>
+        <ul>
+              
+    <li class="none">
+              <a href="apidocs/fisshplate/index.html">Fisshplate</a>
+        </li>
+              
+    <li class="none">
+              <a href="apidocs/s2fisshplate/index.html">S2Fisshplate</a>
+        </li>
+          </ul>
+          <h2>プロジェクト文書</h2>
+        <ul>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+              <a href="project-info.html">プロジェクト情報</a>
+              </li>
+          </ul>
+                                       <a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy" name="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png" />
+          </a>
+                       
+  
+
+  
+    
+  
+  
+  </div><!-- contents_left -->
+
+<div id="contents_center">
+
+<div id="article">
+<div class="section"><h2>プレビュー機能とは</h2><p>テンプレートには条件分岐やループなどの制御が伴う場合があります。 制御文の動作を確認するためには、テストケースなどでテンプレートに埋め込むデータをMapとしてJava上でコーディング しなければなりません。これはとても面倒です。</p><p>Fisshplateでは、埋め込むデータをJavaでコーディングせずに、EXCELに記述し、それを埋め込む「プレビュー機能」があります。 プレビュー機能を使うと、テンプレートの動作確認を簡単に行う事が出来ます。</p></div><div class="section"><h2>テンプレート作成</h2><p>まず、本番で使うテンプレートを作ります。今回は例として、以下のようなテンプレートを 「preview_template.xls」という名前で、ルートパッケージ保存するものとします。</p><img src="images/preview01.png" /></div><div class="section"><h2>データファイル作成</h2><p>このテンプレートは以下のようなデータ構造を想定しています。<i></i>で囲まれているのがオブジェクトで、そうでないものがそのプロパティです。</p><div class="source"><pre>&lt;ルート要素&gt;
+     +-repnum
+     +-title
+     +-date
+     |
+     +-&lt;itemList&gt;(リスト要素)
+     |       +-num
+     |       +-itemName
+     |       +-date
+     |       |
+     |       +-&lt;childList&gt;(リスト要素)
+     |              +-val
+     +-&lt;data&gt;
+         +-val
+         |
+         +-&lt;child&gt;
+             +-childVal
+             |
+             +-&lt;grandChild&gt;
+                   +-grandChildVal
+                   |
+                   +-&lt;grand2&gt;
+                        +-val</pre></div><p>これをEXCEL上でサンプルデータとして記述します。</p><p>今回はデータファイルを「preview_data.xls」として、ルートパッケージに保存するものとします。</p><div class="section"><h3>ルート要素</h3><p>シートの名前を「root」とします。ルート要素のプロパティがない場合は作成する必要はありません。</p><p>1行目に「repnum」「title」「date」の各プロパティ名を記述し、2行目にその値を記入します。複数行を記入するとエラーになります。</p><img src="images/preview02.png" /></div><div class="section"><h3>itemList要素</h3><p>ルート要素の下の子要素を表現するためには、シートを追加し、シート名を要素名にします。この場合、「itemList」というシートを追加します。</p><p>ルート要素と同様に、プロパティを1行目に、その内容を2行目以降に記述します。</p><p>itemListはリスト要素（Listや配列）なので、複数行記述して下さい。 Fisshplateは、データ内容が1行の場合は通常の要素、2行以上の場合はリスト要素として自動的に判断しますので、注意して下さい。</p><img src="images/preview03.png" /></div><div class="section"><h3>childList要素</h3><p>itemListのリスト内の各要素に、プロパティとしてchildListというリスト要素を持っています。itemListとchildListが親子構造になっているわけです。</p><p>親子構造を表現するためにはルールがあります。</p><ul><li>シート名は親子構造を全て反映させる<p>シート名を「親要素#子要素」という名前にします。これは、rootを除く全ての親子関係を記述する必要があります。 例えば、「root - 親要素 - 子要素 - 孫要素」という階層の場合、シート名は「親要素#子要素#孫要素」となります。</p></li><li>シートの位置は必ず、左から右に親から子になるようにする。<p>子要素は必ず親要素より右にするようにして下さい。逆になっているとエラーになります。</p></li></ul><p>また、親要素、子要素ともにリスト要素の場合、親要素のリストの各行の子要素は全て同じ内容になります。</p><p>今回は以下のようになります。これもリスト要素なので複数行記入してあります。</p><img src="images/preview04.png" /></div><div class="section"><h3>data要素</h3><p>ルート要素の直下のdata要素のデータ内容を記述します。itemListと同様ですが、今回はリスト要素でなく、通常の要素ですので1行のみにします。</p><img src="images/preview05.png" /></div><div class="section"><h3>child要素/grandChild要素/grand2要素</h3><p>それぞれ、dataとの親子関係に留意しながら、同様に作成していきます。</p><ul><li>child</li></ul><img src="images/preview06.png" /><ul><li>grandChild</li></ul><img src="images/preview07.png" /><ul><li>grand2</li></ul><img src="images/preview08.png" /><p>grand2のシート名は、前述のルールの通り、root以外の親要素を全て記述して「data#child#grandChild#grand2」となっています。</p></div></div><div class="section"><h2>プレビュー実行</h2><p>プレビュー用に出力ファイルを取得するには、FPPreviewUtil#getWorkbook()を使います。getWorkbookは以下の引数で実行出来ます。</p><ul><li>getWorkbook(InputStream, InputStream)</li><li>getWorkbook(HSSFWorkbook, HSSFWorkbook)</li></ul><p>いずれも、第1引数にテンプレートファイル、第2引数にデータファイルを指定します。</p><p>テストケースなどで、以下のコードを実行します。</p><div class="source"><pre>public void testPreviewSample() throws Exception{
+
+    InputStream template = getClass().getResourceAsStream(&quot;/preview_template.xls&quot;);
+    InputStream data = getClass().getResourceAsStream(&quot;/preview_data.xls&quot;);
+    
+    HSSFWorkbook out = FPPreviewUtil.getWorkbook(template, data);
+    
+    FileOutputStream os = new FileOutputStream(&quot;target/preview_out.xls&quot;);
+    out.write(os);
+    data.close();
+    template.close();
+    os.close();
+    
+}</pre></div><p>これで、targetディレクトリ内に「preview_out.xls」というファイルが出力されます。出力結果は以下です。</p><img src="images/preview09.png" /><p>このように、プレビュー機能を使う事で、テンプレートの動作確認をさまざまなパターンのデータで行う事が出来ます。</p></div>
+</div><!-- article -->
+
+</div><!-- contents_center -->
+
+<div id="footer">
+<address>  &copy; Copyright
+  
+          2008,
+    
+          The Seasar Foundation and the others. All rights reserved.
+      </address>
+<div class="line"><span class="hide">spacer</span></div>
+</div><!-- footer -->
+
+</div><!-- wrapper -->
+
+</body>
+</html>
