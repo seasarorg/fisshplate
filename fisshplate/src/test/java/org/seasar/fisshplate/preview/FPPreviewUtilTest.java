@@ -62,6 +62,20 @@ public class FPPreviewUtilTest extends TestCase {
 		out.write(os);		
 		os.close();
 	}
+	
+	public void testサイトサンプル用() throws Exception{
+		InputStream data = getClass().getResourceAsStream("/preview_data.xls");
+		InputStream template = getClass().getResourceAsStream("/preview_template.xls");
+		
+		HSSFWorkbook out = FPPreviewUtil.getWorkbook(template, data);
+		
+		FileOutputStream os = new FileOutputStream("target/preview_out.xls");
+		out.write(os);
+		data.close();
+		template.close();
+		os.close();
+		
+	}
 
 }
 

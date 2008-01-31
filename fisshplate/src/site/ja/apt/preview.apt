@@ -1,0 +1,165 @@
+  ---
+  プレビュー機能
+  ---
+  rokugen
+  ---
+  2008/01/31
+
+プレビュー機能とは
+
+  テンプレートには条件分岐やループなどの制御が伴う場合があります。
+  制御文の動作を確認するためには、テストケースなどでテンプレートに埋め込むデータをMapとしてJava上でコーディング
+  しなければなりません。これはとても面倒です。
+  
+  Fisshplateでは、埋め込むデータをJavaでコーディングせずに、EXCELに記述し、それを埋め込む「プレビュー機能」があります。
+  プレビュー機能を使うと、テンプレートの動作確認を簡単に行う事が出来ます。
+
+テンプレート作成
+
+  まず、本番で使うテンプレートを作ります。今回は例として、以下のようなテンプレートを
+  「preview_template.xls」という名前で、ルートパッケージ保存するものとします。
+  
+[images/preview01.png]
+
+データファイル作成
+
+  このテンプレートは以下のようなデータ構造を想定しています。<>で囲まれているのがオブジェクトで、そうでないものがそのプロパティです。
+
++--
+<ルート要素>
+     +-repnum
+     +-title
+     +-date
+     |
+     +-<itemList>(リスト要素)
+     |       +-num
+     |       +-itemName
+     |       +-date
+     |       |
+     |       +-<childList>(リスト要素)
+     |              +-val
+     +-<data>
+         +-val
+         |
+         +-<child>
+             +-childVal
+             |
+             +-<grandChild>
+                   +-grandChildVal
+                   |
+                   +-<grand2>
+                        +-val
++--
+
+  これをEXCEL上でサンプルデータとして記述します。
+  
+  今回はデータファイルを「preview_data.xls」として、ルートパッケージに保存するものとします。
+  
+* ルート要素
+
+  シートの名前を「root」とします。ルート要素のプロパティがない場合は作成する必要はありません。
+  
+  1行目に「repnum」「title」「date」の各プロパティ名を記述し、2行目にその値を記入します。複数行を記入するとエラーになります。
+  
+[images/preview02.png]
+
+* itemList要素
+  
+  ルート要素の下の子要素を表現するためには、シートを追加し、シート名を要素名にします。この場合、「itemList」というシートを追加します。
+  
+  ルート要素と同様に、プロパティを1行目に、その内容を2行目以降に記述します。
+  
+  itemListはリスト要素（Listや配列）なので、複数行記述して下さい。
+  Fisshplateは、データ内容が1行の場合は通常の要素、2行以上の場合はリスト要素として自動的に判断しますので、注意して下さい。
+
+[images/preview03.png]
+
+* childList要素
+
+  itemListのリスト内の各要素に、プロパティとしてchildListというリスト要素を持っています。itemListとchildListが親子構造になっているわけです。
+  
+  親子構造を表現するためにはルールがあります。
+  
+  * シート名は親子構造を全て反映させる
+  
+  シート名を「親要素#子要素」という名前にします。これは、rootを除く全ての親子関係を記述する必要があります。  
+  例えば、「root - 親要素 - 子要素 - 孫要素」という階層の場合、シート名は「親要素#子要素#孫要素」となります。
+  
+  * シートの位置は必ず、左から右に親から子になるようにする。
+  
+  子要素は必ず親要素より右にするようにして下さい。逆になっているとエラーになります。
+  
+  []
+  
+  また、親要素、子要素ともにリスト要素の場合、親要素のリストの各行の子要素は全て同じ内容になります。
+  
+  今回は以下のようになります。これもリスト要素なので複数行記入してあります。
+  
+[images/preview04.png]  
+
+* data要素
+
+  ルート要素の直下のdata要素のデータ内容を記述します。itemListと同様ですが、今回はリスト要素でなく、通常の要素ですので1行のみにします。
+  
+[images/preview05.png]
+
+* child要素/grandChild要素/grand2要素
+
+  それぞれ、dataとの親子関係に留意しながら、同様に作成していきます。
+  
+  * child
+  
+  []
+
+[images/preview06.png]
+
+  * grandChild
+  
+  []
+
+[images/preview07.png]
+
+  * grand2
+  
+  []
+
+[images/preview08.png]
+
+  grand2のシート名は、前述のルールの通り、root以外の親要素を全て記述して「data#child#grandChild#grand2」となっています。
+
+プレビュー実行
+
+  プレビュー用に出力ファイルを取得するには、FPPreviewUtil#getWorkbook()を使います。getWorkbookは以下の引数で実行出来ます。
+  
+  * getWorkbook(InputStream, InputStream)
+  
+  *  getWorkbook(HSSFWorkbook, HSSFWorkbook)
+  
+  []
+  
+  いずれも、第1引数にテンプレートファイル、第2引数にデータファイルを指定します。
+  
+  テストケースなどで、以下のコードを実行します。
+    
++--
+public void testPreviewSample() throws Exception{
+
+    InputStream template = getClass().getResourceAsStream("/preview_template.xls");
+    InputStream data = getClass().getResourceAsStream("/preview_data.xls");
+    
+    HSSFWorkbook out = FPPreviewUtil.getWorkbook(template, data);
+    
+    FileOutputStream os = new FileOutputStream("target/preview_out.xls");
+    out.write(os);
+    data.close();
+    template.close();
+    os.close();
+    
+}
++--
+
+  これで、targetディレクトリ内に「preview_out.xls」というファイルが出力されます。出力結果は以下です。
+  
+[images/preview09.png]
+
+  このように、プレビュー機能を使う事で、テンプレートの動作確認をさまざまなパターンのデータで行う事が出来ます。

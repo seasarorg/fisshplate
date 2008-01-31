@@ -18,6 +18,8 @@ package org.seasar.fisshplate.preview;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.seasar.fisshplate.consts.FPConsts;
+import org.seasar.fisshplate.exception.FPPreviewException;
 import org.seasar.fisshplate.wrapper.SheetWrapper;
 import org.seasar.fisshplate.wrapper.WorkbookWrapper;
 
@@ -61,6 +63,9 @@ public class MapBuilder {
 		String childKeyName = keyName.substring(idx + 1);
 		keyName = keyName.substring(0, idx);
 		FPMapData child = parent.getChildByKey(keyName);
+		if(child == null){
+			throw new FPPreviewException(FPConsts.MESSAGE_ID_PREVIEW_LACCK_OF_PARENT,new Object[]{keyName});
+		}
 		buildMapData(child, sheet, childKeyName);
 		return;		
 	}
