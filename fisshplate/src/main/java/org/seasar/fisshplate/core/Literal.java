@@ -15,7 +15,10 @@
  */
 package org.seasar.fisshplate.core;
 
+import java.util.Date;
+
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.wrapper.CellWrapper;
 
@@ -42,31 +45,41 @@ public class Literal extends AbstractCell {
 		copyCellStyle(context, out);
 		
 		HSSFCell templateCell = cell.getHSSFCell();
+		Object cellValue = getCellValue();
 		
 		int cellType = templateCell.getCellType();
-		out.setCellType(cellType);
-		switch(cellType){
-		case HSSFCell.CELL_TYPE_NUMERIC:
-			out.setCellValue(templateCell.getNumericCellValue());
-			break;
-		case HSSFCell.CELL_TYPE_STRING:
-			out.setCellValue(templateCell.getRichStringCellValue());
-			break;
-		case HSSFCell.CELL_TYPE_BOOLEAN:
-			out.setCellValue(templateCell.getBooleanCellValue());
-			break;
-		case HSSFCell.CELL_TYPE_FORMULA:
-			out.setCellFormula(templateCell.getCellFormula());
-			break;
-		case HSSFCell.CELL_TYPE_ERROR:
-			out.setCellErrorValue(templateCell.getErrorCellValue());
-			break;
-		case HSSFCell.CELL_TYPE_BLANK:
-			break;
-		default:
+		if(cellType == HSSFCell.CELL_TYPE_FORMULA){
+			out.setCellFormula((String)cellValue);
+		}else if(cellType == HSSFCell.CELL_TYPE_ERROR){
+			out.setCellErrorValue(((Byte)cellValue).byteValue());
+		}else if(cellValue instanceof Date){			
+			out.setCellValue(((Date)cellValue));
+			out.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+		}else if(cellValue instanceof String){			
+			out.setCellValue(new HSSFRichTextString((String)cellValue));
+			out.setCellType(HSSFCell.CELL_TYPE_STRING);
+		}else if(cellValue instanceof Boolean){			
+			out.setCellValue(((Boolean)cellValue).booleanValue());
+			out.setCellType(HSSFCell.CELL_TYPE_BOOLEAN);
+		}else if(isNumber(cellValue)){			
+			out.setCellValue(Double.valueOf(cellValue.toString()).doubleValue());
+			out.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
 		}
 		
 		context.nextCell();
+	}
+	
+	private boolean isNumber(Object value){
+		if(value == null || value instanceof String){
+			return false;
+		}
+		
+		try{
+			Double.valueOf(value.toString());
+			return true;
+		}catch (NumberFormatException e) {
+			return false;
+		}
 	}
 
 }

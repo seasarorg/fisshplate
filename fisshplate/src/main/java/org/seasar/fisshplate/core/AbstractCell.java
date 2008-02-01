@@ -40,6 +40,7 @@ public abstract class AbstractCell implements TemplateElement {
 	private boolean isMergedCell;
 	private short relativeMergedColumnTo;
 	private int relativeMergedRowNumTo;
+	private Object cellValue;
 	
 
 	/**
@@ -60,6 +61,8 @@ public abstract class AbstractCell implements TemplateElement {
 				break;
 			}
 		}
+		
+		cellValue = cell.getObjectValue();
 	}
 	
 	private void setUpMergedCellInfo(short cellNum, int rowNum, Region reg){
@@ -118,6 +121,14 @@ public abstract class AbstractCell implements TemplateElement {
 		reg.setRowTo(rowFrom + relativeMergedRowNumTo);
 		HSSFSheet hssfSheet = cell.getRow().getSheet().getHSSFSheet();
 		hssfSheet.addMergedRegion(reg);		
+	}
+
+	public Object getCellValue() {
+		return cellValue;
+	}
+
+	public void setCellValue(Object cellValue) {
+		this.cellValue = cellValue;
 	}
 
 }

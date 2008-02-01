@@ -17,6 +17,7 @@ package learning.fisshplate;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -78,5 +79,23 @@ public class LearningPoiTest extends TestCase {
 		FileOutputStream fos = new FileOutputStream("target/outLearningTest.xls");
 		input.write(fos);
 		fos.close();
+	}
+	
+	public void testCreateRowTest()throws Exception{
+		InputStream is = getClass().getResourceAsStream("/MapBuilderTest_template.xls");
+		HSSFWorkbook wb = new HSSFWorkbook(is);
+		HSSFSheet ws = wb.getSheetAt(0);
+		for(int i=0; i <= ws.getLastRowNum();i++){
+			HSSFRow hssfRow = ws.getRow(i);
+			if(hssfRow != null){
+				ws.removeRow(hssfRow);
+			}
+		}
+		
+		FileOutputStream os = new FileOutputStream("target/createRowTest.xls");
+		wb.write(os);
+		os.close();
+		is.close();
+		
 	}
 }

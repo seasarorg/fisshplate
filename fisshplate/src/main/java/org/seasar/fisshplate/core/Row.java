@@ -40,7 +40,7 @@ public class Row implements TemplateElement {
 	private short rowHeight;
 	private Root root;
 
-	private static final Pattern patEl = Pattern.compile("^\\s*\\$\\{(.+)\\}");
+	private static final Pattern patEl = Pattern.compile(FPConsts.REGEX_EL);
 
 	//#picture(${data.picture})
 	private static final Pattern patPicture = Pattern.compile("^\\#picture\\(\\$\\{(.+)}\\s+cell=(.+)\\s*\\s+row=(.+)\\)");
@@ -93,9 +93,8 @@ public class Row implements TemplateElement {
 		
 		String value = hssfCell.getRichStringCellValue().getString();
 		Matcher mat = patEl.matcher(value);
-		if (mat.find()) {
-			String expression = mat.group(1);
-			return new El(cell, expression);
+		if (mat.find()) {			
+			return new El(new Literal(cell));
 		} else {
 			return new Literal(cell);
 		}

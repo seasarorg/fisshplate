@@ -46,7 +46,7 @@ public class MapBuilderTest extends TestCase {
 	public void testMap生成()throws Exception{
 		//期待値生成		
 		Map expected = new HashMap();
-		expected.put("repnum", Double.valueOf(101));
+		expected.put("repnum", new Double(101D));
 		expected.put("title","タイトルです。");		
 		
 		//実行		
@@ -58,13 +58,13 @@ public class MapBuilderTest extends TestCase {
 		assertEquals(expected.get("repnum"), actual.get("repnum"));
 		assertEquals(expected.get("title"), actual.get("title"));
 		//日付が数値になりますが、テンプレート埋め込み時の書式で日付になります。
-		assertEquals(Double.valueOf(39475D), actual.get("date"));
+		assertEquals(new Double(39475D), actual.get("date"));
 		
 		List itemList = (List) actual.get("itemList");
 		assertEquals(10, itemList.size());
 		for(int i=0; i < itemList.size();i++){
 			Map item = (Map) itemList.get(i);
-			assertEquals(Double.valueOf(i + 1), item.get("num"));
+			assertEquals(new Double(i + 1), item.get("num"));
 		}
 		
 		Map item = (Map) itemList.get(0);

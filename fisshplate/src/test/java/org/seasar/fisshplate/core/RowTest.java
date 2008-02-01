@@ -64,7 +64,8 @@ public class RowTest extends TestCase {
 		elem = (TemplateElement) elementList.get(2);
 		assertTrue(elem.getClass() == NullCell.class);
 		elem = (TemplateElement) elementList.get(3);
-		assertTrue(elem.getClass() == El.class);
+		assertTrue(elem.getClass() == El.class);		
+		
 		
 	}
 

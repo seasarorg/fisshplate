@@ -15,66 +15,60 @@
  */
 package org.seasar.fisshplate.core;
 
-import java.util.Date;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.util.OgnlUtil;
-import org.seasar.fisshplate.wrapper.CellWrapper;
 
 /**
  * テンプレートのセルの値が評価式の場合の要素クラスです。OGNLで評価します。
  * @author rokugen
  *
  */
-public class El extends AbstractCell {
+public class El implements TemplateElement{
 	private ElExpression expression;
+	private String originalCellValue;
+	private AbstractCell targetElement;
+	private String preEl;
+	private String postEl;
 
 	/**
 	 * コンストラクタです。
 	 * @param cell テンプレート側のセル
 	 * @param expression 評価式
 	 */
-	El(CellWrapper cell,String expression) {
-		super(cell);
-		this.expression = new ElExpression(expression);
+	El(AbstractCell target) {
+		this.targetElement = target;
+		this.originalCellValue = target.cell.getStringValue();
+		Pattern patEl = Pattern.compile("(.*)(" + FPConsts.REGEX_EL +")(.*)");
+		Matcher mat = patEl.matcher(originalCellValue);
+		mat.find();
+		preEl = mat.group(1);
+		String exp = mat.group(2);
+		postEl = mat.group(3);
+		this.expression = new ElExpression(exp);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.seasar.fisshplate.core.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
 	 */
 	public void merge(FPContext context) throws FPMergeException {
-		HSSFCell out = context.getCurrentCell();		
-		copyCellStyle(context, out);
-		
-		if(!context.isSkipMerge()){
-			Object value = getValue(context);		
-			if(value instanceof Date){
-				out.setCellValue((Date)value);			
-			}else if(isNumber(value)){
-				out.setCellValue(Double.valueOf(value.toString()).doubleValue());
-			}else{
-				out.setCellValue(new HSSFRichTextString(value.toString()));			
-			}
-		}
-		context.nextCell();
-	}
-	
-	private boolean isNumber(Object value){
-		if(value instanceof String){
-			return false;
+		Object value = null;
+		if(context.isSkipMerge()){
+			value = "";
+		}else{
+			value = getValue(context);
 		}
 		
-		try{
-			Double.valueOf(value.toString());
-			return true;
-		}catch (NumberFormatException e) {
-			return false;
+		if(preEl.length() !=0 || postEl.length() != 0){
+			value = preEl + value.toString() + postEl;
 		}
+		targetElement.setCellValue(value);
+		targetElement.merge(context);
 	}
 	
 	private Object getValue(FPContext context) throws FPMergeException{
@@ -88,7 +82,7 @@ public class El extends AbstractCell {
 				return expression.getNullValue();
 			}else{		
 				throw new FPMergeException(FPConsts.MESSAGE_ID_EL_EXPRESSION_UNDEFINED,
-						new Object[]{expression.getExpression(),new Integer(cell.getRow().getHSSFRow().getRowNum() + 1)});
+						new Object[]{expression.getExpression(),new Integer(targetElement.cell.getRow().getHSSFRow().getRowNum() + 1)});
 			}
 		}
 		return value;
@@ -96,3 +90,4 @@ public class El extends AbstractCell {
 	
 
 }
+

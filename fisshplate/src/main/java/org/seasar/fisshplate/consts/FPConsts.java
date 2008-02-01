@@ -64,5 +64,7 @@ public interface FPConsts {
 	static final String MESSAGE_ID_NOT_ITERATOR_INVALID_MAX = "EFP00008";
 	
 	static final String MESSAGE_ID_PREVIEW_LACCK_OF_PARENT = "EFP00009";
+	
+	static final String REGEX_EL = "\\$\\{.+\\}";
 
 }

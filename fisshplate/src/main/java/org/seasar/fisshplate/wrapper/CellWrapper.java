@@ -64,7 +64,7 @@ public class CellWrapper {
 		
 		switch(cellType){		
 		case HSSFCell.CELL_TYPE_NUMERIC:			
-			ret = Double.valueOf(hssfCell.getNumericCellValue());
+			ret = new Double(hssfCell.getNumericCellValue());
 			break;
 		case HSSFCell.CELL_TYPE_STRING:
 			ret = hssfCell.getRichStringCellValue().getString();
@@ -76,7 +76,7 @@ public class CellWrapper {
 			ret = hssfCell.getCellFormula();			
 			break;
 		case HSSFCell.CELL_TYPE_ERROR:
-			ret = Byte.valueOf(hssfCell.getErrorCellValue());
+			ret = new Byte(hssfCell.getErrorCellValue());
 			break;
 		case HSSFCell.CELL_TYPE_BLANK:
 			break;

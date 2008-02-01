@@ -59,12 +59,12 @@ public class ElTest extends TestCase {
 	
 		FPContext context = new FPContext(template.getSheetAt(0),data);
 		
-		CellWrapper cell0 = workbook.getSheetAt(0).getRow(0).getCell(0);		
-		CellWrapper cell1 = workbook.getSheetAt(0).getRow(0).getCell(1);
+		CellWrapper cell0 = workbook.getSheetAt(0).getRow(0).getCell(0);//${code}		
+		CellWrapper cell1 = workbook.getSheetAt(0).getRow(0).getCell(1);//${num}		
 		
-		el = new El(cell0,"code");
+		el = new El(new Literal(cell0));
 		el.merge(context);
-		el = new El(cell1,"num");
+		el = new El(new Literal(cell1));
 		el.merge(context);
 		
 		HSSFCell actual = template.getSheetAt(0).getRow(0).getCell((short) 0);
@@ -84,9 +84,13 @@ public class ElTest extends TestCase {
 		
 		FPContext context = new FPContext(template.getSheetAt(0),data);
 		
-		CellWrapper cell = workbook.getSheetAt(0).getRow(0).getCell(0);
+		CellWrapper cell = workbook.getSheetAt(0).getRow(0).getCell(2);//${hoge}
+		CellWrapper cellNull = workbook.getSheetAt(0).getRow(0).getCell(3);//${hoge!}
+		CellWrapper cellNullValue = workbook.getSheetAt(0).getRow(0).getCell(4);//${hoge!NULL時デフォルト値}
 		
-		el = new El(cell,"hoge");
+		
+		
+		el = new El(new Literal(cell));
 		try{
 			el.merge(context);
 			fail();
@@ -94,21 +98,46 @@ public class ElTest extends TestCase {
 			assertTrue(true);
 		}
 		
-		el = new El(cell,"hoge!");
+		el = new El(new Literal(cellNull));
 		el.merge(context);
 		HSSFCell actual = template.getSheetAt(0).getRow(0).getCell((short) 0);
 		assertEquals("nullString","", actual.getRichStringCellValue().getString());
 		
-		el = new El(cell,"hoge!NULL時デフォルト値");
+		el = new El(new Literal(cellNullValue));
 		el.merge(context);
 		actual = template.getSheetAt(0).getRow(0).getCell((short) 1);
 		assertEquals("default value","NULL時デフォルト値", actual.getRichStringCellValue().getString());
 		
 		data.put("hoge", null);	
-		el = new El(cell,"hoge!");
+		el = new El(new Literal(cellNull));
 		el.merge(context);
 		actual = template.getSheetAt(0).getRow(0).getCell((short) 2);
 		assertEquals("null value","", actual.getRichStringCellValue().getString());
+	}
+	
+	public void test文字列に埋め込み() throws Exception{
+		HSSFWorkbook template = getTemplate("/ElTest.xls");
+		WorkbookWrapper workbook = new WorkbookWrapper(template);
+		Map data = new HashMap();
+		data.put("embeded", new Integer(123));		
+		FPContext context = new FPContext(template.getSheetAt(0),data);
+		context.nextRow();
+		
+		
+		CellWrapper cell = workbook.getSheetAt(0).getRow(1).getCell(0);//埋め込み番号は${embeded}です。
+		
+		el = new El(new Literal(cell));
+		
+		el.merge(context);
+		HSSFCell actual = template.getSheetAt(0).getRow(1).getCell((short)0);
+		assertEquals("埋め込み番号は123です。", actual.getRichStringCellValue().getString());
+		
+		
+	}
+	
+	public void testRegTest(){
+		String exp = "${data.val!空文字列}".replaceAll("^\\$\\{(.+)\\}$", "$1");
+		assertEquals("data.val!空文字列", exp);
 	}
 	
 }
