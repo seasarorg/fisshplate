@@ -53,6 +53,9 @@ public class RowWrapper {
 	}
 	
 	public CellWrapper getCell(int index){
+		if(index + 1 > cellList.size()){
+			return null;
+		}
 		return (CellWrapper) cellList.get(index);
 	}
 

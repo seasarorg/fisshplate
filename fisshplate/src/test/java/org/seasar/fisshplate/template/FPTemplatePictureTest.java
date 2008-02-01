@@ -90,6 +90,26 @@ public class FPTemplatePictureTest extends TestCase {
 		fos.close();
 
 	}
+	
+	public void test画像出力_パスをリテラルにて指定() throws Exception{
+		HSSFWorkbook wb;
+		try {
+			template = new FPTemplate();
+			Map map = new HashMap();
+			map.put("data", "hoge");
+			wb = template.process("FPTemplatePictureTest3.xls", map);
+		} catch (FPException e) {
+			throw e;
+		} catch (IOException e) {
+			throw e;
+		} finally {
+		}
+
+		FileOutputStream fos = new FileOutputStream("target/out_picture3.xls");
+		wb.write(fos);
+		fos.close();
+		
+	}
 
 	public class A {
 		private String name;

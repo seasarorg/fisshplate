@@ -18,19 +18,18 @@ package org.seasar.fisshplate.core;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
-import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.util.FileInputStreamUtil;
 import org.seasar.fisshplate.util.ImageIOUtil;
-import org.seasar.fisshplate.util.OgnlUtil;
 import org.seasar.fisshplate.util.StringUtil;
 import org.seasar.fisshplate.wrapper.CellWrapper;
 
@@ -39,32 +38,16 @@ import org.seasar.fisshplate.wrapper.CellWrapper;
  * 
  * @author a-conv
  */
-public class Picture extends AbstractCell {
-	private ElExpression expression;
-
-	private HSSFPatriarch patriarch;
-
-	private String cellRange;
-
-	private String rowRange;
+public class Picture extends AbstractCell {	
 
 	/**
 	 * コンストラクタです。
 	 * 
 	 * @param cell
 	 *            テンプレート側のセル
-	 * @param expression
-	 *            評価式
-	 * @param rowRange
-	 *            画像ファイルの縦幅
-	 * @param cellRange
-	 *            画像ファイルの横幅
 	 */
-	Picture(CellWrapper cell, String expression, String cellRange, String rowRange) {
+	Picture(CellWrapper cell) {
 		super(cell);
-		this.expression = new ElExpression(expression);
-		this.cellRange = cellRange;
-		this.rowRange = rowRange;
 	}
 
 	/*
@@ -74,9 +57,14 @@ public class Picture extends AbstractCell {
 	 */
 	public void merge(FPContext context) throws FPMergeException {
 		HSSFCell out = context.getCurrentCell();
-		copyCellStyle(context, out);
-		Object value = getValue(context);
-		String picturePath = (String) value;
+		copyCellStyle(context, out);		
+		
+		Pattern pat = Pattern.compile("^\\s*\\#picture\\((.*)\\s+cell=(.+)\\s*\\s+row=(.+)\\)");
+		Matcher mat = pat.matcher(getCellValue().toString());
+		mat.find();
+		String picturePath = mat.group(1);
+		String cellRange = mat.group(2);
+		String rowRange = mat.group(3);
 		int cellRangeIntVal = Integer.parseInt(cellRange);
 		int rowRangeIntVal = Integer.parseInt(rowRange);
 		if (isWritePicture(picturePath)) {
@@ -159,11 +147,8 @@ public class Picture extends AbstractCell {
 		BufferedImage img = ImageIOUtil.read(imgFis);
 		FileInputStreamUtil.close(imgFis);
 
-		HSSFWorkbook workbook = cell.getRow().getSheet().getWorkbook().getHSSFWorkbook();
-		HSSFSheet worksheet = context.getOutSheet();
-		if (patriarch == null) {
-			patriarch = worksheet.createDrawingPatriarch();
-		}
+		HSSFWorkbook workbook = cell.getRow().getSheet().getWorkbook().getHSSFWorkbook();		
+		HSSFPatriarch patriarch = context.getPartriarch();		
 
 		int imgWidth = img.getWidth();
 		int imgHeight = img.getHeight();
@@ -182,19 +167,6 @@ public class Picture extends AbstractCell {
 		patriarch.createPicture(anchor, pictureIndex);
 
 		ImageIOUtil.close(baos);
-	}
-
-	private Object getValue(FPContext context) throws FPMergeException {
-		Map data = context.getData();
-		Object value = OgnlUtil.getValue(expression.getExpression(), data);
-		if (value == null) {
-			if (expression.isNullAllowed()) {
-				return expression.getNullValue();
-			} else {
-				throw new FPMergeException(FPConsts.MESSAGE_ID_EL_EXPRESSION_UNDEFINED, new Object[] { expression.getExpression() });
-			}
-		}
-		return value;
 	}
 
 }

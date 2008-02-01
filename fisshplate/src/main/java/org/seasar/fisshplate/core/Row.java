@@ -43,7 +43,7 @@ public class Row implements TemplateElement {
 	private static final Pattern patEl = Pattern.compile(FPConsts.REGEX_EL);
 
 	//#picture(${data.picture})
-	private static final Pattern patPicture = Pattern.compile("^\\#picture\\(\\$\\{(.+)}\\s+cell=(.+)\\s*\\s+row=(.+)\\)");
+	private static final Pattern patPicture = Pattern.compile("^\\s*\\#picture\\(.+\\s+cell=.+\\s*\\s+row=.+\\)");
 
 	/**
 	 * コンストラクタです。テンプレート側の行オブジェクトを受け取り、その行内のセル情報を解析して保持します。
@@ -80,23 +80,22 @@ public class Row implements TemplateElement {
 		if (hssfCell.getCellType() != HSSFCell.CELL_TYPE_STRING) {
 			return new Literal(cell);
 		}
+		
+		String value = hssfCell.getRichStringCellValue().getString();		
+		AbstractCell cellElem = null;
+		Matcher mat = patPicture.matcher(value);
 
-		// 画像の場合
-		String pictureValue = hssfCell.getRichStringCellValue().getString();
-		Matcher pictureMat = patPicture.matcher(pictureValue);
-		if (pictureMat.find()) {
-			String picturePathExpression = pictureMat.group(1);
-			String cellRange = pictureMat.group(2);
-			String rowRange = pictureMat.group(3);
-			return new Picture(cell, picturePathExpression,cellRange,rowRange);
+		if(mat.find()){		
+			cellElem = new Picture(cell);
+		}else {
+			cellElem = new Literal(cell);
 		}
 		
-		String value = hssfCell.getRichStringCellValue().getString();
-		Matcher mat = patEl.matcher(value);
-		if (mat.find()) {			
-			return new El(new Literal(cell));
-		} else {
-			return new Literal(cell);
+		mat = patEl.matcher(value);
+		if(mat.find()){
+			return new El(cellElem);
+		}else{
+			return cellElem;
 		}
 
 	}

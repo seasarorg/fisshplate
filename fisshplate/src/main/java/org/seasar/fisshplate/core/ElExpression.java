@@ -22,8 +22,7 @@ import org.seasar.fisshplate.consts.FPConsts;
  * 
  * @author rokugen
  */
-public class ElExpression {
-	private String baseExpressionString;
+public class ElExpression {	
 	private String expression;
 	private boolean nullAllowed;
 	private Object nullValue;
@@ -43,8 +42,7 @@ public class ElExpression {
 	 *            評価式
 	 */
 	ElExpression(String exp) {
-		baseExpressionString = exp;
-		String baseExp = exp.replaceAll("^\\$\\{(.+)\\}$", "$1");
+		String baseExp = exp.replaceAll("^" + FPConsts.REGEX_EL_START + "(.+)" + FPConsts.REGEX_EL_END + "$", "$1");
 		int idx = baseExp.indexOf(FPConsts.NULL_VALUE_OPERATOR);
 		nullAllowed = (idx >= 1);
 		if (nullAllowed) {
@@ -67,12 +65,5 @@ public class ElExpression {
 		return nullAllowed;
 	}
 	
-	/**
-	 * 「${}」で囲まれた、セルに記載された値を戻します。
-	 * @return セルに記載された文字列
-	 */
-	public String getBaseExpressionString(){
-		return baseExpressionString;
-	}
 
 }

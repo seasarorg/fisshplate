@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.exception.FPParseException;
+import org.seasar.fisshplate.wrapper.CellWrapper;
 import org.seasar.fisshplate.wrapper.RowWrapper;
 import org.seasar.fisshplate.wrapper.SheetWrapper;
 
@@ -109,12 +110,17 @@ public class FPParser {
 		if (row.isNullRow()) {
 			return false;
 		}
-
-		HSSFCell cell = row.getCell(0).getHSSFCell();
-		if (cell == null || (cell.getCellType() != HSSFCell.CELL_TYPE_STRING)) {
+		
+		CellWrapper cell = row.getCell(0);
+		if(cell == null){
 			return false;
 		}
-		String value = cell.getRichStringCellValue().getString();
+
+		HSSFCell hssfCell = cell.getHSSFCell();
+		if (hssfCell == null || (hssfCell.getCellType() != HSSFCell.CELL_TYPE_STRING)) {
+			return false;
+		}
+		String value = hssfCell.getRichStringCellValue().getString();
 
 		boolean isControlRow = true;
 

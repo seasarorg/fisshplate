@@ -30,9 +30,8 @@ import org.seasar.fisshplate.util.OgnlUtil;
  *
  */
 public class El implements TemplateElement{
-	private ElExpression expression;
-	private String originalCellValue;
-	private AbstractCell targetElement;
+	private ElExpression expression;	
+	protected AbstractCell targetElement;
 	private String preEl;
 	private String postEl;
 
@@ -43,7 +42,7 @@ public class El implements TemplateElement{
 	 */
 	El(AbstractCell target) {
 		this.targetElement = target;
-		this.originalCellValue = target.cell.getStringValue();
+		String originalCellValue = target.cell.getStringValue();
 		Pattern patEl = Pattern.compile("(.*)(" + FPConsts.REGEX_EL +")(.*)");
 		Matcher mat = patEl.matcher(originalCellValue);
 		mat.find();

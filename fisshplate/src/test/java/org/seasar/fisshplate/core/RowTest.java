@@ -51,6 +51,10 @@ public class RowTest extends TestCase {
 		//cellNum 2 は設定しない。
 		cell = templateRow.createCell((short)3);
 		cell.setCellValue(new HSSFRichTextString("${data}"));
+		cell = templateRow.createCell((short)4);
+		cell.setCellValue(new HSSFRichTextString("#picture(/hoge/fuga.png cell=1 row=1)"));
+		cell = templateRow.createCell((short)5);
+		cell.setCellValue(new HSSFRichTextString("#picture(${data.path} cell=1 row=1)"));
 		
 		WorkbookWrapper workbook = new WorkbookWrapper(templateWb);
 		
@@ -64,8 +68,13 @@ public class RowTest extends TestCase {
 		elem = (TemplateElement) elementList.get(2);
 		assertTrue(elem.getClass() == NullCell.class);
 		elem = (TemplateElement) elementList.get(3);
-		assertTrue(elem.getClass() == El.class);		
-		
+		assertTrue(elem.getClass() == El.class);
+		assertTrue(((El)elem).targetElement.getClass() == Literal.class);
+		elem = (TemplateElement) elementList.get(4);
+		assertTrue(elem.getClass() == Picture.class);
+		elem = (TemplateElement) elementList.get(5);
+		assertTrue(elem.getClass() == El.class);
+		assertTrue(((El)elem).targetElement.getClass() == Picture.class);		
 		
 	}
 

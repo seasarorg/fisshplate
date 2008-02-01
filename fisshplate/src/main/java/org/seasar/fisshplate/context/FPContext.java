@@ -18,6 +18,7 @@ package org.seasar.fisshplate.context;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 
@@ -36,6 +37,7 @@ public class FPContext {
 	private boolean shouldHeaderOut;
 	private boolean shouldFooterOut;
 	private boolean skipMerge = false;
+	private HSSFPatriarch patriarch;
 
 	/**
 	 * コンストラクタです。
@@ -169,6 +171,13 @@ public class FPContext {
 
 	public void setSkipMerge(boolean skipMerge) {
 		this.skipMerge = skipMerge;
+	}
+	
+	public HSSFPatriarch getPartriarch(){
+		if(patriarch == null){
+			patriarch = outSheet.createDrawingPatriarch();
+		}
+		return patriarch;
 	}
 
 
