@@ -65,6 +65,8 @@ public interface FPConsts {
 	
 	static final String MESSAGE_ID_PREVIEW_LACCK_OF_PARENT = "EFP00009";
 	
+	static final String MESSAGE_ID_VARNAME_ALREADY_EXISTS = "EFP00010";
+	
 	static final String REGEX_EL_START = "\\$\\{";
 	
 	static final String REGEX_EL_END = "\\}";

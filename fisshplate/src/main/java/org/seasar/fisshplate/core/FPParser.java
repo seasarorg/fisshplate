@@ -45,6 +45,8 @@ public class FPParser {
 	private static final Pattern patElse = Pattern.compile("^\\s*#else\\s*$");
 	private static final Pattern patComment = Pattern.compile("^\\s*#comment\\.*");
 	private static final Pattern patPageBreak = Pattern.compile("#pageBreak");
+	private static final Pattern patVar = Pattern.compile("#var\\s+(.+)");
+	private static final Pattern patExec = Pattern.compile("#exec\\s+(.+)");
 
 	// Header情報
 	private static final Pattern patPageHeaderStart = Pattern.compile("#pageHeaderStart");
@@ -88,13 +90,19 @@ public class FPParser {
 			return;
 		}
 		Row rowElem = new Row(row, rootElement);
+		
+		addToParent(rowElem);
+	}
+	
+	private void addToParent(TemplateElement elem){
 		// ブロック内に居る場合は、そのブロック内の子要素とする。そうでない場合はルートに行を追加する。
 		if (blockStack.size() > 0) {
 			AbstractBlock block = (AbstractBlock) blockStack.lastElement();
-			block.addChild(rowElem);
+			block.addChild(elem);
 		} else {
-			rootElement.addBody(rowElem);
+			rootElement.addBody(elem);
 		}
+		
 	}
 
 	/**
@@ -145,6 +153,10 @@ public class FPParser {
 			pageFooterBlock();
 		} else if ((mat = patPageFooterEnd.matcher(value)).find()) {
 			end(row);
+		} else if ((mat = patVar.matcher(value)).find()) {
+			var(mat, row);
+		} else if ((mat = patExec.matcher(value)).find()) {
+			exec(mat, row);
 		} else if ((mat = patComment.matcher(value)).find()) {
 			// コメント行はパス
 		} else {
@@ -168,12 +180,7 @@ public class FPParser {
 
 	private void breakBlock() {
 		TemplateElement elem = new PageBreakElement(rootElement);
-		if (blockStack.size() > 0) {
-			AbstractBlock parentBlock = (AbstractBlock) blockStack.lastElement();
-			parentBlock.addChild(elem);
-			return;
-		}
-		rootElement.addBody(elem);
+		addToParent(elem);
 	}
 
 	private void iteratorBlock(Matcher mat, RowWrapper row) throws FPParseException{
@@ -230,6 +237,18 @@ public class FPParser {
 		}
 		return parent;
 
+	}
+	
+	private void var(Matcher mat,RowWrapper row){
+		String vars = mat.group(1);
+		Var elem = new Var(vars, row);
+		addToParent(elem);
+	}
+	
+	private void exec(Matcher mat,RowWrapper row){
+		String expression = mat.group(1);
+		Exec elem = new Exec(expression);
+		addToParent(elem);		
 	}
 
 	private void end(RowWrapper row) throws FPParseException {
