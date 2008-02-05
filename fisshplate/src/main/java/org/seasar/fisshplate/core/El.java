@@ -61,16 +61,43 @@ public class El implements TemplateElement{
 		if(context.isSkipMerge()){
 			value = "";
 		}else{
-			List valueList = getValue(context);		
-		
-			if(!isLiteralBlank() || expressionList.size() > 1){
-				value = buildValue(valueList);
-			}else{
-				value = valueList.get(0);
-			}
+			List valueList = getValueList(context);
+			value = buildValue(valueList);			
 		}
 		targetElement.setCellValue(value);
 		targetElement.merge(context);
+	}
+	
+	private Object buildValue(List valueList){
+		
+		if(isLiteralBlank()){
+			if(expressionList.size() == 1){
+				return valueList.get(0);				
+			}else{
+				return valueListToString(valueList);								
+			}
+		}else{		
+			return joinValueAndLiteral(valueList);
+		}
+	}
+	
+	private String valueListToString(List valueList){
+		StringBuffer sb = new StringBuffer();
+		for(int i=0; i < valueList.size();i++){
+			sb.append(valueList.get(i));
+		}
+		return sb.toString();		
+	}
+	
+	private String joinValueAndLiteral(List valueList){
+		StringBuffer sb = new StringBuffer();			
+		for(int i=0; i < literals.length; i++){
+			sb.append(literals[i]);
+			if(i < valueList.size()){
+				sb.append(valueList.get(i));
+			}		
+		}		
+		return sb.toString();
 	}
 	
 	private boolean isLiteralBlank(){		
@@ -80,48 +107,32 @@ public class El implements TemplateElement{
 			}
 		}
 		return true;
-	}
+	}	
 	
-	private Object buildValue(List valueList){
-		StringBuffer sb = new StringBuffer();
-		if(literals.length ==0){
-			for(int i=0; i < valueList.size();i++){
-				sb.append(valueList.get(i));
-			}
-		}else{
-			for(int i=0; i < literals.length; i++){
-				sb.append(literals[i]);
-				if(i < valueList.size()){
-					sb.append(valueList.get(i));
-				}			
-			}
-		}
-		
-		return sb.toString();
-		
-	}
 	
-	private List getValue(FPContext context) throws FPMergeException{
-		List valueList = new ArrayList();
-		
-		Map data = context.getData();
-		
+	private List getValueList(FPContext context) throws FPMergeException{
+		List valueList = new ArrayList();		
+		Map data = context.getData();		
 		for(int i=0; i < expressionList.size(); i++){
 			ElExpression expression = (ElExpression) expressionList.get(i);
-			Object value = OgnlUtil.getValue(expression.getExpression(), data);
-			
-			if(value == null){
-				if(expression.isNullAllowed()){
-					value = expression.getNullValue();
-				}else{
-					throw new FPMergeException(FPConsts.MESSAGE_ID_EL_EXPRESSION_UNDEFINED,
-							new Object[]{expression.getExpression(),new Integer(targetElement.cell.getRow().getHSSFRow().getRowNum() + 1)});
-				}
-			}
+			Object value = getValue(data,expression);			
 			valueList.add(value);
 		}
 		return valueList;
 	}	
+	
+	private Object getValue(Map data, ElExpression expression) throws FPMergeException{		
+		Object value = OgnlUtil.getValue(expression.getExpression(), data);		
+		if(value == null){
+			if(expression.isNullAllowed()){
+				value = expression.getNullValue();
+			}else{
+				throw new FPMergeException(FPConsts.MESSAGE_ID_EL_EXPRESSION_UNDEFINED,
+						new Object[]{expression.getExpression(),new Integer(targetElement.cell.getRow().getHSSFRow().getRowNum() + 1)});
+			}		
+		}
+		return value;		
+	}
 	
 
 }
