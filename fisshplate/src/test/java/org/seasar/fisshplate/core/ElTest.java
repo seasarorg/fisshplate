@@ -18,6 +18,8 @@ package org.seasar.fisshplate.core;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
 
@@ -134,6 +136,64 @@ public class ElTest extends TestCase {
 		
 		
 	}
+	
+	public void test文字列に埋め込み_複数対応() throws Exception{
+		HSSFWorkbook template = getTemplate("/ElTest_multi.xls");
+		WorkbookWrapper workbook = new WorkbookWrapper(template);
+		Map data = new HashMap();
+		data.put("embeded1", new Integer(123));		
+		data.put("embeded2", new Integer(456));
+		FPContext context = new FPContext(template.getSheetAt(0),data);
+		
+		CellWrapper cell = workbook.getSheetAt(0).getRow(0).getCell(0);//埋め込み番号は${embeded1}と${embeded2}です。
+		
+		el = new El(new Literal(cell));
+		
+		el.merge(context);
+		HSSFCell actual = template.getSheetAt(0).getRow(0).getCell((short)0);
+		assertEquals("埋め込み番号は123と456です。", actual.getRichStringCellValue().getString());
+		
+		cell = workbook.getSheetAt(0).getRow(1).getCell(0);//${embeded1}と${embeded2}
+		context.nextRow();
+		
+		el = new El(new Literal(cell));
+		
+		el.merge(context);
+		actual = template.getSheetAt(0).getRow(1).getCell((short)0);
+		assertEquals("123と456", actual.getRichStringCellValue().getString());
+		
+		cell = workbook.getSheetAt(0).getRow(2).getCell(0);//${embeded1}${embeded2}
+		context.nextRow();
+		
+		el = new El(new Literal(cell));
+		
+		el.merge(context);
+		actual = template.getSheetAt(0).getRow(2).getCell((short)0);
+		assertEquals("123456", actual.getRichStringCellValue().getString());
+		
+		
+		
+	}
+	
+	public void testElTest()throws Exception{		 
+		String str = "埋め込み番号は${embeded1}と${embeded2}です。";
+		String[] strs = str.split("\\$\\{[^\\$\\{\\}]+\\}");
+		Pattern pat = Pattern.compile("(\\$\\{[^\\$\\{\\}]+\\})");
+		Matcher mat = pat.matcher(str);		
+		
+		for(int i=0; i < strs.length; i++){
+			System.out.println(strs[i]);
+		}
+		
+		while(mat.find()){
+			System.out.println(mat.group());
+		}
+		
+		
+		
+	}
+	
+	
 	
 	public void testRegTest(){
 		String exp = "${data.val!空文字列}".replaceAll("^\\$\\{(.+)\\}$", "$1");

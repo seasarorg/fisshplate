@@ -40,8 +40,8 @@ public class FPParser {
 
 	private static final Pattern patIterator = Pattern.compile("^\\s*#foreach\\s+(\\S+)\\s*:\\s*(\\S+)(\\s+index=(\\S+))*(\\s+max=(\\S+))*\\s*$");
 	private static final Pattern patEnd = Pattern.compile("^\\s*#end\\s*$");
-	private static final Pattern patIf = Pattern.compile("^\\s*#if\\s*\\(\\s*(.+)\\s*\\)");
-	private static final Pattern patElseIf = Pattern.compile("^\\s*#else\\s+if\\s*\\(\\s*(.+)\\s*\\)");
+	private static final Pattern patIf = Pattern.compile("^\\s*#if\\s*(.+)");
+	private static final Pattern patElseIf = Pattern.compile("^\\s*#else\\s+if\\s*(.+)");
 	private static final Pattern patElse = Pattern.compile("^\\s*#else\\s*$");
 	private static final Pattern patComment = Pattern.compile("^\\s*#comment\\.*");
 	private static final Pattern patPageBreak = Pattern.compile("#pageBreak");

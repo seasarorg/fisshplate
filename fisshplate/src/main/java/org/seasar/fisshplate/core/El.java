@@ -15,6 +15,8 @@
  */
 package org.seasar.fisshplate.core;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,6 +25,7 @@ import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.util.OgnlUtil;
+import org.seasar.fisshplate.util.StringUtil;
 
 /**
  * テンプレートのセルの値が評価式の場合の要素クラスです。OGNLで評価します。
@@ -30,10 +33,9 @@ import org.seasar.fisshplate.util.OgnlUtil;
  *
  */
 public class El implements TemplateElement{
-	private ElExpression expression;	
+	private List expressionList = new ArrayList();
 	protected AbstractCell targetElement;
-	private String preEl;
-	private String postEl;
+	private String[] literals;
 
 	/**
 	 * コンストラクタです。
@@ -43,48 +45,82 @@ public class El implements TemplateElement{
 	El(AbstractCell target) {
 		this.targetElement = target;
 		String originalCellValue = target.cell.getStringValue();
-		Pattern patEl = Pattern.compile("(.*)(" + FPConsts.REGEX_EL +")(.*)");
+		Pattern patEl = Pattern.compile(FPConsts.REGEX_EL);
 		Matcher mat = patEl.matcher(originalCellValue);
-		mat.find();
-		preEl = mat.group(1);
-		String exp = mat.group(2);
-		postEl = mat.group(3);
-		this.expression = new ElExpression(exp);
+		while(mat.find()){
+			expressionList.add(new ElExpression(mat.group()));
+		}
+		literals = originalCellValue.split(FPConsts.REGEX_EL);		
 	}
 
 	/* (non-Javadoc)
 	 * @see org.seasar.fisshplate.core.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
 	 */
-	public void merge(FPContext context) throws FPMergeException {
+	public void merge(FPContext context) throws FPMergeException {		
 		Object value = null;
 		if(context.isSkipMerge()){
 			value = "";
 		}else{
-			value = getValue(context);
-		}
+			List valueList = getValue(context);		
 		
-		if(preEl.length() !=0 || postEl.length() != 0){
-			value = preEl + value.toString() + postEl;
+			if(!isLiteralBlank() || expressionList.size() > 1){
+				value = buildValue(valueList);
+			}else{
+				value = valueList.get(0);
+			}
 		}
 		targetElement.setCellValue(value);
 		targetElement.merge(context);
 	}
 	
-	private Object getValue(FPContext context) throws FPMergeException{
+	private boolean isLiteralBlank(){		
+		for(int i=0; i < literals.length; i++){
+			if(!StringUtil.isEmpty(literals[i])){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	private Object buildValue(List valueList){
+		StringBuffer sb = new StringBuffer();
+		if(literals.length ==0){
+			for(int i=0; i < valueList.size();i++){
+				sb.append(valueList.get(i));
+			}
+		}else{
+			for(int i=0; i < literals.length; i++){
+				sb.append(literals[i]);
+				if(i < valueList.size()){
+					sb.append(valueList.get(i));
+				}			
+			}
+		}
+		
+		return sb.toString();
+		
+	}
+	
+	private List getValue(FPContext context) throws FPMergeException{
+		List valueList = new ArrayList();
 		
 		Map data = context.getData();
 		
-		Object value = OgnlUtil.getValue(expression.getExpression(), data);
-		
-		if(value == null){
-			if(expression.isNullAllowed()){
-				return expression.getNullValue();
-			}else{		
-				throw new FPMergeException(FPConsts.MESSAGE_ID_EL_EXPRESSION_UNDEFINED,
-						new Object[]{expression.getExpression(),new Integer(targetElement.cell.getRow().getHSSFRow().getRowNum() + 1)});
+		for(int i=0; i < expressionList.size(); i++){
+			ElExpression expression = (ElExpression) expressionList.get(i);
+			Object value = OgnlUtil.getValue(expression.getExpression(), data);
+			
+			if(value == null){
+				if(expression.isNullAllowed()){
+					value = expression.getNullValue();
+				}else{
+					throw new FPMergeException(FPConsts.MESSAGE_ID_EL_EXPRESSION_UNDEFINED,
+							new Object[]{expression.getExpression(),new Integer(targetElement.cell.getRow().getHSSFRow().getRowNum() + 1)});
+				}
 			}
+			valueList.add(value);
 		}
-		return value;
+		return valueList;
 	}	
 	
 

@@ -71,6 +71,6 @@ public interface FPConsts {
 	
 	static final String REGEX_EL_END = "\\}";
 	
-	static final String REGEX_EL = REGEX_EL_START +  ".+" + REGEX_EL_END;
+	static final String REGEX_EL = REGEX_EL_START +  "[^" + REGEX_EL_START + REGEX_EL_END + "]" + "+" + REGEX_EL_END;
 
 }
