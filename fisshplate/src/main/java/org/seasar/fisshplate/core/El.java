@@ -68,8 +68,7 @@ public class El implements TemplateElement{
 		targetElement.merge(context);
 	}
 	
-	private Object buildValue(List valueList){
-		
+	private Object buildValue(List valueList){		
 		if(isLiteralBlank()){
 			if(expressionList.size() == 1){
 				return valueList.get(0);				
