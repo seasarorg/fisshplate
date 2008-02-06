@@ -193,6 +193,14 @@ public class ElTest extends TestCase {
 		
 	}
 	
+	public void testEscape(){
+		String str = "${hoge}";
+		str = str.replaceAll("\\$", "\\\\\\$");
+		str = str.replaceAll("\\{", "\\\\\\{");
+		str = str.replaceAll("\\}", "\\\\\\}");
+		System.out.println(str);
+	}
+	
 	
 	
 	public void testRegTest(){
@@ -201,3 +209,4 @@ public class ElTest extends TestCase {
 	}
 	
 }
+

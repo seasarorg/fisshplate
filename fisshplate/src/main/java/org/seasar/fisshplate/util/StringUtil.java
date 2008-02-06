@@ -30,4 +30,11 @@ public class StringUtil {
 		return str == null || str.length() == 0;		
 	}
 
+	public static String escapeEl(String str) {
+		str = str.replaceAll("\\$", "\\\\\\$");
+		str = str.replaceAll("\\{", "\\\\\\{");
+		str = str.replaceAll("\\}", "\\\\\\}");		
+		return str;		
+	}
+
 }

@@ -15,9 +15,10 @@
  */
 package org.seasar.fisshplate.core;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,10 +33,9 @@ import org.seasar.fisshplate.util.StringUtil;
  * @author rokugen
  *
  */
-public class El implements TemplateElement{
-	private List expressionList = new ArrayList();
-	protected AbstractCell targetElement;
-	private String[] literals;
+public class El implements TemplateElement{	
+	private Map expressionMap = new HashMap();
+	protected AbstractCell targetElement;	
 
 	/**
 	 * コンストラクタです。
@@ -48,9 +48,8 @@ public class El implements TemplateElement{
 		Pattern patEl = Pattern.compile(FPConsts.REGEX_EL);
 		Matcher mat = patEl.matcher(originalCellValue);
 		while(mat.find()){
-			expressionList.add(new ElExpression(mat.group()));
-		}
-		literals = originalCellValue.split(FPConsts.REGEX_EL);		
+			expressionMap.put(mat.group(), null);
+		}				
 	}
 
 	/* (non-Javadoc)
@@ -61,63 +60,51 @@ public class El implements TemplateElement{
 		if(context.isSkipMerge()){
 			value = "";
 		}else{
-			List valueList = getValueList(context);
-			value = buildValue(valueList);			
+			putValueToMap(context);
+			value = buildValue();			
 		}
 		targetElement.setCellValue(value);
 		targetElement.merge(context);
 	}
-	
-	private Object buildValue(List valueList){		
-		if(isLiteralBlank()){
-			if(expressionList.size() == 1){
-				return valueList.get(0);				
-			}else{
-				return valueListToString(valueList);								
-			}
-		}else{		
-			return joinValueAndLiteral(valueList);
+
+	private Object buildValue(){
+		
+		String cellValue = targetElement.cell.getStringValue();		
+		Set keySet = expressionMap.keySet();
+		
+		if(isSingleElOnly(cellValue)){
+			return expressionMap.get(keySet.iterator().next());			
 		}
+		
+		for(Iterator itr = keySet.iterator(); itr.hasNext();){			
+			String key = (String) itr.next();
+			cellValue = cellValue.replaceAll(StringUtil.escapeEl(key), expressionMap.get(key).toString());
+		}
+		return cellValue;
+		
 	}
 	
-	private String valueListToString(List valueList){
-		StringBuffer sb = new StringBuffer();
-		for(int i=0; i < valueList.size();i++){
-			sb.append(valueList.get(i));
+	private boolean isSingleElOnly(String value){
+		if(expressionMap.size() != 1){
+			return false;
 		}
-		return sb.toString();		
+		
+		String exp = expressionMap.keySet().iterator().next().toString();				
+		value = value.replaceAll(StringUtil.escapeEl(exp), "");
+		
+		return (value.trim().length() == 0);
 	}
 	
-	private String joinValueAndLiteral(List valueList){
-		StringBuffer sb = new StringBuffer();			
-		for(int i=0; i < literals.length; i++){
-			sb.append(literals[i]);
-			if(i < valueList.size()){
-				sb.append(valueList.get(i));
-			}		
-		}		
-		return sb.toString();
-	}
 	
-	private boolean isLiteralBlank(){		
-		for(int i=0; i < literals.length; i++){
-			if(!StringUtil.isEmpty(literals[i])){
-				return false;
-			}
-		}
-		return true;
-	}	
-	
-	
-	private List getValueList(FPContext context) throws FPMergeException{
-		List valueList = new ArrayList();		
+	private void putValueToMap(FPContext context) throws FPMergeException{				
 		Map data = context.getData();		
-		for(int i=0; i < expressionList.size(); i++){
-			ElExpression expression = (ElExpression) expressionList.get(i);
-			Object value = getValue(data,expression);			
-			valueList.add(value);
-		}
-		return valueList;
+		Set key = expressionMap.keySet();
+		for(Iterator itr = key.iterator(); itr.hasNext();){
+			String expString = (String) itr.next();
+			ElExpression expression = new ElExpression(expString);
+			Object value = getValue(data,expression);
+			expressionMap.put(expString, value);
+		}		
 	}	
 	
 	private Object getValue(Map data, ElExpression expression) throws FPMergeException{		
