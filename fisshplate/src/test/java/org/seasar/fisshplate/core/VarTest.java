@@ -17,6 +17,8 @@ package org.seasar.fisshplate.core;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
 
@@ -84,6 +86,70 @@ public class VarTest extends TestCase {
 			assertTrue(true);			
 		}		
 	}
+	
+	public void test変数宣言と初期化() throws Exception{
+		String varName = " hoge ,foo=0, bar,fuga = 'initVal'";
+		Var var = new Var(varName,null);
+		Map data = new HashMap();
+		FPContext context = new FPContext(null,data);
+		var.merge(context);
+		assertNotNull(data.get("hoge"));
+		assertNotNull(data.get("foo"));
+		assertEquals(Integer.valueOf("0"), data.get("foo"));
+		assertNotNull(data.get("bar"));
+		assertNotNull(data.get("fuga"));
+		assertEquals("initVal", data.get("fuga"));
+		
+	}
+	
+	public void test初期化でエラーで例外() throws Exception{
+		HSSFWorkbook wb = new HSSFWorkbook();
+		wb.createSheet();
+		wb.getSheetAt(0).createRow(0);		
+		
+		WorkbookWrapper workbook = new WorkbookWrapper(wb);
+		
+		String varName = " foo =12fdk=df";
+		Var var = new Var(varName,workbook.getSheetAt(0).getRow(0));
+		Map data = new HashMap();		
+		FPContext context = new FPContext(null,data);
+		try{
+			var.merge(context);
+			fail();
+		}catch (FPMergeException e) {
+			System.out.println(e.getMessage());
+			assertTrue(true);
+		}	
+		
+	}
+	
+	public void test初期化Pattern(){
+		Pattern pat = Pattern.compile("([^=\\s]+)\\s*(=\\s*([^=\\s]+))?");
+		
+		Matcher mat = pat.matcher("hoge");		
+		assertTrue(mat.find());
+		assertEquals("hoge", mat.group(0));
+		assertEquals("hoge", mat.group(1));
+		assertEquals(null, mat.group(2));
+		assertEquals(null, mat.group(3));
+		
+		mat = pat.matcher("hoge=1");		
+		assertTrue(mat.find());
+		assertEquals("hoge=1", mat.group(0));
+		assertEquals("hoge", mat.group(1));
+		assertEquals("=1", mat.group(2));
+		assertEquals("1", mat.group(3));
+		
+		mat = pat.matcher("hoge =  1");		
+		assertTrue(mat.find());
+		assertEquals("hoge =  1", mat.group(0));
+		assertEquals("hoge", mat.group(1));
+		assertEquals("=  1", mat.group(2));
+		assertEquals("1", mat.group(3));
+		
+	}
 
 
 }
+
+

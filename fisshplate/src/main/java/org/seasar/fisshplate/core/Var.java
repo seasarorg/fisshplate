@@ -16,10 +16,15 @@
 package org.seasar.fisshplate.core;
 
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import ognl.Ognl;
 
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
+import org.seasar.fisshplate.util.OgnlUtil;
 import org.seasar.fisshplate.wrapper.RowWrapper;
 
 /**
@@ -28,6 +33,7 @@ import org.seasar.fisshplate.wrapper.RowWrapper;
 public class Var implements TemplateElement {
 	private String[] vars;
 	private RowWrapper row;
+	private Pattern patDeclr = Pattern.compile("([^=\\s]+)\\s*(=\\s*([^=\\s]+))?");
 	
 	Var(String varName, RowWrapper row){
 		this.vars = varName.split("\\s*,\\s*");
@@ -35,16 +41,37 @@ public class Var implements TemplateElement {
 	}
 
 	public void merge(FPContext context) throws FPMergeException {
-		Map data = context.getData();		
+		Map data = context.getData();
+		Matcher mat = null;
 		for(int i=0; i < vars.length; i++){
-			String var = vars[i].trim();			
-			if(data.containsKey(var)){
-				throw new FPMergeException(FPConsts.MESSAGE_ID_VARNAME_ALREADY_EXISTS,
-						new Object[]{var,new Integer(row.getHSSFRow().getRowNum() + 1)});
+			String var = vars[i].trim();
+			mat = patDeclr.matcher(var);
+			if(! mat.find()){
+				throwMergeException(FPConsts.MESSAGE_ID_VAR_DECLARATION_INVALID, var, row); 
 			}
-			data.put(var, "");
+			
+			String varName = mat.group(1);			
+			
+			if(data.containsKey(varName)){
+				throwMergeException(FPConsts.MESSAGE_ID_VARNAME_ALREADY_EXISTS, varName, row);
+			}
+			data.put(varName, "");			
+			
+			if(mat.group(2) != null){
+				try{
+					OgnlUtil.getValue(var, data);
+				}catch (RuntimeException e) {
+					throwMergeException(FPConsts.MESSAGE_ID_VAR_DECLARATION_INVALID, var, row);
+				}
+			}
 		}
 
+	}
+	
+	private void throwMergeException(String messageId,String var, RowWrapper row) throws FPMergeException{
+		throw new FPMergeException(messageId,
+				new Object[]{var,new Integer(row.getHSSFRow().getRowNum() + 1)});
+		
 	}
 
 }

@@ -67,10 +67,14 @@ public interface FPConsts {
 	
 	static final String MESSAGE_ID_VARNAME_ALREADY_EXISTS = "EFP00010";
 	
+	static final String MESSAGE_ID_VAR_DECLARATION_INVALID = "EFP00011";
+	
 	static final String REGEX_EL_START = "\\$\\{";
 	
 	static final String REGEX_EL_END = "\\}";
 	
 	static final String REGEX_EL = REGEX_EL_START +  "[^" + REGEX_EL_START + REGEX_EL_END + "]" + "+" + REGEX_EL_END;
+
+	
 
 }
