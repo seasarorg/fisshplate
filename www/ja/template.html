@@ -167,7 +167,7 @@ Foo foo = new Foo();
 foo.setBar(null);
 data.put(&quot;fooTest&quot;, foo);</pre></div><p>上記の場合、</p><div class="source"><pre>${fooTest.bar} → エラー
 ${fooTest.bar!} → 空欄
-${fooTest.bar!空です} → 「空です」と出力</pre></div><p>となります。デフォルト値は全て文字列扱いになります。</p></div></div><div class="section"><h2>内部変数</h2><p>評価式や制御文で参照出来る内部変数があります。</p><dl><dt>rownum</dt><dd>行番号です。</dd><dt>page.pagenum</dt><dd>ページ番号です。Fisshplate側で改ページ制御した場合のみ有効な数字になります。</dd></dl></div><div class="section"><h2>制御文</h2><p>テンプレート内で、条件分岐や繰り返しなどを制御する事が出来ます。詳細は<a href="syntax.html">こちら</a>を参照して下さい。</p></div>
+${fooTest.bar!空です} → 「空です」と出力</pre></div><p>となります。デフォルト値は全て文字列扱いになります。</p></div><div class="section"><h3>文字列内への埋め込み</h3><p>任意の文字列の中に評価式を埋め込む事も出来ます。</p><div class="source"><pre>fooのbarの値は${foo.bar}です。現在は${rownum}行目です。</pre></div><p>と書いておくと、foo.barが「テスト」、rownumが1の場合、</p><div class="source"><pre>fooのbarの値はテストです。現在は1行目です。</pre></div><p>と出力されます。</p><p>文字列内へ埋め込む場合、評価式の値は全て文字列扱いとなります。</p></div></div><div class="section"><h2>内部変数</h2><p>評価式や制御文で参照出来る内部変数があります。</p><dl><dt>rownum</dt><dd>行番号です。</dd><dt>page.pagenum</dt><dd>ページ番号です。Fisshplate側で改ページ制御した場合のみ有効な数字になります。</dd></dl></div><div class="section"><h2>制御文</h2><p>テンプレート内で、条件分岐や繰り返しなどを制御する事が出来ます。詳細は<a href="syntax.html">こちら</a>を参照して下さい。</p></div>
 </div><!-- article -->
 
 </div><!-- contents_center -->
