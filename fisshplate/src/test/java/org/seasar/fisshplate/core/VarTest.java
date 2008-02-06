@@ -124,28 +124,25 @@ public class VarTest extends TestCase {
 	}
 	
 	public void test初期化Pattern(){
-		Pattern pat = Pattern.compile("([^=\\s]+)\\s*(=\\s*([^=\\s]+))?");
+		Pattern pat = Pattern.compile("([^=\\s]+)\\s*(=\\s*[^=\\s]+)?");
 		
 		Matcher mat = pat.matcher("hoge");		
 		assertTrue(mat.find());
 		assertEquals("hoge", mat.group(0));
 		assertEquals("hoge", mat.group(1));
-		assertEquals(null, mat.group(2));
-		assertEquals(null, mat.group(3));
+		assertEquals(null, mat.group(2));		
 		
 		mat = pat.matcher("hoge=1");		
 		assertTrue(mat.find());
 		assertEquals("hoge=1", mat.group(0));
 		assertEquals("hoge", mat.group(1));
-		assertEquals("=1", mat.group(2));
-		assertEquals("1", mat.group(3));
+		assertEquals("=1", mat.group(2));		
 		
 		mat = pat.matcher("hoge =  1");		
 		assertTrue(mat.find());
 		assertEquals("hoge =  1", mat.group(0));
 		assertEquals("hoge", mat.group(1));
-		assertEquals("=  1", mat.group(2));
-		assertEquals("1", mat.group(3));
+		assertEquals("=  1", mat.group(2));		
 		
 	}
 

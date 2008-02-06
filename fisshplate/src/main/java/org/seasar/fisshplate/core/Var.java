@@ -19,8 +19,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ognl.Ognl;
-
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
@@ -33,7 +31,7 @@ import org.seasar.fisshplate.wrapper.RowWrapper;
 public class Var implements TemplateElement {
 	private String[] vars;
 	private RowWrapper row;
-	private Pattern patDeclr = Pattern.compile("([^=\\s]+)\\s*(=\\s*([^=\\s]+))?");
+	private Pattern patDeclr = Pattern.compile("([^=\\s]+)\\s*(=\\s*[^=\\s]+)?");
 	
 	Var(String varName, RowWrapper row){
 		this.vars = varName.split("\\s*,\\s*");

@@ -221,7 +221,16 @@ map.put("fooList", list);
 #var hoge, foo, bar
 +--
 
-  カンマで区切る事で複数の変数を宣言出来ます。初期値は空文字列になります。
+  カンマで区切る事で複数の変数を宣言出来ます。
+  
+  また、宣言と同時に初期値を指定する事も出来ます。
+  
++--
+#var hoge, foo=0, bar = 'initialValue'
++--
+
+  指定しない場合は、初期値は空文字列になります。
+  上記の例ですと、「hoge」は空文字列、「foo」は整数「0」、barは文字列「initialValue」に設定されます。
   
 * 実行
 
@@ -241,6 +250,9 @@ map.put("fooList", list);
   
 [images/exec01.png]  
 
+  #varを使い、変数を宣言しています。「total」は、宣言と同時に整数「0」で初期化しています。
+  他の変数は初期化していないので、初期値は空文字列となります。
+
   #execを使い、変数prevKeyにitem.keyの値を代入し、保存しています。
   
   前回の値であるprevKeyと、item.keyが違った場合、ヘッダを出力しています。
@@ -251,10 +263,13 @@ map.put("fooList", list);
   
   そうでない場合、次回の値を取得する必要があります。ここでは、itemList#get(index +1).keyで取得し、prevKeyと比較して、違っていればフッタを出力します。
   
-  以下のようなデータを埋め込みます。
+  またitemListの行を出力するたびに、item.quantityをtotalに加算し、合計を求めて、フッタ内で出力しています。その後再度totalを「0」に初期化する事で、
+  キーブレイクごとの合計を表示するようにしています。
   
-[images/exec03.png]
+  以下のようなデータを「itemList」として埋め込みます。
+  
+[images/exec02.png]
 
   すると、出力されたファイルはこうなります。
   
-[images/exec02.png]
+[images/exec03.png]
