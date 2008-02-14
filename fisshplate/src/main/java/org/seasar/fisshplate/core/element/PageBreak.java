@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.fisshplate.core;
+package org.seasar.fisshplate.core.element;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.seasar.fisshplate.consts.FPConsts;
@@ -26,10 +26,10 @@ import org.seasar.fisshplate.exception.FPMergeException;
  * 
  * @author a-conv
  */
-public class PageBreakElement implements TemplateElement {
+public class PageBreak implements TemplateElement {
 	private Root root;
 	
-	PageBreakElement(Root root){
+	public PageBreak(Root root){
 		this.root = root;
 	}
 

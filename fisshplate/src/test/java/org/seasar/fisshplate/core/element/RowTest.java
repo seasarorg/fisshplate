@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.fisshplate.core;
+package org.seasar.fisshplate.core.element;
 
 import java.util.List;
 
@@ -24,6 +24,13 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.seasar.fisshplate.core.element.El;
+import org.seasar.fisshplate.core.element.Literal;
+import org.seasar.fisshplate.core.element.NullCell;
+import org.seasar.fisshplate.core.element.Picture;
+import org.seasar.fisshplate.core.element.Root;
+import org.seasar.fisshplate.core.element.Row;
+import org.seasar.fisshplate.core.element.TemplateElement;
 import org.seasar.fisshplate.wrapper.WorkbookWrapper;
 
 /**
@@ -59,7 +66,7 @@ public class RowTest extends TestCase {
 		WorkbookWrapper workbook = new WorkbookWrapper(templateWb);
 		
 		Row row = new Row(workbook.getSheetAt(0).getRow(0), root);
-		List elementList = row.cellElementList;		
+		List elementList = row.getCellElementList();		
 		
 		TemplateElement elem = (TemplateElement) elementList.get(0);
 		assertTrue(elem.getClass() == Literal.class );

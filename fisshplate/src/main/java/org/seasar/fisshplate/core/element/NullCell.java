@@ -13,23 +13,24 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.fisshplate.core;
+package org.seasar.fisshplate.core.element;
 
 import org.seasar.fisshplate.context.FPContext;
+import org.seasar.fisshplate.exception.FPMergeException;
 
 /**
- * {@link TemplateElement}を実装したNULLオブジェクトです。何も処理を行いません。
+ * NULLのセルを表すクラスです。何も処理をせず、次のセルへ現在位置を進めます。
+ * 
  * @author rokugen
- *
  */
-public class NullElement implements TemplateElement {
-	NullElement(){}
+public class NullCell implements TemplateElement {
+	public NullCell(){}
 
 	/* (non-Javadoc)
 	 * @see org.seasar.fisshplate.core.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
 	 */
-	public void merge(FPContext context) {
-		//no code;
+	public void merge(FPContext context) throws FPMergeException {
+		context.nextCell();
 	}
 
 }

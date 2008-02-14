@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.fisshplate.core;
+package org.seasar.fisshplate.core.element;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
+import org.seasar.fisshplate.core.ElExpression;
 import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.util.OgnlUtil;
 import org.seasar.fisshplate.util.StringUtil;
@@ -42,7 +43,7 @@ public class El implements TemplateElement{
 	 * @param cell テンプレート側のセル
 	 * @param expression 評価式
 	 */
-	El(AbstractCell target) {
+	public El(AbstractCell target) {
 		this.targetElement = target;
 		String originalCellValue = target.cell.getStringValue();
 		Pattern patEl = Pattern.compile(FPConsts.REGEX_EL);

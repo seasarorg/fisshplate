@@ -13,23 +13,28 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.fisshplate.core;
+package org.seasar.fisshplate.core.element;
+
+import java.util.Map;
 
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
+import org.seasar.fisshplate.util.OgnlUtil;
 
 /**
- * テンプレートのセルの値がフッターの場合の要素クラスです。
- * 
- * @author a-conv
+ * @author rokugen
  */
-public class PageFooterBlock extends AbstractBlock {
+public class Exec implements TemplateElement {
+	private String expression;	
+	
+	public Exec(String expression){
+		this.expression = expression;
+				
+	}
 
 	public void merge(FPContext context) throws FPMergeException {
-		for (int i = 0; i < childList.size(); i++) {
-			TemplateElement elem = (TemplateElement) childList.get(i);
-			elem.merge(context);
-		}
+		Map data = context.getData();
+		OgnlUtil.getValue(expression, data);
 	}
 
 }

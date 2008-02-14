@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.fisshplate.core;
+package org.seasar.fisshplate.core.element;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ import org.seasar.fisshplate.wrapper.RowWrapper;
  * 
  */
 public class Row implements TemplateElement {
-	protected List cellElementList = new ArrayList();
+	private List cellElementList = new ArrayList();
 	private short rowHeight;
 	private Root root;
 
@@ -55,7 +55,7 @@ public class Row implements TemplateElement {
 	 * @param root
 	 *            自分自身が属してるルート要素クラス
 	 */
-	Row(RowWrapper templateRow, Root root) {
+	public Row(RowWrapper templateRow, Root root) {
 		this.root = root;				
 		if (templateRow.isNullRow()) {
 			this.rowHeight = templateRow.getSheet().getHSSFSheet().getDefaultRowHeight();
@@ -122,6 +122,14 @@ public class Row implements TemplateElement {
 			elem.merge(context);
 		}
 		context.nextRow();
+	}
+	
+	/**
+	 * 行に含まれるセルのリストを戻します。
+	 * @return セルのリスト
+	 */
+	public List getCellElementList(){
+		return cellElementList;
 	}
 
 }

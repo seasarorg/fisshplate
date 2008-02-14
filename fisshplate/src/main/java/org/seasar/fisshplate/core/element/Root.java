@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.fisshplate.core;
+package org.seasar.fisshplate.core.element;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +85,14 @@ public class Root implements TemplateElement {
 	 */
 	public void addBody(TemplateElement element){
 		bodyElementList.add(element);		
+	}
+	
+	/**
+	 * ボディ要素のリストを戻します。
+	 * @return ボディ要素のリスト
+	 */
+	public List getBodyElementList(){
+		return bodyElementList;
 	}
 
 }

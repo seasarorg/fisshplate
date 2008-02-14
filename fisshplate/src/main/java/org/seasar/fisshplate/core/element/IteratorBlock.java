@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.fisshplate.core;
+package org.seasar.fisshplate.core.element;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -41,7 +41,7 @@ public class IteratorBlock extends AbstractBlock{
 	 * @param indexName ループのインデックス名
 	 * @param max ループの最大繰り返し回数 
 	 */
-	IteratorBlock(RowWrapper row, String varName, String iteratorName, String indexName, int max){
+	public IteratorBlock(RowWrapper row, String varName, String iteratorName, String indexName, int max){
 		this.varName = varName;
 		this.iteratorName = iteratorName;
 		this.max = max;

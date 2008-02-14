@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.fisshplate.core;
+package org.seasar.fisshplate.core.element;
 
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -33,7 +33,7 @@ public class Var implements TemplateElement {
 	private RowWrapper row;
 	private Pattern patDeclr = Pattern.compile("([^=\\s]+)\\s*(=\\s*[^=\\s]+)?");
 	
-	Var(String varName, RowWrapper row){
+	public Var(String varName, RowWrapper row){
 		this.vars = varName.split("\\s*,\\s*");
 		this.row = row;
 	}

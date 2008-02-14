@@ -13,22 +13,25 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.fisshplate.core;
-
+package org.seasar.fisshplate.core.element;
 
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
 
 /**
- * テンプレートの各要素を反映するインタフェースです。
  * @author rokugen
  *
  */
-public interface TemplateElement {
-	/**
-	 * コンテキストに格納されたデータをテンプレートに埋め込みます。
-	 * @param context コンテキスト
-	 * @throws FPMergeException データ埋め込み時にエラーが発生した際に投げられます。
+public class ElseBlock extends AbstractBlock {
+
+	/* (non-Javadoc)
+	 * @see org.seasar.fisshplate.core.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
 	 */
-	void merge(FPContext context) throws FPMergeException;
+	public void merge(FPContext context) throws FPMergeException {
+		for(int i=0; i < childList.size(); i++){
+			TemplateElement elem = (TemplateElement) childList.get(i);
+			elem.merge(context);
+		}
+	}
+
 }

@@ -41,7 +41,7 @@ public class ElExpression {
 	 * @param exp
 	 *            評価式
 	 */
-	ElExpression(String exp) {
+	public ElExpression(String exp) {
 		String baseExp = exp.replaceAll("^" + FPConsts.REGEX_EL_START + "(.+)" + FPConsts.REGEX_EL_END + "$", "$1");
 		int idx = baseExp.indexOf(FPConsts.NULL_VALUE_OPERATOR);
 		nullAllowed = (idx >= 1);

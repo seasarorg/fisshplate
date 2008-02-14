@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.fisshplate.core;
+package org.seasar.fisshplate.core.element;
 
 import java.util.Date;
 
@@ -33,7 +33,7 @@ public class Literal extends AbstractCell {
 	 * コンストラクタです。
 	 * @param cell 保持するテンプレート側のセル
 	 */
-	Literal(CellWrapper cell) {
+	public Literal(CellWrapper cell) {
 		super(cell);
 	}
 

@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.fisshplate.core;
+package org.seasar.fisshplate.core.element;
 
 import java.util.Map;
 
@@ -31,7 +31,7 @@ public class IfBlock extends AbstractBlock {
 	/**	 
 	 * @param condition 条件式
 	 */
-	IfBlock(String condition){
+	public IfBlock(String condition){
 		this.condition = condition;
 	}
 	
@@ -41,6 +41,14 @@ public class IfBlock extends AbstractBlock {
 	 */
 	public void setNextBlock(AbstractBlock next){
 		this.nextBlock = next;
+	}
+	
+	/**
+	 * 次の条件のブロック要素を戻します。
+	 * @return 次の条件のブロック要素
+	 */
+	public TemplateElement getNextBlock(){
+		return nextBlock;
 	}
 
 	/* (non-Javadoc)

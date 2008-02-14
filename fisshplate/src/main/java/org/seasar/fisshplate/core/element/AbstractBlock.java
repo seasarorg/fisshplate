@@ -13,28 +13,33 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.fisshplate.core;
+package org.seasar.fisshplate.core.element;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.seasar.fisshplate.context.FPContext;
-import org.seasar.fisshplate.exception.FPMergeException;
-import org.seasar.fisshplate.util.OgnlUtil;
 
 /**
+ * ブロック要素を表す基底クラスです。
  * @author rokugen
+ *
  */
-public class Exec implements TemplateElement {
-	private String expression;	
+public abstract class AbstractBlock implements TemplateElement {
+	protected List childList = new ArrayList();
 	
-	Exec(String expression){
-		this.expression = expression;
-				
+	/**
+	 * ブロック内の子要素を追加します。
+	 * @param element
+	 */
+	public void addChild(TemplateElement element){
+		childList.add(element);
 	}
-
-	public void merge(FPContext context) throws FPMergeException {
-		Map data = context.getData();
-		OgnlUtil.getValue(expression, data);
+	
+	/**
+	 * ブロック内の子要素のリストを戻します。
+	 * @return 子要素のリスト
+	 */
+	public List getChildList(){
+		return childList;
 	}
-
 }

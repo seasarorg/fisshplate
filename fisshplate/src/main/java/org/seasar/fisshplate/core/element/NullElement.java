@@ -13,23 +13,23 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.fisshplate.core;
+package org.seasar.fisshplate.core.element;
 
 import org.seasar.fisshplate.context.FPContext;
-import org.seasar.fisshplate.exception.FPMergeException;
 
 /**
- * テンプレートのセルの値がヘッダーの場合の要素クラスです。
- * 
- * @author a-conv
+ * {@link TemplateElement}を実装したNULLオブジェクトです。何も処理を行いません。
+ * @author rokugen
+ *
  */
-public class PageHeaderBlock extends AbstractBlock {
+public class NullElement implements TemplateElement {
+	public NullElement(){}
 
-	public void merge(FPContext context) throws FPMergeException {
-		for (int i = 0; i < childList.size(); i++) {
-			TemplateElement elem = (TemplateElement) childList.get(i);
-			elem.merge(context);
-		}
+	/* (non-Javadoc)
+	 * @see org.seasar.fisshplate.core.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
+	 */
+	public void merge(FPContext context) {
+		//no code;
 	}
 
 }

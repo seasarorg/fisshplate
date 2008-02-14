@@ -13,25 +13,20 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.fisshplate.core;
-
-import java.util.ArrayList;
-import java.util.List;
+package org.seasar.fisshplate.core.element;
 
 
 /**
- * ブロック要素を表す基底クラスです。
  * @author rokugen
  *
  */
-public abstract class AbstractBlock implements TemplateElement {
-	protected List childList = new ArrayList();
-	
-	/**
-	 * ブロック内の子要素を追加します。
-	 * @param element
+public class ElseIfBlock extends IfBlock {
+
+	/** 
+	 * @param condition 条件式
 	 */
-	public void addChild(TemplateElement element){
-		childList.add(element);
+	public ElseIfBlock(String condition) {
+		super(condition);
 	}
+
 }

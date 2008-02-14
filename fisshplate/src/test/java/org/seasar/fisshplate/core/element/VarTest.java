@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.fisshplate.core;
+package org.seasar.fisshplate.core.element;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +24,7 @@ import junit.framework.TestCase;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.seasar.fisshplate.context.FPContext;
+import org.seasar.fisshplate.core.element.Var;
 import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.wrapper.WorkbookWrapper;
 
