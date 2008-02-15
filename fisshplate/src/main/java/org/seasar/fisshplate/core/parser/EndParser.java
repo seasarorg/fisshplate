@@ -40,39 +40,52 @@ public class EndParser implements StatementParser {
 	 * @see org.seasar.fisshplate.core.parser.StatementParser#process(org.seasar.fisshplate.wrapper.CellWrapper, org.seasar.fisshplate.core.parser.FPParser)
 	 */
 	public boolean process(CellWrapper cell, FPParser parser)	throws FPParseException {
-		String value = cell.getStringValue();	
-		Matcher mat  = patEnd.matcher(value);  
+		String value = cell.getStringValue();
+		Matcher mat  = patEnd.matcher(value);
 		if(!mat.find()){
 			return false;
 		}
+		
 		RowWrapper row = cell.getRow();
 		Root root = parser.getRoot();
+		
 		if (parser.isBlockStackBlank()) {
 			throw new FPParseException(FPConsts.MESSAGE_ID_END_ELEMENT,
 					new Object[]{new Integer(row.getHSSFRow().getRowNum() + 1)});
 		}
+		
 		AbstractBlock block = parser.popFromBlockStack();
-		// elseとelse ifの場合、ifが出るまでpop継続する
 		Class clazz = block.getClass();
-		if ((clazz == ElseBlock.class) || clazz == ElseIfBlock.class) {
-			while (block.getClass() != IfBlock.class) {
-				block = parser.popFromBlockStack();
-			}
-		} else if ((clazz == PageHeaderBlock.class)) {
+		
+		if (clazz == ElseBlock.class || clazz == ElseIfBlock.class) {
+			block = getIfBlockFromStack(parser);
+		}else if (clazz == PageHeaderBlock.class) {
 			root.setPageHeader(block);
-			// Header自体はBodyに追加しない
 			return true;
-		} else if ((clazz == PageFooterBlock.class)) {
-			root.setPageFooter(block);			
-			// Footer自体はBodyに追加しない
+		}else if (clazz == PageFooterBlock.class) {
+			root.setPageFooter(block);
 			return true;
 		}
-		// ブロックのネストがルートまで戻ったらルートの要素リストに追加する。
-		if (parser.isBlockStackBlank()) {
-			root.addBody(block);			
+		
+		if(parser.isBlockStackBlank()) {
+			root.addBody(block);
 		}
 
 		return true;
+	}
+	
+	/**
+	 * Else If か Elseの場合、元になるIfが出るまで継続してPopする。
+	 * @param parser 呼び出し元FPParser
+	 * @return Ifブロック
+	 */
+	private AbstractBlock getIfBlockFromStack(FPParser parser){
+		// elseとelse ifの場合、ifが出るまでpop継続する
+		AbstractBlock block = null;
+		while (block == null || block.getClass() != IfBlock.class) {
+			block = parser.popFromBlockStack();
+		}
+		return block;		
 	}
 
 }

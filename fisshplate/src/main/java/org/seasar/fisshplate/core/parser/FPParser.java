@@ -52,7 +52,7 @@ public class FPParser {
 			new ExecParser(),
 			new PageHeaderBlockParser(),
 			new PageFooterBlockParser()
-	};	
+	};
 
 	/**
 	 * ルートの要素リストを戻します。

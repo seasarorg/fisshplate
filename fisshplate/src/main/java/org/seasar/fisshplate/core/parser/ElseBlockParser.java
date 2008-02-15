@@ -15,54 +15,31 @@
  */
 package org.seasar.fisshplate.core.parser;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.core.element.AbstractBlock;
 import org.seasar.fisshplate.core.element.ElseBlock;
-import org.seasar.fisshplate.core.element.IfBlock;
-import org.seasar.fisshplate.exception.FPParseException;
-import org.seasar.fisshplate.wrapper.CellWrapper;
-import org.seasar.fisshplate.wrapper.RowWrapper;
 
 /**
  * else を解析するクラスです。
  * @author rokugen
  */
-public class ElseBlockParser implements StatementParser {
+public class ElseBlockParser extends AbstractElseParser {
 	private static final Pattern patElse = Pattern.compile("^\\s*#else\\s*$");
 	
-	public boolean process(CellWrapper cell, FPParser parser)	throws FPParseException {
-		String value = cell.getStringValue();
-		Matcher mat = patElse.matcher(value);
-		if(!mat.find()){
-			return false;
-		}
-		
-		RowWrapper row = cell.getRow();
-		AbstractBlock parent = getParentIfBlock(row,parser);
-		AbstractBlock block = new ElseBlock();
-		((IfBlock) parent).setNextBlock(block);
-		parser.pushBlockToStack(block);
 
-		return true;
+	/* (non-Javadoc)
+	 * @see org.seasar.fisshplate.core.parser.AbstractElseParser#createElement(java.lang.String)
+	 */
+	protected AbstractBlock createElement(String condition) {
+		return new ElseBlock();
 	}
-	
-	private AbstractBlock getParentIfBlock(RowWrapper row,FPParser parser) throws FPParseException {
-		if (parser.isBlockStackBlank()) {
-			throw new FPParseException(FPConsts.MESSAGE_ID_LACK_IF,
-					new Object[]{new Integer(row.getHSSFRow().getRowNum() + 1)});
-		}
 
-		AbstractBlock parent = parser.getLastElementFromStack();
-
-		if (!(parent instanceof IfBlock)) {
-			throw new FPParseException(FPConsts.MESSAGE_ID_LACK_IF,
-					new Object[]{new Integer(row.getHSSFRow().getRowNum() + 1)});
-		}
-		return parent;
-
+	/* (non-Javadoc)
+	 * @see org.seasar.fisshplate.core.parser.AbstractElseParser#getPattern()
+	 */
+	protected Pattern getPattern() {
+		return patElse;
 	}
 
 }
