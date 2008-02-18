@@ -46,7 +46,7 @@ public abstract class AbstractElseParser implements StatementParser {
 		RowWrapper row = cell.getRow();
 		AbstractBlock parent = getParentIfBlock(row, parser);
 		String condition = null;
-		if(mat.groupCount() > 1){
+		if(mat.groupCount() > 0){
 			condition = mat.group(1);
 		}
 		AbstractBlock block = createElement(condition);
