@@ -32,6 +32,7 @@ public class IteratorBlock extends AbstractBlock{
 	private String indexName;
 	private int max;
 	private RowWrapper row;
+	private int lineNumPerPage;
 	
 	/**
 	 * 要素を保持する変数名とイテレータ自身の名前とループのインデックス名とループの最大繰り返し回数を受け取ります。
@@ -77,29 +78,51 @@ public class IteratorBlock extends AbstractBlock{
 	}
 	
 	private void mergeIteratively(FPContext context, Iterator ite,Map data) throws FPMergeException{
+		context.setCurrentIterator(this);
+		initLineNumPerPage();
 		int line = 0;
 		while(ite.hasNext()){
+			lineNumPerPage ++;
 			Object var = ite.next();
 			data.put(varName, var);	
-			data.put(indexName, new Integer(line));
-			mergeChildren(context);
-			line ++;
-		}		
-		
-		context.setSkipMerge(true);
-		while (max > line){
 			data.put(indexName, new Integer(line));
 			mergeChildren(context);			
 			line ++;
 		}
-		context.setSkipMerge(false);
+		
+		context.setSkipMerge(true);
+		context.clearCurrentIterator();
+		while (max > lineNumPerPage){
+			data.put(indexName, new Integer(line));
+			mergeChildren(context);
+			lineNumPerPage ++;
+			line ++;
+		}
+		context.setSkipMerge(false);		
 	}
 	
 	private  void mergeChildren(FPContext context) throws FPMergeException{
 		for(int i=0; i < childList.size(); i++){
-			TemplateElement elem = (TemplateElement) childList.get(i);			
+			TemplateElement elem = (TemplateElement) childList.get(i);
 			elem.merge(context);
 		}
 	}
+
+	/**
+	 * 現在のページごとの行番号を戻します。
+	 * @return ページごとの行番号
+	 */
+	public int getLineNumPerPage() {
+		return lineNumPerPage;
+	}
+	
+	/**
+	 * 現在のページごとの行番号を初期化します。
+	 */
+	public void initLineNumPerPage(){
+		lineNumPerPage = 0;
+	}
+
+
 
 }

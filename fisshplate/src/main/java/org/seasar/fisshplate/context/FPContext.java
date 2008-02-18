@@ -21,6 +21,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.seasar.fisshplate.core.element.IteratorBlock;
 
 /**
  * 解析やデータ埋め込み時に参照される、グローバル値を保持するクラスです。
@@ -38,6 +39,7 @@ public class FPContext {
 	private boolean shouldFooterOut;
 	private boolean skipMerge = false;
 	private HSSFPatriarch patriarch;
+	private IteratorBlock currentIterator;
 
 	/**
 	 * コンストラクタです。
@@ -178,6 +180,37 @@ public class FPContext {
 			patriarch = outSheet.createDrawingPatriarch();
 		}
 		return patriarch;
+	}
+	
+	/**
+	 * 現在の{@link IteratorBlock}を戻します。
+	 * @return 現在のIteratorBlock
+	 */
+	public IteratorBlock getCurrentIterator() {
+		return currentIterator;
+	}
+
+	/**
+	 * 現在の{@link IteratorBlock}を設定します。
+	 * @param currentIterator 現在のIteratorBlock
+	 */
+	public void setCurrentIterator(IteratorBlock currentIterator) {
+		this.currentIterator = currentIterator;
+	}
+	
+	/**
+	 * 現在の{@link IteratorBlock}を消去します。
+	 */
+	public void clearCurrentIterator() {
+		this.currentIterator = null;
+	}
+	
+	/**
+	 * 現在、{@link IteratorBlock}の中に居るか否かを戻します。
+	 * @return {@link IteratorBlock}の中に居ればtrue。
+	 */
+	public boolean inIteratorBlock(){
+		return this.currentIterator != null;
 	}
 
 

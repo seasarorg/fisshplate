@@ -249,6 +249,41 @@ public class FPTemplateTest extends TestCase {
 		wb.write(fos);
 	}
 	
+	public void test空行指定テスト_改ページ対応() throws Exception{
+		InputStream is = getClass().getResourceAsStream("/FPTemplateTest_iteratorMax_pageBreak.xls");
+		HSSFWorkbook wb;
+		try {
+			template = new FPTemplate();
+			Map map = new HashMap();
+			map.put("title", "タイトルである");
+			List aList = new ArrayList();
+			aList.add(new A("1行目",10,new Date()));
+			aList.add(new A("2行目",20,new Date()));
+			aList.add(new A("3行目",30,new Date()));
+			aList.add(new A("4行目",10,new Date()));
+			aList.add(new A("5行目",20,new Date()));
+			aList.add(new A("6行目",30,new Date()));		
+			aList.add(new A("7行目",10,new Date()));
+			aList.add(new A("8行目",20,new Date()));
+			aList.add(new A("9行目",30,new Date()));
+			aList.add(new A("10行目",10,new Date()));
+			aList.add(new A("11行目",20,new Date()));
+			aList.add(new A("12行目",30,new Date()));
+			map.put("b", aList);
+			
+			wb = template.process(is,map);
+		} catch (FPException e) {
+			throw e;
+		} catch (IOException e) {
+			throw e;
+		}finally{
+			is.close();
+		}
+		
+		FileOutputStream fos = new FileOutputStream("target/out_iteratorMax_pageBreak.xls");		
+		wb.write(fos);
+	}
+	
 	public class A{
 		private String name;
 		private int num;

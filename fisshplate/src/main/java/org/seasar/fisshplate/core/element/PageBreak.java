@@ -45,7 +45,11 @@ public class PageBreak implements TemplateElement {
 		pageCountUp(context);
 		
 		context.setShouldHeaderOut(true);
-		context.setShouldFooterOut(false);		
+		context.setShouldFooterOut(false);	
+		if(context.inIteratorBlock()){
+			IteratorBlock currentIterator = context.getCurrentIterator();		
+			currentIterator.initLineNumPerPage();
+		}
 	}
 
 	private void pageCountUp(FPContext context) {
