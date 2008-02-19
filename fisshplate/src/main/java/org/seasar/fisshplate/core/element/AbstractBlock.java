@@ -18,6 +18,9 @@ package org.seasar.fisshplate.core.element;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.seasar.fisshplate.context.FPContext;
+import org.seasar.fisshplate.exception.FPMergeException;
+
 
 /**
  * ブロック要素を表す基底クラスです。
@@ -41,5 +44,17 @@ public abstract class AbstractBlock implements TemplateElement {
 	 */
 	public List getChildList(){
 		return childList;
+	}
+	
+	/**
+	 * 子要素にデータを埋め込みます
+	 * @param context コンテキスト
+	 * @throws FPMergeException データ埋め込み時にエラーが発生した際に投げられます。
+	 */
+	protected void mergeChildren(FPContext context) throws FPMergeException{
+		for (int i = 0; i < childList.size(); i++) {
+			TemplateElement elem = (TemplateElement) childList.get(i);
+			elem.merge(context);
+		}
 	}
 }

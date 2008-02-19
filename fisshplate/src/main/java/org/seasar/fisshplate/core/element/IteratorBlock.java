@@ -100,14 +100,8 @@ public class IteratorBlock extends AbstractBlock{
 			mergeChildren(context);			
 		}
 		context.setSkipMerge(false);		
-	}
+	}	
 	
-	private  void mergeChildren(FPContext context) throws FPMergeException{
-		for(int i=0; i < childList.size(); i++){
-			TemplateElement elem = (TemplateElement) childList.get(i);
-			elem.merge(context);
-		}
-	}
 
 	/**
 	 * 現在のページごとの行番号を戻します。

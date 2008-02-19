@@ -28,10 +28,7 @@ public class ElseBlock extends AbstractBlock {
 	 * @see org.seasar.fisshplate.core.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
 	 */
 	public void merge(FPContext context) throws FPMergeException {
-		for(int i=0; i < childList.size(); i++){
-			TemplateElement elem = (TemplateElement) childList.get(i);
-			elem.merge(context);
-		}
+		mergeChildren(context);
 	}
 
 }

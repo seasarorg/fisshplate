@@ -26,10 +26,7 @@ import org.seasar.fisshplate.exception.FPMergeException;
 public class PageHeaderBlock extends AbstractBlock {
 
 	public void merge(FPContext context) throws FPMergeException {
-		for (int i = 0; i < childList.size(); i++) {
-			TemplateElement elem = (TemplateElement) childList.get(i);
-			elem.merge(context);
-		}
+		mergeChildren(context);
 	}
 
 }

@@ -58,10 +58,7 @@ public class IfBlock extends AbstractBlock {
 		Map data = context.getData();
 		boolean isTarget = ((Boolean)OgnlUtil.getValue("(" + condition + ")", data)).booleanValue();
 		if(isTarget){
-			for(int i=0; i< childList.size(); i++){
-				TemplateElement elem = (TemplateElement) childList.get(i);			
-				elem.merge(context);
-			}
+			mergeChildren(context);
 		}else{			
 			nextBlock.merge(context);
 		}
