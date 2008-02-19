@@ -21,7 +21,6 @@ import java.io.FileInputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -55,9 +54,7 @@ public class Picture extends AbstractCell {
 	 * 
 	 * @see org.seasar.fisshplate.core.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
 	 */
-	public void merge(FPContext context) throws FPMergeException {
-		HSSFCell out = context.getCurrentCell();
-		copyCellStyle(context, out);		
+	protected void mergeImpl(FPContext context) throws FPMergeException {				
 		
 		Pattern pat = Pattern.compile("^\\s*\\#picture\\((.*)\\s+cell=(.+)\\s*\\s+row=(.+)\\)");
 		Matcher mat = pat.matcher(getCellValue().toString());
@@ -69,8 +66,7 @@ public class Picture extends AbstractCell {
 		int rowRangeIntVal = Integer.parseInt(rowRange);
 		if (isWritePicture(picturePath)) {
 			writePicture(picturePath, cellRangeIntVal, rowRangeIntVal, context);
-		}
-		context.nextCell();
+		}		
 	}
 
 	private boolean isWritePicture(String picturePath) {

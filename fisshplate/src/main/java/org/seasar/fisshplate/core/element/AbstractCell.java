@@ -25,6 +25,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.Region;
 import org.seasar.fisshplate.context.FPContext;
+import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.wrapper.CellWrapper;
 
 /**
@@ -65,6 +66,29 @@ public abstract class AbstractCell implements TemplateElement {
 		cellValue = cell.getObjectValue();
 	}
 	
+	
+	
+	/* (non-Javadoc)
+	 * @see org.seasar.fisshplate.core.element.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
+	 */
+	public void merge(FPContext context) throws FPMergeException {
+		HSSFCell out = context.getCurrentCell();
+		copyCellStyle(context, out);
+		
+		mergeImpl(context);
+		
+		context.nextCell();		
+	}
+	
+	/**
+	 * このクラスを継承したクラスで実装される、データ埋め込み処理の実装です。
+	 * @param context コンテキスト
+	 * @throws FPMergeException データ埋め込み時にエラーが発生した際に投げられる例外です。
+	 */
+	protected abstract void mergeImpl(FPContext context) throws FPMergeException ;
+
+
+
 	private void setUpMergedCellInfo(short cellNum, int rowNum, Region reg){
 		if(reg.getColumnFrom() != cellNum || reg.getRowFrom() != rowNum){
 			isMergedCell = false;

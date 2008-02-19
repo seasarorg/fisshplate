@@ -40,10 +40,8 @@ public class Literal extends AbstractCell {
 	/* (non-Javadoc)
 	 * @see org.seasar.fisshplate.element.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
 	 */
-	public void merge(FPContext context) {
-		HSSFCell out = context.getCurrentCell();
-		copyCellStyle(context, out);
-		
+	protected void mergeImpl(FPContext context) {
+		HSSFCell out = context.getCurrentCell();		
 		HSSFCell templateCell = cell.getHSSFCell();
 		Object cellValue = getCellValue();
 		
@@ -65,8 +63,6 @@ public class Literal extends AbstractCell {
 			out.setCellValue(Double.valueOf(cellValue.toString()).doubleValue());
 			out.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
 		}
-		
-		context.nextCell();
 	}
 	
 	private boolean isNumber(Object value){

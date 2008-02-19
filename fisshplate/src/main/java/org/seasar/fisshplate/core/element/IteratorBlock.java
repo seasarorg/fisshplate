@@ -80,23 +80,24 @@ public class IteratorBlock extends AbstractBlock{
 	private void mergeIteratively(FPContext context, Iterator ite,Map data) throws FPMergeException{
 		context.setCurrentIterator(this);
 		initLineNumPerPage();
-		int line = 0;
-		while(ite.hasNext()){
-			lineNumPerPage ++;
+		int index = 0;
+		while(ite.hasNext()){			
 			Object var = ite.next();
 			data.put(varName, var);	
-			data.put(indexName, new Integer(line));
-			mergeChildren(context);			
-			line ++;
+			data.put(indexName, new Integer(index));
+			lineNumPerPage ++;
+			index ++;
+			mergeChildren(context);
+			
 		}
 		
 		context.setSkipMerge(true);
 		context.clearCurrentIterator();
 		while (max > lineNumPerPage){
-			data.put(indexName, new Integer(line));
-			mergeChildren(context);
+			data.put(indexName, new Integer(index));
 			lineNumPerPage ++;
-			line ++;
+			index ++;
+			mergeChildren(context);			
 		}
 		context.setSkipMerge(false);		
 	}
@@ -122,7 +123,5 @@ public class IteratorBlock extends AbstractBlock{
 	public void initLineNumPerPage(){
 		lineNumPerPage = 0;
 	}
-
-
 
 }
