@@ -66,19 +66,24 @@ public class SheetWrapper {
 	/**
 	 * データ埋め込みの準備のために、シートを初期化します。
 	 */
-	public void prepareForMerge(){		
-		
+	public void prepareForMerge(){
+		removeAllRow();
+		removeAllMergedRegion();
+	}
+	
+	private void removeAllRow(){
 		for(int i=0; i < getRowCount();i++){
 			HSSFRow hssfRow = getRow(i).getHSSFRow();
 			if(hssfRow != null){
 				hssfSheet.removeRow(hssfRow);
 			}
-		}		
-				
+		}	
+	}
+	
+	private void removeAllMergedRegion(){
 		for(int i=0; 0 < hssfSheet.getNumMergedRegions();i++){
 			hssfSheet.removeMergedRegion(0);			
 		}
-
 	}
 
 }

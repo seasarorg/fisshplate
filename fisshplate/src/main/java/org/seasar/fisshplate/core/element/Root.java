@@ -35,16 +35,21 @@ public class Root implements TemplateElement {
 	public void merge(FPContext context) throws FPMergeException {
 		context.setShouldHeaderOut(false);
 		pageHeaderBlock.merge(context);
-		
+		mergeBodyElement(context);
+		if(context.shouldFooterOut()){
+			pageFooterBlock.merge(context);
+		}
+		removeUnwantedRows(context);		
+	}
+	
+	private void mergeBodyElement(FPContext context) throws FPMergeException{
 		for(int i=0; i < bodyElementList.size(); i++){
 			TemplateElement elem = (TemplateElement) bodyElementList.get(i);
 			elem.merge(context);			
 		}
-		
-		if(context.shouldFooterOut()){
-			pageFooterBlock.merge(context);
-		}
-		
+	}
+	
+	private void removeUnwantedRows(FPContext context){
 		//ゴミ清掃
 		HSSFSheet outSheet = context.getOutSheet();
 		int currentRowNum = context.getCurrentRowNum();
