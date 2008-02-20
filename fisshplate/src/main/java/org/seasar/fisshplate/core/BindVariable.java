@@ -18,18 +18,18 @@ package org.seasar.fisshplate.core;
 import org.seasar.fisshplate.consts.FPConsts;
 
 /**
- * 評価式を表すクラスです。
+ * バインド変数を表すクラスです。
  * 
  * @author rokugen
  */
-public class ElExpression {	
-	private String expression;
+public class BindVariable {	
+	private String name;
 	private boolean nullAllowed;
 	private Object nullValue;
 
 	/**
 	 * <p>
-	 * コンストラクタです。セル上に記載された評価式を受け取ります。
+	 * コンストラクタです。セル上に記載されたバインド変数を受け取ります。
 	 * </p>
 	 * <p>
 	 * 式の中に!がある場合は、NULLを許可します。
@@ -38,29 +38,41 @@ public class ElExpression {
 	 * !の後に値が続く場合は、NULL時のデフォルト値とします。
 	 * </p>
 	 * 
-	 * @param exp
-	 *            評価式
+	 * @param var
+	 *            セル上に記載されたバインド変数
 	 */
-	public ElExpression(String exp) {
-		String baseExp = exp.replaceAll("^" + FPConsts.REGEX_EL_START + "(.+)" + FPConsts.REGEX_EL_END + "$", "$1");
-		int idx = baseExp.indexOf(FPConsts.NULL_VALUE_OPERATOR);
+	public BindVariable(String var) {
+		String baseVar = var.replaceAll("^" + FPConsts.REGEX_BIND_VAR_START + "(.+)" + FPConsts.REGEX_BIND_VAR_END + "$", "$1");
+		int idx = baseVar.indexOf(FPConsts.NULL_VALUE_OPERATOR);
 		nullAllowed = (idx >= 1);
 		if (nullAllowed) {
-			expression = baseExp.substring(0, idx);
-			nullValue = baseExp.substring(idx + 1);
+			name = baseVar.substring(0, idx);
+			nullValue = baseVar.substring(idx + 1);
 		} else {
-			expression = baseExp;
+			name = baseVar;
 		}		
 	}
 
-	public String getExpression() {
-		return expression;
+	/**
+	 * 変数名を戻します。
+	 * @return 変数名
+	 */
+	public String getName() {
+		return name;
 	}
 
+	/**
+	 * NULL時のデフォルト値を戻します。
+	 * @return デフォルト値
+	 */
 	public Object getNullValue() {
 		return nullValue;
 	}
 
+	/**
+	 * NULLを許可するか否かを戻します。
+	 * @return NULLを許可する場合true。
+	 */
 	public boolean isNullAllowed() {
 		return nullAllowed;
 	}

@@ -24,13 +24,13 @@ import java.util.regex.Pattern;
 
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
-import org.seasar.fisshplate.core.ElExpression;
+import org.seasar.fisshplate.core.BindVariable;
 import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.util.OgnlUtil;
 import org.seasar.fisshplate.util.StringUtil;
 
 /**
- * テンプレートのセルの値が評価式の場合の要素クラスです。OGNLで評価します。
+ * テンプレートのセルの値にバインド変数が含まれる場合の要素クラスです。OGNLで評価します。
  * @author rokugen
  *
  */
@@ -40,13 +40,12 @@ public class El implements TemplateElement{
 
 	/**
 	 * コンストラクタです。
-	 * @param cell テンプレート側のセル
-	 * @param expression 評価式
+	 * @param target バインド変数を評価する対象となるセル要素
 	 */
 	public El(AbstractCell target) {
 		this.targetElement = target;
 		String originalCellValue = target.cell.getStringValue();
-		Pattern patEl = Pattern.compile(FPConsts.REGEX_EL);
+		Pattern patEl = Pattern.compile(FPConsts.REGEX_BIND_VAR);
 		Matcher mat = patEl.matcher(originalCellValue);
 		while(mat.find()){
 			expressionMap.put(mat.group(), null);
@@ -66,6 +65,17 @@ public class El implements TemplateElement{
 		}
 		targetElement.setCellValue(value);
 		targetElement.merge(context);
+	}
+	
+	private void putValueToMap(FPContext context) throws FPMergeException{				
+		Map data = context.getData();		
+		Set key = expressionMap.keySet();
+		for(Iterator itr = key.iterator(); itr.hasNext();){
+			String expString = (String) itr.next();
+			BindVariable bindVar = new BindVariable(expString);
+			Object value = getValue(data,bindVar);
+			expressionMap.put(expString, value);
+		}		
 	}
 
 	private Object buildValue(){
@@ -94,28 +104,18 @@ public class El implements TemplateElement{
 		value = value.replaceAll(StringUtil.escapeEl(exp), "");
 		
 		return (value.trim().length() == 0);
-	}
-	
-	
-	private void putValueToMap(FPContext context) throws FPMergeException{				
-		Map data = context.getData();		
-		Set key = expressionMap.keySet();
-		for(Iterator itr = key.iterator(); itr.hasNext();){
-			String expString = (String) itr.next();
-			ElExpression expression = new ElExpression(expString);
-			Object value = getValue(data,expression);
-			expressionMap.put(expString, value);
-		}		
 	}	
 	
-	private Object getValue(Map data, ElExpression expression) throws FPMergeException{		
-		Object value = OgnlUtil.getValue(expression.getExpression(), data);		
+		
+	
+	private Object getValue(Map data, BindVariable bindVar) throws FPMergeException{		
+		Object value = OgnlUtil.getValue(bindVar.getName(), data);		
 		if(value == null){
-			if(expression.isNullAllowed()){
-				value = expression.getNullValue();
+			if(bindVar.isNullAllowed()){
+				value = bindVar.getNullValue();
 			}else{
 				throw new FPMergeException(FPConsts.MESSAGE_ID_EL_EXPRESSION_UNDEFINED,
-						new Object[]{expression.getExpression(),new Integer(targetElement.cell.getRow().getHSSFRow().getRowNum() + 1)});
+						new Object[]{bindVar.getName(),new Integer(targetElement.cell.getRow().getHSSFRow().getRowNum() + 1)});
 			}		
 		}
 		return value;		

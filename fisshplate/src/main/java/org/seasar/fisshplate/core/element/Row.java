@@ -40,7 +40,7 @@ public class Row implements TemplateElement {
 	private short rowHeight;
 	private Root root;
 
-	private static final Pattern patEl = Pattern.compile(FPConsts.REGEX_EL);
+	private static final Pattern patEl = Pattern.compile(FPConsts.REGEX_BIND_VAR);
 
 	//#picture(${data.picture})
 	private static final Pattern patPicture = Pattern.compile("^\\s*\\#picture\\(.+\\s+cell=.+\\s*\\s+row=.+\\)");

@@ -69,11 +69,11 @@ public interface FPConsts {
 	
 	static final String MESSAGE_ID_VAR_DECLARATION_INVALID = "EFP00011";
 	
-	static final String REGEX_EL_START = "\\$\\{";
+	static final String REGEX_BIND_VAR_START = "\\$\\{";
 	
-	static final String REGEX_EL_END = "\\}";
+	static final String REGEX_BIND_VAR_END = "\\}";
 	
-	static final String REGEX_EL = REGEX_EL_START +  "[^" + REGEX_EL_START + REGEX_EL_END + "]" + "+" + REGEX_EL_END;
+	static final String REGEX_BIND_VAR = REGEX_BIND_VAR_START +  "[^" + REGEX_BIND_VAR_START + REGEX_BIND_VAR_END + "]" + "+" + REGEX_BIND_VAR_END;
 
 	
 
