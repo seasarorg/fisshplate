@@ -78,7 +78,7 @@ public class Row implements TemplateElement {
 		}
 
 		if (hssfCell.getCellType() != HSSFCell.CELL_TYPE_STRING) {
-			return new Literal(cell);
+			return new GenericCell(cell);
 		}
 		
 		String value = hssfCell.getRichStringCellValue().getString();		
@@ -88,7 +88,7 @@ public class Row implements TemplateElement {
 		if(mat.find()){		
 			cellElem = new Picture(cell);
 		}else {
-			cellElem = new Literal(cell);
+			cellElem = new GenericCell(cell);
 		}
 		
 		mat = patEl.matcher(value);

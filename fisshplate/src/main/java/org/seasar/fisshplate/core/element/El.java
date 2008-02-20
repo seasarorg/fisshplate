@@ -46,7 +46,7 @@ public class El implements TemplateElement{
 		this.targetElement = target;
 		String originalCellValue = target.cell.getStringValue();
 		Pattern patEl = Pattern.compile(FPConsts.REGEX_BIND_VAR);
-		Matcher mat = patEl.matcher(originalCellValue);
+		Matcher mat = patEl.matcher(originalCellValue);		
 		while(mat.find()){
 			expressionMap.put(mat.group(), null);
 		}				

@@ -27,7 +27,7 @@ import org.seasar.fisshplate.core.element.ElseIfBlock;
 import org.seasar.fisshplate.core.element.Exec;
 import org.seasar.fisshplate.core.element.IfBlock;
 import org.seasar.fisshplate.core.element.IteratorBlock;
-import org.seasar.fisshplate.core.element.Literal;
+import org.seasar.fisshplate.core.element.GenericCell;
 import org.seasar.fisshplate.core.element.NullCell;
 import org.seasar.fisshplate.core.element.NullElement;
 import org.seasar.fisshplate.core.element.PageBreak;
@@ -69,7 +69,7 @@ public class FPParserTest extends TestCase {
 		assertEquals(Row.class,row.getClass());
 		List cellList = ((Row)row).getCellElementList();		
 		TemplateElement cell = (TemplateElement) cellList.get(0);
-		assertEquals(Literal.class,cell.getClass());
+		assertEquals(GenericCell.class,cell.getClass());
 		cell = (TemplateElement) cellList.get(1);
 		assertEquals(NullCell.class,cell.getClass());
 		
@@ -80,16 +80,16 @@ public class FPParserTest extends TestCase {
 		cell = (TemplateElement) cellList.get(2);
 		assertEquals(El.class, cell.getClass());
 		cell = (TemplateElement) cellList.get(3);
-		assertEquals(Literal.class,cell.getClass());		
+		assertEquals(GenericCell.class,cell.getClass());		
 		
 		row = (TemplateElement) bodyList.get(2);
 		cellList = ((Row)row).getCellElementList();
 		cell = (TemplateElement) cellList.get(0);
-		assertEquals(Literal.class,cell.getClass());		
+		assertEquals(GenericCell.class,cell.getClass());		
 		cell = (TemplateElement) cellList.get(1);
-		assertEquals(Literal.class,cell.getClass());
+		assertEquals(GenericCell.class,cell.getClass());
 		cell = (TemplateElement) cellList.get(2);
-		assertEquals(Literal.class,cell.getClass());		
+		assertEquals(GenericCell.class,cell.getClass());		
 		
 		row = (TemplateElement) bodyList.get(3);
 		assertEquals(IteratorBlock.class, row.getClass());
@@ -138,27 +138,27 @@ public class FPParserTest extends TestCase {
 		assertEquals(IfBlock.class, child.getClass());
 		row = (TemplateElement) ((IfBlock)child).getChildList().get(0);
 		cellList = ((Row)row).getCellElementList();		
-		assertEquals(Literal.class, cellList.get(0).getClass());
-		assertEquals(Literal.class, cellList.get(1).getClass());
-		assertEquals(Literal.class, cellList.get(2).getClass());
+		assertEquals(GenericCell.class, cellList.get(0).getClass());
+		assertEquals(GenericCell.class, cellList.get(1).getClass());
+		assertEquals(GenericCell.class, cellList.get(2).getClass());
 		assertEquals(El.class, cellList.get(3).getClass());
 		
 		next = ((IfBlock)child).getNextBlock();
 		assertEquals(ElseIfBlock.class, next.getClass());
 		row = (TemplateElement) ((ElseIfBlock)next).getChildList().get(0);
 		cellList = ((Row)row).getCellElementList();		
-		assertEquals(Literal.class, cellList.get(0).getClass());
-		assertEquals(Literal.class, cellList.get(1).getClass());
-		assertEquals(Literal.class, cellList.get(2).getClass());
+		assertEquals(GenericCell.class, cellList.get(0).getClass());
+		assertEquals(GenericCell.class, cellList.get(1).getClass());
+		assertEquals(GenericCell.class, cellList.get(2).getClass());
 		assertEquals(El.class, cellList.get(3).getClass());
 		
 		TemplateElement next2 = ((ElseIfBlock)next).getNextBlock();
 		assertEquals(ElseIfBlock.class, next2.getClass());
 		row = (TemplateElement) ((ElseIfBlock)next2).getChildList().get(0);
 		cellList = ((Row)row).getCellElementList();		
-		assertEquals(Literal.class, cellList.get(0).getClass());
-		assertEquals(Literal.class, cellList.get(1).getClass());
-		assertEquals(Literal.class, cellList.get(2).getClass());
+		assertEquals(GenericCell.class, cellList.get(0).getClass());
+		assertEquals(GenericCell.class, cellList.get(1).getClass());
+		assertEquals(GenericCell.class, cellList.get(2).getClass());
 		assertEquals(El.class, cellList.get(3).getClass());
 		
 		child = (TemplateElement) childList.get(1);

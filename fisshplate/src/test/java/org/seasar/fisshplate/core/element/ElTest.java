@@ -27,7 +27,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.core.element.El;
-import org.seasar.fisshplate.core.element.Literal;
+import org.seasar.fisshplate.core.element.GenericCell;
 import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.wrapper.CellWrapper;
 import org.seasar.fisshplate.wrapper.WorkbookWrapper;
@@ -66,9 +66,9 @@ public class ElTest extends TestCase {
 		CellWrapper cell0 = workbook.getSheetAt(0).getRow(0).getCell(0);//${code}		
 		CellWrapper cell1 = workbook.getSheetAt(0).getRow(0).getCell(1);//${num}		
 		
-		el = new El(new Literal(cell0));
+		el = new El(new GenericCell(cell0));
 		el.merge(context);
-		el = new El(new Literal(cell1));
+		el = new El(new GenericCell(cell1));
 		el.merge(context);
 		
 		HSSFCell actual = template.getSheetAt(0).getRow(0).getCell((short) 0);
@@ -94,7 +94,7 @@ public class ElTest extends TestCase {
 		
 		
 		
-		el = new El(new Literal(cell));
+		el = new El(new GenericCell(cell));
 		try{
 			el.merge(context);
 			fail();
@@ -102,18 +102,18 @@ public class ElTest extends TestCase {
 			assertTrue(true);
 		}
 		
-		el = new El(new Literal(cellNull));
+		el = new El(new GenericCell(cellNull));
 		el.merge(context);
 		HSSFCell actual = template.getSheetAt(0).getRow(0).getCell((short) 0);
 		assertEquals("nullString","", actual.getRichStringCellValue().getString());
 		
-		el = new El(new Literal(cellNullValue));
+		el = new El(new GenericCell(cellNullValue));
 		el.merge(context);
 		actual = template.getSheetAt(0).getRow(0).getCell((short) 1);
 		assertEquals("default value","NULL時デフォルト値", actual.getRichStringCellValue().getString());
 		
 		data.put("hoge", null);	
-		el = new El(new Literal(cellNull));
+		el = new El(new GenericCell(cellNull));
 		el.merge(context);
 		actual = template.getSheetAt(0).getRow(0).getCell((short) 2);
 		assertEquals("null value","", actual.getRichStringCellValue().getString());
@@ -130,7 +130,7 @@ public class ElTest extends TestCase {
 		
 		CellWrapper cell = workbook.getSheetAt(0).getRow(1).getCell(0);//埋め込み番号は${embeded}です。
 		
-		el = new El(new Literal(cell));
+		el = new El(new GenericCell(cell));
 		
 		el.merge(context);
 		HSSFCell actual = template.getSheetAt(0).getRow(1).getCell((short)0);
@@ -149,7 +149,7 @@ public class ElTest extends TestCase {
 		
 		CellWrapper cell = workbook.getSheetAt(0).getRow(0).getCell(0);//埋め込み番号は${embeded1}と${embeded2}です。
 		
-		el = new El(new Literal(cell));
+		el = new El(new GenericCell(cell));
 		
 		el.merge(context);
 		HSSFCell actual = template.getSheetAt(0).getRow(0).getCell((short)0);
@@ -158,7 +158,7 @@ public class ElTest extends TestCase {
 		cell = workbook.getSheetAt(0).getRow(1).getCell(0);//${embeded1}と${embeded2}
 		context.nextRow();
 		
-		el = new El(new Literal(cell));
+		el = new El(new GenericCell(cell));
 		
 		el.merge(context);
 		actual = template.getSheetAt(0).getRow(1).getCell((short)0);
@@ -167,7 +167,7 @@ public class ElTest extends TestCase {
 		cell = workbook.getSheetAt(0).getRow(2).getCell(0);//${embeded1}${embeded2}
 		context.nextRow();
 		
-		el = new El(new Literal(cell));
+		el = new El(new GenericCell(cell));
 		
 		el.merge(context);
 		actual = template.getSheetAt(0).getRow(2).getCell((short)0);

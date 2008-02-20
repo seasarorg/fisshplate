@@ -23,17 +23,17 @@ import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.wrapper.CellWrapper;
 
 /**
- * リテラル値を持つセル情報を保持する要素クラスです。
+ * 値を持つ通常のセルの情報を保持する要素クラスです。
  * @author rokugen
  *
  */
-public class Literal extends AbstractCell {	
+public class GenericCell extends AbstractCell {	
 
 	/**
 	 * コンストラクタです。
 	 * @param cell 保持するテンプレート側のセル
 	 */
-	public Literal(CellWrapper cell) {
+	public GenericCell(CellWrapper cell) {
 		super(cell);
 	}
 

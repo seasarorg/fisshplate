@@ -25,7 +25,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.seasar.fisshplate.core.element.El;
-import org.seasar.fisshplate.core.element.Literal;
+import org.seasar.fisshplate.core.element.GenericCell;
 import org.seasar.fisshplate.core.element.NullCell;
 import org.seasar.fisshplate.core.element.Picture;
 import org.seasar.fisshplate.core.element.Root;
@@ -69,14 +69,14 @@ public class RowTest extends TestCase {
 		List elementList = row.getCellElementList();		
 		
 		TemplateElement elem = (TemplateElement) elementList.get(0);
-		assertTrue(elem.getClass() == Literal.class );
+		assertTrue(elem.getClass() == GenericCell.class );
 		elem = (TemplateElement) elementList.get(1);
-		assertTrue(elem.getClass() == Literal.class);
+		assertTrue(elem.getClass() == GenericCell.class);
 		elem = (TemplateElement) elementList.get(2);
 		assertTrue(elem.getClass() == NullCell.class);
 		elem = (TemplateElement) elementList.get(3);
 		assertTrue(elem.getClass() == El.class);
-		assertTrue(((El)elem).targetElement.getClass() == Literal.class);
+		assertTrue(((El)elem).targetElement.getClass() == GenericCell.class);
 		elem = (TemplateElement) elementList.get(4);
 		assertTrue(elem.getClass() == Picture.class);
 		elem = (TemplateElement) elementList.get(5);
