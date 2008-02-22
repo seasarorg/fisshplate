@@ -43,25 +43,39 @@ public abstract class AbstractElseParser implements StatementParser {
 		if(!mat.find()){
 			return false;
 		}
-		RowWrapper row = cell.getRow();
-		AbstractBlock parent = getParentIfBlock(row, parser);
+		checkBlockStack(parser, cell);		
+		processElse(getCondition(mat), cell, parser);
+		return true;
+	}
+	
+	private void checkBlockStack(FPParser parser, CellWrapper cell) throws FPParseException{
+		if (parser.isBlockStackBlank()) {
+			throw new FPParseException(FPConsts.MESSAGE_ID_LACK_IF,cell.getRow());
+		}
+	}
+	
+	private String getCondition(Matcher mat){
 		String condition = null;
 		if(mat.groupCount() > 0){
 			condition = mat.group(1);
 		}
+		return condition;
+	}
+
+
+
+	private void processElse(String condition,CellWrapper cell, FPParser parser)	throws FPParseException {
+		RowWrapper row = cell.getRow();
+		AbstractBlock parent = getParentIfBlock(row, parser);		
 		AbstractBlock block = createElement(condition);
 		((IfBlock) parent).setNextBlock(block);
 		parser.pushBlockToStack(block);
-		return true;
 	}
+	
+	
 
 	private AbstractBlock getParentIfBlock(RowWrapper row,FPParser parser) throws FPParseException {
-		if (parser.isBlockStackBlank()) {
-			throw new FPParseException(FPConsts.MESSAGE_ID_LACK_IF,row);
-		}
-
 		AbstractBlock parent = parser.getLastElementFromStack();
-
 		if (!(parent instanceof IfBlock)) {
 			throw new FPParseException(FPConsts.MESSAGE_ID_LACK_IF,row);
 		}

@@ -115,7 +115,11 @@ public class FPException extends Exception {
 	private Object[] getParam(Object[] args, RowWrapper row){
 		if(row == null || row.isNullRow()){
 			return args;
-		}
+		}		
+		return getParamIncludingRowNum(args, row);
+	}
+
+	private Object[] getParamIncludingRowNum(Object[] args, RowWrapper row) {
 		int rowNum = row.getHSSFRow().getRowNum() + 1;
 		int paramLength = (args ==null)? 1:args.length + 1;
 		Object[] params = new Object[paramLength];		

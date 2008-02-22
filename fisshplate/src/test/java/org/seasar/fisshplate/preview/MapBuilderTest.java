@@ -127,8 +127,7 @@ public class MapBuilderTest extends TestCase {
 		out.write(os);
 		is.close();
 		tempIs.close();
-		os.close();
-		
+		os.close();		
 		
 		
 	}

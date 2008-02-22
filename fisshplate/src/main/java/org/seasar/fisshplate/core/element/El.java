@@ -131,7 +131,7 @@ public class El implements TemplateElement{
 		if(bindVar.isNullAllowed()){
 			return bindVar.getNullValue();
 		}else{
-			throw new FPMergeException(FPConsts.MESSAGE_ID_EL_EXPRESSION_UNDEFINED,
+			throw new FPMergeException(FPConsts.MESSAGE_ID_BIND_VAR_UNDEFINED,
 					new Object[]{bindVar.getName()},targetElement.cell.getRow());
 		}
 	}

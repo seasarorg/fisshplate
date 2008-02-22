@@ -28,7 +28,6 @@ import org.seasar.fisshplate.core.element.PageHeaderBlock;
 import org.seasar.fisshplate.core.element.Root;
 import org.seasar.fisshplate.exception.FPParseException;
 import org.seasar.fisshplate.wrapper.CellWrapper;
-import org.seasar.fisshplate.wrapper.RowWrapper;
 
 /**
  * endを解析するクラスです。
@@ -44,15 +43,20 @@ public class EndParser implements StatementParser {
 		Matcher mat  = patEnd.matcher(value);
 		if(!mat.find()){
 			return false;
+		}		
+		checkBlockStack(cell, parser);
+		processEnd(parser);
+		return true;
+	}
+
+	private void checkBlockStack(CellWrapper cell, FPParser parser)	throws FPParseException {		
+		if (parser.isBlockStackBlank()) {			
+			throw new FPParseException(FPConsts.MESSAGE_ID_END_ELEMENT,cell.getRow());
 		}
-		
-		RowWrapper row = cell.getRow();
+	}
+
+	private void processEnd(FPParser parser)	throws FPParseException {
 		Root root = parser.getRoot();
-		
-		if (parser.isBlockStackBlank()) {
-			throw new FPParseException(FPConsts.MESSAGE_ID_END_ELEMENT,row);
-		}
-		
 		AbstractBlock block = parser.popFromBlockStack();
 		Class clazz = block.getClass();
 		
@@ -60,17 +64,15 @@ public class EndParser implements StatementParser {
 			block = getIfBlockFromStack(parser);
 		}else if (clazz == PageHeaderBlock.class) {
 			root.setPageHeader(block);
-			return true;
+			return ;
 		}else if (clazz == PageFooterBlock.class) {
 			root.setPageFooter(block);
-			return true;
+			return ;
 		}
 		
 		if(parser.isBlockStackBlank()) {
 			root.addBody(block);
 		}
-
-		return true;
 	}
 	
 	/**

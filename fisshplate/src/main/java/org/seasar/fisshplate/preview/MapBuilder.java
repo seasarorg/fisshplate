@@ -40,34 +40,37 @@ public class MapBuilder {
 		WorkbookWrapper workbook = new WorkbookWrapper(wb);
 		
 		SheetWrapper sheet = workbook.getSheetByName(ROOT_SHEET_NAME);
-		FPMapData root = new FPMapData(sheet, ROOT_SHEET_NAME);
-		
-		for(int i=0; i < workbook.getSheetCount(); i++){
-			sheet = workbook.getSheetAt(i);
-			if(ROOT_SHEET_NAME.equals(sheet.getSheetName())){
-				continue;
-			}
-			
-			buildMapData(root, sheet, sheet.getSheetName());
-		}
-
+		FPMapData root = new FPMapData(sheet, ROOT_SHEET_NAME);		
+		buildRootMapData(workbook, root);
 		return (Map) root.buildData();
+	}
+
+	private void buildRootMapData(WorkbookWrapper workbook, FPMapData root) {		
+		for(int i=0; i < workbook.getSheetCount(); i++){
+			SheetWrapper sheet = workbook.getSheetAt(i);
+			if(! ROOT_SHEET_NAME.equals(sheet.getSheetName())){
+				buildMapData(root, sheet, sheet.getSheetName());
+			}			
+		}
 	}
 	
 	private void buildMapData(FPMapData parent, SheetWrapper sheet, String keyName){
 		int idx = keyName.indexOf('#');
 		if(idx == -1){
-			parent.addChild(sheet, keyName);
-			return;
+			parent.addChild(sheet, keyName);			
+		}else{
+			buildMapDataComposition(parent, sheet, keyName, idx);
 		}
-		String childKeyName = keyName.substring(idx + 1);
-		keyName = keyName.substring(0, idx);
-		FPMapData child = parent.getChildByKey(keyName);
-		if(child == null){
-			throw new FPPreviewException(FPConsts.MESSAGE_ID_PREVIEW_LACCK_OF_PARENT,new Object[]{keyName});
+	}
+
+	private void buildMapDataComposition(FPMapData grandParent, SheetWrapper sheet,String keyName, int idx) {
+		String selfKeyName = keyName.substring(idx + 1);
+		String parentKeyName = keyName.substring(0, idx);
+		FPMapData parent= grandParent.getChildByKey(parentKeyName);
+		if(parent == null){
+			throw new FPPreviewException(FPConsts.MESSAGE_ID_PREVIEW_LACCK_OF_PARENT,new Object[]{parentKeyName});
 		}
-		buildMapData(child, sheet, childKeyName);
-		return;		
+		buildMapData(parent, sheet, selfKeyName);
 	}
 	
 	

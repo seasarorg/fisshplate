@@ -32,9 +32,12 @@ public class RowWrapper {
 	public RowWrapper(HSSFRow row, SheetWrapper sheet){
 		this.sheet = sheet;
 		this.hssfRow = row;
-		if(row == null){
-			return;
-		}
+		if(row != null){
+			addCellsToList(row);
+		}		
+	}
+	
+	private void addCellsToList(HSSFRow row){
 		for(int i=0; i <= row.getLastCellNum(); i++){
 			cellList.add(new CellWrapper(row.getCell((short)i),this));
 		}

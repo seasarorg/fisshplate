@@ -53,7 +53,7 @@ public interface FPConsts {
 
 	static final String MESSAGE_ID_NOT_ITERATABLE = "EFP00003";
 
-	static final String MESSAGE_ID_EL_EXPRESSION_UNDEFINED = "EFP00004";
+	static final String MESSAGE_ID_BIND_VAR_UNDEFINED = "EFP00004";
 
 	static final String MESSAGE_HEADER_INVALID = "EFP00005";
 
