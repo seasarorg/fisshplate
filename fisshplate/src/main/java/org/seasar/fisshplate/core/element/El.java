@@ -82,22 +82,26 @@ public class El implements TemplateElement{
 
 	private Object buildValue(){
 		
-		String cellValue = targetElement.cell.getStringValue();		
-		Set keySet = expressionMap.keySet();
+		String cellValue = targetElement.cell.getStringValue();
 		
-		if(isSingleElOnly(cellValue)){
+		if(onlySingleBindVarIn(cellValue)){
+			Set keySet = expressionMap.keySet();
 			return expressionMap.get(keySet.iterator().next());			
+		}else{
+			return replaceAllBindVariable(cellValue);
 		}
-		
+	}
+	
+	private String replaceAllBindVariable(String cellValue){
+		Set keySet = expressionMap.keySet();
 		for(Iterator itr = keySet.iterator(); itr.hasNext();){			
 			String key = (String) itr.next();
 			cellValue = cellValue.replaceAll(StringUtil.escapeEl(key), expressionMap.get(key).toString());
 		}
-		return cellValue;
-		
+		return cellValue;		
 	}
 	
-	private boolean isSingleElOnly(String value){
+	private boolean onlySingleBindVarIn(String value){
 		if(expressionMap.size() != 1){
 			return false;
 		}
