@@ -72,7 +72,7 @@ public class IteratorBlock extends AbstractBlock{
 			ite = getIterator(Arrays.asList((Object[])o));
 		} else{
 			throw new FPMergeException(FPConsts.MESSAGE_ID_NOT_ITERATABLE,
-					new Object[]{iteratorName,new Integer(row.getHSSFRow().getRowNum() + 1)});			
+					new Object[]{iteratorName},row);			
 		}
 		return ite;	
 	}

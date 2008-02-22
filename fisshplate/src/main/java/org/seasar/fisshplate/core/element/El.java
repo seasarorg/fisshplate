@@ -22,6 +22,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ognl.NoSuchPropertyException;
+
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.core.BindVariable;
@@ -108,17 +110,26 @@ public class El implements TemplateElement{
 	
 		
 	
-	private Object getValue(Map data, BindVariable bindVar) throws FPMergeException{		
-		Object value = OgnlUtil.getValue(bindVar.getName(), data);		
-		if(value == null){
-			if(bindVar.isNullAllowed()){
-				value = bindVar.getNullValue();
-			}else{
-				throw new FPMergeException(FPConsts.MESSAGE_ID_EL_EXPRESSION_UNDEFINED,
-						new Object[]{bindVar.getName(),new Integer(targetElement.cell.getRow().getHSSFRow().getRowNum() + 1)});
-			}		
+	private Object getValue(Map data, BindVariable bindVar) throws FPMergeException{
+		Object value = null;
+		try{
+			value = OgnlUtil.getValue(bindVar.getName(), data);
+		}catch(RuntimeException e){
+			if(! (e.getCause() instanceof NoSuchPropertyException)){
+				throw e;
+			}
+		}		
+		
+		return (value == null)?getNullValue(bindVar):value;		
+	}
+	
+	private Object getNullValue(BindVariable bindVar) throws FPMergeException{		
+		if(bindVar.isNullAllowed()){
+			return bindVar.getNullValue();
+		}else{
+			throw new FPMergeException(FPConsts.MESSAGE_ID_EL_EXPRESSION_UNDEFINED,
+					new Object[]{bindVar.getName()},targetElement.cell.getRow());
 		}
-		return value;		
 	}
 	
 

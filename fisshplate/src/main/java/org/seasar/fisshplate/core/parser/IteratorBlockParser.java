@@ -61,8 +61,7 @@ public class IteratorBlockParser implements StatementParser{
 			try{
 				max = Integer.parseInt(maxString);
 			}catch(NumberFormatException ex){
-				throw new FPParseException(FPConsts.MESSAGE_ID_NOT_ITERATOR_INVALID_MAX,
-						new Object[]{new Integer(row.getHSSFRow().getRowNum() + 1)});
+				throw new FPParseException(FPConsts.MESSAGE_ID_NOT_ITERATOR_INVALID_MAX,row);
 			}
 		}
 		

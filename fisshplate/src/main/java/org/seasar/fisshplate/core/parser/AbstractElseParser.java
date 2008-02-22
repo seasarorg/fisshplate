@@ -57,15 +57,13 @@ public abstract class AbstractElseParser implements StatementParser {
 
 	private AbstractBlock getParentIfBlock(RowWrapper row,FPParser parser) throws FPParseException {
 		if (parser.isBlockStackBlank()) {
-			throw new FPParseException(FPConsts.MESSAGE_ID_LACK_IF,
-					new Object[]{new Integer(row.getHSSFRow().getRowNum() + 1)});
+			throw new FPParseException(FPConsts.MESSAGE_ID_LACK_IF,row);
 		}
 
 		AbstractBlock parent = parser.getLastElementFromStack();
 
 		if (!(parent instanceof IfBlock)) {
-			throw new FPParseException(FPConsts.MESSAGE_ID_LACK_IF,
-					new Object[]{new Integer(row.getHSSFRow().getRowNum() + 1)});
+			throw new FPParseException(FPConsts.MESSAGE_ID_LACK_IF,row);
 		}
 		return parent;
 	}

@@ -19,6 +19,7 @@ import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 import org.seasar.fisshplate.util.ResourceUtil;
+import org.seasar.fisshplate.wrapper.RowWrapper;
 
 
 /**
@@ -52,9 +53,32 @@ public class FPException extends Exception {
 	 * @param args メッセージへの埋め込みパラメータ
 	 */
 	public FPException(String messageId, Object[] args) {
-		this(messageId, args, null);
+		this(messageId, args, null, null);
 	}
-
+	
+	/**
+     * リソースバンドルのキーを受け取って例外を生成します。
+     * 引数にエラーの発生した行を指定します。
+     * エラーが発生した行を指定すると、埋め込みパラメータとして行番号を追加します。
+	 * @param messageId リソースバンドルのキー
+	 * @param row エラーが発生した行
+	 */
+	public FPException(String messageId, RowWrapper row){
+		this(messageId, null, row, null);
+	}
+	
+	/**
+     * リソースバンドルのキーを受け取って、既存の例外をラップします。
+     * 引数にメッセージの埋め込みパラメータと、エラーの発生した行を指定します。
+     * エラーが発生した行を指定すると、埋め込みパラメータの最後に行番号を追加します。
+	 * @param messageId リソースバンドルのキー
+	 * @param args メッセージの埋め込みパラメータ
+	 * @param row エラーが発生した行
+	 */
+	public FPException(String messageId, Object[] args, RowWrapper row){
+		this(messageId, args, row, null);
+	}
+	
 	/**
      * リソースバンドルのキーを受け取って、既存の例外をラップします。
      * 引数にメッセージの埋め込みパラメータと、ラップする既存の例外を指定します。
@@ -63,17 +87,43 @@ public class FPException extends Exception {
 	 * @param cause ラップする例外
 	 */
 	public FPException(String messageId, Object[] args, Throwable cause) {
+		this(messageId,args,null,cause);		
+	}
+
+
+	/**
+     * リソースバンドルのキーを受け取って、既存の例外をラップします。
+     * 引数にメッセージの埋め込みパラメータと、ラップする既存の例外を指定します。
+     * エラーが発生した行を指定すると、埋め込みパラメータの最後に行番号を追加します。
+	 * @param messageId リソースバンドルのキー
+	 * @param args メッセージの埋め込みパラメータ
+	 * @param row エラーが発生した行
+	 * @param cause ラップする例外
+	 */
+	public FPException(String messageId, Object[] args, RowWrapper row, Throwable cause) {
 		initCause(cause);
+		
+		
 		this.messageId = messageId;
-		if(args == null){
-			this.args = null;
-		}else{
-			this.args = (Object[]) args.clone();
-		}
+		this.args = getParam(args, row);		
         
         ResourceBundle bundle = ResourceUtil.getAppExceptionBundle();
         String pattern = bundle.getString(messageId);
-        this.message = MessageFormat.format(pattern, args);
+        this.message = MessageFormat.format(pattern, this.args);
+	}
+	
+	private Object[] getParam(Object[] args, RowWrapper row){
+		if(row == null || row.isNullRow()){
+			return args;
+		}
+		int rowNum = row.getHSSFRow().getRowNum() + 1;
+		int paramLength = (args ==null)? 1:args.length + 1;
+		Object[] params = new Object[paramLength];		
+		for(int i=0; i < paramLength - 1; i++){			
+			params[i] = args[i];
+		}
+		params[paramLength - 1] = new Integer(rowNum);
+		return params;
 	}
 	
 	/**

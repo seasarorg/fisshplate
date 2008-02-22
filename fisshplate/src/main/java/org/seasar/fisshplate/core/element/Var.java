@@ -78,9 +78,7 @@ public class Var implements TemplateElement {
 	}
 	
 	private void throwMergeException(String messageId,String var, RowWrapper row) throws FPMergeException{
-		throw new FPMergeException(messageId,
-				new Object[]{var,new Integer(row.getHSSFRow().getRowNum() + 1)});
-		
+		throw new FPMergeException(messageId,	new Object[]{var},row);		
 	}
 
 }

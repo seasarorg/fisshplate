@@ -50,8 +50,7 @@ public class EndParser implements StatementParser {
 		Root root = parser.getRoot();
 		
 		if (parser.isBlockStackBlank()) {
-			throw new FPParseException(FPConsts.MESSAGE_ID_END_ELEMENT,
-					new Object[]{new Integer(row.getHSSFRow().getRowNum() + 1)});
+			throw new FPParseException(FPConsts.MESSAGE_ID_END_ELEMENT,row);
 		}
 		
 		AbstractBlock block = parser.popFromBlockStack();
