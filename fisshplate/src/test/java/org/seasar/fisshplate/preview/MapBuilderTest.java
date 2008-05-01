@@ -113,6 +113,26 @@ public class MapBuilderTest extends TestCase {
 		
 	}
 	
+	public void testテンプレートへ埋め込み_0件リスト()throws Exception{
+		InputStream is = getClass().getResourceAsStream("/MapBuilderTest_emptyList.xls");
+		InputStream tempIs = getClass().getResourceAsStream("/MapBuilderTest_template.xls");
+		HSSFWorkbook wb = new HSSFWorkbook(is);
+		MapBuilder builder = new MapBuilder();
+		Map data = builder.buildMapFrom(wb);
+		
+		FPTemplate template = new FPTemplate();
+		HSSFWorkbook out = template.process(new HSSFWorkbook(tempIs), data);
+		
+		FileOutputStream os = new FileOutputStream("target/MapBuilderTest_emptyList_out.xls");
+		out.write(os);
+		is.close();
+		tempIs.close();
+		os.close();
+		
+		
+		
+	}
+	
 	public void testテンプレートへ埋め込み_rootなし()throws Exception{
 		InputStream is = getClass().getResourceAsStream("/MapBuilderTest_without_root.xls");
 		InputStream tempIs = getClass().getResourceAsStream("/MapBuilderTest_without_root_template.xls");

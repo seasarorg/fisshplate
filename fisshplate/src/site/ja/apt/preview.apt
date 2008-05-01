@@ -74,6 +74,10 @@
 
 [images/preview03.png]
 
+  もし、リスト要素が0件だった場合をプレビューしたい時は、A1のセルに「empty list」と書きます。こうすると無条件で0件のリストを生成します。
+  
+[images/preview10.png]
+
 * childList要素
 
   itemListのリスト内の各要素に、プロパティとしてchildListというリスト要素を持っています。itemListとchildListが親子構造になっているわけです。

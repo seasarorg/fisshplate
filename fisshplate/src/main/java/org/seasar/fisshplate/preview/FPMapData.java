@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.wrapper.CellWrapper;
 import org.seasar.fisshplate.wrapper.RowWrapper;
 import org.seasar.fisshplate.wrapper.SheetWrapper;
@@ -31,7 +32,7 @@ import org.seasar.fisshplate.wrapper.SheetWrapper;
 public class FPMapData  {
 	protected String keyName;
 	protected SheetWrapper sheet;
-	protected List childList = new ArrayList();
+	protected List childList = new ArrayList();	
 	
 	/**
 	 * @param sheet シート
@@ -73,12 +74,20 @@ public class FPMapData  {
 	/**
 	 * 埋め込み用データを生成します。データ行が1行の場合は{@link Map}、
 	 * 複数行の場合は{@link Map}の{@link List}を戻します。
+	 * ヘッダ行に「empty list」と書いてある場合は、0件の{@link List}を戻します。
 	 * @return 埋め込み用データ
 	 */
 	public Object buildData() {
 		//行が3行以上ある場合はリストとします。
-		if(sheet == null || sheet.getRowCount() <= 2){
+		if(sheet == null){
 			return buildMapData();
+		}else if(sheet.getRowCount() <= 2){
+			String firstCell = sheet.getRow(0).getCell(0).getStringValue();
+			if(FPConsts.PREVIEW_EMPTY_LIST_SIGN.equals(firstCell)){
+				return new ArrayList();
+			}else{
+				return buildMapData();
+			}
 		}else{
 			return buildListData();			
 		}
