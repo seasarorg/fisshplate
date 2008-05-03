@@ -15,14 +15,9 @@
  */
 package org.seasar.fisshplate.core.element;
 
-import java.lang.reflect.InvocationTargetException;
-
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.Region;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
@@ -75,17 +70,18 @@ public abstract class AbstractCell implements TemplateElement {
 		HSSFCell out = context.getCurrentCell();
 		copyCellStyle(context, out);
 		
-		mergeImpl(context);
+		mergeImpl(context,out);
 		
-		context.nextCell();		
+		context.nextCell();
 	}
 	
 	/**
 	 * このクラスを継承したクラスで実装される、データ埋め込み処理の実装です。
 	 * @param context コンテキスト
+	 * @param out 出力先のセル
 	 * @throws FPMergeException データ埋め込み時にエラーが発生した際に投げられる例外です。
 	 */
-	protected abstract void mergeImpl(FPContext context) throws FPMergeException ;
+	abstract void mergeImpl(FPContext context, HSSFCell out) throws FPMergeException ;
 
 
 
@@ -107,31 +103,12 @@ public abstract class AbstractCell implements TemplateElement {
 	 */
 	protected void copyCellStyle(FPContext context, HSSFCell outCell) {
 		HSSFCell hssfCell = cell.getHSSFCell();
-
-		HSSFWorkbook outWb = cell.getRow().getSheet().getWorkbook().getHSSFWorkbook();
-		HSSFCellStyle outStyle = outWb.createCellStyle();
-		HSSFCellStyle templateStyle = hssfCell.getCellStyle(); 
-		copyProperties(outStyle, templateStyle);
-
-		short fontIndex = cell.getHSSFCell().getCellStyle().getFontIndex();
-		HSSFFont font = outWb.getFontAt(fontIndex);
-		outStyle.setFont(font);
-		
+		HSSFCellStyle outStyle = hssfCell.getCellStyle();
 		outCell.setCellStyle(outStyle);
 		if(isMergedCell){
 			mergeCell(context);
 		}
 		
-	}	
-
-	private void copyProperties(Object dest, Object src) {
-		try {
-			BeanUtils.copyProperties(dest, src);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		} catch (InvocationTargetException e) {
-			throw new RuntimeException(e);
-		}
 	}
 	
 	private void mergeCell(FPContext context){		

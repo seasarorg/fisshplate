@@ -15,13 +15,16 @@
  */
 package org.seasar.fisshplate.context;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.seasar.fisshplate.core.element.IteratorBlock;
+import org.seasar.fisshplate.core.element.Suspend;
 
 /**
  * 解析やデータ埋め込み時に参照される、グローバル値を保持するクラスです。
@@ -40,6 +43,7 @@ public class FPContext {
 	private boolean skipMerge = false;
 	private HSSFPatriarch patriarch;
 	private IteratorBlock currentIterator;
+	private Set suspendedSet = new HashSet();
 
 	/**
 	 * コンストラクタです。
@@ -211,6 +215,22 @@ public class FPContext {
 	 */
 	public boolean inIteratorBlock(){
 		return this.currentIterator != null;
+	}
+	
+	/**
+	 * 評価を保留するセルを保留リストに追加します。
+	 * @param suspend 評価を保留するセル
+	 */
+	public void addSuspendedSet(Suspend suspend){
+		suspendedSet.add(suspend);
+	}
+	
+	/**
+	 * 保留リストを戻します。
+	 * @return 保留リスト
+	 */
+	public Set getSuspendedSet(){
+		return suspendedSet;
 	}
 
 

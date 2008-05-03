@@ -51,7 +51,8 @@ public class FPParser {
 			new VarParser(),
 			new ExecParser(),
 			new PageHeaderBlockParser(),
-			new PageFooterBlockParser()
+			new PageFooterBlockParser(),
+			new ResumeParser()
 	};
 
 	/**

@@ -40,8 +40,7 @@ public class GenericCell extends AbstractCell {
 	/* (non-Javadoc)
 	 * @see org.seasar.fisshplate.element.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
 	 */
-	protected void mergeImpl(FPContext context) {
-		HSSFCell out = context.getCurrentCell();		
+	protected void mergeImpl(FPContext context,HSSFCell out) {
 		HSSFCell templateCell = cell.getHSSFCell();
 		Object cellValue = getCellValue();
 		

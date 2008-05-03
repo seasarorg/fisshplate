@@ -39,6 +39,7 @@ import org.seasar.fisshplate.util.StringUtil;
 public class El implements TemplateElement{	
 	private Map expressionMap = new HashMap();
 	protected AbstractCell targetElement;	
+	private String originalCellValue;
 
 	/**
 	 * コンストラクタです。
@@ -46,7 +47,7 @@ public class El implements TemplateElement{
 	 */
 	public El(AbstractCell target) {
 		this.targetElement = target;
-		String originalCellValue = target.cell.getStringValue();
+		originalCellValue = (String) target.getCellValue();
 		Pattern patEl = Pattern.compile(FPConsts.REGEX_BIND_VAR);
 		Matcher mat = patEl.matcher(originalCellValue);		
 		while(mat.find()){
@@ -58,15 +59,20 @@ public class El implements TemplateElement{
 	 * @see org.seasar.fisshplate.core.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
 	 */
 	public void merge(FPContext context) throws FPMergeException {		
+		Object value = getBoundValue(context);
+		targetElement.setCellValue(value);
+		targetElement.merge(context);
+	}
+	
+	protected Object getBoundValue(FPContext context) throws FPMergeException{
 		Object value = null;
 		if(context.isSkipMerge()){
 			value = "";
 		}else{
 			putValueToMap(context);
-			value = buildValue();			
+			value = buildValue();
 		}
-		targetElement.setCellValue(value);
-		targetElement.merge(context);
+		return value;
 	}
 	
 	private void putValueToMap(FPContext context) throws FPMergeException{				
@@ -82,13 +88,11 @@ public class El implements TemplateElement{
 
 	private Object buildValue(){
 		
-		String cellValue = targetElement.cell.getStringValue();
-		
-		if(onlySingleBindVarIn(cellValue)){
+		if(onlySingleBindVarIn(originalCellValue)){
 			Set keySet = expressionMap.keySet();
 			return expressionMap.get(keySet.iterator().next());			
 		}else{
-			return replaceAllBindVariable(cellValue);
+			return replaceAllBindVariable(originalCellValue);
 		}
 	}
 	
@@ -135,6 +139,12 @@ public class El implements TemplateElement{
 					new Object[]{bindVar.getName()},targetElement.cell.getRow());
 		}
 	}
+
+	public String getOriginalCellValue() {
+		return originalCellValue;
+	}
+	
+	
 	
 
 }

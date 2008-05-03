@@ -56,7 +56,7 @@
 			</roles>
 			<timezone>+9</timezone>
   	</developer>
-  </developers>    
+  </developers>        
   <issueManagement>
     <system>JIRA</system>
     <url><![CDATA[https://www.seasar.org/issues/browse/FISSHPLATE]]></url>
@@ -185,11 +185,6 @@
       <groupId>ognl</groupId>
       <artifactId>ognl</artifactId>
       <version>2.6.9-patch-20070908</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-beanutils</groupId>
-      <artifactId>commons-beanutils</artifactId>
-      <version>1.7.0</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

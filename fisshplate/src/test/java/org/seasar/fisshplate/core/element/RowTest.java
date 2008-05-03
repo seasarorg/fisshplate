@@ -62,7 +62,9 @@ public class RowTest extends TestCase {
 		cell.setCellValue(new HSSFRichTextString("#picture(/hoge/fuga.png cell=1 row=1)"));
 		cell = templateRow.createCell((short)5);
 		cell.setCellValue(new HSSFRichTextString("#picture(${data.path} cell=1 row=1)"));
-		
+		cell = templateRow.createCell((short)6);
+		cell.setCellValue(new HSSFRichTextString("#suspend TEST is ${hoge}"));
+			
 		WorkbookWrapper workbook = new WorkbookWrapper(templateWb);
 		
 		Row row = new Row(workbook.getSheetAt(0).getRow(0), root);
@@ -82,7 +84,9 @@ public class RowTest extends TestCase {
 		elem = (TemplateElement) elementList.get(5);
 		assertTrue(elem.getClass() == El.class);
 		assertTrue(((El)elem).targetElement.getClass() == Picture.class);		
-		
+		elem = (TemplateElement) elementList.get(6);
+		assertTrue(elem.getClass() == Suspend.class);		
+		assertEquals("TEST is ${hoge}", ((Suspend)elem).getEl().targetElement.getCellValue());		
 	}
 
 }

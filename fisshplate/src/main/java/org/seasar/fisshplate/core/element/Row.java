@@ -22,6 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
@@ -44,6 +45,8 @@ public class Row implements TemplateElement {
 
 	//#picture(${data.picture})
 	private static final Pattern patPicture = Pattern.compile("^\\s*\\#picture\\(.+\\s+cell=.+\\s*\\s+row=.+\\)");
+	
+	private static final Pattern patSuspend = Pattern.compile("^\\s*#suspend\\s+(.*" + FPConsts.REGEX_BIND_VAR + ".*)");
 
 	/**
 	 * コンストラクタです。テンプレート側の行オブジェクトを受け取り、その行内のセル情報を解析して保持します。
@@ -92,12 +95,24 @@ public class Row implements TemplateElement {
 		}
 		
 		mat = patEl.matcher(value);
-		if(mat.find()){
-			return new El(cellElem);
+		if(mat.find()){			
+			return createEl(cellElem,value);
 		}else{
 			return cellElem;
 		}
 
+	}
+	
+	private TemplateElement createEl(AbstractCell cellElem, String value){
+		
+		Matcher mat = patSuspend.matcher(value);
+		if(mat.find()){
+			cellElem.setCellValue(mat.group(1));
+			El el = new El(cellElem);
+			return new Suspend(el);
+		}else{
+			return new El(cellElem);
+		}
 	}
 
 	/*
