@@ -17,6 +17,7 @@ package org.seasar.fisshplate.template;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -95,7 +96,9 @@ public class FPTemplate {
 		FPParser parser = new FPParser(sheet);
 		
 		sheet.prepareForMerge();
-		
+		if(data ==null){
+			data = new HashMap();
+		}
 		FPContext context = new FPContext(sheet.getHSSFSheet(), data);
 		// ページコンテキスト情報の追加
 		PageContext pageContext = new PageContext();

@@ -69,6 +69,8 @@ public interface FPConsts {
 	
 	static final String MESSAGE_ID_VAR_DECLARATION_INVALID = "EFP00011";
 	
+	static final String MESSAGE_ID_WHILE_INVALID_CONDITION = "EFP00012";
+	
 	static final String REGEX_BIND_VAR_START = "\\$\\{";
 	
 	static final String REGEX_BIND_VAR_END = "\\}";
