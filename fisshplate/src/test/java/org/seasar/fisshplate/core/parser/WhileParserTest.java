@@ -37,6 +37,7 @@ public class WhileParserTest extends TestCase {
 	public void test解析テスト() throws Exception{
 		HSSFWorkbook hssfWb = new HSSFWorkbook();
 		hssfWb.createSheet().createRow(0).createCell((short) 0).setCellValue(new HSSFRichTextString(" #while hoge == 100  "));
+		hssfWb.getSheetAt(0).createRow(1).createCell((short) 0).setCellValue(new HSSFRichTextString(" #end  "));
 		WorkbookWrapper wb = new WorkbookWrapper(hssfWb);
 		
 		FPParser fpParser = new FPParser(wb.getSheetAt(0));
