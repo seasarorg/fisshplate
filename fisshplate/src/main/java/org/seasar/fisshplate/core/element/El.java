@@ -81,9 +81,18 @@ public class El implements TemplateElement{
 		for(Iterator itr = key.iterator(); itr.hasNext();){
 			String expString = (String) itr.next();
 			BindVariable bindVar = new BindVariable(expString);
-			Object value = getValue(data,bindVar);
+			Object value = getValue(data,bindVar);	
+			value = convertLineFeed(value);
 			expressionMap.put(expString, value);
 		}		
+	}
+	
+	protected Object convertLineFeed(Object value){
+		if (value instanceof String){
+			value = ((String)value).replaceAll("(\r\n|\r|\n)", "\r\n");
+			
+		}		
+		return value;
 	}
 
 	private Object buildValue(){

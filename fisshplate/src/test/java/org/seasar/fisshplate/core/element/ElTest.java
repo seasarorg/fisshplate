@@ -177,6 +177,35 @@ public class ElTest extends TestCase {
 		
 	}
 	
+	public void test改行コード変換() throws Exception{
+		HSSFWorkbook template = getTemplate("/ElTest.xls");
+		WorkbookWrapper workbook = new WorkbookWrapper(template);
+		
+		Map data = new HashMap();
+		data.put("code", "0\n12\r34");
+		data.put("num", "番号\r\nはこれ");
+	
+		FPContext context = new FPContext(template.getSheetAt(0),data);
+		
+		CellWrapper cell0 = workbook.getSheetAt(0).getRow(0).getCell(0);//${code}		
+		CellWrapper cell1 = workbook.getSheetAt(0).getRow(0).getCell(1);//${num}		
+		
+		el = new El(new GenericCell(cell0));
+		el.merge(context);
+		el = new El(new GenericCell(cell1));
+		el.merge(context);
+		
+		HSSFCell actual = template.getSheetAt(0).getRow(0).getCell((short) 0);
+		assertEquals("celltype",HSSFCell.CELL_TYPE_STRING, actual.getCellType());		
+		assertEquals("value", "0\r\n12\r\n34", actual.getRichStringCellValue().getString());
+		
+		actual = template.getSheetAt(0).getRow(0).getCell((short) 1);
+		assertEquals("celltype",HSSFCell.CELL_TYPE_STRING, actual.getCellType());
+		assertEquals("value","番号\r\nはこれ", actual.getRichStringCellValue().getString());
+		
+	}
+
+	
 	public void testElTest()throws Exception{		 
 		String str = "埋め込み番号は${embeded1}と${embeded2}です。";
 		String[] strs = str.split("\\$\\{[^\\$\\{\\}]+\\}");
@@ -210,5 +239,6 @@ public class ElTest extends TestCase {
 		assertEquals("data.val!空文字列", exp);
 	}
 	
+		
 }
 
