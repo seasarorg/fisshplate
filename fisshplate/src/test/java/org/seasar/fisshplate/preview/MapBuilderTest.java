@@ -88,11 +88,54 @@ public class MapBuilderTest extends TestCase {
 		assertEquals("dataのひ孫", dataGrand2.get("val"));
 		
 		
+	}
+	
+	public void testMap生成_要素名を1行目に書くバージョン()throws Exception{
+		//期待値生成		
+		Map expected = new HashMap();
+		expected.put("repnum", new Double(101D));
+		expected.put("title","タイトルです。");		
 		
+		//実行		
+		InputStream is = getClass().getResourceAsStream("/MapBuilderTest2.xls");
+		HSSFWorkbook wb = new HSSFWorkbook(is);
+		MapBuilder builder = new MapBuilder();
+		Map actual = builder.buildMapFrom(wb);
+		
+		assertEquals(expected.get("repnum"), actual.get("repnum"));
+		assertEquals(expected.get("title"), actual.get("title"));
+		//日付が数値になりますが、テンプレート埋め込み時の書式で日付になります。
+		assertEquals(new Double(39475D), actual.get("date"));
+		
+		List itemList = (List) actual.get("itemList");
+		assertEquals(10, itemList.size());
+		for(int i=0; i < itemList.size();i++){
+			Map item = (Map) itemList.get(i);
+			assertEquals(new Double(i + 1), item.get("num"));
+		}
+		
+		Map item = (Map) itemList.get(0);
+		List childList = (List) item.get("childList");
+		
+		assertEquals(5, childList.size());
+		
+		
+		Map data = (Map) actual.get("data");
+		assertEquals("ループじゃないの", data.get("val"));
+		itemList = (List) data.get("itemList");
+		assertEquals(6, itemList.size());
+		
+		Map dataChild = (Map) data.get("child");
+		assertEquals("子供のデータ", dataChild.get("childVal"));
+		
+		Map dataGrandChild = (Map) dataChild.get("grandChild");
+		assertEquals("dataの孫の値", dataGrandChild.get("grandChildVal"));
+		
+		Map dataGrand2 = (Map) dataGrandChild.get("grand2");
+		assertEquals("dataのひ孫", dataGrand2.get("val"));
 		
 		
 	}
-	
 	public void testテンプレートへ埋め込み()throws Exception{
 		InputStream is = getClass().getResourceAsStream("/MapBuilderTest.xls");
 		InputStream tempIs = getClass().getResourceAsStream("/MapBuilderTest_template.xls");

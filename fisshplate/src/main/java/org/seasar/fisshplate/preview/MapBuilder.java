@@ -16,10 +16,13 @@
 package org.seasar.fisshplate.preview;
 
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.seasar.fisshplate.consts.FPConsts;
+import org.seasar.fisshplate.core.BindVariable;
 import org.seasar.fisshplate.exception.FPPreviewException;
+import org.seasar.fisshplate.util.StringUtil;
 import org.seasar.fisshplate.wrapper.SheetWrapper;
 import org.seasar.fisshplate.wrapper.WorkbookWrapper;
 
@@ -48,10 +51,24 @@ public class MapBuilder {
 	private void buildRootMapData(WorkbookWrapper workbook, FPMapData root) {		
 		for(int i=0; i < workbook.getSheetCount(); i++){
 			SheetWrapper sheet = workbook.getSheetAt(i);
-			if(! ROOT_SHEET_NAME.equals(sheet.getSheetName())){
-				buildMapData(root, sheet, sheet.getSheetName());
-			}			
+			String keyName = getKeyNameFrom(sheet);
+			if(! ROOT_SHEET_NAME.equals(keyName)){
+				buildMapData(root, sheet, keyName);
+			}
 		}
+	}
+	
+	private String getKeyNameFrom(SheetWrapper sheet){
+		String col = sheet.getRow(0).getCell(0).getStringValue();				
+		
+		if(!StringUtil.isEmpty(col) && Pattern.matches(FPConsts.REGEX_BIND_VAR, col)){
+			sheet.removeRow(0);
+			BindVariable var = new BindVariable(col);
+			return var.getName();
+		}else{		
+			return sheet.getSheetName();
+		}
+		
 	}
 	
 	private void buildMapData(FPMapData parent, SheetWrapper sheet, String keyName){

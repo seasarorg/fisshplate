@@ -63,6 +63,12 @@ public class SheetWrapper {
 		return workbook.getHSSFWorkbook().getSheetName(sheetIndex);
 	}
 	
+	public void removeRow(int i){
+		RowWrapper row = this.getRow(i);
+		hssfSheet.removeRow(row.getHSSFRow());		
+		rowList.remove(i);
+	}
+	
 	/**
 	 * データ埋め込みの準備のために、シートを初期化します。
 	 */
