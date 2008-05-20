@@ -40,7 +40,7 @@ public class WhileParserTest extends TestCase {
 		hssfWb.getSheetAt(0).createRow(1).createCell((short) 0).setCellValue(new HSSFRichTextString(" #end  "));
 		WorkbookWrapper wb = new WorkbookWrapper(hssfWb);
 		
-		FPParser fpParser = new FPParser(wb.getSheetAt(0));
+		FPParser fpParser = new FPParser();
 		WhileParser parser = new WhileParser();
 		
 		boolean actual = parser.process(wb.getSheetAt(0).getRow(0).getCell(0), fpParser);

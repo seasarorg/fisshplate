@@ -44,8 +44,7 @@ public class IteratorBlockParser implements StatementParser{
 		}
 		AbstractBlock block = buildElement(cell, mat);
 		
-		parser.addBlockToParentIfExists(block);
-		parser.pushBlockToStack(block);
+		parser.addBlockElement(block);		
 		return true;
 	}
 	

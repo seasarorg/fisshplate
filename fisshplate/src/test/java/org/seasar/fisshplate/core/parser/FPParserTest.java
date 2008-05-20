@@ -35,6 +35,8 @@ import org.seasar.fisshplate.core.element.Root;
 import org.seasar.fisshplate.core.element.Row;
 import org.seasar.fisshplate.core.element.TemplateElement;
 import org.seasar.fisshplate.core.element.Var;
+import org.seasar.fisshplate.exception.FPParseException;
+import org.seasar.fisshplate.wrapper.CellWrapper;
 import org.seasar.fisshplate.wrapper.WorkbookWrapper;
 
 /**
@@ -57,9 +59,8 @@ public class FPParserTest extends TestCase {
 	public void test解析テスト1()throws Exception{
 		InputStream is = getClass().getResourceAsStream("/FPTemplateTest.xls");		
 		WorkbookWrapper workbook = new WorkbookWrapper(new HSSFWorkbook(is));
-		FPParser parser = new FPParser(workbook.getSheetAt(0));
-		
-		Root root = parser.getRoot();
+		FPParser parser = new FPParser();		
+		Root root = parser.parse(workbook.getSheetAt(0));
 		
 		assertEquals(root.getPageHeader().getClass(), NullElement.class);
 		assertEquals(root.getPageFooter().getClass(), NullElement.class);
@@ -174,6 +175,46 @@ public class FPParserTest extends TestCase {
 		
 		row = (TemplateElement) bodyList.get(7);
 		assertEquals(Exec.class, row.getClass());
+		
+	}
+	
+	public void test解析テスト_アドオンパーサ対応()throws Exception{
+		StatementParser addon = new StatementParser(){
+			public boolean process(CellWrapper cell, FPParser parser)	throws FPParseException {
+				String value = cell.getStringValue();
+				if(!"あれやこれや".equals(value)){
+					return false;
+				}
+				parser.addTemplateElement(new NullElement());
+				return true;
+			}			
+		};
+		
+		
+		InputStream is = getClass().getResourceAsStream("/FPTemplateTest.xls");		
+		WorkbookWrapper workbook = new WorkbookWrapper(new HSSFWorkbook(is));
+		FPParser parser = new FPParser();
+		parser.addRowParser(addon);
+		Root root = parser.parse(workbook.getSheetAt(0));
+		
+		assertEquals(root.getPageHeader().getClass(), NullElement.class);
+		assertEquals(root.getPageFooter().getClass(), NullElement.class);
+		
+		//1行目がNullElementになるだけで後は変わらず		
+		List bodyList = root.getBodyElementList();
+		TemplateElement row = (TemplateElement) bodyList.get(0);
+		assertEquals(NullElement.class,row.getClass());
+		
+		
+		row = (TemplateElement) bodyList.get(1);
+		List cellList = ((Row)row).getCellElementList();
+		TemplateElement cell = (TemplateElement) cellList.get(0);
+		assertEquals(El.class, cell.getClass());
+		cell = (TemplateElement) cellList.get(2);
+		assertEquals(El.class, cell.getClass());
+		cell = (TemplateElement) cellList.get(3);
+		assertEquals(GenericCell.class,cell.getClass());		
+		
 		
 	}
 

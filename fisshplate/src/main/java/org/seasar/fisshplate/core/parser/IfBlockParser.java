@@ -40,8 +40,7 @@ public class IfBlockParser implements StatementParser{
 		String condition = mat.group(1);
 		AbstractBlock block = new IfBlock(condition);
 		
-		parser.addBlockToParentIfExists(block);
-		parser.pushBlockToStack(block);
+		parser.addBlockElement(block);		
 		
 		return true;
 	}

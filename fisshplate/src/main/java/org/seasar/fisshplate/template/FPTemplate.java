@@ -93,7 +93,8 @@ public class FPTemplate {
 	public HSSFWorkbook process(HSSFWorkbook hssfWorkbook, Map data) throws FPParseException,FPMergeException {
 		WorkbookWrapper workbook = new WorkbookWrapper(hssfWorkbook);
 		SheetWrapper sheet = workbook.getSheetAt(0);
-		FPParser parser = new FPParser(sheet);
+		FPParser parser = new FPParser();
+		Root root = parser.parse(sheet);
 		
 		sheet.prepareForMerge();
 		if(data ==null){
@@ -104,7 +105,6 @@ public class FPTemplate {
 		PageContext pageContext = new PageContext();
 		data.put(FPConsts.PAGE_CONTEXT_NAME, pageContext);
 
-		Root root = parser.getRoot();
 		root.merge(context);
 		
 		return hssfWorkbook;

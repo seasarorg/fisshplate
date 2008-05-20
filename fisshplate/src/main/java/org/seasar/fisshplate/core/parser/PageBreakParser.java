@@ -40,7 +40,7 @@ public class PageBreakParser implements StatementParser {
 		
 		Root root = parser.getRoot();
 		TemplateElement elem = new PageBreak(root);
-		parser.addElementToParentOrRoot(elem);
+		parser.addTemplateElement(elem);
 		return true;
 	}
 

@@ -41,7 +41,7 @@ public class VarParser implements StatementParser{
 		RowWrapper row = cell.getRow();
 		String vars = mat.group(1);
 		Var elem = new Var(vars, row);
-		parser.addElementToParentOrRoot(elem);
+		parser.addTemplateElement(elem);
 		
 		return true;
 	}

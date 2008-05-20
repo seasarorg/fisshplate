@@ -15,6 +15,8 @@
  */
 package org.seasar.fisshplate.core.parser;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -55,25 +57,25 @@ public class FPParser {
 			new ResumeParser(),
 			new WhileParser()
 	};
+	
+	private List addOnRowParser = new ArrayList();
 
 	/**
-	 * ルートの要素リストを戻します。
-	 * 
-	 * @return 要素リスト
+	 * コンストラクタです。
 	 */
-	public Root getRoot() {
-		return rootElement;
+	public FPParser(){
+		
 	}
 
 	/**
-	 * コンストラクタです。引数で渡されたテンプレートのシートを元に解析します。
-	 * 
+	 * 引数で渡されたテンプレートのシートを元に解析し、ルートの要素リストを戻します。
 	 * @param sheet
 	 *            テンプレートのシート
+	 * @return 要素リスト
 	 * @throws FPParseException
 	 *             テンプレートの解析時に構文上のエラーが判明した際に投げられます。
 	 */
-	public FPParser(SheetWrapper sheet) throws FPParseException {
+	public Root parse(SheetWrapper sheet) throws FPParseException {
 		rootElement = new Root();
 		for (int i = 0; i < sheet.getRowCount(); i++) {
 			parseRow(sheet.getRow(i));
@@ -83,7 +85,19 @@ public class FPParser {
 			throw new FPParseException(FPConsts.MESSAGE_ID_END_ELEMENT	,
 					new Object[]{"?"});
 		}
+
+		return rootElement;
 	}
+
+	
+	/**
+	 * ルートの要素リストを戻します。
+	 * @return 要素リスト
+	 */
+	public Root getRoot()  {
+		return rootElement;
+	}
+
 
 	private void parseRow(RowWrapper row) throws FPParseException {
 		if (!isRowParsable(row)) {
@@ -97,12 +111,18 @@ public class FPParser {
 			}
 		}
 		
+		for(int i=0; i < addOnRowParser.size(); i++){
+			if ( ((StatementParser) addOnRowParser.get(i)).process(cell, this) ){
+				return;
+			}
+		}
+		
 		createRowElement(row);
 	}
 	
 	private void createRowElement(RowWrapper row){
 		Row rowElem = new Row(row, rootElement);		
-		addElementToParentOrRoot(rowElem);
+		addTemplateElement(rowElem);
 	}	
 
 	private boolean isRowParsable(RowWrapper row) {
@@ -128,11 +148,12 @@ public class FPParser {
 	 * ブロック要素に親要素がある場合、その親要素にブロック要素を子要素として追加します。
 	 * @param block ブロック要素
 	 */
-	public void addBlockToParentIfExists(AbstractBlock block){
+	public void addBlockElement(AbstractBlock block){
 		if (! isBlockStackBlank()) {
 			AbstractBlock parentBlock = (AbstractBlock) blockStack.lastElement();
 			parentBlock.addChild(block);
-		}
+		}		
+		pushBlockToStack(block);
 	}
 	
 	/**
@@ -147,7 +168,7 @@ public class FPParser {
 	 * 要素を親要素があれば子要素として追加します。親要素がなければルートにボディ要素として追加します。
 	 * @param elem 要素
 	 */
-	public void addElementToParentOrRoot(TemplateElement elem){
+	public void addTemplateElement(TemplateElement elem){
 		if (!isBlockStackBlank()) {
 			AbstractBlock block = (AbstractBlock) blockStack.lastElement();
 			block.addChild(elem);
@@ -178,6 +199,10 @@ public class FPParser {
 	 */
 	public AbstractBlock getLastElementFromStack(){
 		return (AbstractBlock) blockStack.lastElement();
+	}
+	
+	public void addRowParser(StatementParser parser){
+		addOnRowParser.add(parser);
 	}
 
 }

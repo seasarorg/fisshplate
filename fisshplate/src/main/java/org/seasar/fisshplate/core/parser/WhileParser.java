@@ -43,8 +43,7 @@ public class WhileParser implements StatementParser {
 		String condition = mat.group(1);
 		RowWrapper row = cell.getRow();
 		AbstractBlock block = new WhileBlock(row, condition);		
-		parser.addBlockToParentIfExists(block);
-		parser.pushBlockToStack(block);
+		parser.addBlockElement(block);		
 		return true;
 	}
 

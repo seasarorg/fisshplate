@@ -37,7 +37,7 @@ public class ExecParser implements StatementParser {
 		
 		String expression = mat.group(1);
 		Exec elem = new Exec(expression);
-		parser.addElementToParentOrRoot(elem);
+		parser.addTemplateElement(elem);
 
 		return true;
 	}

@@ -39,7 +39,7 @@ public class ResumeParser implements StatementParser {
 		
 		String targetVar = mat.group(1);
 		Resume elem = new Resume(targetVar);
-		parser.addElementToParentOrRoot(elem);
+		parser.addTemplateElement(elem);
 		
 		return true;	
 	}
