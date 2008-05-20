@@ -27,6 +27,7 @@ import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.context.PageContext;
 import org.seasar.fisshplate.core.element.Root;
 import org.seasar.fisshplate.core.parser.FPParser;
+import org.seasar.fisshplate.core.parser.StatementParser;
 import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.exception.FPParseException;
 import org.seasar.fisshplate.util.InputStreamUtil;
@@ -41,9 +42,18 @@ import org.seasar.fisshplate.wrapper.WorkbookWrapper;
  * 
  */
 public class FPTemplate {
+	private FPParser parser = new FPParser();
 
 	public FPTemplate() {
 
+	}
+	
+	/**
+	 * 独自でカスタマイズした{@link TemplateElement}を適用する{@link StatementParser}を追加します。
+	 * @param rowParser パーサ
+	 */
+	public void addRowParser(StatementParser rowParser){
+		parser.addRowParser(rowParser);
 	}
 
 	/**
@@ -92,8 +102,7 @@ public class FPTemplate {
 	 */
 	public HSSFWorkbook process(HSSFWorkbook hssfWorkbook, Map data) throws FPParseException,FPMergeException {
 		WorkbookWrapper workbook = new WorkbookWrapper(hssfWorkbook);
-		SheetWrapper sheet = workbook.getSheetAt(0);
-		FPParser parser = new FPParser();
+		SheetWrapper sheet = workbook.getSheetAt(0);		
 		Root root = parser.parse(sheet);
 		
 		sheet.prepareForMerge();

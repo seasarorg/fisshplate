@@ -26,9 +26,17 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.seasar.fisshplate.context.FPContext;
+import org.seasar.fisshplate.core.element.TemplateElement;
+import org.seasar.fisshplate.core.parser.FPParser;
+import org.seasar.fisshplate.core.parser.StatementParser;
 import org.seasar.fisshplate.exception.FPException;
+import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.exception.FPParseException;
+import org.seasar.fisshplate.wrapper.CellWrapper;
 
 public class FPTemplateTest extends TestCase {
 	private FPTemplate template;
@@ -283,6 +291,64 @@ public class FPTemplateTest extends TestCase {
 		FileOutputStream fos = new FileOutputStream("target/out_iteratorMax_pageBreak.xls");		
 		wb.write(fos);
 	}
+	
+	public void test独自パーサ適用例() throws Exception  {
+		InputStream is = getClass().getResourceAsStream("/FPTemplateTest.xls");		
+		HSSFWorkbook wb;
+		try {
+			template = new FPTemplate();
+			template.addRowParser(new StatementParser(){
+				public boolean process(CellWrapper cell, FPParser parser)	throws FPParseException {
+					String value =cell.getStringValue();
+					if(!"あれやこれや".equals(value)){
+						return false;
+					}
+					TemplateElement elem = new Areya(cell);
+					parser.addTemplateElement(elem);
+					return true;
+				}});
+			Map map = new HashMap();
+			map.put("title", "タイトルである");
+			List aList = new ArrayList();
+			aList.add(new A("1行目",10,new Date()));
+			aList.add(new A("2行目",20,new Date()));
+			aList.add(new A("3行目",30,new Date()));
+			aList.add(new A("4行目",10,new Date()));
+			aList.add(new A("5行目",20,new Date()));
+			aList.add(new A("6行目",30,new Date()));
+			map.put("b", aList);
+			
+			wb = template.process(is,map);
+		} catch (FPParseException e) {
+			throw e;
+		} catch (IOException e) {
+			throw e;
+		}finally{
+			is.close();
+		}
+		
+		FileOutputStream fos = new FileOutputStream("target/out_customparser.xls");		
+		wb.write(fos);
+		fos.close();
+		
+	}
+	
+	private class Areya implements TemplateElement{
+		private CellWrapper originalCell;
+		
+		public Areya(CellWrapper cell){
+			originalCell = cell;
+		}
+
+		public void merge(FPContext context) throws FPMergeException {
+			HSSFCell currentCell = context.getCurrentCell();
+			currentCell.setCellStyle(originalCell.getHSSFCell().getCellStyle());
+			currentCell.setCellValue(new HSSFRichTextString("独自タグテストです"));
+			context.nextRow();
+		}
+		
+	}
+
 	
 	public class A{
 		private String name;
