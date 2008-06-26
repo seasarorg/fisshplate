@@ -89,7 +89,7 @@ public class El implements TemplateElement{
 	
 	protected Object convertLineFeed(Object value){
 		if (value instanceof String){
-			value = ((String)value).replaceAll("(\r\n|\r|\n)", "\r\n");
+			value = ((String)value).replaceAll("(\r\n|\r)", "\n");
 			
 		}		
 		return value;

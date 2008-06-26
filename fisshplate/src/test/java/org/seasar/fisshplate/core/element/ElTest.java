@@ -197,11 +197,11 @@ public class ElTest extends TestCase {
 		
 		HSSFCell actual = template.getSheetAt(0).getRow(0).getCell((short) 0);
 		assertEquals("celltype",HSSFCell.CELL_TYPE_STRING, actual.getCellType());		
-		assertEquals("value", "0\r\n12\r\n34", actual.getRichStringCellValue().getString());
+		assertEquals("value", "0\n12\n34", actual.getRichStringCellValue().getString());
 		
 		actual = template.getSheetAt(0).getRow(0).getCell((short) 1);
 		assertEquals("celltype",HSSFCell.CELL_TYPE_STRING, actual.getCellType());
-		assertEquals("value","番号\r\nはこれ", actual.getRichStringCellValue().getString());
+		assertEquals("value","番号\nはこれ", actual.getRichStringCellValue().getString());
 		
 	}
 
