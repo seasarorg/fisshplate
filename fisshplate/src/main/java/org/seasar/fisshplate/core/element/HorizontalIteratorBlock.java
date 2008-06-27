@@ -88,7 +88,6 @@ public class HorizontalIteratorBlock extends AbstractBlock{
 
     protected void mergeBlock(FPContext context, int startCell) throws FPMergeException {
         
-        
         for (int i = 0; i < childList.size(); i++) {
             TemplateElement elem = (TemplateElement) childList.get(i);
             if(elem instanceof Row){
@@ -122,10 +121,17 @@ public class HorizontalIteratorBlock extends AbstractBlock{
             if(i < startCellIndex){
                 continue;
             }
+            adjustColumnWidth(context,(short) i);
             TemplateElement elem = (TemplateElement) row.getCellElementList().get(i);
             elem.merge(context);
         }
         context.nextRow();
+    }
+    
+    private void adjustColumnWidth(FPContext context, short column){
+        short cellWidth = this.row.getSheet().getHSSFSheet().getColumnWidth(column);
+        context.getOutSheet().setColumnWidth(context.getCurrentCellNum(), cellWidth);
+        
     }
 
     private void mergeNoIterationBlock(FPContext context) throws FPMergeException {

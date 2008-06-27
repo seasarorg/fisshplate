@@ -108,7 +108,6 @@ public abstract class AbstractCell implements TemplateElement {
 		if(isMergedCell){
 			mergeCell(context);
 		}
-		
 	}
 	
 	private void mergeCell(FPContext context){		
