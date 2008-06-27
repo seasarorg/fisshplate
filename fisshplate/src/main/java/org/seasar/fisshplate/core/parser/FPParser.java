@@ -39,170 +39,179 @@ import org.seasar.fisshplate.wrapper.SheetWrapper;
  */
 public class FPParser {
 
-	private Root rootElement;
-	private Stack blockStack = new Stack();
-	
-	private StatementParser[] builtInRowParsers = {
-			new IteratorBlockParser(),
-			new IfBlockParser(),
-			new ElseIfBlockParser(),
-			new ElseBlockParser(),
-			new EndParser(),
-			new PageBreakParser(),
-			new CommentParser(),
-			new VarParser(),
-			new ExecParser(),
-			new PageHeaderBlockParser(),
-			new PageFooterBlockParser(),
-			new ResumeParser(),
-			new WhileParser()
-	};
-	
-	private List addOnRowParser = new ArrayList();
+    private Root rootElement;
+    private Stack blockStack = new Stack();
+    
+    private StatementParser[] builtInRowParsers = {
+            new IteratorBlockParser(),
+            new IfBlockParser(),
+            new ElseIfBlockParser(),
+            new ElseBlockParser(),
+            new EndParser(),
+            new PageBreakParser(),
+            new CommentParser(),
+            new VarParser(),
+            new ExecParser(),
+            new PageHeaderBlockParser(),
+            new PageFooterBlockParser(),
+            new ResumeParser(),
+            new WhileParser(),
+            new HorizontalIteratorBlockParser()
+    };
+    
+    private List addOnRowParser = new ArrayList();
 
-	/**
-	 * コンストラクタです。
-	 */
-	public FPParser(){
-		
-	}
+    /**
+     * コンストラクタです。
+     */
+    public FPParser(){
+        
+    }
 
-	/**
-	 * 引数で渡されたテンプレートのシートを元に解析し、ルートの要素リストを戻します。
-	 * @param sheet
-	 *            テンプレートのシート
-	 * @return 要素リスト
-	 * @throws FPParseException
-	 *             テンプレートの解析時に構文上のエラーが判明した際に投げられます。
-	 */
-	public Root parse(SheetWrapper sheet) throws FPParseException {
-		rootElement = new Root();
-		for (int i = 0; i < sheet.getRowCount(); i++) {
-			parseRow(sheet.getRow(i));
-		}
-		// スタックにまだブロックが残ってたら#end不足
-		if (blockStack.size() > 0) {
-			throw new FPParseException(FPConsts.MESSAGE_ID_END_ELEMENT	,
-					new Object[]{"?"});
-		}
+    /**
+     * 引数で渡されたテンプレートのシートを元に解析し、ルートの要素リストを戻します。
+     * @param sheet
+     *            テンプレートのシート
+     * @return 要素リスト
+     * @throws FPParseException
+     *             テンプレートの解析時に構文上のエラーが判明した際に投げられます。
+     */
+    public Root parse(SheetWrapper sheet) throws FPParseException {
+        rootElement = new Root();
+        for (int i = 0; i < sheet.getRowCount(); i++) {
+            parseRow(sheet.getRow(i));
+        }
+        // スタックにまだブロックが残ってたら#end不足
+        if (blockStack.size() > 0) {
+            throw new FPParseException(FPConsts.MESSAGE_ID_END_ELEMENT  ,
+                    new Object[]{"?"});
+        }
 
-		return rootElement;
-	}
+        return rootElement;
+    }
 
-	
-	/**
-	 * ルートの要素リストを戻します。
-	 * @return 要素リスト
-	 */
-	public Root getRoot()  {
-		return rootElement;
-	}
+    
+    /**
+     * ルートの要素リストを戻します。
+     * @return 要素リスト
+     */
+    public Root getRoot()  {
+        return rootElement;
+    }
 
 
-	private void parseRow(RowWrapper row) throws FPParseException {
-		if (!isRowParsable(row)) {
-			createRowElement(row);
-			return;
-		}		
-		CellWrapper cell = row.getCell(0);		
-		for(int i=0; i < builtInRowParsers.length; i++){			
-			if(builtInRowParsers[i].process(cell,this)){
-				return;
-			}
-		}
-		
-		for(int i=0; i < addOnRowParser.size(); i++){
-			if ( ((StatementParser) addOnRowParser.get(i)).process(cell, this) ){
-				return;
-			}
-		}
-		
-		createRowElement(row);
-	}
-	
-	private void createRowElement(RowWrapper row){
-		Row rowElem = new Row(row, rootElement);		
-		addTemplateElement(rowElem);
-	}	
+    private void parseRow(RowWrapper row) throws FPParseException {
+        if (row.isNullRow()) {
+            createRowElement(row);
+            return;
+        }
 
-	private boolean isRowParsable(RowWrapper row) {
+        for(int i=0; i < row.getCellCount(); i ++){
+            CellWrapper cell = row.getCell(i);
+            
+            if(!isCellParsable(cell)){
+                continue;
+            }
+            
+            if(parseCell(cell)){
+                return;
+            }
+        }
+        createRowElement(row);
+    }
+    
+    private boolean parseCell(CellWrapper cell) throws FPParseException{
+        for(int i=0; i < builtInRowParsers.length; i++){
+            if(builtInRowParsers[i].process(cell,this)){
+                return true;
+            }
+        }
+        
+        for(int i=0; i < addOnRowParser.size(); i++){
+            if ( ((StatementParser) addOnRowParser.get(i)).process(cell, this) ){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private void createRowElement(RowWrapper row){
+        Row rowElem = new Row(row, rootElement);        
+        addTemplateElement(rowElem);
+    }   
 
-		if (row.isNullRow()) {
-			return false;
-		}
-		
-		CellWrapper cell = row.getCell(0);
-		if(cell == null){
-			return false;
-		}
+    private boolean isCellParsable(CellWrapper cell){
+        if(cell == null){
+            return false;
+        }
 
-		HSSFCell hssfCell = cell.getHSSFCell();
-		if (hssfCell == null || (hssfCell.getCellType() != HSSFCell.CELL_TYPE_STRING)) {
-			return false;
-		}
-		
-		return true;		
-	}
-	
-	/**
-	 * ブロック要素に親要素がある場合、その親要素にブロック要素を子要素として追加します。
-	 * @param block ブロック要素
-	 */
-	public void addBlockElement(AbstractBlock block){
-		if (! isBlockStackBlank()) {
-			AbstractBlock parentBlock = (AbstractBlock) blockStack.lastElement();
-			parentBlock.addChild(block);
-		}		
-		pushBlockToStack(block);
-	}
-	
-	/**
-	 * ブロックの閉じ判定用スタックにブロック要素を追加します。
-	 * @param block ブロック要素
-	 */
-	public void pushBlockToStack(AbstractBlock block){
-		blockStack.push(block);
-	}
-	
-	/**
-	 * 要素を親要素があれば子要素として追加します。親要素がなければルートにボディ要素として追加します。
-	 * @param elem 要素
-	 */
-	public void addTemplateElement(TemplateElement elem){
-		if (!isBlockStackBlank()) {
-			AbstractBlock block = (AbstractBlock) blockStack.lastElement();
-			block.addChild(elem);
-		} else {
-			rootElement.addBody(elem);
-		}		
-	}
-	
-	/**
-	 * ブロックの閉じ判定用スタックが空か否かを戻します。
-	 * @return 空ならばtrue。
-	 */
-	public boolean isBlockStackBlank(){
-		return (blockStack.size() < 1);		
-	}	
-	
-	/**
-	 * ブロックの閉じ判定用スタックからポップします。
-	 * @return ブロック要素
-	 */
-	public AbstractBlock popFromBlockStack(){
-		return (AbstractBlock) blockStack.pop();
-	}
-	
-	/**
-	 * ブロックの閉じ判定用スタックから最後の要素を取得して戻します。
-	 * @return 最後の要素
-	 */
-	public AbstractBlock getLastElementFromStack(){
-		return (AbstractBlock) blockStack.lastElement();
-	}
-	
-	public void addRowParser(StatementParser parser){
-		addOnRowParser.add(parser);
-	}
+        HSSFCell hssfCell = cell.getHSSFCell();
+        if (hssfCell == null || (hssfCell.getCellType() != HSSFCell.CELL_TYPE_STRING)) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * ブロック要素に親要素がある場合、その親要素にブロック要素を子要素として追加します。
+     * @param block ブロック要素
+     */
+    public void addBlockElement(AbstractBlock block){
+        if (! isBlockStackBlank()) {
+            AbstractBlock parentBlock = (AbstractBlock) blockStack.lastElement();
+            parentBlock.addChild(block);
+        }       
+        pushBlockToStack(block);
+    }
+    
+    /**
+     * ブロックの閉じ判定用スタックにブロック要素を追加します。
+     * @param block ブロック要素
+     */
+    public void pushBlockToStack(AbstractBlock block){
+        blockStack.push(block);
+    }
+    
+    /**
+     * 要素を親要素があれば子要素として追加します。親要素がなければルートにボディ要素として追加します。
+     * @param elem 要素
+     */
+    public void addTemplateElement(TemplateElement elem){
+        if (!isBlockStackBlank()) {
+            AbstractBlock block = (AbstractBlock) blockStack.lastElement();
+            block.addChild(elem);
+        } else {
+            rootElement.addBody(elem);
+        }       
+    }
+    
+    /**
+     * ブロックの閉じ判定用スタックが空か否かを戻します。
+     * @return 空ならばtrue。
+     */
+    public boolean isBlockStackBlank(){
+        return (blockStack.size() < 1);     
+    }   
+    
+    /**
+     * ブロックの閉じ判定用スタックからポップします。
+     * @return ブロック要素
+     */
+    public AbstractBlock popFromBlockStack(){
+        return (AbstractBlock) blockStack.pop();
+    }
+    
+    /**
+     * ブロックの閉じ判定用スタックから最後の要素を取得して戻します。
+     * @return 最後の要素
+     */
+    public AbstractBlock getLastElementFromStack(){
+        return (AbstractBlock) blockStack.lastElement();
+    }
+    
+    public void addRowParser(StatementParser parser){
+        addOnRowParser.add(parser);
+    }
 
 }

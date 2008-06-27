@@ -29,6 +29,7 @@ public class CellWrapper {
 	public CellWrapper(HSSFCell cell, RowWrapper row){
 		this.row = row;
 		this.hssfCell = cell;
+
 	}
 	
 	public HSSFCell getHSSFCell(){
@@ -41,6 +42,13 @@ public class CellWrapper {
 
 	public boolean isNullCell() {
 		return hssfCell == null;
+	}
+	
+	public int getCellIndex(){
+	    if(isNullCell()){
+	        return -1;
+	    }
+	    return (int)hssfCell.getCellNum();
 	}
 	
 	public String getStringValue(){

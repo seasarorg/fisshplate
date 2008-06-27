@@ -138,6 +138,10 @@ public class Row implements TemplateElement {
 		context.nextRow();
 	}
 	
+	public short getRowHeight(){
+	    return rowHeight;
+	}
+	
 	/**
 	 * 行に含まれるセルのリストを戻します。
 	 * @return セルのリスト

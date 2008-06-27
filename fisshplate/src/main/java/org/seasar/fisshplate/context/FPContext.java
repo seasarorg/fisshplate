@@ -111,6 +111,16 @@ public class FPContext {
 	public HSSFRow createCurrentRow(){
 		return outSheet.createRow(currentRowNum);
 	}
+	
+	/**
+	 * 現在の出力対象行を任意の場所に移動し、その行を戻します。
+	 * @param rowNum 移動先の行番号
+	 * @return 出力対象行
+	 */
+	public HSSFRow moveCurrentRowTo(int rowNum){
+	    currentRowNum = rowNum;
+        return getCurrentRow();
+	}
 
 	/**
 	 * 現在の出力対象セルを戻します。
@@ -125,6 +135,16 @@ public class FPContext {
 			cell = row.createCell(currentCellNum);
 		}
 		return cell;
+	}
+	
+	/**
+	 * 現在の出力対象セルを任意の場所に移動し、そのセルを戻します。
+	 * @param cellNum 移動先のセル番号
+	 * @return 出力対象セル
+	 */
+	public HSSFCell moveCurrentCellTo(short cellNum){
+	    currentCellNum = cellNum;
+	    return getCurrentCell();
 	}
 
 	/**
