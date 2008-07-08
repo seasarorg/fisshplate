@@ -76,6 +76,21 @@ public class FPPreviewUtilTest extends TestCase {
 		os.close();
 		
 	}
+	
+    public void testピボットテーブル() throws Exception{
+        InputStream data = getClass().getResourceAsStream("/pibot_template_data.xls");
+        InputStream template = getClass().getResourceAsStream("/pibot_template.xls");
+        
+        HSSFWorkbook out = FPPreviewUtil.getWorkbook(template, data);
+        
+        FileOutputStream os = new FileOutputStream("target/pibot_out.xls");
+        out.write(os);
+        data.close();
+        template.close();
+        os.close();
+        
+    }
+	
 
 }
 

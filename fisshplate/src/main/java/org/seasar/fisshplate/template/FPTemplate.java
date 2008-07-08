@@ -102,19 +102,21 @@ public class FPTemplate {
 	 */
 	public HSSFWorkbook process(HSSFWorkbook hssfWorkbook, Map data) throws FPParseException,FPMergeException {
 		WorkbookWrapper workbook = new WorkbookWrapper(hssfWorkbook);
-		SheetWrapper sheet = workbook.getSheetAt(0);		
-		Root root = parser.parse(sheet);
-		
-		sheet.prepareForMerge();
-		if(data ==null){
-			data = new HashMap();
+		for(int i=0; i < workbook.getSheetCount(); i++){
+    		SheetWrapper sheet = workbook.getSheetAt(i);		
+    		Root root = parser.parse(sheet);
+    		
+    		sheet.prepareForMerge();
+    		if(data ==null){
+    			data = new HashMap();
+    		}
+    		FPContext context = new FPContext(sheet.getHSSFSheet(), data);
+    		// ページコンテキスト情報の追加
+    		PageContext pageContext = new PageContext();
+    		data.put(FPConsts.PAGE_CONTEXT_NAME, pageContext);
+    
+    		root.merge(context);
 		}
-		FPContext context = new FPContext(sheet.getHSSFSheet(), data);
-		// ページコンテキスト情報の追加
-		PageContext pageContext = new PageContext();
-		data.put(FPConsts.PAGE_CONTEXT_NAME, pageContext);
-
-		root.merge(context);
 		
 		return hssfWorkbook;
 	}
