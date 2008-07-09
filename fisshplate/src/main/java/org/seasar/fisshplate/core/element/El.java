@@ -23,6 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ognl.NoSuchPropertyException;
+import ognl.OgnlException;
 
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
@@ -143,8 +144,7 @@ public class El implements TemplateElement{
             return;
         }
         
-        String message = e.getMessage();
-        if(message.contains("getProperty(null")){
+        if( e.getCause() instanceof OgnlException){
             return;
         }
         
