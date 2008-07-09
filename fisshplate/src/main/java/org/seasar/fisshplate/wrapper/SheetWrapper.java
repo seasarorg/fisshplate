@@ -78,6 +78,12 @@ public class SheetWrapper {
 	}
 	
 	private void removeAllRow(){
+	    //POIのバグへの対策
+	    //1行だけのシートだったら繰り返し行もないはずだからクリアする必要はない、はず。
+	    //TODO もしPOIで1行のみのシートで行削除できるようになったらこのコード削除する
+	    if(getRowCount() < 2){
+	        return;
+	    }
 		for(int i=0; i < getRowCount();i++){
 			HSSFRow hssfRow = getRow(i).getHSSFRow();
 			if(hssfRow != null){

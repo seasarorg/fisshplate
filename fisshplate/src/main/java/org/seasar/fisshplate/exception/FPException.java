@@ -126,7 +126,7 @@ public class FPException extends Exception {
 		for(int i=0; i < paramLength - 1; i++){			
 			params[i] = args[i];
 		}
-		params[paramLength - 1] = new Integer(rowNum);
+		params[paramLength - 1] = row.getSheet().getSheetName() + " : " + rowNum;
 		return params;
 	}
 	

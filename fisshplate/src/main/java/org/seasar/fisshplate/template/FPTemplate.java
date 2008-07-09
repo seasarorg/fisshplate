@@ -26,6 +26,7 @@ import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.context.PageContext;
 import org.seasar.fisshplate.core.element.Root;
+import org.seasar.fisshplate.core.element.TemplateElement;
 import org.seasar.fisshplate.core.parser.FPParser;
 import org.seasar.fisshplate.core.parser.StatementParser;
 import org.seasar.fisshplate.exception.FPMergeException;
@@ -103,7 +104,10 @@ public class FPTemplate {
 	public HSSFWorkbook process(HSSFWorkbook hssfWorkbook, Map data) throws FPParseException,FPMergeException {
 		WorkbookWrapper workbook = new WorkbookWrapper(hssfWorkbook);
 		for(int i=0; i < workbook.getSheetCount(); i++){
-    		SheetWrapper sheet = workbook.getSheetAt(i);		
+    		SheetWrapper sheet = workbook.getSheetAt(i);
+    		if(sheet.getRowCount() < 1){
+    		    continue;
+    		}
     		Root root = parser.parse(sheet);
     		
     		sheet.prepareForMerge();

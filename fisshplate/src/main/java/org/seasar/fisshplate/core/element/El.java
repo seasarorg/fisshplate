@@ -132,12 +132,23 @@ public class El implements TemplateElement{
 		try{
 			value = OgnlUtil.getValue(bindVar.getName(), data);
 		}catch(RuntimeException e){
-			if(! (e.getCause() instanceof NoSuchPropertyException)){
-				throw e;
-			}
+		    handleGetValueRuntimeException(e);
 		}		
 		
 		return (value == null)?getNullValue(bindVar):value;		
+	}
+	
+	private void handleGetValueRuntimeException(RuntimeException e){
+        if( (e.getCause() instanceof NoSuchPropertyException)){
+            return;
+        }
+        
+        String message = e.getMessage();
+        if(message.contains("getProperty(null")){
+            return;
+        }
+        
+        throw e;
 	}
 	
 	private Object getNullValue(BindVariable bindVar) throws FPMergeException{		
