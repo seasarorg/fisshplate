@@ -79,11 +79,16 @@ public class Row implements TemplateElement {
 			return new NullCell();
 		}
 
-		if (hssfCell.getCellType() != HSSFCell.CELL_TYPE_STRING) {
+		String value = null;
+		if (hssfCell.getCellType() == HSSFCell.CELL_TYPE_STRING){
+		    value = hssfCell.getRichStringCellValue().getString();
+		}else if(hssfCell.getCellType() == HSSFCell.CELL_TYPE_FORMULA ){
+		    value = hssfCell.getCellFormula();
+		}else{
 			return new GenericCell(cell);
 		}
 		
-		String value = hssfCell.getRichStringCellValue().getString();		
+				
 		AbstractCell cellElem = null;
 		Matcher mat = patPicture.matcher(value);
 
