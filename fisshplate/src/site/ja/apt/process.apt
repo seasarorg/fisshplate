@@ -52,6 +52,9 @@ try {
 }finally{
     is.close();
 }
+OutputStream os = new FileOutputStream("target/FPTemplateTest_out.xls");
+wb.write(os);
+os.close(); 
 +---
   
   テンプレートに文法上の誤りがあった場合、FPParseExceptionが投げられます。
