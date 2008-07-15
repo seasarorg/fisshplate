@@ -64,6 +64,11 @@ public class RowTest extends TestCase {
 		cell.setCellValue(new HSSFRichTextString("#picture(${data.path} cell=1 row=1)"));
 		cell = templateRow.createCell((short)6);
 		cell.setCellValue(new HSSFRichTextString("#suspend TEST is ${hoge}"));
+		cell = templateRow.createCell((short)7);
+        cell.setCellFormula("TEXT(VALUE(\"20040101\"),\"yyyy/mm/dd\")");
+		cell = templateRow.createCell((short)8);
+        cell.setCellFormula("TEXT(VALUE(\"${hoge}\"),\"yyyy/mm/dd\")");
+        
 			
 		WorkbookWrapper workbook = new WorkbookWrapper(templateWb);
 		
@@ -87,6 +92,12 @@ public class RowTest extends TestCase {
 		elem = (TemplateElement) elementList.get(6);
 		assertTrue(elem.getClass() == Suspend.class);		
 		assertEquals("TEST is ${hoge}", ((Suspend)elem).getEl().targetElement.getCellValue());		
+        elem = (TemplateElement) elementList.get(7);
+        assertTrue(elem.getClass() == GenericCell.class);       
+        elem = (TemplateElement) elementList.get(8);
+        assertTrue(elem.getClass() == El.class);       
+              
+
 	}
 
 }
