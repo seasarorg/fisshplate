@@ -18,7 +18,7 @@ package org.seasar.fisshplate.core.element;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.util.Region;
+import org.apache.poi.ss.util.Region;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.wrapper.CellWrapper;

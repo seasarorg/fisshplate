@@ -6,8 +6,12 @@
   <classpathentry kind="output" path="target/classes"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
   <classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.1/commons-logging-1.1.jar" sourcepath="M2_REPO/commons-logging/commons-logging/1.1/commons-logging-1.1-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/junit/junit/3.8.2/junit-3.8.2.jar" sourcepath="M2_REPO/junit/junit/3.8.2/junit-3.8.2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/junit/junit/3.8.2/junit-3.8.2.jar" sourcepath="M2_REPO/junit/junit/3.8.2/junit-3.8.2-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/C:/Documents%20and%20Settings/rokugen/.m2/repository/junit/junit/3.8.2/junit-3.8.2-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
   <classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.13/log4j-1.2.13.jar" sourcepath="M2_REPO/log4j/log4j/1.2.13/log4j-1.2.13-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/ognl/ognl/2.6.9-patch-20070908/ognl-2.6.9-patch-20070908.jar" sourcepath="M2_REPO/ognl/ognl/2.6.9-patch-20070908/ognl-2.6.9-patch-20070908-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/poi/poi/3.1-FINAL/poi-3.1-FINAL.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/poi/poi/3.5-beta1/poi-3.5-beta1.jar"/>
 </classpath>

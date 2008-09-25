@@ -333,6 +333,35 @@ public class FPTemplateTest extends TestCase {
 		
 	}
 	
+	public void test一行だけの場合のエラーテスト()throws Exception{
+        InputStream is = getClass().getResourceAsStream("/onlyOneRowErrorTest.xls");
+        HSSFWorkbook wb;
+        try {
+            template = new FPTemplate();
+            Map map = new HashMap();
+            map.put("title", "タイトルである");
+            List aList = new ArrayList();
+            aList.add(new A("1行目",10,new Date()));
+            aList.add(new A("2行目",20,new Date()));
+            aList.add(new A("3行目",30,new Date()));
+            aList.add(new A("4行目",10,new Date()));
+            aList.add(new A("5行目",20,new Date()));
+            aList.add(new A("6行目",30,new Date()));      
+            map.put("b", aList);
+            
+            wb = template.process(is,map);
+        } catch (FPException e) {
+            throw e;
+        } catch (IOException e) {
+            throw e;
+        }finally{
+            is.close();
+        }
+        
+        FileOutputStream fos = new FileOutputStream("target/out_onlyOneRowErrorTest.xls");      
+        wb.write(fos);
+	}
+	
 	private class Areya implements TemplateElement{
 		private CellWrapper originalCell;
 		
