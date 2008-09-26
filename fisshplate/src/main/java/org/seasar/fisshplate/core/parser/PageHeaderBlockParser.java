@@ -27,7 +27,7 @@ import org.seasar.fisshplate.wrapper.CellWrapper;
  * pageHeaderを解析するクラスです。
  * @author rokugen
  */
-public class PageHeaderBlockParser implements StatementParser {
+public class PageHeaderBlockParser implements RowParser {
 	private static final Pattern patPageHeaderStart = Pattern.compile("#pageHeaderStart");
 	public boolean process(CellWrapper cell, FPParser parser)	throws FPParseException {
 		String value = cell.getStringValue();

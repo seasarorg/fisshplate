@@ -15,8 +15,6 @@
  */
 package org.seasar.fisshplate.core.parser;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -25,6 +23,8 @@ import org.seasar.fisshplate.core.element.AbstractBlock;
 import org.seasar.fisshplate.core.element.Root;
 import org.seasar.fisshplate.core.element.Row;
 import org.seasar.fisshplate.core.element.TemplateElement;
+import org.seasar.fisshplate.core.parser.handler.CellParserHandler;
+import org.seasar.fisshplate.core.parser.handler.RowParserHandler;
 import org.seasar.fisshplate.exception.FPParseException;
 import org.seasar.fisshplate.wrapper.CellWrapper;
 import org.seasar.fisshplate.wrapper.RowWrapper;
@@ -42,24 +42,8 @@ public class FPParser {
     private Root rootElement;
     private Stack blockStack = new Stack();
     
-    private StatementParser[] builtInRowParsers = {
-            new IteratorBlockParser(),
-            new IfBlockParser(),
-            new ElseIfBlockParser(),
-            new ElseBlockParser(),
-            new EndParser(),
-            new PageBreakParser(),
-            new CommentParser(),
-            new VarParser(),
-            new ExecParser(),
-            new PageHeaderBlockParser(),
-            new PageFooterBlockParser(),
-            new ResumeParser(),
-            new WhileParser(),
-            new HorizontalIteratorBlockParser()
-    };
-    
-    private List addOnRowParser = new ArrayList();
+    private RowParserHandler rowParserHandler = new RowParserHandler();
+    private CellParserHandler cellParserHandler = new CellParserHandler();
 
     /**
      * コンストラクタです。
@@ -113,30 +97,16 @@ public class FPParser {
                 continue;
             }
             
-            if(parseCell(cell)){
+            if(rowParserHandler.parse(cell, this)){
                 return;
             }
         }
         createRowElement(row);
     }
     
-    private boolean parseCell(CellWrapper cell) throws FPParseException{
-        for(int i=0; i < builtInRowParsers.length; i++){
-            if(builtInRowParsers[i].process(cell,this)){
-                return true;
-            }
-        }
-        
-        for(int i=0; i < addOnRowParser.size(); i++){
-            if ( ((StatementParser) addOnRowParser.get(i)).process(cell, this) ){
-                return true;
-            }
-        }
-        return false;
-    }
     
     private void createRowElement(RowWrapper row){
-        Row rowElem = new Row(row, rootElement);        
+        Row rowElem = new Row(row, rootElement,cellParserHandler);
         addTemplateElement(rowElem);
     }   
 
@@ -210,8 +180,12 @@ public class FPParser {
         return (AbstractBlock) blockStack.lastElement();
     }
     
-    public void addRowParser(StatementParser parser){
-        addOnRowParser.add(parser);
+    /**
+     * 独自にカスタマイズした行単位のパーサを追加します。
+     * @param parser 追加するパーサ
+     */
+    public void addRowParser(RowParser parser){
+        rowParserHandler.addRowParser(parser);
     }
 
 }

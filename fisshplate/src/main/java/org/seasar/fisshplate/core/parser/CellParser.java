@@ -15,31 +15,22 @@
  */
 package org.seasar.fisshplate.core.parser;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.seasar.fisshplate.core.element.Exec;
-import org.seasar.fisshplate.exception.FPParseException;
+import org.seasar.fisshplate.core.element.AbstractCell;
+import org.seasar.fisshplate.core.element.TemplateElement;
 import org.seasar.fisshplate.wrapper.CellWrapper;
 
 /**
- * execを解析するクラスです。
+ * セル単位のタグから各要素を解析するインタフェースです。
  * @author rokugen
  */
-public class ExecParser implements RowParser {
-	private static final Pattern patExec = Pattern.compile("#exec\\s+(.+)");
-	public boolean process(CellWrapper cell, FPParser parser)	throws FPParseException {
-		String value= cell.getStringValue();
-		Matcher mat = patExec.matcher(value);
-		if(!mat.find()){
-			return false;
-		}
-		
-		String expression = mat.group(1);
-		Exec elem = new Exec(expression);
-		parser.addTemplateElement(elem);
-
-		return true;
-	}
+public interface CellParser {
+    /**
+     * セルの内容を解析し、このパーサに合致した場合はそれに紐つく{@link TemplateElement}を実装したクラスを戻します。
+     * 合致しない場合はnullを戻します。
+     * @param cell 解析対象セル
+     * @param value 解析対象セルの値
+     * @return 紐ついた要素クラス
+     */
+    public AbstractCell getElement(CellWrapper cell, String value);
 
 }

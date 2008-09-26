@@ -31,6 +31,7 @@ import org.seasar.fisshplate.core.element.Picture;
 import org.seasar.fisshplate.core.element.Root;
 import org.seasar.fisshplate.core.element.Row;
 import org.seasar.fisshplate.core.element.TemplateElement;
+import org.seasar.fisshplate.core.parser.handler.CellParserHandler;
 import org.seasar.fisshplate.wrapper.WorkbookWrapper;
 
 /**
@@ -68,11 +69,15 @@ public class RowTest extends TestCase {
         cell.setCellFormula("TEXT(VALUE(\"20040101\"),\"yyyy/mm/dd\")");
 		cell = templateRow.createCell((short)8);
         cell.setCellFormula("TEXT(VALUE(\"${hoge}\"),\"yyyy/mm/dd\")");
+        cell = templateRow.createCell((short)9);
+        cell.setCellValue(new HSSFRichTextString("#link-url  link = http://www.gyoizo.com text = ほげー"));
+        cell = templateRow.createCell((short)10);
+        cell.setCellValue(new HSSFRichTextString("#link-url  link = ${data.hoge} text = ほげー"));
         
 			
 		WorkbookWrapper workbook = new WorkbookWrapper(templateWb);
 		
-		Row row = new Row(workbook.getSheetAt(0).getRow(0), root);
+		Row row = new Row(workbook.getSheetAt(0).getRow(0), root, new CellParserHandler());
 		List elementList = row.getCellElementList();		
 		
 		TemplateElement elem = (TemplateElement) elementList.get(0);
@@ -96,7 +101,10 @@ public class RowTest extends TestCase {
         assertTrue(elem.getClass() == GenericCell.class);       
         elem = (TemplateElement) elementList.get(8);
         assertTrue(elem.getClass() == El.class);       
-              
+        elem = (TemplateElement) elementList.get(9);
+        assertTrue(elem.getClass() == Link.class);
+        elem = (TemplateElement) elementList.get(10);
+        assertTrue(((El)elem).targetElement.getClass() == Link.class);
 
 	}
 

@@ -27,7 +27,7 @@ import org.seasar.fisshplate.wrapper.CellWrapper;
  * pageFooterを解析するクラスです。
  * @author rokugen
  */
-public class PageFooterBlockParser implements StatementParser {
+public class PageFooterBlockParser implements RowParser {
 	
 	private static final Pattern patPageFooterStart = Pattern.compile("#pageFooterStart");
 

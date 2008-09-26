@@ -32,7 +32,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.core.element.TemplateElement;
 import org.seasar.fisshplate.core.parser.FPParser;
-import org.seasar.fisshplate.core.parser.StatementParser;
+import org.seasar.fisshplate.core.parser.RowParser;
 import org.seasar.fisshplate.exception.FPException;
 import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.exception.FPParseException;
@@ -297,7 +297,7 @@ public class FPTemplateTest extends TestCase {
 		HSSFWorkbook wb;
 		try {
 			template = new FPTemplate();
-			template.addRowParser(new StatementParser(){
+			template.addRowParser(new RowParser(){
 				public boolean process(CellWrapper cell, FPParser parser)	throws FPParseException {
 					String value =cell.getStringValue();
 					if(!"あれやこれや".equals(value)){

@@ -18,13 +18,11 @@ package org.seasar.fisshplate.core.element;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
+import org.seasar.fisshplate.core.parser.handler.CellParserHandler;
 import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.wrapper.CellWrapper;
 import org.seasar.fisshplate.wrapper.RowWrapper;
@@ -40,12 +38,6 @@ public class Row implements TemplateElement {
 	private short rowHeight;
 	private Root root;
 
-	private static final Pattern patEl = Pattern.compile(FPConsts.REGEX_BIND_VAR);
-
-	//#picture(${data.picture})
-	private static final Pattern patPicture = Pattern.compile("^\\s*\\#picture\\(.+\\s+cell=.+\\s*\\s+row=.+\\)");
-	
-	private static final Pattern patSuspend = Pattern.compile("^\\s*#suspend\\s+(.*" + FPConsts.REGEX_BIND_VAR + ".*)");
 
 	/**
 	 * コンストラクタです。テンプレート側の行オブジェクトを受け取り、その行内のセル情報を解析して保持します。
@@ -56,8 +48,10 @@ public class Row implements TemplateElement {
 	 *            テンプレート側の行オブジェクト
 	 * @param root
 	 *            自分自身が属してるルート要素クラス
+	 * @param cellParserHandler
+	 *             セルを解析するクラス
 	 */
-	public Row(RowWrapper templateRow, Root root) {
+	public Row(RowWrapper templateRow, Root root, CellParserHandler cellParserHandler) {
 		this.root = root;				
 		if (templateRow.isNullRow()) {
 			this.rowHeight = templateRow.getSheet().getHSSFSheet().getDefaultRowHeight();
@@ -68,54 +62,8 @@ public class Row implements TemplateElement {
 		this.rowHeight = hssfRow.getHeight();		
 		for (int i = 0; i < templateRow.getCellCount(); i++) {
 			CellWrapper templateCell = templateRow.getCell(i);
-			TemplateElement element = getElement(templateCell);
+			TemplateElement element = cellParserHandler.getElement(templateCell);
 			cellElementList.add(element);
-		}
-	}
-
-	private TemplateElement getElement(CellWrapper cell) {
-		HSSFCell hssfCell = cell.getHSSFCell();
-		if (hssfCell == null) {
-			return new NullCell();
-		}
-
-		String value = null;
-		if (hssfCell.getCellType() == HSSFCell.CELL_TYPE_STRING){
-		    value = hssfCell.getRichStringCellValue().getString();
-		}else if(hssfCell.getCellType() == HSSFCell.CELL_TYPE_FORMULA ){
-		    value = hssfCell.getCellFormula();
-		}else{
-			return new GenericCell(cell);
-		}
-		
-				
-		AbstractCell cellElem = null;
-		Matcher mat = patPicture.matcher(value);
-
-		if(mat.find()){		
-			cellElem = new Picture(cell);
-		}else {
-			cellElem = new GenericCell(cell);
-		}
-		
-		mat = patEl.matcher(value);
-		if(mat.find()){			
-			return createEl(cellElem,value);
-		}else{
-			return cellElem;
-		}
-
-	}
-	
-	private TemplateElement createEl(AbstractCell cellElem, String value){
-		
-		Matcher mat = patSuspend.matcher(value);
-		if(mat.find()){
-			cellElem.setCellValue(mat.group(1));
-			El el = new El(cellElem);
-			return new Suspend(el);
-		}else{
-			return new El(cellElem);
 		}
 	}
 

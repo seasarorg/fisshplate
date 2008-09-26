@@ -27,7 +27,7 @@ import org.seasar.fisshplate.wrapper.RowWrapper;
  * varを解析するクラスです。
  * @author rokugen
  */
-public class VarParser implements StatementParser{
+public class VarParser implements RowParser{
 	private static final Pattern patVar = Pattern.compile("#var\\s+(.+)");
 	/* (non-Javadoc)
 	 * @see org.seasar.fisshplate.core.parser.StatementParser#process(org.seasar.fisshplate.wrapper.CellWrapper, org.seasar.fisshplate.core.parser.FPParser)

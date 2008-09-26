@@ -18,28 +18,29 @@ package org.seasar.fisshplate.core.parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.seasar.fisshplate.core.element.Exec;
-import org.seasar.fisshplate.exception.FPParseException;
+import org.seasar.fisshplate.core.element.AbstractCell;
+import org.seasar.fisshplate.core.element.Picture;
 import org.seasar.fisshplate.wrapper.CellWrapper;
 
 /**
- * execを解析するクラスです。
+ * pictureを解析するクラスです。
  * @author rokugen
+ *
  */
-public class ExecParser implements RowParser {
-	private static final Pattern patExec = Pattern.compile("#exec\\s+(.+)");
-	public boolean process(CellWrapper cell, FPParser parser)	throws FPParseException {
-		String value= cell.getStringValue();
-		Matcher mat = patExec.matcher(value);
-		if(!mat.find()){
-			return false;
-		}
-		
-		String expression = mat.group(1);
-		Exec elem = new Exec(expression);
-		parser.addTemplateElement(elem);
+public class PictureParser implements CellParser {
+    private static final Pattern patPicture = Pattern.compile("^\\s*\\#picture\\(.+\\s+cell=.+\\s*\\s+row=.+\\)");
 
-		return true;
-	}
+    /* (non-Javadoc)
+     * @see org.seasar.fisshplate.core.parser.CellParser#getElement(org.seasar.fisshplate.wrapper.CellWrapper, java.lang.String)
+     */
+    public AbstractCell getElement(CellWrapper cell, String value) {
+        AbstractCell cellElem = null;
+        Matcher mat = patPicture.matcher(value);
+
+        if(mat.find()){     
+            cellElem = new Picture(cell);
+        }
+        return cellElem;
+    }
 
 }

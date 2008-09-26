@@ -27,7 +27,7 @@ import org.seasar.fisshplate.wrapper.CellWrapper;
  * ifを解析するクラスです。
  * @author rokugen
  */
-public class IfBlockParser implements StatementParser{
+public class IfBlockParser implements RowParser{
 	private static final Pattern patIf = Pattern.compile("^\\s*#if\\s*(.+)");
 
 	public boolean process(CellWrapper cell, FPParser parser)	throws FPParseException {

@@ -33,7 +33,7 @@ import org.seasar.fisshplate.wrapper.CellWrapper;
  * endを解析するクラスです。
  * @author rokugen
  */
-public class EndParser implements StatementParser {
+public class EndParser implements RowParser {
 	private static final Pattern patEnd = Pattern.compile("(^\\s*#end\\s*$|#pageHeaderEnd|#pageFooterEnd)");
 	/* (non-Javadoc)
 	 * @see org.seasar.fisshplate.core.parser.StatementParser#process(org.seasar.fisshplate.wrapper.CellWrapper, org.seasar.fisshplate.core.parser.FPParser)

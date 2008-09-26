@@ -29,7 +29,7 @@ import org.seasar.fisshplate.wrapper.RowWrapper;
  * foreach要素を解析するクラスです。
  * @author rokugen
  */
-public class IteratorBlockParser implements StatementParser{
+public class IteratorBlockParser implements RowParser{
 	private static final Pattern patIterator = Pattern.compile("^\\s*#foreach\\s+(\\S+)\\s*:\\s*(\\S+)(\\s+index=(\\S+))*(\\s+max=(\\S+))*\\s*$");
 	
 

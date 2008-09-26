@@ -26,7 +26,7 @@ import org.seasar.fisshplate.wrapper.CellWrapper;
 /**
  * @author rokugen
  */
-public class HorizontalIteratorBlockParser implements StatementParser {
+public class HorizontalIteratorBlockParser implements RowParser {
     private static final Pattern pat = Pattern.compile("^\\s*#hforeach\\s+(\\S+)\\s*:\\s*(\\S+)(\\s+index=(\\S+))*\\s*$");
 
     public boolean process(CellWrapper cell, FPParser parser) throws FPParseException {

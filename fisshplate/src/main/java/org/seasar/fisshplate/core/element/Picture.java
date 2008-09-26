@@ -46,7 +46,7 @@ public class Picture extends AbstractCell {
 	 * @param cell
 	 *            テンプレート側のセル
 	 */
-	Picture(CellWrapper cell) {
+	public Picture(CellWrapper cell) {
 		super(cell);
 	}
 

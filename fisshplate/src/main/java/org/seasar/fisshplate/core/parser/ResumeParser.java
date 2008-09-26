@@ -26,7 +26,7 @@ import org.seasar.fisshplate.wrapper.CellWrapper;
  * resumeを解析するクラスです。
  * @author rokugen
  */
-public class ResumeParser implements StatementParser {
+public class ResumeParser implements RowParser {
 	
 	private static final Pattern pat = Pattern.compile("^\\s*#resume\\s*(.+)");
 	

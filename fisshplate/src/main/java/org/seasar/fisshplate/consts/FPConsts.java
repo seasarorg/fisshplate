@@ -78,7 +78,8 @@ public interface FPConsts {
 	static final String REGEX_BIND_VAR = REGEX_BIND_VAR_START +  "[^" + REGEX_BIND_VAR_START + REGEX_BIND_VAR_END + "]" + "+" + REGEX_BIND_VAR_END;
 	
 	static final String PREVIEW_EMPTY_LIST_SIGN = "empty list";
-
 	
+	static final String REGEX_LINK="^\\s*\\#link-(\\S+)\\s+link\\s*=\\s*(.+)\\s+text\\s*=\\s*(.+)$";
+	 
 
 }

@@ -28,7 +28,7 @@ import org.seasar.fisshplate.wrapper.RowWrapper;
  * whileを解析するクラスです。
  * @author rokugen
  */
-public class WhileParser implements StatementParser {
+public class WhileParser implements RowParser {
 	private static final Pattern pat = Pattern.compile("^\\s*#while\\s+(.+)");
 
 	/* (non-Javadoc)

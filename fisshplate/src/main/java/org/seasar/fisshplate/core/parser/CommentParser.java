@@ -25,7 +25,7 @@ import org.seasar.fisshplate.wrapper.CellWrapper;
  * commentを解析するクラスです。
  * @author rokugen
  */
-public class CommentParser implements StatementParser {
+public class CommentParser implements RowParser {
 	private static final Pattern patComment = Pattern.compile("^\\s*#comment\\.*");
 	/* (non-Javadoc)
 	 * @see org.seasar.fisshplate.core.parser.StatementParser#process(org.seasar.fisshplate.wrapper.CellWrapper, org.seasar.fisshplate.core.parser.FPParser)

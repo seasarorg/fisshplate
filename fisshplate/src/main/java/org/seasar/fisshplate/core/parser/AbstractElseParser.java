@@ -30,7 +30,7 @@ import org.seasar.fisshplate.wrapper.RowWrapper;
  * else if と else を解析するクラスのための抽象クラスです。
  * @author rokugen
  */
-public abstract class AbstractElseParser implements StatementParser {
+public abstract class AbstractElseParser implements RowParser {
 	
 	
 	

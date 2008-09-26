@@ -28,7 +28,7 @@ import org.seasar.fisshplate.wrapper.CellWrapper;
  * pageBreakを解析するクラスです。
  * @author rokugen
  */
-public class PageBreakParser implements StatementParser {
+public class PageBreakParser implements RowParser {
 	private static final Pattern patPageBreak = Pattern.compile("#pageBreak");
 	
 	public boolean process(CellWrapper cell, FPParser parser)	throws FPParseException {

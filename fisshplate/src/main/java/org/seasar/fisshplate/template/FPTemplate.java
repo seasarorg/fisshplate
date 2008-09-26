@@ -28,7 +28,7 @@ import org.seasar.fisshplate.context.PageContext;
 import org.seasar.fisshplate.core.element.Root;
 import org.seasar.fisshplate.core.element.TemplateElement;
 import org.seasar.fisshplate.core.parser.FPParser;
-import org.seasar.fisshplate.core.parser.StatementParser;
+import org.seasar.fisshplate.core.parser.RowParser;
 import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.exception.FPParseException;
 import org.seasar.fisshplate.util.InputStreamUtil;
@@ -50,10 +50,10 @@ public class FPTemplate {
 	}
 	
 	/**
-	 * 独自でカスタマイズした{@link TemplateElement}を適用する{@link StatementParser}を追加します。
+	 * 独自でカスタマイズした{@link TemplateElement}を適用する{@link RowParser}を追加します。
 	 * @param rowParser パーサ
 	 */
-	public void addRowParser(StatementParser rowParser){
+	public void addRowParser(RowParser rowParser){
 		parser.addRowParser(rowParser);
 	}
 

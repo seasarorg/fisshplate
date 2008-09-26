@@ -15,22 +15,11 @@
  */
 package org.seasar.fisshplate.core.parser;
 
-import org.seasar.fisshplate.core.element.TemplateElement;
-import org.seasar.fisshplate.exception.FPParseException;
-import org.seasar.fisshplate.wrapper.CellWrapper;
 
 /**
- * 構文から各要素を解析するインタフェースです。
+ * 構文から各要素を解析するインタフェースです。このインタフェースは非推奨です。代わりに{@link RowParser}を使うようにして下さい。
  * @author rokugen
+ * @deprecated
  */
-public interface StatementParser {
-	/**
-	 * セルの内容がこのパーサーと合致するか否かを戻します。
-	 * 合致する場合、{@link TemplateElement}を生成し、呼び出し元の{@link FPParser}へ処理を委譲します。
-	 * @param cell セル
-	 * @param parser 呼び出し元FPParser
-	 * @return 合致するか否か 
-	 * @throws FPParseException 解析時にエラーが発生した際に投げられます。
-	 */
-	boolean process(CellWrapper cell, FPParser parser) throws FPParseException ;
+public interface StatementParser extends RowParser{
 }

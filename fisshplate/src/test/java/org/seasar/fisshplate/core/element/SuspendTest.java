@@ -24,6 +24,7 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.seasar.fisshplate.core.parser.handler.CellParserHandler;
 import org.seasar.fisshplate.wrapper.WorkbookWrapper;
 
 /**
@@ -50,7 +51,7 @@ public class SuspendTest extends TestCase {
 			
 		WorkbookWrapper workbook = new WorkbookWrapper(templateWb);
 		
-		Row row = new Row(workbook.getSheetAt(0).getRow(0), root);
+		Row row = new Row(workbook.getSheetAt(0).getRow(0), root,new CellParserHandler());
 		List elementList = row.getCellElementList();		
 		TemplateElement elem = (TemplateElement) elementList.get(0);
 		assertTrue(elem.getClass() == Suspend.class);

@@ -179,7 +179,7 @@ public class FPParserTest extends TestCase {
 	}
 	
 	public void test解析テスト_アドオンパーサ対応()throws Exception{
-		StatementParser addon = new StatementParser(){
+		RowParser addon = new RowParser(){
 			public boolean process(CellWrapper cell, FPParser parser)	throws FPParseException {
 				String value = cell.getStringValue();
 				if(!"あれやこれや".equals(value)){

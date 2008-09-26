@@ -133,7 +133,7 @@ public class VarTest extends TestCase {
 		assertEquals("hoge", mat.group(1));
 		assertEquals(null, mat.group(2));		
 		
-		mat = pat.matcher("hoge=1");		
+		mat = pat.matcher("hoge=1");
 		assertTrue(mat.find());
 		assertEquals("hoge=1", mat.group(0));
 		assertEquals("hoge", mat.group(1));
