@@ -52,7 +52,7 @@ public class FPTemplateLinkTest extends TestCase {
 			aList.add(new A("2行目", 20, new Date(), "http://d.hatena.ne.jp"));
 			aList.add(new A("3行目", 30, new Date(), "http://www.yahoo.co.jp"));
 			aList.add(new A("4行目", 10, new Date(), "http://www.starlogic.jp"));
-			map.put("b", aList);
+			map.put("fooList", aList);
 
 			wb = template.process(is, map);
 		} catch (FPException e) {
@@ -77,7 +77,7 @@ public class FPTemplateLinkTest extends TestCase {
 	            map.put("title", "タイトルである");
 	            List aList = new ArrayList();
 	            aList.add(new A("1行目", 10, new Date(), null));
-	            map.put("b", aList);
+	            map.put("fooList", aList);
 
 	            template.process(is, map);
 	            fail();

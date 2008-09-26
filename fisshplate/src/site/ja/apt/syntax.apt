@@ -23,6 +23,8 @@
   
   * {{変数の評価の遅延}}
 
+  * {{ハイパーリンク埋め込み}}
+
   * {{コメント}}
   
   []
@@ -69,7 +71,7 @@
 public class Foo{
     private String name;
     private int num;
-    A(String name, int num){
+    public Foo(String name, int num){
         this.name = name;
         this.num = num;           
     }
@@ -80,12 +82,12 @@ public class Foo{
 +---
 Map map = new HashMap();
 List list = new ArrayList();
-list.add(new A("1行目",10));
-list.add(new A("2行目",20));
-list.add(new A("3行目",30));
-list.add(new A("4行目",10));
-list.add(new A("5行目",20));
-list.add(new A("6行目",30));
+list.add(new Foo("1行目",10));
+list.add(new Foo("2行目",20));
+list.add(new Foo("3行目",30));
+list.add(new Foo("4行目",10));
+list.add(new Foo("5行目",20));
+list.add(new Foo("6行目",30));
 map.put("fooList", list);
 +---
 
@@ -372,10 +374,82 @@ map.put("fooList", list);
 
   きちんとキーブレイク時のtotalの値がヘッダに出力されています。
   
+{ハイパーリンク埋め込み}
+
+  URLなどの文字列をハイパーリンクにしたい場合、テンプレート上のセルの書式設定で可能となりますが、セル内に表示されている文字と実際のリンク先の値が別の場合があります。
+  
+  その場合、「#link-url」などと書くと、リンク先やセル内の文字を動的に指定する事が出来ます。
+  
+  リンク先の種類によって以下の4種類のタグがあります。
+  
+  [link-url] URLをリンクします。
+
+  [link-email] メールアドレスをリンクします。
+
+  [link-file] ローカルのファイルへリンクします。
+  
+  [link-this] このワークブック自身の特定のセルへリンクします。
+
+*構文
+
+  いずれのタグも同じです。ここでは#link-urlで説明します。
+  
++--
+#link-url link=http://www.seasar.org text=リンク先
++--
+
+  「link」にリンク先を指定します。「text」に実際にセルに表示する値を指定します。いずれも必須です。
+
+  また、「link」「text」のいずれにもバインド変数を書く事が出来ます。
+
+*例
+
+  以下のようにテンプレートを記述します。
+
+[images/link01.png]
+
+  Java側でデータを設定します。
+  
++--
+public class Foo{
+    private String name;
+    private int num;
+    private String address;
+    public Foo(String name, int num, String address){
+        this.name = name;
+        this.num = num;
+        this.address = address;
+    }
+    (setter、getter省略)
+}
++--
+
++---
+Map map = new HashMap();
+List list = new ArrayList();
+list.add(new Foo("1行目",10,"http://www.google.com"));
+list.add(new Foo("2行目",20,"http://www.seasar.org"));
+list.add(new Foo("3行目",30,"http://www.yahoo.com"));
+list.add(new Foo("4行目",10,"http://www.example.com"));
+map.put("fooList", list);
++---
+
+  この場合、出力ファイルは以下の様になります。
+  
+[images/link02.png]
+
+  見た目は普通のセルと変わりないですが、カーソルを上に持って行くとツールチップが表示され、リンク先が確認出来ます。
+
+[images/link03.png]
+  
+  もっとリンクらしくフォントの書式を変えたい場合は、下記のようにテンプレート上で書式設定する事で可能です。
+  
+[images/link04.png]
+  
 {コメント}
 
   テンプレート内にコメントを記入する事が出来ます。出力されるファイルには一切反映されません。
-  
+
 *#comment
 
   テンプレートのA列に「#comment」と書くと、その行はコメントになり、出力されるファイルには無視されます。
