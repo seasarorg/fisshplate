@@ -71,7 +71,6 @@ public class FPTemplateLinkTest extends TestCase {
 
 	   public void testURLがNULLの場合() throws Exception {
 	        InputStream is = getClass().getResourceAsStream("/FPTemplateLinkTest.xls");
-	        HSSFWorkbook wb;
 	        try {
 	            template = new FPTemplate();
 	            Map map = new HashMap();
@@ -80,7 +79,7 @@ public class FPTemplateLinkTest extends TestCase {
 	            aList.add(new A("1行目", 10, new Date(), null));
 	            map.put("b", aList);
 
-	            wb = template.process(is, map);
+	            template.process(is, map);
 	            fail();
 	        } catch (FPException e) {
 	            System.out.println(e.getMessage());
