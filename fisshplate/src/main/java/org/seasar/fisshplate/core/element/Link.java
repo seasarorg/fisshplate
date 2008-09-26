@@ -40,7 +40,8 @@ public class Link extends AbstractCell {
     }
 
     void mergeImpl(FPContext context, HSSFCell out) throws FPMergeException {
-        Matcher mat = pat.matcher(getCellValue().toString());
+        String cellValue = getCellValue().toString();
+        Matcher mat = pat.matcher(cellValue);
         mat.find();
         String type = mat.group(1);
         String link = mat.group(2);
