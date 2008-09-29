@@ -73,7 +73,9 @@ public interface FPConsts {
 
 	static final String MESSAGE_ID_LINK_MERGE_ERROR = "EFP00013";
 	
-	static final String REGEX_BIND_VAR_START = "\\$\\{";
+    static final String MESSAGE_ID_PICTURE_MERGE_ERROR = "EFP00014";
+
+    static final String REGEX_BIND_VAR_START = "\\$\\{";
 	
 	static final String REGEX_BIND_VAR_END = "\\}";
 	
@@ -82,6 +84,7 @@ public interface FPConsts {
 	static final String PREVIEW_EMPTY_LIST_SIGN = "empty list";
 	
 	static final String REGEX_LINK="^\\s*\\#link-(\\S+)\\s+link\\s*=\\s*(.+)\\s+text\\s*=\\s*(.+)$";
+
 	 
 
 }

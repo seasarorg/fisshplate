@@ -56,10 +56,14 @@ public class Picture extends AbstractCell {
 	 * @see org.seasar.fisshplate.core.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
 	 */
 	protected void mergeImpl(FPContext context,HSSFCell out) throws FPMergeException {				
-		
+		String cellValue = getCellValue().toString();
 		Pattern pat = Pattern.compile("^\\s*\\#picture\\((.*)\\s+cell=(.+)\\s*\\s+row=(.+)\\)");
-		Matcher mat = pat.matcher(getCellValue().toString());
-		mat.find();
+		Matcher mat = pat.matcher(cellValue);
+        if(!mat.find()){
+            throw new FPMergeException(FPConsts.MESSAGE_ID_PICTURE_MERGE_ERROR,
+                    new Object[]{cellValue},
+                    cell.getRow());
+        }
 		String picturePath = mat.group(1);
 		String cellRange = mat.group(2);
 		String rowRange = mat.group(3);
