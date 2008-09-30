@@ -26,6 +26,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.apache.poi.hssf.record.RecordFormatException;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -360,6 +361,16 @@ public class FPTemplateTest extends TestCase {
         
         FileOutputStream fos = new FileOutputStream("target/out_onlyOneRowErrorTest.xls");      
         wb.write(fos);
+	}
+	
+	public void testカメラがある場合のテスト() throws Exception{
+	    InputStream is = getClass().getResourceAsStream("/withCameraTest.xls");
+	    //TODO POIがカメラに対応したら、例外のハンドリングを削除。
+	    try{
+	        HSSFWorkbook wb = new HSSFWorkbook(is);
+	    }catch (RecordFormatException e) {
+            assertTrue(true);
+        }
 	}
 	
 	private class Areya implements TemplateElement{

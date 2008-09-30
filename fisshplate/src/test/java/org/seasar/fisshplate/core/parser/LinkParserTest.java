@@ -39,7 +39,7 @@ public class LinkParserTest extends TestCase {
 
     public void testパース成功(){
         HSSFWorkbook wb = new HSSFWorkbook();
-        wb.createSheet().createRow(0).createCell(0);
+        wb.createSheet().createRow(0).createCell((short)0);
         WorkbookWrapper ww = new WorkbookWrapper(wb);
         
         CellWrapper cell = ww.getSheetAt(0).getRow(0).getCell(0);
@@ -66,7 +66,7 @@ public class LinkParserTest extends TestCase {
     
     public void testパースはずれ(){
         HSSFWorkbook wb = new HSSFWorkbook();
-        wb.createSheet().createRow(0).createCell(0);
+        wb.createSheet().createRow(0).createCell((short)0);
         WorkbookWrapper ww = new WorkbookWrapper(wb);
         
         CellWrapper cell = ww.getSheetAt(0).getRow(0).getCell(0);

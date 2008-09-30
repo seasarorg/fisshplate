@@ -42,6 +42,7 @@
     	<item name="ファイル出力の仕方" href="process.html"/>
     	<item name="プレビュー機能" href="preview.html"/>
     	<item name="文法ガイド" href="syntax.html"/>
+        <item name="独自タグの追加" href="customtag.html"/>
     	<item name="S2との連携" href="s2fisshplate.html"/>
     </menu>
     <menu name="Javadoc">
