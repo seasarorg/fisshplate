@@ -5,7 +5,7 @@
   <groupId>org.seasar.fisshplate</groupId>
   <artifactId>s2fisshplate</artifactId>
   <packaging>jar</packaging>
-  <version>0.1.4-SNAPSHOT</version>
+  <version>0.1.4</version>
   <name>S2 Fisshplate</name>
   
   <!-- ******************************************************************************* -->
@@ -162,11 +162,17 @@
     	<groupId>org.seasar.container</groupId>
     	<artifactId>s2-extension</artifactId>
     	<version>2.4.22</version>
+        <exclusions>
+            <exclusion>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+            </exclusion>
+        </exclusions>
     </dependency>
     <dependency>
     	<groupId>org.seasar.fisshplate</groupId>
     	<artifactId>fisshplate</artifactId>
-    	<version>0.1.4-SNAPSHOT</version>    	
+    	<version>0.1.4</version>    	
     	<exclusions>
     		<exclusion>
     			<groupId>ognl</groupId>
