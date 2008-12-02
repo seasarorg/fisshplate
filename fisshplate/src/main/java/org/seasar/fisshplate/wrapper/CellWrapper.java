@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -23,76 +23,86 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
  * @author rokugen
  */
 public class CellWrapper {
-	private HSSFCell hssfCell;
-	private RowWrapper row;
-	
-	public CellWrapper(HSSFCell cell, RowWrapper row){
-		this.row = row;
-		this.hssfCell = cell;
+    private HSSFCell hssfCell;
+    private RowWrapper row;
 
-	}
-	
-	public HSSFCell getHSSFCell(){
-		return hssfCell;
-	}
-	
-	public RowWrapper getRow(){
-		return row;
-	}
+    public CellWrapper(HSSFCell cell, RowWrapper row){
+        this.row = row;
+        this.hssfCell = cell;
 
-	public boolean isNullCell() {
-		return hssfCell == null;
-	}
-	
-	public int getCellIndex(){
-	    if(isNullCell()){
-	        return -1;
-	    }
-	    return (int)hssfCell.getCellNum();
-	}
-	
-	public String getStringValue(){
-		if(isNullCell()){
-			return null;
-		}
-		HSSFRichTextString richVal =  hssfCell.getRichStringCellValue();
-		if(richVal == null){			
-			return null;
-		}
-		
-		return richVal.getString();
-	}
+    }
 
-	public Object getObjectValue() {
-		if(isNullCell()){
-			return null;
-		}
-		int cellType = hssfCell.getCellType();
-		Object ret = null;
-		
-		switch(cellType){		
-		case HSSFCell.CELL_TYPE_NUMERIC:			
-			ret = new Double(hssfCell.getNumericCellValue());
-			break;
-		case HSSFCell.CELL_TYPE_STRING:
-			ret = hssfCell.getRichStringCellValue().getString();
-			break;
-		case HSSFCell.CELL_TYPE_BOOLEAN:
-			ret = Boolean.valueOf(hssfCell.getBooleanCellValue());
-			break;
-		case HSSFCell.CELL_TYPE_FORMULA:
-			ret = hssfCell.getCellFormula();			
-			break;
-		case HSSFCell.CELL_TYPE_ERROR:
-			ret = new Byte(hssfCell.getErrorCellValue());
-			break;
-		case HSSFCell.CELL_TYPE_BLANK:
-			break;
-		default:
-			return null;
-		}
-		
-		return ret;	
-	}
-		
+    public HSSFCell getHSSFCell(){
+        return hssfCell;
+    }
+
+    public RowWrapper getRow(){
+        return row;
+    }
+
+    public boolean isNullCell() {
+        return hssfCell == null;
+    }
+
+    public int getCellIndex(){
+        if(isNullCell()){
+            return -1;
+        }
+        return (int)hssfCell.getCellNum();
+    }
+
+    public String getStringValue(){
+        if(isNullCell()){
+            return null;
+        }
+        HSSFRichTextString richVal =  hssfCell.getRichStringCellValue();
+        if(richVal == null){
+            return null;
+        }
+
+        return richVal.getString();
+    }
+
+    public Object getObjectValue() {
+        if(isNullCell()){
+            return null;
+        }
+        int cellType = hssfCell.getCellType();
+        Object ret = null;
+
+        switch(cellType){
+        case HSSFCell.CELL_TYPE_NUMERIC:
+            ret = getValueFromNumericCell(hssfCell);
+            break;
+        case HSSFCell.CELL_TYPE_STRING:
+            ret = hssfCell.getRichStringCellValue().getString();
+            break;
+        case HSSFCell.CELL_TYPE_BOOLEAN:
+            ret = Boolean.valueOf(hssfCell.getBooleanCellValue());
+            break;
+        case HSSFCell.CELL_TYPE_FORMULA:
+            ret = hssfCell.getCellFormula();
+            break;
+        case HSSFCell.CELL_TYPE_ERROR:
+            ret = new Byte(hssfCell.getErrorCellValue());
+            break;
+        case HSSFCell.CELL_TYPE_BLANK:
+            break;
+        default:
+            return null;
+        }
+
+        return ret;
+    }
+    private Object getValueFromNumericCell(HSSFCell cell){
+        String str = cell.toString();
+        if(str.matches("\\d+-\\d+-\\d+")){
+            return cell.getDateCellValue();
+        }else{
+            return new Double(cell.getNumericCellValue());
+        }
+
+
+    }
+
 }

@@ -30,3 +30,26 @@
 
 行に対するタグの追加
 
+  例として、ここでは「#sample」とセルに書くと、その行の一番左のセルに「独自タグのテストです。」という文字列を表示するタグを作ってみます。タグを書いたセルの書式も反映させます。
+  
+* 要素クラスの作成
+
+  インタフェース「TemplateElement」を継承してクラスを実装します。「merge」メソッドを実装する必要があります。また、必要に応じてコンストラクタを定義します。
+
++--
+private class Sample implements TemplateElement{
+    private HSSFCell originalCell;
+    
+    public Sample(HSSFCell cell){
+        originalCell = cell;
+    }
+
+    public void merge(FPContext context) throws FPMergeException {
+        HSSFCell currentCell = context.getCurrentCell();
+        currentCell.setCellStyle(originalCell.getCellStyle());
+        currentCell.setCellValue(new HSSFRichTextString("独自タグテストです"));
+        context.nextRow();
+    }
+    
+}
++--

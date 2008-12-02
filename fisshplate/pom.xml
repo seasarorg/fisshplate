@@ -5,7 +5,7 @@
   <groupId>org.seasar.fisshplate</groupId>
   <artifactId>fisshplate</artifactId>
   <packaging>jar</packaging>  
-  <version>0.1.4</version>
+  <version>0.1.4-SNAPSHOT</version>
   <name>Fisshplate</name>
   <description>Fisshplate is a template engine for HSSF of POI.</description>
 
