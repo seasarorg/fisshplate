@@ -96,7 +96,7 @@ public class CellWrapper {
     }
     private Object getValueFromNumericCell(HSSFCell cell){
         String str = cell.toString();
-        if(str.matches("\\d+-\\d+-\\d+")){
+        if(str.matches("\\d+-.+-\\d+")){
             return cell.getDateCellValue();
         }else{
             return new Double(cell.getNumericCellValue());
