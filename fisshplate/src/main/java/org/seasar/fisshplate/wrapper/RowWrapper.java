@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -25,46 +25,46 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
  * @author rokugen
  */
 public class RowWrapper {
-	private HSSFRow hssfRow;
-	private SheetWrapper sheet;
-	private List cellList = new ArrayList();
-	
-	public RowWrapper(HSSFRow row, SheetWrapper sheet){
-		this.sheet = sheet;
-		this.hssfRow = row;
-		if(row != null){
-			addCellsToList(row);
-		}		
-	}
-	
-	private void addCellsToList(HSSFRow row){
-		for(int i=0; i <= row.getLastCellNum(); i++){
-			cellList.add(new CellWrapper(row.getCell((short)i),this));
-		}
-	}
-	
-	public boolean isNullRow(){
-		return hssfRow == null;
-	}
-	
-	public HSSFRow getHSSFRow(){
-		return hssfRow;
-	}
-	
-	public SheetWrapper getSheet(){
-		return sheet;
-	}
-	
-	public CellWrapper getCell(int index){
-		if(index + 1 > cellList.size()){
-			return null;
-		}
-		return (CellWrapper) cellList.get(index);
-	}
+    private HSSFRow hssfRow;
+    private SheetWrapper sheet;
+    private List cellList = new ArrayList();
 
-	public int getCellCount() {		
-		return cellList.size();
-	}
-	
+    public RowWrapper(HSSFRow row, SheetWrapper sheet){
+        this.sheet = sheet;
+        this.hssfRow = row;
+        if(row != null){
+            addCellsToList(row);
+        }
+    }
+
+    private void addCellsToList(HSSFRow row){
+        for(int i=0; i < row.getLastCellNum(); i++){
+            cellList.add(new CellWrapper(row.getCell((short)i),this));
+        }
+    }
+
+    public boolean isNullRow(){
+        return hssfRow == null;
+    }
+
+    public HSSFRow getHSSFRow(){
+        return hssfRow;
+    }
+
+    public SheetWrapper getSheet(){
+        return sheet;
+    }
+
+    public CellWrapper getCell(int index){
+        if(index + 1 > cellList.size()){
+            return null;
+        }
+        return (CellWrapper) cellList.get(index);
+    }
+
+    public int getCellCount() {
+        return cellList.size();
+    }
+
 
 }
