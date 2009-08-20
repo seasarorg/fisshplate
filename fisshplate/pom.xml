@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.seasar.fisshplate</groupId>
   <artifactId>fisshplate</artifactId>
-  <packaging>jar</packaging>  
+  <packaging>jar</packaging>
   <version>0.1.4-SNAPSHOT</version>
   <name>Fisshplate</name>
   <description>Fisshplate is a template engine for HSSF of POI.</description>
@@ -19,7 +19,7 @@
       <post>seasar-user@lists.sourceforge.jp</post>
       <archive>http://lists.sourceforge.jp/mailman/archives/seasar-user/</archive>
     </mailingList>
-  </mailingLists>  
+  </mailingLists>
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -37,34 +37,34 @@
     <url>http://www.seasar.org/</url>
   </organization>
   <developers>
-  	<developer>
-  		<email>rokugensai_at_gmail.com</email>
-  		<id>rokugen</id>
-  		<name>rokugensai takeuchi</name>
-			<roles>
-				<role>developer</role>
-			</roles>
-			<url>http://d.hatena.ne.jp/rokugen</url>
-			<timezone>+9</timezone>			
-  	</developer>
-  	<developer>
-  		<email></email>
-  		<id>a-conv</id>
-  		<name></name>
-			<roles>
-				<role>developer</role>
-			</roles>
-			<timezone>+9</timezone>
-  	</developer>
-  </developers>        
+      <developer>
+          <email>rokugensai_at_gmail.com</email>
+          <id>rokugen</id>
+          <name>rokugensai takeuchi</name>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <url>http://d.hatena.ne.jp/rokugen</url>
+            <timezone>+9</timezone>
+      </developer>
+      <developer>
+          <email></email>
+          <id>a-conv</id>
+          <name></name>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>+9</timezone>
+      </developer>
+  </developers>
   <issueManagement>
     <system>JIRA</system>
     <url><![CDATA[https://www.seasar.org/issues/browse/FISSHPLATE]]></url>
   </issueManagement>
-  
+
 
 <!-- ******************************************************************************* -->
-    
+
   <build>
     <pluginManagement>
       <plugins>
@@ -77,17 +77,17 @@
             <encoding>UTF-8</encoding>
           </configuration>
         </plugin>
-	      <plugin>
-	        <groupId>org.apache.maven.plugins</groupId>
-	        <artifactId>maven-site-plugin</artifactId>
-	        <configuration>
-						<inputEncoding>UTF-8</inputEncoding>
-						<outputEncoding>UTF-8</outputEncoding>
-	          <locales>en,ja</locales>
-	        </configuration>
-	      </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-site-plugin</artifactId>
+            <configuration>
+                        <inputEncoding>UTF-8</inputEncoding>
+                        <outputEncoding>UTF-8</outputEncoding>
+              <locales>en,ja</locales>
+            </configuration>
+          </plugin>
       </plugins>
-    </pluginManagement>  
+    </pluginManagement>
     <plugins>
       <plugin>
         <artifactId>maven-source-plugin</artifactId>
@@ -110,7 +110,7 @@
           <charset>UTF-8</charset>
           <outputDirectory>${project.reporting.outputDirectory}/apidocs/fisshplate</outputDirectory>
           <links>
-          	<link>http://java.sun.com/j2se/1.5.0/ja/docs/ja/api/</link>
+              <link>http://java.sun.com/j2se/1.5.0/ja/docs/ja/api/</link>
             <link>http://java.sun.com/j2ee/1.4/docs/api/</link>
             <link>http://poi.apache.org/apidocs/</link>
           </links>
@@ -124,7 +124,7 @@
             </goals>
           </execution>
 <!--           <execution>
-          	<id>javadoc</id>
+              <id>javadoc</id>
             <phase>site</phase>
             <goals>
               <goal>javadoc</goal>
@@ -150,31 +150,31 @@
             </goals>
           </execution>
         </executions>
-      </plugin>      
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>				
-				<configuration>
-				<finalName>
-					fisshplate
-				</finalName>
-				<outputDirectory>${project.build.directory}/assembly</outputDirectory>
-				<descriptors>
-					<descriptor>src/main/assembly/bin.xml</descriptor>
-				</descriptors>					
-				</configuration>
-			</plugin>      
+      </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                <finalName>
+                    fisshplate
+                </finalName>
+                <outputDirectory>${project.build.directory}/assembly</outputDirectory>
+                <descriptors>
+                    <descriptor>src/main/assembly/bin.xml</descriptor>
+                </descriptors>
+                </configuration>
+            </plugin>
     </plugins>
-  	<extensions>
-  		<extension>
-  			<groupId>org.apache.maven.wagon</groupId>
-  			<artifactId>wagon-webdav</artifactId>  			
- 				<version>1.0-beta-2</version>
-  		</extension>
-  	</extensions>      
+      <extensions>
+          <extension>
+              <groupId>org.apache.maven.wagon</groupId>
+              <artifactId>wagon-webdav</artifactId>
+                 <version>1.0-beta-2</version>
+          </extension>
+      </extensions>
   </build>
-  
+
 <!-- ******************************************************************************* -->
-  
+
   <dependencies>
     <dependency>
       <groupId>org.apache.poi</groupId>
@@ -184,7 +184,12 @@
     <dependency>
       <groupId>ognl</groupId>
       <artifactId>ognl</artifactId>
-      <version>2.6.9-patch-20070908</version>
+      <version>2.6.9-patch-20090427</version>
+    </dependency>
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>2.3.15</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -201,7 +206,7 @@
       <name>The Seasar Foundation Maven2 Repository</name>
       <url>http://maven.seasar.org/maven2</url>
     </repository>
-	</repositories>
+    </repositories>
   <distributionManagement>
     <repository>
       <uniqueVersion>false</uniqueVersion>
@@ -209,18 +214,18 @@
       <name>The Seasar Foundation Maven2 Repository</name>
       <url>dav:https://www.seasar.org/maven/maven2</url>
     </repository>
-		<snapshotRepository>
-			<uniqueVersion>true</uniqueVersion>
-			<id>maven.seasar.org</id>
-			<name>The Seasar Foundation Maven2 Snapshot Repository</name>
-			<url>dav:https://www.seasar.org/maven/maven2-snapshot</url>
-   </snapshotRepository>    
+        <snapshotRepository>
+            <uniqueVersion>true</uniqueVersion>
+            <id>maven.seasar.org</id>
+            <name>The Seasar Foundation Maven2 Snapshot Repository</name>
+            <url>dav:https://www.seasar.org/maven/maven2-snapshot</url>
+   </snapshotRepository>
     <site>
       <id>maven.seasar.org</id>
       <url>dav:https://www.seasar.org/site/sandbox/fisshplate</url>
-    </site>   
+    </site>
   </distributionManagement>
 
 <!-- ******************************************************************************* -->
-  
+
 </project>

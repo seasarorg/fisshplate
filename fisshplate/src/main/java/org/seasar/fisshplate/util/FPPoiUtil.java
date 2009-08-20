@@ -8,8 +8,8 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
  * @author rokugen
  *
  */
-public class FpPoiUtil {
-    private FpPoiUtil(){}
+public class FPPoiUtil {
+    private FPPoiUtil(){}
 
     /**
      * セルの書式設定に基いてセルの値を戻します。

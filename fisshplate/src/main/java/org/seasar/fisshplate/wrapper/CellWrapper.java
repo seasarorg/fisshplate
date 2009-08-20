@@ -16,8 +16,7 @@
 package org.seasar.fisshplate.wrapper;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.seasar.fisshplate.util.FpPoiUtil;
+import org.seasar.fisshplate.util.FPPoiUtil;
 
 /**
  * HSSFCellのラッパークラスです。
@@ -53,11 +52,11 @@ public class CellWrapper {
     }
 
     public String getStringValue(){
-        return FpPoiUtil.getStringValue(hssfCell);
+        return FPPoiUtil.getStringValue(hssfCell);
     }
 
     public Object getObjectValue() {
-        return FpPoiUtil.getCellValueAsObject(hssfCell);
+        return FPPoiUtil.getCellValueAsObject(hssfCell);
     }
 
 }
