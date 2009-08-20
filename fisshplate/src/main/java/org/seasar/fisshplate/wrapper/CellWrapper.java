@@ -17,6 +17,7 @@ package org.seasar.fisshplate.wrapper;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.seasar.fisshplate.util.FpPoiUtil;
 
 /**
  * HSSFCellのラッパークラスです。
@@ -52,57 +53,11 @@ public class CellWrapper {
     }
 
     public String getStringValue(){
-        if(isNullCell()){
-            return null;
-        }
-        HSSFRichTextString richVal =  hssfCell.getRichStringCellValue();
-        if(richVal == null){
-            return null;
-        }
-
-        return richVal.getString();
+        return FpPoiUtil.getStringValue(hssfCell);
     }
 
     public Object getObjectValue() {
-        if(isNullCell()){
-            return null;
-        }
-        int cellType = hssfCell.getCellType();
-        Object ret = null;
-
-        switch(cellType){
-        case HSSFCell.CELL_TYPE_NUMERIC:
-            ret = getValueFromNumericCell(hssfCell);
-            break;
-        case HSSFCell.CELL_TYPE_STRING:
-            ret = hssfCell.getRichStringCellValue().getString();
-            break;
-        case HSSFCell.CELL_TYPE_BOOLEAN:
-            ret = Boolean.valueOf(hssfCell.getBooleanCellValue());
-            break;
-        case HSSFCell.CELL_TYPE_FORMULA:
-            ret = hssfCell.getCellFormula();
-            break;
-        case HSSFCell.CELL_TYPE_ERROR:
-            ret = new Byte(hssfCell.getErrorCellValue());
-            break;
-        case HSSFCell.CELL_TYPE_BLANK:
-            break;
-        default:
-            return null;
-        }
-
-        return ret;
-    }
-    private Object getValueFromNumericCell(HSSFCell cell){
-        String str = cell.toString();
-        if(str.matches("\\d+-.+-\\d+")){
-            return cell.getDateCellValue();
-        }else{
-            return new Double(cell.getNumericCellValue());
-        }
-
-
+        return FpPoiUtil.getCellValueAsObject(hssfCell);
     }
 
 }
