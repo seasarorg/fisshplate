@@ -3,6 +3,11 @@ package org.seasar.fisshplate.util;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 
+/**
+ * POIの操作の便利メソッドを集めたユーティリティクラスです。
+ * @author rokugen
+ *
+ */
 public class FpPoiUtil {
     private FpPoiUtil(){}
 
