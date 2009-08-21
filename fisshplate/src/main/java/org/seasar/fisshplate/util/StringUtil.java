@@ -15,6 +15,7 @@
  */
 package org.seasar.fisshplate.util;
 
+
 /**
  * @author a-conv
  */
@@ -28,13 +29,6 @@ public class StringUtil {
 
     public static boolean isEmpty(String str){
         return str == null || str.length() == 0;
-    }
-
-    public static String escapeEl(String str) {
-        str = str.replaceAll("\\$", "\\\\\\$");
-        str = str.replaceAll("\\{", "\\\\\\{");
-        str = str.replaceAll("\\}", "\\\\\\}");
-        return str;
     }
 
 }

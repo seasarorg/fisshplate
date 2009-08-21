@@ -16,7 +16,9 @@
 package org.seasar.fisshplate.core.element;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -205,7 +207,6 @@ public class ElTest extends TestCase {
 
     }
 
-
     public void testElTest()throws Exception{
         String str = "埋め込み番号は${embeded1}と${embeded2}です。";
         String[] strs = str.split("\\$\\{[^\\$\\{\\}]+\\}");
@@ -224,21 +225,58 @@ public class ElTest extends TestCase {
 
     }
 
-    public void testEscape(){
-        String str = "${hoge}";
-        str = str.replaceAll("\\$", "\\\\\\$");
-        str = str.replaceAll("\\{", "\\\\\\{");
-        str = str.replaceAll("\\}", "\\\\\\}");
-        System.out.println(str);
+    public void testバインド変数でメソッドや配列要素アクセス() throws Exception{
+        HSSFWorkbook template = getTemplate("/ElTest_method.xls");
+        WorkbookWrapper workbook = new WorkbookWrapper(template);
+        Map data = new HashMap();
+        List dataList = new ArrayList();
+        dataList.add("ほげ");
+        dataList.add(new Integer[]{new Integer(123)});
+        data.put("dataList", dataList);
+
+        FPContext context = new FPContext(template.getSheetAt(0),data);
+
+        CellWrapper cell = workbook.getSheetAt(0).getRow(0).getCell(0);//2
+
+        el = new El(new GenericCell(cell));
+
+        el.merge(context);
+        HSSFCell actual = template.getSheetAt(0).getRow(0).getCell(0);
+        assertEquals(new Double(2D), new Double(actual.getNumericCellValue()));
+
+        cell = workbook.getSheetAt(0).getRow(0).getCell(1);//ほげ
+
+        el = new El(new GenericCell(cell));
+
+        el.merge(context);
+        actual = template.getSheetAt(0).getRow(0).getCell(1);
+        assertEquals("ほげ", actual.getRichStringCellValue().getString());
+
+        cell = workbook.getSheetAt(0).getRow(1).getCell(0);//${dataList.get(1)[0]}
+        context.nextRow();
+
+        el = new El(new GenericCell(cell));
+
+        el.merge(context);
+        actual = template.getSheetAt(0).getRow(1).getCell(0);
+        assertEquals(new Double(123D), new Double(actual.getNumericCellValue()));
+
+        cell = workbook.getSheetAt(0).getRow(2).getCell(0);//リストのサイズは${dataList.size()}です。
+        context.nextRow();
+
+        el = new El(new GenericCell(cell));
+
+        el.merge(context);
+        actual = template.getSheetAt(0).getRow(2).getCell(0);
+        assertEquals("リストのサイズは2です。", actual.getRichStringCellValue().getString());
+
     }
 
 
-
-    public void testRegTest(){
+   public void testRegTest(){
         String exp = "${data.val!空文字列}".replaceAll("^\\$\\{(.+)\\}$", "$1");
         assertEquals("data.val!空文字列", exp);
     }
-
 
 }
 

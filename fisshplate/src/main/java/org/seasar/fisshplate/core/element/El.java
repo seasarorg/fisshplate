@@ -110,7 +110,7 @@ public class El implements TemplateElement{
         Set keySet = expressionMap.keySet();
         for(Iterator itr = keySet.iterator(); itr.hasNext();){
             String key = (String) itr.next();
-            cellValue = cellValue.replaceAll(StringUtil.escapeEl(key), expressionMap.get(key).toString());
+            cellValue = cellValue.replaceAll(Pattern.quote(key), expressionMap.get(key).toString());
         }
         return cellValue;
     }
@@ -121,7 +121,7 @@ public class El implements TemplateElement{
         }
 
         String exp = expressionMap.keySet().iterator().next().toString();
-        value = value.replaceAll(StringUtil.escapeEl(exp), "");
+        value = value.replaceAll(Pattern.quote(exp), "");
 
         return (value.trim().length() == 0);
     }
