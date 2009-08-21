@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -20,21 +20,21 @@ package org.seasar.fisshplate.util;
  */
 public class StringUtil {
 
-	public static String parseSuffix(String picturepath) {
-		int lastSeparatorIndex = picturepath.lastIndexOf(".");
-		String suffix = picturepath.substring(lastSeparatorIndex + 1, picturepath.length());
-		return suffix;
-	}
-	
-	public static boolean isEmpty(String str){
-		return str == null || str.length() == 0;		
-	}
+    public static String parseSuffix(String picturepath) {
+        int lastSeparatorIndex = picturepath.lastIndexOf(".");
+        String suffix = picturepath.substring(lastSeparatorIndex + 1, picturepath.length());
+        return suffix;
+    }
 
-	public static String escapeEl(String str) {
-		str = str.replaceAll("\\$", "\\\\\\$");
-		str = str.replaceAll("\\{", "\\\\\\{");
-		str = str.replaceAll("\\}", "\\\\\\}");		
-		return str;		
-	}
+    public static boolean isEmpty(String str){
+        return str == null || str.length() == 0;
+    }
+
+    public static String escapeEl(String str) {
+        str = str.replaceAll("\\$", "\\\\\\$");
+        str = str.replaceAll("\\{", "\\\\\\{");
+        str = str.replaceAll("\\}", "\\\\\\}");
+        return str;
+    }
 
 }
