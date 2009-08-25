@@ -6,23 +6,23 @@
   2008/01/10
 
 独自タグの追加
-  
+
   Fisshplateでは、いくつかのタグを用意していますが、独自でタグを定義して追加する事が出来ます。
-    
+
   タグには2種類あります。
-  
+
   [<<行に対するタグ>>] 行に対して指定するタグです。#foreach や #if などがそれにあたります。タグは1行につき1つしか指定出来ません。
 
   [<<セルに対するタグ>>] セルに対して指定するタグです。 #link などがそれにあたります。
-  
+
   []
-  
+
   現在の仕様では、上記の内「行に対するタグ」のみ、独自タグに対応しています。
 
 考え方
 
   基本的には、1つのタグに対して2つのクラスを用意します。
-  
+
   [<<要素クラス>>] タグ要素そのものを表すクラスです。出力時の動きなどを定義します。
 
   [<<パーサクラス>>] セルの値を読み込み、あるルールでそのタグにマッチするかを判定します。マッチした場合、その要素クラスを生成し、
@@ -31,15 +31,15 @@
 行に対するタグの追加
 
   例として、ここでは「#sample」とセルに書くと、その行の一番左のセルに「独自タグのテストです。」という文字列を表示するタグを作ってみます。タグを書いたセルの書式も反映させます。
-  
+
 * 要素クラスの作成
 
   インタフェース「TemplateElement」を継承してクラスを実装します。「merge」メソッドを実装する必要があります。また、必要に応じてコンストラクタを定義します。
 
 +--
-private class Sample implements TemplateElement{
+public class Sample implements TemplateElement{
     private HSSFCell originalCell;
-    
+
     public Sample(HSSFCell cell){
         originalCell = cell;
     }
@@ -50,6 +50,135 @@ private class Sample implements TemplateElement{
         currentCell.setCellValue(new HSSFRichTextString("独自タグテストです"));
         context.nextRow();
     }
-    
+
 }
 +--
+
+  コンストラクタで、「#sample」と書かれているセルそのものを受け取ります。
+  それを originalCell というメンバ変数に保持しておきます。
+
+  merge メソッドは、TemplateElement インタフェースに定義されているメソッドです。
+  これが実際にデータ埋め込み時に呼ばれます。引数はデータ埋め込み時にグローバルで管理する各変数を保持している FPContext クラスです。
+  ここから埋め込みデータやら現在位置やらを取得します。
+
+  ここでは、現在処理中のセルをHSSFCellとして取得します。
+  そこへ、originalCellからスタイルを取得して現在処理中のセルにコピーしています。
+  そしてそのセルに「独自タグテストです」という文字列をセットしています。
+
+  これでA列に「独自タグテストです」が入ったので、FPContext#nextRow() を呼び出して、
+  FPContext に「処理を次の行に移してくれ」と命令します。
+
+* パーサクラスの作成
+
+  次に、このタグを解析して上の Sample クラスを生成するパーサを作ります。RowParser インタフェースを実装します。
+
++--
+public class SampleParser implements RowParser{
+    public boolean process(CellWrapper cell, FPParser parser)  throws FPParseException {
+        String value =cell.getStringValue();
+        if(!"#sample".equals(value)){
+            return false;
+        }
+        TemplateElement elem = new Sample(cell.getHSSFCell());
+        parser.addTemplateElement(elem);
+        return true;
+    }
+}
++---
+
+  RowParserインタフェースのprocessメソッドを実装します。
+  この最中に何かエラーが起きた場合は、FPParserExceptionを投げるようにします。
+
+  パース時に見るセル（その行のA列）である CellWrapper と、大元のパーサである FPParser が引数で渡って来ます。
+  CellWrapperは、POI のクラスである HSSFCell を、Fisshplate が解析しやすいようにラップしたクラスです。
+
+  セルの値を文字列として取得します。RowParserr#process が FPParser から呼ばれた時点でセルの値は必ず文字列である事が保証されています。
+
+  その値が「#sample」じゃなかったらパース対象でないので false を戻します。
+  「#sample」ならば、Sample クラスを生成して、FPParser#addTemplateElement の引数にセットし、
+  要素として登録します。
+
+* 動かしてみる
+
+  データを埋め込む際に、このパーサクラスを、FPTemplate に追加します。
+
++---
+InputStream is = getClass().getResourceAsStream("/Template.xls");
+
+template = new FPTemplate();
+template.addRowParser(new SampleParser()); //SampleParserの登録
+
+Map map = new HashMap();
+//
+//ここで、mapに対して実際のデータをセットしたりする。
+//
+HSSFWorkbook wb = template.process(is, map);
+is.close();
+FileOutputStream fos = new FileOutputStream("out.xls");
+wb.write(fos);
+fos.close();
++--
+
+  上記コードでは、try catchなどは省略してます。これで、A列に「#sample」という値があった場合、その行のA列に「独自タグテストです」と入力されているはずです。
+
+* ブロック要素の場合
+
+  例えば、「#sample」で始まり、「#end」で終了し、その間にある行を子要素として持つものをブロック要素とします。
+
+  独自のブロック要素を作る場合は、他にもルールがあります。
+
+** ブロック終了タグ
+
+  ブロックの終了を表すタグは、「#end」固定になります。
+
+** 要素クラス
+
+  ブロック要素の場合、AbstractBlock を継承します。
+
++--
+public class Sample extends AbstractBlock{
+    private HSSFCell originalCell;
+
+    public Sample(HSSFCell cell){
+        originalCell = cell;
+    }
+
+    public void merge(FPContext context) throws FPMergeException {
+        HSSFCell currentCell = context.getCurrentCell();
+        currentCell.setCellStyle(originalCell.getCellStyle());
+        currentCell.setCellValue(new HSSFRichTextString("独自タグテストです"));
+        context.nextRow();
+
+        mergeChildren(context);
+
+    }
+}
++--
+
+  ブロック要素は子要素を保持しているので、子要素のデータ埋め込みのためのメソッド、
+  「AbstractBlock#mergeChildren()」を呼び出しています。
+
+  詳細は「org.seasar.fisshplate.core.element.WhileBlock」など、AbstractBlock を継承しているソースを参考にして下さい。
+
+** パーサクラス
+
+  パーサクラスも、ブロック要素の場合はルールがあります。
+
++--
+public class SampleParser implements RowParser{
+    public boolean process(CellWrapper cell, FPParser parser)  throws FPParseException {
+        String value =cell.getStringValue();
+        if(!"#sample".equals(value)){
+            return false;
+        }
+        AbstractBlock elem = new Sample(cell.getHSSFCell());
+        parser.addBlockElement(block);
+        return true;
+    }
+}
++--
+
+  ブロック要素の場合、new した要素クラスを、FPParser#addBlockElement() の引数にセットします。
+  すると、FPParser が、この行から最初に「#end」が見つかるまでの間の行を子要素として自動的に登録します。
+
+   こちらも詳細は、「org.seasar.fisshplate.core.parser.WhileParser」などを参考にして下さい。
