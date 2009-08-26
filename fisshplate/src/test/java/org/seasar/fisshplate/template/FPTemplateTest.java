@@ -365,8 +365,7 @@ public class FPTemplateTest extends TestCase {
 
     public void testカメラがある場合のテスト() throws Exception{
         InputStream is = getClass().getResourceAsStream("/withCameraTest.xls");
-        //POI-3.2-FINALからPOI側でカメラ対応した。例外が出たらPOIのデグレ
-        HSSFWorkbook wb = new HSSFWorkbook(is);
+        new HSSFWorkbook(is);
     }
 
     private class Areya implements TemplateElement{
