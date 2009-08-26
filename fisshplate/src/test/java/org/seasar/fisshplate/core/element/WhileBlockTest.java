@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -27,27 +27,27 @@ import org.seasar.fisshplate.wrapper.WorkbookWrapper;
  */
 public class WhileBlockTest extends TestCase {
 
-	public WhileBlockTest(String name) {
-		super(name);
-	}
+    public WhileBlockTest(String name) {
+        super(name);
+    }
 
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
-	
-	public void test例外テスト(){
-		HSSFWorkbook hssfWb = new HSSFWorkbook();
-		hssfWb.createSheet().createRow(0).createCell((short) 0);
-		WorkbookWrapper wb = new WorkbookWrapper(hssfWb);		
-		WhileBlock block = new WhileBlock(wb.getSheetAt(0).getRow(0), "hogehoge");		
-		try {
-			block.merge(new FPContext(null,null));
-			fail();
-		} catch (FPMergeException e) {
-			System.out.println(e);
-			assertTrue(true);
-		}		
-				
-	}	
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
+
+    public void test例外テスト(){
+        HSSFWorkbook hssfWb = new HSSFWorkbook();
+        hssfWb.createSheet().createRow(0).createCell((short) 0);
+        WorkbookWrapper wb = new WorkbookWrapper(hssfWb);
+        WhileBlock block = new WhileBlock(wb.getSheetAt(0).getRow(0), "hogehoge");
+        try {
+            block.merge(new FPContext(null,null));
+            fail();
+        } catch (FPMergeException e) {
+            System.out.println(e);
+            assertTrue(true);
+        }
+
+    }
 
 }

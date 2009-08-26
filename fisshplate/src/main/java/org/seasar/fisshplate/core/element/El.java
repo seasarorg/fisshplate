@@ -30,7 +30,6 @@ import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.core.BindVariable;
 import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.util.OgnlUtil;
-import org.seasar.fisshplate.util.StringUtil;
 
 /**
  * テンプレートのセルの値にバインド変数が含まれる場合の要素クラスです。OGNLで評価します。

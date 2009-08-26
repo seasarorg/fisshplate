@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -38,74 +38,74 @@ import org.seasar.fisshplate.wrapper.WorkbookWrapper;
  * @author rokugen
  */
 public class RowTest extends TestCase {
-	
-	public RowTest(String name){
-		super (name);
-	}
-	
-	protected void setUp() throws Exception {		
-		super.setUp();
-	}
-	
-	public void testコンストラクタ(){
-		Root root = new Root();
-		HSSFWorkbook templateWb = new HSSFWorkbook();
-		HSSFSheet templateSheet = templateWb.createSheet();
-		HSSFRow templateRow = templateSheet.createRow(0);
-		HSSFCell cell = templateRow.createCell((short)0);
-		cell.setCellValue(new HSSFRichTextString("リテラル"));
-		cell = templateRow.createCell((short)1);
-		cell.setCellValue(10D);
-		//cellNum 2 は設定しない。
-		cell = templateRow.createCell((short)3);
-		cell.setCellValue(new HSSFRichTextString("${data}"));
-		cell = templateRow.createCell((short)4);
-		cell.setCellValue(new HSSFRichTextString("#picture(/hoge/fuga.png cell=1 row=1)"));
-		cell = templateRow.createCell((short)5);
-		cell.setCellValue(new HSSFRichTextString("#picture(${data.path} cell=1 row=1)"));
-		cell = templateRow.createCell((short)6);
-		cell.setCellValue(new HSSFRichTextString("#suspend TEST is ${hoge}"));
-		cell = templateRow.createCell((short)7);
+
+    public RowTest(String name){
+        super (name);
+    }
+
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
+
+    public void testコンストラクタ(){
+        Root root = new Root();
+        HSSFWorkbook templateWb = new HSSFWorkbook();
+        HSSFSheet templateSheet = templateWb.createSheet();
+        HSSFRow templateRow = templateSheet.createRow(0);
+        HSSFCell cell = templateRow.createCell((short)0);
+        cell.setCellValue(new HSSFRichTextString("リテラル"));
+        cell = templateRow.createCell((short)1);
+        cell.setCellValue(10D);
+        //cellNum 2 は設定しない。
+        cell = templateRow.createCell((short)3);
+        cell.setCellValue(new HSSFRichTextString("${data}"));
+        cell = templateRow.createCell((short)4);
+        cell.setCellValue(new HSSFRichTextString("#picture(/hoge/fuga.png cell=1 row=1)"));
+        cell = templateRow.createCell((short)5);
+        cell.setCellValue(new HSSFRichTextString("#picture(${data.path} cell=1 row=1)"));
+        cell = templateRow.createCell((short)6);
+        cell.setCellValue(new HSSFRichTextString("#suspend TEST is ${hoge}"));
+        cell = templateRow.createCell((short)7);
         cell.setCellFormula("TEXT(VALUE(\"20040101\"),\"yyyy/mm/dd\")");
-		cell = templateRow.createCell((short)8);
+        cell = templateRow.createCell((short)8);
         cell.setCellFormula("TEXT(VALUE(\"${hoge}\"),\"yyyy/mm/dd\")");
         cell = templateRow.createCell((short)9);
         cell.setCellValue(new HSSFRichTextString("#link-url  link = http://www.gyoizo.com text = ほげー"));
         cell = templateRow.createCell((short)10);
         cell.setCellValue(new HSSFRichTextString("#link-url  link = ${data.hoge} text = ほげー"));
-        
-			
-		WorkbookWrapper workbook = new WorkbookWrapper(templateWb);
-		
-		Row row = new Row(workbook.getSheetAt(0).getRow(0), root, new CellParserHandler());
-		List elementList = row.getCellElementList();		
-		
-		TemplateElement elem = (TemplateElement) elementList.get(0);
-		assertTrue(elem.getClass() == GenericCell.class );
-		elem = (TemplateElement) elementList.get(1);
-		assertTrue(elem.getClass() == GenericCell.class);
-		elem = (TemplateElement) elementList.get(2);
-		assertTrue(elem.getClass() == NullCell.class);
-		elem = (TemplateElement) elementList.get(3);
-		assertTrue(elem.getClass() == El.class);
-		assertTrue(((El)elem).targetElement.getClass() == GenericCell.class);
-		elem = (TemplateElement) elementList.get(4);
-		assertTrue(elem.getClass() == Picture.class);
-		elem = (TemplateElement) elementList.get(5);
-		assertTrue(elem.getClass() == El.class);
-		assertTrue(((El)elem).targetElement.getClass() == Picture.class);		
-		elem = (TemplateElement) elementList.get(6);
-		assertTrue(elem.getClass() == Suspend.class);		
-		assertEquals("TEST is ${hoge}", ((Suspend)elem).getEl().targetElement.getCellValue());		
+
+
+        WorkbookWrapper workbook = new WorkbookWrapper(templateWb);
+
+        Row row = new Row(workbook.getSheetAt(0).getRow(0), root, new CellParserHandler());
+        List elementList = row.getCellElementList();
+
+        TemplateElement elem = (TemplateElement) elementList.get(0);
+        assertTrue(elem.getClass() == GenericCell.class );
+        elem = (TemplateElement) elementList.get(1);
+        assertTrue(elem.getClass() == GenericCell.class);
+        elem = (TemplateElement) elementList.get(2);
+        assertTrue(elem.getClass() == NullCell.class);
+        elem = (TemplateElement) elementList.get(3);
+        assertTrue(elem.getClass() == El.class);
+        assertTrue(((El)elem).targetElement.getClass() == GenericCell.class);
+        elem = (TemplateElement) elementList.get(4);
+        assertTrue(elem.getClass() == Picture.class);
+        elem = (TemplateElement) elementList.get(5);
+        assertTrue(elem.getClass() == El.class);
+        assertTrue(((El)elem).targetElement.getClass() == Picture.class);
+        elem = (TemplateElement) elementList.get(6);
+        assertTrue(elem.getClass() == Suspend.class);
+        assertEquals("TEST is ${hoge}", ((Suspend)elem).getEl().targetElement.getCellValue());
         elem = (TemplateElement) elementList.get(7);
-        assertTrue(elem.getClass() == GenericCell.class);       
+        assertTrue(elem.getClass() == GenericCell.class);
         elem = (TemplateElement) elementList.get(8);
-        assertTrue(elem.getClass() == El.class);       
+        assertTrue(elem.getClass() == El.class);
         elem = (TemplateElement) elementList.get(9);
         assertTrue(elem.getClass() == Link.class);
         elem = (TemplateElement) elementList.get(10);
         assertTrue(((El)elem).targetElement.getClass() == Link.class);
 
-	}
+    }
 
 }

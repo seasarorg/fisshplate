@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -32,32 +32,32 @@ import org.seasar.fisshplate.wrapper.WorkbookWrapper;
  */
 public class SuspendTest extends TestCase {
 
-	public SuspendTest(String name) {
-		super(name);
-	}
+    public SuspendTest(String name) {
+        super(name);
+    }
 
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
-	
-	public void test埋め込み(){
-		Root root = new Root();
-		HSSFWorkbook templateWb = new HSSFWorkbook();
-		HSSFSheet templateSheet = templateWb.createSheet();
-		HSSFRow templateRow = templateSheet.createRow(0);
-		HSSFCell cell = templateRow.createCell((short)0);
-		cell = templateRow.createCell((short)0);
-		cell.setCellValue(new HSSFRichTextString("#suspend id=test expr=TEST is ${hoge}"));
-			
-		WorkbookWrapper workbook = new WorkbookWrapper(templateWb);
-		
-		Row row = new Row(workbook.getSheetAt(0).getRow(0), root,new CellParserHandler());
-		List elementList = row.getCellElementList();		
-		TemplateElement elem = (TemplateElement) elementList.get(0);
-		assertTrue(elem.getClass() == Suspend.class);
-		
-		
-		
-	}
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
+
+    public void test埋め込み(){
+        Root root = new Root();
+        HSSFWorkbook templateWb = new HSSFWorkbook();
+        HSSFSheet templateSheet = templateWb.createSheet();
+        HSSFRow templateRow = templateSheet.createRow(0);
+        HSSFCell cell = templateRow.createCell((short)0);
+        cell = templateRow.createCell((short)0);
+        cell.setCellValue(new HSSFRichTextString("#suspend id=test expr=TEST is ${hoge}"));
+
+        WorkbookWrapper workbook = new WorkbookWrapper(templateWb);
+
+        Row row = new Row(workbook.getSheetAt(0).getRow(0), root,new CellParserHandler());
+        List elementList = row.getCellElementList();
+        TemplateElement elem = (TemplateElement) elementList.get(0);
+        assertTrue(elem.getClass() == Suspend.class);
+
+
+
+    }
 
 }
