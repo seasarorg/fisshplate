@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -30,7 +30,7 @@ public class SheetWrapper {
     private WorkbookWrapper workbook;
     private List rowList = new ArrayList();
     private int sheetIndex;
-    
+
     public SheetWrapper(HSSFSheet sheet, WorkbookWrapper workbook, int sheetIndex){
         this.workbook = workbook;
         this.hssfSheet = sheet;
@@ -39,36 +39,36 @@ public class SheetWrapper {
             rowList.add(new RowWrapper(sheet.getRow(i),this));
         }
     }
-    
+
     public HSSFSheet getHSSFSheet(){
         return hssfSheet;
     }
-    
+
     public WorkbookWrapper getWorkbook(){
         return workbook;
     }
-    
+
     public RowWrapper getRow(int index){
         return (RowWrapper) rowList.get(index);
     }
 
-    public int getRowCount() { 
+    public int getRowCount() {
         return rowList.size();
     }
     public int getSheetIndex() {
         return sheetIndex;
     }
-    
+
     public String getSheetName(){
         return workbook.getHSSFWorkbook().getSheetName(sheetIndex);
     }
-    
+
     public void removeRow(int i){
         RowWrapper row = this.getRow(i);
-        hssfSheet.removeRow(row.getHSSFRow());      
+        hssfSheet.removeRow(row.getHSSFRow());
         rowList.remove(i);
     }
-    
+
     /**
      * データ埋め込みの準備のために、シートを初期化します。
      */
@@ -76,25 +76,25 @@ public class SheetWrapper {
         removeAllRow();
         removeAllMergedRegion();
     }
-    
+
     private void removeAllRow(){
         //POIのバグへの対策
         //1行だけのシートだったら繰り返し行もないはずだからクリアする必要はない、はず。
-        //TODO もしPOIで1行のみのシートで行削除できるようになったらこのコード削除する
-        if(getRowCount() < 2){
-            return;
-        }
+        // 3.2-FINALにて、バグフィックスされたので、削除。
+//        if(getRowCount() < 2){
+//            return;
+//        }
         for(int i=0; i < getRowCount();i++){
             HSSFRow hssfRow = getRow(i).getHSSFRow();
             if(hssfRow != null){
                 hssfSheet.removeRow(hssfRow);
             }
-        }   
+        }
     }
-    
+
     private void removeAllMergedRegion(){
         for(int i=0; 0 < hssfSheet.getNumMergedRegions();i++){
-            hssfSheet.removeMergedRegion(0);            
+            hssfSheet.removeMergedRegion(0);
         }
     }
 
