@@ -64,7 +64,7 @@ public class LearningPoiTest extends TestCase {
                 continue;
             }
             for (int columnNo = 0; columnNo <= row.getLastCellNum(); columnNo++) {
-                HSSFCell cell = row.getCell((short) columnNo);
+                HSSFCell cell = row.getCell(columnNo);
                 if (cell == null) {
                     continue;
                 }

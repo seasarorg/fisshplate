@@ -52,26 +52,26 @@ public class RowTest extends TestCase {
         HSSFWorkbook templateWb = new HSSFWorkbook();
         HSSFSheet templateSheet = templateWb.createSheet();
         HSSFRow templateRow = templateSheet.createRow(0);
-        HSSFCell cell = templateRow.createCell((short)0);
+        HSSFCell cell = templateRow.createCell(0);
         cell.setCellValue(new HSSFRichTextString("リテラル"));
-        cell = templateRow.createCell((short)1);
+        cell = templateRow.createCell(1);
         cell.setCellValue(10D);
         //cellNum 2 は設定しない。
-        cell = templateRow.createCell((short)3);
+        cell = templateRow.createCell(3);
         cell.setCellValue(new HSSFRichTextString("${data}"));
-        cell = templateRow.createCell((short)4);
+        cell = templateRow.createCell(4);
         cell.setCellValue(new HSSFRichTextString("#picture(/hoge/fuga.png cell=1 row=1)"));
-        cell = templateRow.createCell((short)5);
+        cell = templateRow.createCell(5);
         cell.setCellValue(new HSSFRichTextString("#picture(${data.path} cell=1 row=1)"));
-        cell = templateRow.createCell((short)6);
+        cell = templateRow.createCell(6);
         cell.setCellValue(new HSSFRichTextString("#suspend TEST is ${hoge}"));
-        cell = templateRow.createCell((short)7);
+        cell = templateRow.createCell(7);
         cell.setCellFormula("TEXT(VALUE(\"20040101\"),\"yyyy/mm/dd\")");
-        cell = templateRow.createCell((short)8);
+        cell = templateRow.createCell(8);
         cell.setCellFormula("TEXT(VALUE(\"${hoge}\"),\"yyyy/mm/dd\")");
-        cell = templateRow.createCell((short)9);
+        cell = templateRow.createCell(9);
         cell.setCellValue(new HSSFRichTextString("#link-url  link = http://www.gyoizo.com text = ほげー"));
-        cell = templateRow.createCell((short)10);
+        cell = templateRow.createCell(10);
         cell.setCellValue(new HSSFRichTextString("#link-url  link = ${data.hoge} text = ほげー"));
 
 

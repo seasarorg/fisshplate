@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -65,19 +65,19 @@ public class HorizontalIteratorBlock extends AbstractBlock{
         Iterator ite = IteratorUtil.getIterator(o,iteratorName,row);
         mergeIteratively(context, ite, data);
     }
-    
-    
+
+
     private void mergeIteratively(FPContext context, Iterator ite,Map data) throws FPMergeException{
         int index = 0;
         int startRowNum = context.getCurrentRowNum();
         int startCell = startCellIndex;
         int maxCellNum = getMaxCellElementListSize() - 1 - startCellIndex;
-        
+
         mergeNoIterationBlock(context);
-        
+
         while(ite.hasNext()){
             Object var = ite.next();
-            data.put(varName, var); 
+            data.put(varName, var);
             data.put(indexName, new Integer(index));
             index ++;
             context.moveCurrentRowTo(startRowNum);
@@ -87,19 +87,19 @@ public class HorizontalIteratorBlock extends AbstractBlock{
     }
 
     protected void mergeBlock(FPContext context, int startCell) throws FPMergeException {
-        
+
         for (int i = 0; i < childList.size(); i++) {
             TemplateElement elem = (TemplateElement) childList.get(i);
             if(elem instanceof Row){
                 context.moveCurrentCellTo((short) startCell);
                 mergeRow(context, (Row)elem);
-                
+
             }else{
                 elem.merge(context);
             }
         }
     }
-    
+
     private int getMaxCellElementListSize(){
         int max = 0;
         for (int i = 0; i < childList.size(); i++) {
@@ -111,7 +111,7 @@ public class HorizontalIteratorBlock extends AbstractBlock{
         }
         return max;
     }
-    
+
     private void mergeRow(FPContext context, Row row) throws FPMergeException {
         HSSFRow outRow = context.createCurrentRow();
         outRow.setHeight(row.getRowHeight());
@@ -127,17 +127,17 @@ public class HorizontalIteratorBlock extends AbstractBlock{
         }
         context.nextRow();
     }
-    
-    private void adjustColumnWidth(FPContext context, short column){
-        short cellWidth = this.row.getSheet().getHSSFSheet().getColumnWidth(column);
+
+    private void adjustColumnWidth(FPContext context, int column){
+        int cellWidth = this.row.getSheet().getHSSFSheet().getColumnWidth(column);
         context.getOutSheet().setColumnWidth(context.getCurrentCellNum(), cellWidth);
-        
+
     }
 
     private void mergeNoIterationBlock(FPContext context) throws FPMergeException {
         for (int i = 0; i < childList.size(); i++) {
             TemplateElement elem = (TemplateElement) childList.get(i);
-            if(elem instanceof Row){                
+            if(elem instanceof Row){
                 mergeNoIterationRow(context, (Row)elem);
             }else{
                 elem.merge(context);

@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -30,7 +30,7 @@ import org.seasar.fisshplate.wrapper.WorkbookWrapper;
 public class LinkParserTest extends TestCase {
 
     private LinkParser parser;
-    
+
     protected void setUp() throws Exception {
         super.setUp();
         parser = new LinkParser();
@@ -39,16 +39,16 @@ public class LinkParserTest extends TestCase {
 
     public void testパース成功(){
         HSSFWorkbook wb = new HSSFWorkbook();
-        wb.createSheet().createRow(0).createCell((short)0);
+        wb.createSheet().createRow(0).createCell(0);
         WorkbookWrapper ww = new WorkbookWrapper(wb);
-        
+
         CellWrapper cell = ww.getSheetAt(0).getRow(0).getCell(0);
         String value = "#link-url link=http://www.gyoizo.com text=ほげ";
         cell.getHSSFCell().setCellValue(new HSSFRichTextString(value));
-        
+
         AbstractCell actual = parser.getElement(cell, value);
         assertEquals(Link.class, actual.getClass());
-        
+
         value = "#link-file link=http://www.gyoizo.com text=ほげ";
         actual = parser.getElement(cell, value);
         assertEquals(Link.class, actual.getClass());
@@ -62,19 +62,19 @@ public class LinkParserTest extends TestCase {
         assertEquals(Link.class, actual.getClass());
 
     }
-    
-    
+
+
     public void testパースはずれ(){
         HSSFWorkbook wb = new HSSFWorkbook();
-        wb.createSheet().createRow(0).createCell((short)0);
+        wb.createSheet().createRow(0).createCell(0);
         WorkbookWrapper ww = new WorkbookWrapper(wb);
-        
+
         CellWrapper cell = ww.getSheetAt(0).getRow(0).getCell(0);
         String value = "#link-hoge link=http://www.gyoizo.com text=ほげ";
         cell.getHSSFCell().setCellValue(new HSSFRichTextString(value));
-        
+
         AbstractCell actual = parser.getElement(cell, value);
         assertNull(actual);
-        
+
     }
 }

@@ -48,7 +48,7 @@ public class CellWrapper {
         if(isNullCell()){
             return -1;
         }
-        return (int)hssfCell.getCellNum();
+        return hssfCell.getColumnIndex();
     }
 
     public String getStringValue(){

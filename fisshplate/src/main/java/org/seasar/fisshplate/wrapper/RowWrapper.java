@@ -39,7 +39,7 @@ public class RowWrapper {
 
     private void addCellsToList(HSSFRow row){
         for(int i=0; i < row.getLastCellNum(); i++){
-            cellList.add(new CellWrapper(row.getCell((short)i),this));
+            cellList.add(new CellWrapper(row.getCell(i),this));
         }
     }
 

@@ -18,7 +18,7 @@ package org.seasar.fisshplate.core.element;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.util.Region;
+import org.apache.poi.hssf.util.CellRangeAddress;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.wrapper.CellWrapper;
@@ -51,8 +51,8 @@ public abstract class AbstractCell implements TemplateElement {
 
         //マージ情報をなめて、スタート地点が合致すれば保存しておく。
         for(int i=0; i < templateSheet.getNumMergedRegions();i++){
-            Region reg = templateSheet.getMergedRegionAt(i);
-            setUpMergedCellInfo(cell.getHSSFCell().getCellNum(), rowNum, reg);
+            CellRangeAddress reg = templateSheet.getMergedRegion(i);
+            setUpMergedCellInfo(cell.getHSSFCell().getColumnIndex(), rowNum, reg);
             if(isMergedCell){
                 break;
             }
@@ -85,14 +85,14 @@ public abstract class AbstractCell implements TemplateElement {
 
 
 
-    private void setUpMergedCellInfo(short cellNum, int rowNum, Region reg){
-        if(reg.getColumnFrom() != cellNum || reg.getRowFrom() != rowNum){
+    private void setUpMergedCellInfo(int cellNum, int rowNum, CellRangeAddress reg){
+        if(reg.getFirstColumn() != cellNum || reg.getFirstRow() != rowNum){
             isMergedCell = false;
             return;
         }
         isMergedCell = true;
-        relativeMergedColumnTo = (short) (reg.getColumnTo() - reg.getColumnFrom());
-        relativeMergedRowNumTo = reg.getRowTo() - reg.getRowFrom();
+        relativeMergedColumnTo = (short) (reg.getLastColumn() - reg.getFirstColumn());
+        relativeMergedRowNumTo = reg.getLastRow() - reg.getFirstRow();
     }
 
 
@@ -111,14 +111,12 @@ public abstract class AbstractCell implements TemplateElement {
     }
 
     private void mergeCell(FPContext context){
-        short columnFrom = context.getCurrentCellNum();
+        int columnFrom = context.getCurrentCellNum();
         int rowFrom = context.getCurrentRowNum();
 
-        Region reg = new Region();
-        reg.setColumnFrom(columnFrom);
-        reg.setColumnTo((short) (columnFrom + relativeMergedColumnTo));
-        reg.setRowFrom(rowFrom);
-        reg.setRowTo(rowFrom + relativeMergedRowNumTo);
+        CellRangeAddress reg = new CellRangeAddress(
+                rowFrom, rowFrom + relativeMergedRowNumTo,
+                columnFrom, columnFrom + relativeMergedColumnTo);
         HSSFSheet hssfSheet = cell.getRow().getSheet().getHSSFSheet();
         hssfSheet.addMergedRegion(reg);
     }

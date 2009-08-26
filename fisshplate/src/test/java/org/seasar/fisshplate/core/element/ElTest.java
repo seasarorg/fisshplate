@@ -73,11 +73,11 @@ public class ElTest extends TestCase {
         el = new El(new GenericCell(cell1));
         el.merge(context);
 
-        HSSFCell actual = template.getSheetAt(0).getRow(0).getCell((short) 0);
+        HSSFCell actual = template.getSheetAt(0).getRow(0).getCell(0);
         assertEquals("celltype",HSSFCell.CELL_TYPE_STRING, actual.getCellType());
         assertEquals("value", "01234", actual.getRichStringCellValue().getString());
 
-        actual = template.getSheetAt(0).getRow(0).getCell((short) 1);
+        actual = template.getSheetAt(0).getRow(0).getCell(1);
         assertEquals("celltype",HSSFCell.CELL_TYPE_NUMERIC, actual.getCellType());
         assertEquals("value",-1234D, actual.getNumericCellValue(),0D);
     }
@@ -106,18 +106,18 @@ public class ElTest extends TestCase {
 
         el = new El(new GenericCell(cellNull));
         el.merge(context);
-        HSSFCell actual = template.getSheetAt(0).getRow(0).getCell((short) 0);
+        HSSFCell actual = template.getSheetAt(0).getRow(0).getCell(0);
         assertEquals("nullString","", actual.getRichStringCellValue().getString());
 
         el = new El(new GenericCell(cellNullValue));
         el.merge(context);
-        actual = template.getSheetAt(0).getRow(0).getCell((short) 1);
+        actual = template.getSheetAt(0).getRow(0).getCell( 1);
         assertEquals("default value","NULL時デフォルト値", actual.getRichStringCellValue().getString());
 
         data.put("hoge", null);
         el = new El(new GenericCell(cellNull));
         el.merge(context);
-        actual = template.getSheetAt(0).getRow(0).getCell((short) 2);
+        actual = template.getSheetAt(0).getRow(0).getCell( 2);
         assertEquals("null value","", actual.getRichStringCellValue().getString());
     }
 
@@ -135,7 +135,7 @@ public class ElTest extends TestCase {
         el = new El(new GenericCell(cell));
 
         el.merge(context);
-        HSSFCell actual = template.getSheetAt(0).getRow(1).getCell((short)0);
+        HSSFCell actual = template.getSheetAt(0).getRow(1).getCell(0);
         assertEquals("埋め込み番号は123です。", actual.getRichStringCellValue().getString());
 
 
@@ -154,7 +154,7 @@ public class ElTest extends TestCase {
         el = new El(new GenericCell(cell));
 
         el.merge(context);
-        HSSFCell actual = template.getSheetAt(0).getRow(0).getCell((short)0);
+        HSSFCell actual = template.getSheetAt(0).getRow(0).getCell(0);
         assertEquals("埋め込み番号は123と456です。", actual.getRichStringCellValue().getString());
 
         cell = workbook.getSheetAt(0).getRow(1).getCell(0);//${embeded1}と${embeded2}
@@ -163,7 +163,7 @@ public class ElTest extends TestCase {
         el = new El(new GenericCell(cell));
 
         el.merge(context);
-        actual = template.getSheetAt(0).getRow(1).getCell((short)0);
+        actual = template.getSheetAt(0).getRow(1).getCell(0);
         assertEquals("123と456", actual.getRichStringCellValue().getString());
 
         cell = workbook.getSheetAt(0).getRow(2).getCell(0);//${embeded1}${embeded2}
@@ -172,7 +172,7 @@ public class ElTest extends TestCase {
         el = new El(new GenericCell(cell));
 
         el.merge(context);
-        actual = template.getSheetAt(0).getRow(2).getCell((short)0);
+        actual = template.getSheetAt(0).getRow(2).getCell(0);
         assertEquals("123456", actual.getRichStringCellValue().getString());
 
 
@@ -197,11 +197,11 @@ public class ElTest extends TestCase {
         el = new El(new GenericCell(cell1));
         el.merge(context);
 
-        HSSFCell actual = template.getSheetAt(0).getRow(0).getCell((short) 0);
+        HSSFCell actual = template.getSheetAt(0).getRow(0).getCell( 0);
         assertEquals("celltype",HSSFCell.CELL_TYPE_STRING, actual.getCellType());
         assertEquals("value", "0\n12\n34", actual.getRichStringCellValue().getString());
 
-        actual = template.getSheetAt(0).getRow(0).getCell((short) 1);
+        actual = template.getSheetAt(0).getRow(0).getCell( 1);
         assertEquals("celltype",HSSFCell.CELL_TYPE_STRING, actual.getCellType());
         assertEquals("value","番号\nはこれ", actual.getRichStringCellValue().getString());
 

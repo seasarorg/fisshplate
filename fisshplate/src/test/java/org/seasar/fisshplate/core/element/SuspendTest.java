@@ -45,8 +45,8 @@ public class SuspendTest extends TestCase {
         HSSFWorkbook templateWb = new HSSFWorkbook();
         HSSFSheet templateSheet = templateWb.createSheet();
         HSSFRow templateRow = templateSheet.createRow(0);
-        HSSFCell cell = templateRow.createCell((short)0);
-        cell = templateRow.createCell((short)0);
+        HSSFCell cell = templateRow.createCell(0);
+        cell = templateRow.createCell(0);
         cell.setCellValue(new HSSFRichTextString("#suspend id=test expr=TEST is ${hoge}"));
 
         WorkbookWrapper workbook = new WorkbookWrapper(templateWb);

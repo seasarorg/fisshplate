@@ -36,7 +36,7 @@ import org.seasar.fisshplate.core.element.Suspend;
 public class FPContext {
     private HSSFSheet outSheet;
     private int currentRowNum;
-    private short currentCellNum;
+    private int currentCellNum;
     private Map data;
     private boolean shouldHeaderOut;
     private boolean shouldFooterOut;
@@ -142,7 +142,7 @@ public class FPContext {
      * @param cellNum 移動先のセル番号
      * @return 出力対象セル
      */
-    public HSSFCell moveCurrentCellTo(short cellNum){
+    public HSSFCell moveCurrentCellTo(int cellNum){
         currentCellNum = cellNum;
         return getCurrentCell();
     }
@@ -161,7 +161,7 @@ public class FPContext {
      *
      * @return セルの位置（0スタート）
      */
-    public short getCurrentCellNum() {
+    public int getCurrentCellNum() {
         return currentCellNum;
     }
 

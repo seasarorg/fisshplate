@@ -37,7 +37,7 @@ public class WhileBlockTest extends TestCase {
 
     public void test例外テスト(){
         HSSFWorkbook hssfWb = new HSSFWorkbook();
-        hssfWb.createSheet().createRow(0).createCell((short) 0);
+        hssfWb.createSheet().createRow(0).createCell( 0);
         WorkbookWrapper wb = new WorkbookWrapper(hssfWb);
         WhileBlock block = new WhileBlock(wb.getSheetAt(0).getRow(0), "hogehoge");
         try {

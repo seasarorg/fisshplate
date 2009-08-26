@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -26,32 +26,32 @@ import org.seasar.fisshplate.wrapper.WorkbookWrapper;
  */
 public class WhileParserTest extends TestCase {
 
-	public WhileParserTest(String name) {
-		super(name);
-	}
+    public WhileParserTest(String name) {
+        super(name);
+    }
 
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
-	
-	public void test解析テスト() throws Exception{
-		HSSFWorkbook hssfWb = new HSSFWorkbook();
-		hssfWb.createSheet().createRow(0).createCell((short) 0).setCellValue(new HSSFRichTextString(" #while hoge == 100  "));
-		hssfWb.getSheetAt(0).createRow(1).createCell((short) 0).setCellValue(new HSSFRichTextString(" #end  "));
-		WorkbookWrapper wb = new WorkbookWrapper(hssfWb);
-		
-		FPParser fpParser = new FPParser();
-		WhileParser parser = new WhileParser();
-		
-		boolean actual = parser.process(wb.getSheetAt(0).getRow(0).getCell(0), fpParser);
-		assertTrue(actual);
-		
-		hssfWb.getSheetAt(0).getRow(0).getCell((short) 0).setCellValue(new HSSFRichTextString("#hile hoge==100"));
-		actual = parser.process(wb.getSheetAt(0).getRow(0).getCell(0), fpParser);
-		assertFalse(actual);
-		
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
 
-		
-	}	
-	
+    public void test解析テスト() throws Exception{
+        HSSFWorkbook hssfWb = new HSSFWorkbook();
+        hssfWb.createSheet().createRow(0).createCell( 0).setCellValue(new HSSFRichTextString(" #while hoge == 100  "));
+        hssfWb.getSheetAt(0).createRow(1).createCell( 0).setCellValue(new HSSFRichTextString(" #end  "));
+        WorkbookWrapper wb = new WorkbookWrapper(hssfWb);
+
+        FPParser fpParser = new FPParser();
+        WhileParser parser = new WhileParser();
+
+        boolean actual = parser.process(wb.getSheetAt(0).getRow(0).getCell(0), fpParser);
+        assertTrue(actual);
+
+        hssfWb.getSheetAt(0).getRow(0).getCell( 0).setCellValue(new HSSFRichTextString("#hile hoge==100"));
+        actual = parser.process(wb.getSheetAt(0).getRow(0).getCell(0), fpParser);
+        assertFalse(actual);
+
+
+
+    }
+
 }
