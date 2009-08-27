@@ -4,8 +4,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.seasar.fisshplate</groupId>
   <artifactId>fisshplate-project</artifactId>
-  <packaging>pom</packaging>  
-  <version>0.1.4-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <version>0.1.4</version>
   <name>Fisshplate</name>
   <description>Fisshplate is a template engine for HSSF of POI.</description>
 
@@ -19,7 +19,7 @@
       <post>seasar-user@lists.sourceforge.jp</post>
       <archive>http://lists.sourceforge.jp/mailman/archives/seasar-user/</archive>
     </mailingList>
-  </mailingLists>  
+  </mailingLists>
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -45,7 +45,7 @@
         <role>developer</role>
       </roles>
       <url>http://d.hatena.ne.jp/rokugen</url>
-      <timezone>+9</timezone>     
+      <timezone>+9</timezone>
     </developer>
     <developer>
       <email></email>
@@ -56,7 +56,7 @@
       </roles>
       <timezone>+9</timezone>
     </developer>
-  </developers>        
+  </developers>
   <issueManagement>
     <system>JIRA</system>
     <url><![CDATA[https://www.seasar.org/issues/browse/FISSHPLATE]]></url>
@@ -96,11 +96,11 @@
       <id>maven.seasar.org</id>
       <name>The Seasar Foundation Maven2 Snapshot Repository</name>
       <url>dav:https://www.seasar.org/maven/maven2-snapshot</url>
-   </snapshotRepository>    
+   </snapshotRepository>
     <site>
       <id>maven.seasar.org</id>
       <url>dav:https://www.seasar.org/site/sandbox/fisshplate</url>
-    </site>   
+    </site>
   </distributionManagement>
 
 <!-- ******************************************************************************* -->
@@ -109,5 +109,5 @@
     <module>s2fisshplate</module>
   </modules>
 
-  
+
 </project>
