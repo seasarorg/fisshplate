@@ -5,7 +5,7 @@
   <groupId>org.seasar.fisshplate</groupId>
   <artifactId>s2fisshplate</artifactId>
   <packaging>jar</packaging>
-  <version>0.1.4</version>
+  <version>0.1.5-SNAPSHOT</version>
   <name>S2 Fisshplate</name>
 
   <!-- ******************************************************************************* -->
@@ -172,7 +172,7 @@
     <dependency>
         <groupId>org.seasar.fisshplate</groupId>
         <artifactId>fisshplate</artifactId>
-        <version>0.1.4</version>
+        <version>0.1.5-SNAPSHOT</version>
         <exclusions>
             <exclusion>
                 <groupId>ognl</groupId>
