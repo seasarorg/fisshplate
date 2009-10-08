@@ -32,7 +32,7 @@ public class FisshplateUtil {
 	
 	/**
 	 * テンプレートにデータを埋め込みます。
-	 * @param template テンプレートオブジェクト
+	 * @param workbook テンプレートオブジェクト
 	 * @param data 埋め込み用データ
 	 * @return 出力するワークブック
 	 */

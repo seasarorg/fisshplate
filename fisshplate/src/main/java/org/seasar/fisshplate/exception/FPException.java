@@ -103,23 +103,26 @@ public class FPException extends Exception {
 	public FPException(String messageId, Object[] args, RowWrapper row, Throwable cause) {
 		initCause(cause);
 		
-		
 		this.messageId = messageId;
 		this.args = getParam(args, row);		
         
-        ResourceBundle bundle = ResourceUtil.getAppExceptionBundle();
+        ResourceBundle bundle = getExceptionBundle();
         String pattern = bundle.getString(messageId);
         this.message = MessageFormat.format(pattern, this.args);
 	}
+
+	protected ResourceBundle getExceptionBundle() {
+		return ResourceUtil.getAppExceptionBundle();
+	}
 	
-	private Object[] getParam(Object[] args, RowWrapper row){
+	protected Object[] getParam(Object[] args, RowWrapper row){
 		if(row == null || row.isNullRow()){
 			return args;
 		}		
 		return getParamIncludingRowNum(args, row);
 	}
 
-	private Object[] getParamIncludingRowNum(Object[] args, RowWrapper row) {
+	protected Object[] getParamIncludingRowNum(Object[] args, RowWrapper row) {
 		int rowNum = row.getHSSFRow().getRowNum() + 1;
 		int paramLength = (args ==null)? 1:args.length + 1;
 		Object[] params = new Object[paramLength];		
