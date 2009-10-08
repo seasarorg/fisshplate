@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.seasar.fisshplate</groupId>
+  <artifactId>s2fisshplate</artifactId>
+  <packaging>jar</packaging>
+  <version>0.1.4</version>
+  <name>S2 Fisshplate</name>
+
+  <!-- ******************************************************************************* -->
+
+  <mailingLists>
+    <mailingList>
+      <name>Seasar-user</name>
+      <subscribe>http://lists.sourceforge.jp/mailman/listinfo/seasar-user</subscribe>
+      <unsubscribe>http://lists.sourceforge.jp/mailman/listinfo/seasar-user</unsubscribe>
+      <post>seasar-user@lists.sourceforge.jp</post>
+      <archive>http://lists.sourceforge.jp/mailman/archives/seasar-user/</archive>
+    </mailingList>
+  </mailingLists>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <connection>scm:svn:https://www.seasar.org/svn/sandbox/fisshplate/trunk/fisshplate/</connection>
+    <developerConnection>scm:svn:https://www.seasar.org/svn/sandbox/fisshplate/trunk/fisshplate/</developerConnection>
+    <url>http://svn.seasar.org/browse/?root=sandbox.fisshplate</url>
+  </scm>
+  <organization>
+    <name>The Seasar Foundation</name>
+    <url>http://www.seasar.org/</url>
+  </organization>
+  <developers>
+      <developer>
+          <email>rokugensai_at_gmail.com</email>
+          <id>rokugen</id>
+          <name>rokugensai takeuchi</name>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <url>http://d.hatena.ne.jp/rokugen</url>
+            <timezone>+9</timezone>
+      </developer>
+      <developer>
+          <email></email>
+          <id>a-conv</id>
+          <name></name>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>+9</timezone>
+      </developer>
+  </developers>
+  <issueManagement>
+    <system>JIRA</system>
+    <url><![CDATA[https://www.seasar.org/issues/browse/FISSHPLATE]]></url>
+  </issueManagement>
+
+
+<!-- ******************************************************************************* -->
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>1.4</source>
+            <target>1.4</target>
+            <encoding>UTF-8</encoding>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>source-jar</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <source>1.4</source>
+          <encoding>UTF-8</encoding>
+          <docencoding>UTF-8</docencoding>
+          <charset>UTF-8</charset>
+                    <outputDirectory>${project.reporting.outputDirectory}/apidocs/s2fisshplate</outputDirectory>
+          <links>
+              <link>http://java.sun.com/j2se/1.5.0/ja/docs/ja/api/</link>
+            <link>http://java.sun.com/j2ee/1.4/docs/api/</link>
+            <link>http://s2container.seasar.org/2.4/s2-framework/ja/apidocs/</link>
+            <link>http://s2container.seasar.org/2.4/s2-extension/ja/apidocs/</link>
+            <link>http://poi.apache.org/apidocs/</link>
+            <link>http://aopalliance.sourceforge.net/doc/</link>
+            <link>http://fisshplate.sandbox.seasar.org/ja/apidocs/fisshplate/</link>
+          </links>
+        </configuration>
+        <executions>
+          <execution>
+            <id>javadoc-jar</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                <finalName>
+                    s2fisshplate
+                </finalName>
+                <outputDirectory>${project.build.directory}/assembly</outputDirectory>
+                <descriptors>
+                    <descriptor>src/main/assembly/bin.xml</descriptor>
+                </descriptors>
+                </configuration>
+            </plugin>
+    </plugins>
+      <extensions>
+          <extension>
+              <groupId>org.apache.maven.wagon</groupId>
+              <artifactId>wagon-webdav</artifactId>
+                 <version>1.0-beta-2</version>
+          </extension>
+      </extensions>
+  </build>
+
+<!-- ******************************************************************************* -->
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.2</version>
+      <scope>test</scope>
+    </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-servlet_2.4_spec</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+
+    <dependency>
+        <groupId>org.seasar.container</groupId>
+        <artifactId>s2-extension</artifactId>
+        <version>2.4.22</version>
+        <exclusions>
+            <exclusion>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+    <dependency>
+        <groupId>org.seasar.fisshplate</groupId>
+        <artifactId>fisshplate</artifactId>
+        <version>0.1.4</version>
+        <exclusions>
+            <exclusion>
+                <groupId>ognl</groupId>
+                <artifactId>ognl</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+  </dependencies>
+<!-- ******************************************************************************* -->
+  <repositories>
+    <repository>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Repository</name>
+      <url>http://maven.seasar.org/maven2</url>
+    </repository>
+    </repositories>
+  <distributionManagement>
+    <repository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Repository</name>
+      <url>dav:https://www.seasar.org/maven/maven2</url>
+    </repository>
+        <snapshotRepository>
+            <uniqueVersion>true</uniqueVersion>
+            <id>maven.seasar.org</id>
+            <name>The Seasar Foundation Maven2 Snapshot Repository</name>
+            <url>dav:https://www.seasar.org/maven/maven2-snapshot</url>
+   </snapshotRepository>
+  </distributionManagement>
+
+<!-- ******************************************************************************* -->
+
+</project>
