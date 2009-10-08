@@ -106,7 +106,7 @@ public class FPContext {
 
     /**
      * 現在の出力対象行を新たに生成します。
-     * @return
+     * @return 現在の出力行
      */
     public HSSFRow createCurrentRow(){
         return outSheet.createRow(currentRowNum);

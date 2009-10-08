@@ -31,10 +31,12 @@ public class FPPreviewUtil {
 	private FPPreviewUtil(){}
 	
 	/**
-	 * @param template
-	 * @param data
-	 * @return
-	 * @throws FPException
+	 * テンプレートファイルにデータファイル内のデータを埋め込んだ出力ファイルを戻します。
+	 * 
+	 * @param template テンプレート用ファイル
+	 * @param data データ用ファイル
+	 * @return データを埋め込んだワークブック
+	 * @throws FPException 
 	 */
 	public static final HSSFWorkbook getWorkbook(HSSFWorkbook template, HSSFWorkbook data) throws FPException{
 		FPTemplate fptemp = new FPTemplate();
@@ -44,9 +46,11 @@ public class FPPreviewUtil {
 	}
 	
 	/**
-	 * @param template
-	 * @param data
-	 * @return
+	 * テンプレートファイルのストリームと、データ用ファイルのストリームから出力ファイルを生成して戻します。
+	 * 
+	 * @param template テンプレート用ストリーム
+	 * @param data データ用ストリーム
+	 * @return データを埋め込んだワークブック
 	 * @throws FPException
 	 * @throws IOException
 	 */

@@ -42,8 +42,6 @@ public class Row implements TemplateElement {
 	/**
 	 * コンストラクタです。テンプレート側の行オブジェクトを受け取り、その行内のセル情報を解析して保持します。
 	 * 
-	 * @param templateSheet
-	 *            テンプレート側のシート
 	 * @param templateRow
 	 *            テンプレート側の行オブジェクト
 	 * @param root
