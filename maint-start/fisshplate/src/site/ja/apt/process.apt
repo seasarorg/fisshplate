@@ -1,0 +1,76 @@
+  ---
+  ファイル出力の仕方
+  ---
+  rokugen
+  ---
+  2008/01/10
+  
+テンプレートファイルから出力ファイルの取得の仕方
+
+* テンプレートオブジェクトの生成
+
+  まず、ファイルを出力するオブジェクト、「FPTemplate」を生成します。
+  
++--
+
+FPTemplate template = new FPTemplate();
+
++--
+  
+* 埋め込みデータ生成
+
+  テンプレートに埋め込むデータは、Mapで作ります。キーはテンプレートから評価式で参照するため、文字列にします。
+  
++--
+Map data = new HashMap();
+data.put("title", "タイトルです");
+Foo foo = new Foo();
+foo.setBar("テスト");
+data.put("fooTest", foo);
++--
+
+  このMapをFPTemplateに渡します。
+  
+* テンプレートファイル読み込み・ファイル出力
+
+  「FPTemplateTest.xls」というテンプレートファイルを、ルートパッケージに置いたとします。
+  
+  InputStreamとして読み、先程用意した埋め込みデータと一緒にFPTemplateに渡します。
+  
++---
+InputStream is = getClass().getResourceAsStream("/FPTemplateTest.xls");
+  
+HSSFWorkbook wb;
+try {
+    wb = template.process(is, data);
+} catch (FPParseException e) {
+    //例外処理
+    throw e;
+} catch (FPMergeException e) {
+    //例外処理
+    throw e;
+}finally{
+    is.close();
+}
+OutputStream os = new FileOutputStream("target/FPTemplateTest_out.xls");
+wb.write(os);
+os.close(); 
++---
+  
+  テンプレートに文法上の誤りがあった場合、FPParseExceptionが投げられます。
+  
+  データ埋め込み時にエラーが発生した場合、FPMergeExceptionが投げられます。
+  
+  他に、FPTemplate#process(InputStream, Map)は、IOExceptionも投げますが、上記では省略しています。
+
+  正常に処理が終了すると、データが埋め込まれたHSSFWorkbookが戻されます。
+  
+  データ埋め込みメソッドには他に、
+  
+  * process(String,Map)
+  
+  * process(HSSFWorkbook, Map)
+  
+  []
+  
+  があります。

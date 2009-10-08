@@ -1,0 +1,18 @@
+  ---
+  セットアップ
+  ---
+  rokugen
+  ---
+  2008/01/10
+  
+インストール
+
+  配布ファイルを展開した中に、必要なjarファイルが入っています。これをクラスパスに含めて下さい。
+  
+  ただし、xxxx-javadoc.jar と xxxx-sources.jar は不要です。
+
+  配布ファイルはFisshplate、S2FisshplateのいずれもEclipseプロジェクト形式となっています。m2eclipseプラグインが必要となっています。
+  
+  {{http://m2eclipse.codehaus.org/}}
+
+  Fisshplateの機能を利用するには、fisshplate-x.x.x.jarだけで可能です。S2と連携したい場合のみ、s2fisshplate-x.x.x.jarが必要となります。

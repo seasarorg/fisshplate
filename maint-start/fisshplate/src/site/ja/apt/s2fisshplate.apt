@@ -1,0 +1,165 @@
+  ---
+  S2との連携
+  ---
+  rokugen
+  ---
+  2008/01/10
+  
+  * {{{#S2Fisshplateとは}S2Fisshplateとは}}
+  
+  * {{{#基本的な使い方}基本的な使い方}}
+  
+  * {{{#SMART deploy}SMART deploy}}
+
+{S2Fisshplateとは}
+
+  Fisshplateは、S2Containerには依存しておらず、汎用的に利用する事が出来ます。
+  
+  S2Fisshplateを使う事によって、S2とFisshplateを連携して、インタフェースを定義するだけでFisshplateの機能を使う事が出来ます。
+  
+{基本的な使い方}
+
+  まず、テンプレートに埋め込むDtoを作ります。
+  
+  * プロパティのsetter、getterを必ず作って下さい。publicフィールドの動作は確認していません。
+  
+  []
+  
++--
+public class TestFisshplateDto {
+    private String title;
+    private List itemList;
+    
+    (setter、getter省略)
+} 
++--
+
+  次に、インタフェースを定義します。  
+  
+  * メソッドの戻り値は、必ず「HSSFWorkbook」にして下さい。
+  
+  * 引数は1つにして下さい。引数が複数の場合、第1引数のみが埋め込み用データとして扱われ、他は無視されます。
+  
+  * メソッドはいくつあっても構いません。が、オーバーロードするとテンプレートのファイル名との対応が出来なくなるので、
+  メソッド名はそれぞれ一意になるようにして下さい。
+  
+  []
+
++--
+
+public interface TestFisshplate {
+    HSSFWorkbook getTestWb(TestFisshplateDto dto);
+}
++--
+
+  diconファイルに、コンポーネントとして登録します。
+  
++--
+<components>
+    <include path="s2fisshplate.dicon"/>
+    
+    <component class="org.seasar.fisshplate.interceptor.TestFisshplate" >
+        <aspect>fisshplate.interceptor</aspect>
+    </component>
+</components>   
++--
+
+  「s2fisshplate.dicon」をインクルードして下さい。そして、Fisshplate用インタフェースのコンポーネント定義に、
+  aspectで「fisshplate.interceptor」をかませます。
+  
+  テンプレートファイルを作ります。
+  
+  * ファイル名は、「インタフェース名_メソッド名.xls」にして、インタフェースと同じパッケージに置きます。
+  
+      * この規約通りのファイル名、パッケージにする事で、S2Fisshplate側でテンプレートの読み込みを自動で行う事が出来ます。
+      
+      * <<TestFisshplate#getTestWb()>>の場合ファイル名は「<<TestFisshplate_getTestWb.xls>>」になります。
+      
+  * 引数のDtoのプロパティは、「data」という名前で参照出来ます。
+  
+      * この場合、<<TestFisshplateDto#getTitle()>>は「<<$\{data.title\}>>」で参照されます。  
+  
+  []
+  
+[images/s2fisshplate01.png]  
+  
+  
+  呼び出し側はこのようになります。
+  テンプレートファイルの読み込み、解析、ファイル出力などの処理が自動で実行され、出力ファイルが戻されます。
+  
++--
+public TestFisshplate fisshplate; //S2からインジェクションされます。
+
+public void Hoge(){
+    TestFisshplateDto dto =new TestFisshplateDto();
+    dto.setTitle("テストです");
+    List itemList = new ArrayList();
+    TestItem item = new TestItem();
+    item.setDate(new Date());
+    item.setName("1行目");
+    item.setNum(10);
+    itemList.add(item);
+    // 適宜明細行を追加
+    dto.setItemList(itemList);
+            
+    HSSFWorkbook wb = fisshplate.getTestWb(dto);
+    //以下略
+}
++--
+
+  このようにして、データ埋め込み済みのHSSFWorkbookを取得する事が出来ます。
+
+{SMART deploy}
+
+  S2Fisshplateは、S2のSMART deployをサポートしています。
+  
+  SMART deployでS2Fisshplateを使うには、いくつかの設定とルールが必要になります。
+  
+* creator.diconの編集
+  
+  creator.diconに、FisshplateCreatorを登録します。
+  
++--
+<components>
+    <include path="convention.dicon"/>
+    <include path="customizer.dicon"/>
+    <component class="org.seasar.framework.container.creator.PageCreator"/>
+    <component class="org.seasar.framework.container.creator.ActionCreator"/>
+    (中略、以下を追記)	
+    <component class="org.seasar.fisshplate.creator.FisshplateCreator" />
+</components>
++--
+
+* customizer.diconの編集
+
+  customizer.diconに、「fpaoCustomizer」の名前でCustomizerを登録します。
+  
++--
+<component name="fpaoAspectCustomizer" class="org.seasar.framework.container.customizer.AspectCustomizer">
+    <property name="interceptorName">"fisshplate.interceptor"</property>
+</component>
+
+<component name="fpaoCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
+    <initMethod name="addCustomizer">
+        <arg>fpaoAspectCustomizer</arg>
+    </initMethod>
+</component>
++--
+
+* app.diconの編集
+
+  app.diconにincludeを追加します。
+  
++--
+<include path="s2fisshplate.dicon"/>
++--
+
+* インタフェースのルール
+
+  SMART deployの場合、Fisshplateアクセス用のインタフェースのパッケージと名前を規約通りにする必要があります。
+  
+  インタフェースのサフィックスを「Fpao」にして下さい。「Fpao」は、「<<F>>issh<<p>>late <<A>>ccess <<O>>bject」の略です。
+  
+  また、インタフェースのパッケージを「(convention.diconのrootPackageName).fpao」にして下さい。
+  
+  以上で、特にdiconファイルに書かなくても、「xxxxFpao」というインタフェースを作るだけで、S2Fisshplateの機能が使えるようになります。
