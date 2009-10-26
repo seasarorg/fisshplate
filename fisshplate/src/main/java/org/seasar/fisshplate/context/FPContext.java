@@ -23,6 +23,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.seasar.fisshplate.core.element.IteratorBlock;
 import org.seasar.fisshplate.core.element.Suspend;
 
@@ -56,6 +57,22 @@ public class FPContext {
         this.outSheet = out;
         this.data = data;
         init();
+    }
+
+    /**
+     * @deprecated
+     * コンストラクタです。<p>
+     * 0.1.xとの互換性のために残してあるコンストラクタです。<p>
+     * @param outWorkbook
+     *            出力するワークブック
+     * @param outSheet
+     *            出力するシート
+     * @param data
+     *            埋め込むデータ
+     */
+    @Deprecated
+    public FPContext(HSSFWorkbook outWorkbook, HSSFSheet outSheet, Map data) {
+        this(outSheet, data);
     }
 
     /**
@@ -163,6 +180,18 @@ public class FPContext {
      */
     public int getCurrentCellNum() {
         return currentCellNum;
+    }
+
+    /**
+     * 出力するワークブックを戻します。
+     *
+     * @return ワークブック
+     */
+    public HSSFWorkbook getOutWorkbook() {
+        if(outSheet == null){
+            return null;
+        }
+        return outSheet.getWorkbook();
     }
 
     /**
