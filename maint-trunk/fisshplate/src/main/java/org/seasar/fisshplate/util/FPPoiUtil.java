@@ -64,7 +64,7 @@ public class FPPoiUtil {
      * @return セルの値
      */
     public static String getStringValue(HSSFCell hssfCell){
-        if(hssfCell == null){
+        if(! isStringCell(hssfCell)){
             return null;
         }
         HSSFRichTextString richVal =  hssfCell.getRichStringCellValue();
@@ -72,6 +72,18 @@ public class FPPoiUtil {
             return null;
         }
         return richVal.getString();
+    }
+
+    private static boolean isStringCell(HSSFCell hssfCell){
+        if(hssfCell == null){
+            return false;
+        }
+        int type = hssfCell.getCellType();
+        if(type != HSSFCell.CELL_TYPE_BLANK &&
+                type != HSSFCell.CELL_TYPE_STRING){
+            return false;
+        }
+        return true;
     }
 
 }
