@@ -49,7 +49,9 @@ public class FPContext {
 
     /**
      * コンストラクタです。
-     * @param out
+     * @param outWorkbook
+     *            出力するワークブック
+     * @param outSheet
      *            出力するシート
      * @param data
      *            埋め込むデータ
