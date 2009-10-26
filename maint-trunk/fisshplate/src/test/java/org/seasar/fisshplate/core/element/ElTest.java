@@ -63,7 +63,7 @@ public class ElTest extends TestCase {
         data.put("code", "01234");
         data.put("num", new Integer(-1234));
 
-        FPContext context = new FPContext(template.getSheetAt(0),data);
+        FPContext context = new FPContext(template, template.getSheetAt(0),data);
 
         CellWrapper cell0 = workbook.getSheetAt(0).getRow(0).getCell(0);//${code}
         CellWrapper cell1 = workbook.getSheetAt(0).getRow(0).getCell(1);//${num}
@@ -88,7 +88,7 @@ public class ElTest extends TestCase {
 
         Map data = new HashMap();
 
-        FPContext context = new FPContext(template.getSheetAt(0),data);
+        FPContext context = new FPContext(template, template.getSheetAt(0),data);
 
         CellWrapper cell = workbook.getSheetAt(0).getRow(0).getCell(2);//${hoge}
         CellWrapper cellNull = workbook.getSheetAt(0).getRow(0).getCell(3);//${hoge!}
@@ -126,7 +126,7 @@ public class ElTest extends TestCase {
         WorkbookWrapper workbook = new WorkbookWrapper(template);
         Map data = new HashMap();
         data.put("embeded", new Integer(123));
-        FPContext context = new FPContext(template.getSheetAt(0),data);
+        FPContext context = new FPContext(template, template.getSheetAt(0),data);
         context.nextRow();
 
 
@@ -147,7 +147,7 @@ public class ElTest extends TestCase {
         Map data = new HashMap();
         data.put("embeded1", new Integer(123));
         data.put("embeded2", new Integer(456));
-        FPContext context = new FPContext(template.getSheetAt(0),data);
+        FPContext context = new FPContext(template, template.getSheetAt(0),data);
 
         CellWrapper cell = workbook.getSheetAt(0).getRow(0).getCell(0);//埋め込み番号は${embeded1}と${embeded2}です。
 
@@ -187,7 +187,7 @@ public class ElTest extends TestCase {
         data.put("code", "0\n12\r34");
         data.put("num", "番号\r\nはこれ");
 
-        FPContext context = new FPContext(template.getSheetAt(0),data);
+        FPContext context = new FPContext(template, template.getSheetAt(0),data);
 
         CellWrapper cell0 = workbook.getSheetAt(0).getRow(0).getCell(0);//${code}
         CellWrapper cell1 = workbook.getSheetAt(0).getRow(0).getCell(1);//${num}
@@ -234,7 +234,7 @@ public class ElTest extends TestCase {
         dataList.add(new Integer[]{new Integer(123)});
         data.put("dataList", dataList);
 
-        FPContext context = new FPContext(template.getSheetAt(0),data);
+        FPContext context = new FPContext(template, template.getSheetAt(0),data);
 
         CellWrapper cell = workbook.getSheetAt(0).getRow(0).getCell(0);//2
 

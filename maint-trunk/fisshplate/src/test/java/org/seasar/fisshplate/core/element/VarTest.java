@@ -49,7 +49,7 @@ public class VarTest extends TestCase {
         String varName = " hoge ";
         Var var = new Var(varName,null);
         Map data = new HashMap();
-        FPContext context = new FPContext(null,data);
+        FPContext context = new FPContext(null,null,data);
         var.merge(context);
         assertNotNull(data.get("hoge"));
 
@@ -59,7 +59,7 @@ public class VarTest extends TestCase {
         String varName = " hoge ,foo, bar,fuga";
         Var var = new Var(varName,null);
         Map data = new HashMap();
-        FPContext context = new FPContext(null,data);
+        FPContext context = new FPContext(null,null,data);
         var.merge(context);
         assertNotNull(data.get("hoge"));
         assertNotNull(data.get("foo"));
@@ -78,7 +78,7 @@ public class VarTest extends TestCase {
         Var var = new Var(varName,workbook.getSheetAt(0).getRow(0));
         Map data = new HashMap();
         data.put("foo", null);
-        FPContext context = new FPContext(null,data);
+        FPContext context = new FPContext(null,null,data);
         try{
             var.merge(context);
             fail();
@@ -92,7 +92,7 @@ public class VarTest extends TestCase {
         String varName = " hoge ,foo=0, bar,fuga = 'initVal'";
         Var var = new Var(varName,null);
         Map data = new HashMap();
-        FPContext context = new FPContext(null,data);
+        FPContext context = new FPContext(null,null,data);
         var.merge(context);
         assertNotNull(data.get("hoge"));
         assertNotNull(data.get("foo"));
@@ -113,7 +113,7 @@ public class VarTest extends TestCase {
         String varName = " foo =12fdk=df";
         Var var = new Var(varName,workbook.getSheetAt(0).getRow(0));
         Map data = new HashMap();
-        FPContext context = new FPContext(null,data);
+        FPContext context = new FPContext(null,null,data);
         try{
             var.merge(context);
             fail();

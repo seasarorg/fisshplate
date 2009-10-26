@@ -114,7 +114,7 @@ public class FPTemplate {
             if(data ==null){
                 data = new HashMap();
             }
-            FPContext context = new FPContext(sheet.getHSSFSheet(), data);
+            FPContext context = new FPContext(hssfWorkbook, sheet.getHSSFSheet(), data);
             // ページコンテキスト情報の追加
             PageContext pageContext = new PageContext();
             data.put(FPConsts.PAGE_CONTEXT_NAME, pageContext);

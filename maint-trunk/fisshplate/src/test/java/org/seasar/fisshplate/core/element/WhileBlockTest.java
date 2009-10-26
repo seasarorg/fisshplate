@@ -41,7 +41,7 @@ public class WhileBlockTest extends TestCase {
         WorkbookWrapper wb = new WorkbookWrapper(hssfWb);
         WhileBlock block = new WhileBlock(wb.getSheetAt(0).getRow(0), "hogehoge");
         try {
-            block.merge(new FPContext(null,null));
+            block.merge(new FPContext(null,null,null));
             fail();
         } catch (FPMergeException e) {
             System.out.println(e);

@@ -23,6 +23,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.seasar.fisshplate.core.element.IteratorBlock;
 import org.seasar.fisshplate.core.element.Suspend;
 
@@ -34,6 +35,7 @@ import org.seasar.fisshplate.core.element.Suspend;
  *
  */
 public class FPContext {
+    private HSSFWorkbook outWorkbook;
     private HSSFSheet outSheet;
     private int currentRowNum;
     private int currentCellNum;
@@ -52,8 +54,9 @@ public class FPContext {
      * @param data
      *            埋め込むデータ
      */
-    public FPContext(HSSFSheet out, Map data) {
-        this.outSheet = out;
+    public FPContext(HSSFWorkbook outWorkbook, HSSFSheet outSheet, Map data) {
+        this.outWorkbook = outWorkbook;
+        this.outSheet = outSheet;
         this.data = data;
         init();
     }
@@ -166,6 +169,15 @@ public class FPContext {
     }
 
     /**
+     * 出力対象のワークブックを戻します。
+     *
+     * @return ワークブック
+     */
+    public HSSFWorkbook getOutWorkbook() {
+        return outWorkbook;
+    }
+
+    /**
      * 出力するシートを戻します。
      *
      * @return シート
@@ -173,7 +185,6 @@ public class FPContext {
     public HSSFSheet getOutSheet() {
         return outSheet;
     }
-
 
     public boolean shouldHeaderOut(){
         return shouldHeaderOut;
