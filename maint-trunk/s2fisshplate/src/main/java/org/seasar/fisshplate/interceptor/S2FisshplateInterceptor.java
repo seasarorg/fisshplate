@@ -22,6 +22,7 @@ import java.util.Map;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.seasar.fisshplate.consts.S2FPConsts;
+import org.seasar.fisshplate.core.parser.container.AddOnRowParserContainer;
 import org.seasar.fisshplate.meta.TemplateMetaData;
 import org.seasar.fisshplate.meta.TemplateMetaDataFactory;
 import org.seasar.fisshplate.util.FisshplateUtil;
@@ -35,6 +36,7 @@ import org.seasar.framework.util.MethodUtil;
  */
 public class S2FisshplateInterceptor extends AbstractInterceptor {
     private TemplateMetaDataFactory metaDataFactory;
+    private AddOnRowParserContainer addOnRowParserContainer;
 
     private static final long serialVersionUID = 983269897377553526L;
 
@@ -59,14 +61,24 @@ public class S2FisshplateInterceptor extends AbstractInterceptor {
         Class clazz = method.getDeclaringClass();
         TemplateMetaData metaData = metaDataFactory.getMetaData(clazz);
         HSSFWorkbook workbook = metaData.getWorkbook(method);
-        return FisshplateUtil.process(workbook, map);
+        return FisshplateUtil.process(workbook, map, addOnRowParserContainer);
     }
 
     /**
+     * S2によるインジェクション用のセッタです。
      * @param metaDataFactory
      */
     public void setMetaDataFactory(TemplateMetaDataFactory metaDataFactory) {
         this.metaDataFactory = metaDataFactory;
+    }
+
+    /**
+     * S2によるインジェクション用のセッタです。
+     * @param addOnRowParserContainer
+     */
+    public void setAddOnRowParserContainer(
+            AddOnRowParserContainer addOnRowParserContainer) {
+        this.addOnRowParserContainer = addOnRowParserContainer;
     }
 
 }

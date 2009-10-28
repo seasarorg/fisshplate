@@ -2,7 +2,9 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
   "http://www.seasar.org/dtd/components24.dtd">
 <components namespace="fisshplate" >
-  <component name="interceptor" class="org.seasar.fisshplate.interceptor.S2FisshplateInterceptor" />
+  <include path="s2fisshplate-parser.dicon"/>
+  <component name="interceptor" class="org.seasar.fisshplate.interceptor.S2FisshplateInterceptor" >
+  </component>
 
   <component class="org.seasar.fisshplate.meta.impl.TemplateMetaDataFactoryImpl" >
   </component>

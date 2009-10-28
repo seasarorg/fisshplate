@@ -18,6 +18,8 @@ package org.seasar.fisshplate.util;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.seasar.fisshplate.core.parser.RowParser;
+import org.seasar.fisshplate.core.parser.container.AddOnRowParserContainer;
 import org.seasar.fisshplate.exception.FPMergeException;
 import org.seasar.fisshplate.exception.FPMergeRuntimeException;
 import org.seasar.fisshplate.exception.FPParseException;
@@ -34,16 +36,26 @@ public class FisshplateUtil {
      * テンプレートにデータを埋め込みます。
      * @param workbook テンプレートオブジェクト
      * @param data 埋め込み用データ
+     * @param addOnRowParserContainer 独自の行パーサを保持するコンテナ
      * @return 出力するワークブック
      */
-    public static final HSSFWorkbook process(HSSFWorkbook workbook, Map data){
+    public static final HSSFWorkbook process(HSSFWorkbook workbook, Map data, AddOnRowParserContainer addOnRowParserContainer){
         try {
             FPTemplate template = new FPTemplate();
+            addRowParsersToTemplate(template, addOnRowParserContainer);
             return template.process(workbook,data);
         } catch (FPMergeException e) {
             throw new FPMergeRuntimeException(e);
         }catch(FPParseException e){
             throw new FPParseRuntimeException(e);
+        }
+    }
+
+    private static final void addRowParsersToTemplate(FPTemplate template, AddOnRowParserContainer rowParserContainer){
+        int parsersCount = rowParserContainer.size();
+        for (int i = 0; i < parsersCount; i++) {
+            RowParser rp = rowParserContainer.get(i);
+            template.addRowParser(rp);
         }
     }
 
