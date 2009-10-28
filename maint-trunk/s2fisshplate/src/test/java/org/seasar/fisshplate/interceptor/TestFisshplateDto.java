@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -21,21 +21,21 @@ import java.util.List;
  * @author rokugen
  */
 public class TestFisshplateDto {
-	private String title;
-	private List itemList;
-	
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public List getItemList() {
-		return itemList;
-	}
-	public void setItemList(List itemList) {
-		this.itemList = itemList;
-	}
-	
+    private String title;
+    private List itemList;
+
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public List getItemList() {
+        return itemList;
+    }
+    public void setItemList(List itemList) {
+        this.itemList = itemList;
+    }
+
 
 }

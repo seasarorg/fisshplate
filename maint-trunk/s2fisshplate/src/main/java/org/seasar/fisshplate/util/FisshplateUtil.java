@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -28,23 +28,23 @@ import org.seasar.fisshplate.template.FPTemplate;
  * @author rokugen
  */
 public class FisshplateUtil {
-	private FisshplateUtil(){}	
-	
-	/**
-	 * テンプレートにデータを埋め込みます。
-	 * @param workbook テンプレートオブジェクト
-	 * @param data 埋め込み用データ
-	 * @return 出力するワークブック
-	 */
-	public static final HSSFWorkbook process(HSSFWorkbook workbook, Map data){
-		try {					
-			FPTemplate template = new FPTemplate();			
-			return template.process(workbook,data);					
-		} catch (FPMergeException e) {
-			throw new FPMergeRuntimeException(e);
-		}catch(FPParseException e){
-			throw new FPParseRuntimeException(e);
-		}
-	}
+    private FisshplateUtil(){}
+
+    /**
+     * テンプレートにデータを埋め込みます。
+     * @param workbook テンプレートオブジェクト
+     * @param data 埋め込み用データ
+     * @return 出力するワークブック
+     */
+    public static final HSSFWorkbook process(HSSFWorkbook workbook, Map data){
+        try {
+            FPTemplate template = new FPTemplate();
+            return template.process(workbook,data);
+        } catch (FPMergeException e) {
+            throw new FPMergeRuntimeException(e);
+        }catch(FPParseException e){
+            throw new FPParseRuntimeException(e);
+        }
+    }
 
 }

@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -28,33 +28,33 @@ import org.seasar.framework.util.DisposableUtil;
  * @author rokugen
  */
 public class TemplateMetaDataFactoryImpl implements TemplateMetaDataFactory,Disposable {
-	private Map metaDataCache = new HashMap();
-	private boolean initialized;
-	
-	public TemplateMetaDataFactoryImpl(){
-		initialize();
-	}
+    private Map metaDataCache = new HashMap();
+    private boolean initialized;
 
-	/* (non-Javadoc)
-	 * @see org.seasar.fisshplate.meta.TemplateMetaDataFactory#getMetaData(java.lang.reflect.Method)
-	 */
-	public synchronized TemplateMetaData getMetaData(final Class fisshplateClass) {
-		initialize();
-		
-		TemplateMetaData metaData = (TemplateMetaData) metaDataCache.get(fisshplateClass.getName());
-		if(metaData != null){
-			return metaData;
-		}
-		return createMetaData(fisshplateClass);
-	}
-	
-	protected TemplateMetaData createMetaData(final Class fisshplateClass){
-		TemplateMetaData metaData = new TemplateMetaDataImpl();
-		metaDataCache.put(fisshplateClass.getName(), metaData);
-		return metaData;
-	}
-	
-	public void initialize() {
+    public TemplateMetaDataFactoryImpl(){
+        initialize();
+    }
+
+    /* (non-Javadoc)
+     * @see org.seasar.fisshplate.meta.TemplateMetaDataFactory#getMetaData(java.lang.reflect.Method)
+     */
+    public synchronized TemplateMetaData getMetaData(final Class fisshplateClass) {
+        initialize();
+
+        TemplateMetaData metaData = (TemplateMetaData) metaDataCache.get(fisshplateClass.getName());
+        if(metaData != null){
+            return metaData;
+        }
+        return createMetaData(fisshplateClass);
+    }
+
+    protected TemplateMetaData createMetaData(final Class fisshplateClass){
+        TemplateMetaData metaData = new TemplateMetaDataImpl();
+        metaDataCache.put(fisshplateClass.getName(), metaData);
+        return metaData;
+    }
+
+    public void initialize() {
         if (initialized) {
             return;
         }
@@ -62,9 +62,9 @@ public class TemplateMetaDataFactoryImpl implements TemplateMetaDataFactory,Disp
         initialized = true;
     }
 
-	public void dispose() {
-		metaDataCache.clear();
-		initialized = false;
-	}
+    public void dispose() {
+        metaDataCache.clear();
+        initialized = false;
+    }
 
 }

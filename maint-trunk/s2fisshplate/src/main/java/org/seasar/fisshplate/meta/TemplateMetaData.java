@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -24,11 +24,11 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
  * @author rokugen
  */
 public interface TemplateMetaData {
-	/**
-	 * メソッドに紐付いた{@link HSSFWorkbook}を戻します。
-	 * @param method 実行されたメソッド
-	 * @return メソッドに紐付いたテンプレート用{@link HSSFWorkbook}
-	 */
-	HSSFWorkbook getWorkbook(Method method);
+    /**
+     * メソッドに紐付いた{@link HSSFWorkbook}を戻します。
+     * @param method 実行されたメソッド
+     * @return メソッドに紐付いたテンプレート用{@link HSSFWorkbook}
+     */
+    HSSFWorkbook getWorkbook(Method method);
 
 }

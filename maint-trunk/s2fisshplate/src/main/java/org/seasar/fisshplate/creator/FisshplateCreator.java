@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -25,16 +25,16 @@ import org.seasar.framework.convention.NamingConvention;
  * @author rokugen
  */
 public class FisshplateCreator extends ComponentCreatorImpl {
-	private static final String DEFAULT_SUFFIX = "Fpao";
+    private static final String DEFAULT_SUFFIX = "Fpao";
 
-	public FisshplateCreator(NamingConvention namingConvention) {
-		super(namingConvention);
-		setNameSuffix(DEFAULT_SUFFIX);
+    public FisshplateCreator(NamingConvention namingConvention) {
+        super(namingConvention);
+        setNameSuffix(DEFAULT_SUFFIX);
         setEnableInterface(true);
         setEnableAbstract(true);
         setInstanceDef(InstanceDefFactory.SINGLETON);
-	}
-	
+    }
+
     /**
      * {@link ComponentCustomizer}を戻します。
      * customizer.dicon上でコンポーネント名を<code>fpaoCustomizer</code>とする必要があります。
