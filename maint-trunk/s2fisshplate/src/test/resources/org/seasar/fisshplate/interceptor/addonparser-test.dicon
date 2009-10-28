@@ -4,7 +4,7 @@
 <components xmlns:xi="http://www.w3.org/2001/XInclude">
   <xi:include href="/s2fisshplate.dicon"/>
 
-  <component name="addOnRowParserContainer" class="org.seasar.fisshplate.core.parser.container.AddOnRowParserContainer" >
+  <component name="addOnParserContainer" class="org.seasar.fisshplate.core.parser.container.AddOnParserContainer" >
     <initMethod name="addRowParser" >
       <arg>
         <component class="org.seasar.fisshplate.interceptor.TestRowParser" ></component>

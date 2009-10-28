@@ -6,12 +6,11 @@ import java.util.List;
 import org.seasar.fisshplate.core.parser.RowParser;
 
 /**
- * S2Fisshplateで使用する独自の行パーサを保持するクラスです。<p>
- * <b>s2fisshplate-parsers.dicon</b>にコンポーネント登録し、initMethodで独自パーサを登録します。<p>
+ * S2Fisshplateで使用する独自パーサを保持するクラスです。
  * @author rokugen
  *
  */
-public class AddOnRowParserContainer {
+public class AddOnParserContainer {
     private List addOnRowParsers = new ArrayList();
 
     /**
@@ -27,15 +26,15 @@ public class AddOnRowParserContainer {
      * @param i パーサのインデックス
      * @return インデックスに該当するパーサ
      */
-    public RowParser get(int i){
+    public RowParser getRowParser(int i){
         return (RowParser) addOnRowParsers.get(i);
     }
 
     /**
-     * 登録されたパーサの総数を戻します。
-     * @return パーサの総数
+     * 登録された行パーサの総数を戻します。
+     * @return 行パーサの総数
      */
-    public int size(){
+    public int rowParserCount(){
         return addOnRowParsers.size();
     }
 }

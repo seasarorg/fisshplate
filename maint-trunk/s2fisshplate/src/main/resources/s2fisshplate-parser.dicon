@@ -2,7 +2,7 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
   "http://www.seasar.org/dtd/components24.dtd">
 <components namespace="s2fisshplate" >
-  <component name="addOnRowParserContainer" class="org.seasar.fisshplate.core.parser.container.AddOnRowParserContainer" >
+  <component name="addOnParserContainer" class="org.seasar.fisshplate.core.parser.container.AddOnParserContainer" >
   </component>
 
 </components>
