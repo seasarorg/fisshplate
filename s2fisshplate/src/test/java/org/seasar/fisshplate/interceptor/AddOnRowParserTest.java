@@ -27,11 +27,11 @@ import org.seasar.extension.unit.S2TestCase;
 /**
  * @author rokugen
  */
-public class S2FisshplateInterceptorTest extends S2TestCase {
+public class AddOnRowParserTest extends S2TestCase {
     private TestFisshplate fisshplate;
 
     protected void setUp()throws Exception{
-        include("test.dicon");
+        include("addonparser-test.dicon");
     }
 
     protected void tearDown(){
@@ -56,7 +56,7 @@ public class S2FisshplateInterceptorTest extends S2TestCase {
         dto.setItemList(itemList);
 
         HSSFWorkbook wb = fisshplate.getTestWb(dto);
-        OutputStream os = new FileOutputStream("target/out.xls");
+        OutputStream os = new FileOutputStream("target/out_addonparser.xls");
 
         wb.write(os);
         os.flush();

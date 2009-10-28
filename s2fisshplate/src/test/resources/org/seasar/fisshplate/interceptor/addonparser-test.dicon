@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+  "http://www.seasar.org/dtd/components24.dtd">
+<components xmlns:xi="http://www.w3.org/2001/XInclude">
+  <xi:include href="/s2fisshplate.dicon"/>
+
+  <component name="addOnParserContainer" class="org.seasar.fisshplate.core.parser.container.AddOnParserContainer" >
+    <initMethod name="addRowParser" >
+      <arg>
+        <component class="org.seasar.fisshplate.interceptor.TestRowParser" ></component>
+      </arg>
+    </initMethod>
+  </component>
+
+  <component class="org.seasar.fisshplate.interceptor.TestFisshplate" >
+    <aspect>interceptor</aspect>
+  </component>
+</components>

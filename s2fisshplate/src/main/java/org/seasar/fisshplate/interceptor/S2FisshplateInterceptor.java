@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -22,6 +22,7 @@ import java.util.Map;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.seasar.fisshplate.consts.S2FPConsts;
+import org.seasar.fisshplate.core.parser.container.AddOnParserContainer;
 import org.seasar.fisshplate.meta.TemplateMetaData;
 import org.seasar.fisshplate.meta.TemplateMetaDataFactory;
 import org.seasar.fisshplate.util.FisshplateUtil;
@@ -31,42 +32,53 @@ import org.seasar.framework.util.MethodUtil;
 /**
  * S2Fisshplateを利用するためのインターセプタクラスです。
  * @author rokugen
- * 
+ *
  */
 public class S2FisshplateInterceptor extends AbstractInterceptor {
-	private TemplateMetaDataFactory metaDataFactory;
+    private TemplateMetaDataFactory metaDataFactory;
+    private AddOnParserContainer addOnParserContainer;
 
-	private static final long serialVersionUID = 983269897377553526L;
+    private static final long serialVersionUID = 983269897377553526L;
 
-	/* (non-Javadoc)
-	 * @see org.aopalliance.intercept.MethodInterceptor#invoke(org.aopalliance.intercept.MethodInvocation)
-	 */
-	public Object invoke(MethodInvocation invocation) throws Throwable {
-		Method method = invocation.getMethod();
-		if (!MethodUtil.isAbstract(method)) {
-			return invocation.proceed();
-		}
+    /* (non-Javadoc)
+     * @see org.aopalliance.intercept.MethodInterceptor#invoke(org.aopalliance.intercept.MethodInvocation)
+     */
+    public Object invoke(MethodInvocation invocation) throws Throwable {
+        Method method = invocation.getMethod();
+        if (!MethodUtil.isAbstract(method)) {
+            return invocation.proceed();
+        }
 
-		Object[] arguments = invocation.getArguments();		
-		if (arguments == null || arguments.length == 0) {
-			return null;
-		}
+        Object[] arguments = invocation.getArguments();
+        if (arguments == null || arguments.length == 0) {
+            return null;
+        }
 
-		Object bean = arguments[0];
-		Map map = new HashMap();
-		map.put(S2FPConsts.DATA_MAP_KEY_FOR_BEAN, bean);
+        Object bean = arguments[0];
+        Map map = new HashMap();
+        map.put(S2FPConsts.DATA_MAP_KEY_FOR_BEAN, bean);
 
-		Class clazz = method.getDeclaringClass();
-		TemplateMetaData metaData = metaDataFactory.getMetaData(clazz);
-		HSSFWorkbook workbook = metaData.getWorkbook(method);				
-		return FisshplateUtil.process(workbook, map);
-	}
+        Class clazz = method.getDeclaringClass();
+        TemplateMetaData metaData = metaDataFactory.getMetaData(clazz);
+        HSSFWorkbook workbook = metaData.getWorkbook(method);
+        return FisshplateUtil.process(workbook, map, addOnParserContainer);
+    }
 
-	/**
-	 * @param metaDataFactory
-	 */
-	public void setMetaDataFactory(TemplateMetaDataFactory metaDataFactory) {
-		this.metaDataFactory = metaDataFactory;
-	}
+    /**
+     * S2によるインジェクション用のセッタです。
+     * @param metaDataFactory
+     */
+    public void setMetaDataFactory(TemplateMetaDataFactory metaDataFactory) {
+        this.metaDataFactory = metaDataFactory;
+    }
+
+    /**
+     * S2によるインジェクション用のセッタです。
+     * @param addOnRowParserContainer
+     */
+    public void setAddOnParserContainer(
+            AddOnParserContainer addOnParserContainer) {
+        this.addOnParserContainer = addOnParserContainer;
+    }
 
 }

@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -22,10 +22,10 @@ import org.seasar.framework.exception.SRuntimeException;
  * @author rokugen
  */
 public class FPParseRuntimeException extends SRuntimeException {
-	private static final long serialVersionUID = -5475152488282168691L;
+    private static final long serialVersionUID = -5475152488282168691L;
 
-	public FPParseRuntimeException(FPParseException cause){
-		super("EFSSHPLT0001", new Object[] { cause }, cause);		
-	}
+    public FPParseRuntimeException(FPParseException cause){
+        super("EFSSHPLT0001", new Object[] { cause }, cause);
+    }
 
 }

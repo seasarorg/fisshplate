@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -33,40 +33,40 @@ import org.seasar.framework.util.ResourceUtil;
  * @author rokugen
  */
 public class TemplateMetaDataImpl implements TemplateMetaData {
-	private Map filePathCache = new HashMap();
-	
-	/* (non-Javadoc)
-	 * @see org.seasar.fisshplate.meta.TemplateMetaData#getTemplate(java.lang.reflect.Method)
-	 */
-	public synchronized  HSSFWorkbook getWorkbook(Method method) {
-		String filePath = (String) filePathCache.get(method.getName());
-		if(filePath == null){
-			filePath = getFilePath(method);
-			filePathCache.put(method.getName(), filePath);			
-		}				
-		return getTemplateWorkbook(filePath);
-	}
-	
-	protected HSSFWorkbook getTemplateWorkbook(String filePath) {
-		InputStream is = ResourceUtil.getResourceAsStream(filePath);		
-		try {
-			HSSFWorkbook wb =  new HSSFWorkbook(is);			
-			return wb;
-		}catch(IOException e){
-			throw new IORuntimeException(e);
-		} finally {
-			InputStreamUtil.close(is);
-		}
-	}
-	
-	protected String getFilePath(final Method method){
-		Class clazz = method.getDeclaringClass();
-		String templatePath = clazz.getName().replaceAll("\\.", "/") + "_"
-				+ method.getName() + "." + S2FPConsts.EXCEL_EXTENSION;
-		
-		return templatePath;
-	}
+    private Map filePathCache = new HashMap();
 
-	
+    /* (non-Javadoc)
+     * @see org.seasar.fisshplate.meta.TemplateMetaData#getTemplate(java.lang.reflect.Method)
+     */
+    public synchronized  HSSFWorkbook getWorkbook(Method method) {
+        String filePath = (String) filePathCache.get(method.getName());
+        if(filePath == null){
+            filePath = getFilePath(method);
+            filePathCache.put(method.getName(), filePath);
+        }
+        return getTemplateWorkbook(filePath);
+    }
+
+    protected HSSFWorkbook getTemplateWorkbook(String filePath) {
+        InputStream is = ResourceUtil.getResourceAsStream(filePath);
+        try {
+            HSSFWorkbook wb =  new HSSFWorkbook(is);
+            return wb;
+        }catch(IOException e){
+            throw new IORuntimeException(e);
+        } finally {
+            InputStreamUtil.close(is);
+        }
+    }
+
+    protected String getFilePath(final Method method){
+        Class clazz = method.getDeclaringClass();
+        String templatePath = clazz.getName().replaceAll("\\.", "/") + "_"
+                + method.getName() + "." + S2FPConsts.EXCEL_EXTENSION;
+
+        return templatePath;
+    }
+
+
 
 }
