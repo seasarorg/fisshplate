@@ -117,7 +117,7 @@ public abstract class AbstractCell implements TemplateElement {
         CellRangeAddress reg = new CellRangeAddress(
                 rowFrom, rowFrom + relativeMergedRowNumTo,
                 columnFrom, columnFrom + relativeMergedColumnTo);
-        HSSFSheet hssfSheet = cell.getRow().getSheet().getHSSFSheet();
+        HSSFSheet hssfSheet = context.getOutSheet();
         hssfSheet.addMergedRegion(reg);
     }
 
