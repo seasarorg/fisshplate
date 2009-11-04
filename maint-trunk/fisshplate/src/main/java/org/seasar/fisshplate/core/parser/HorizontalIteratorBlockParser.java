@@ -21,7 +21,6 @@ import java.util.regex.Pattern;
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.core.element.AbstractBlock;
 import org.seasar.fisshplate.core.element.HorizontalIteratorBlock;
-import org.seasar.fisshplate.core.element.IteratorBlock;
 import org.seasar.fisshplate.exception.FPParseException;
 import org.seasar.fisshplate.wrapper.CellWrapper;
 import org.seasar.fisshplate.wrapper.RowWrapper;
