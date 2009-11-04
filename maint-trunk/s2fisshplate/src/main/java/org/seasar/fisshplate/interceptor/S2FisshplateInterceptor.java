@@ -74,7 +74,7 @@ public class S2FisshplateInterceptor extends AbstractInterceptor {
 
     /**
      * S2によるインジェクション用のセッタです。
-     * @param addOnRowParserContainer
+     * @param addOnParserContainer
      */
     public void setAddOnParserContainer(
             AddOnParserContainer addOnParserContainer) {
