@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -26,14 +26,14 @@ import org.seasar.fisshplate.wrapper.CellWrapper;
  * @author rokugen
  */
 public class CommentParser implements RowParser {
-	private static final Pattern patComment = Pattern.compile("^\\s*#comment\\.*");
-	/* (non-Javadoc)
-	 * @see org.seasar.fisshplate.core.parser.StatementParser#process(org.seasar.fisshplate.wrapper.CellWrapper, org.seasar.fisshplate.core.parser.FPParser)
-	 */
-	public boolean process(CellWrapper cell, FPParser parser)	throws FPParseException {
-		String value= cell.getStringValue();
-		Matcher mat = patComment.matcher(value);
-		return mat.find();
-	}
+    private static final Pattern patComment = Pattern.compile("^\\s*#comment\\.*");
+    /* (non-Javadoc)
+     * @see org.seasar.fisshplate.core.parser.StatementParser#process(org.seasar.fisshplate.wrapper.CellWrapper, org.seasar.fisshplate.core.parser.FPParser)
+     */
+    public boolean process(CellWrapper cell, FPParser parser)	throws FPParseException {
+        String value= cell.getStringValue();
+        Matcher mat = patComment.matcher(value);
+        return mat.find();
+    }
 
 }

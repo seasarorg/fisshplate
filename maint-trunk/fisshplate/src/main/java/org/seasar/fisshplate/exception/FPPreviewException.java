@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -21,23 +21,23 @@ package org.seasar.fisshplate.exception;
  *
  */
 public class FPPreviewException extends FPRuntimeException {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * メッセージIDを元にリソースバンドルからメッセージを取得します。
-	 * @param messageId メッセージID
-	 */
-	public FPPreviewException(String messageId){
-		super(messageId);
-	}
-	
-	/**
-	 * メッセージIDを元にリソースバンドルからメッセージを取得します。
-	 * @param messageId メッセージID
-	 * @param args 埋め込みパラメータ
-	 */
-	public FPPreviewException(String messageId, Object[]args){
-		super(messageId,args);
-	}
+    /**
+     * メッセージIDを元にリソースバンドルからメッセージを取得します。
+     * @param messageId メッセージID
+     */
+    public FPPreviewException(String messageId){
+        super(messageId);
+    }
+
+    /**
+     * メッセージIDを元にリソースバンドルからメッセージを取得します。
+     * @param messageId メッセージID
+     * @param args 埋め込みパラメータ
+     */
+    public FPPreviewException(String messageId, Object[]args){
+        super(messageId,args);
+    }
 
 }

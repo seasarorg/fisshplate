@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -28,68 +28,68 @@ import org.seasar.fisshplate.wrapper.WorkbookWrapper;
 
 /**
  * EXCELからテンプレートに埋め込むMapを生成するクラスです。
- * 
+ *
  * @author rokugen
  */
 public class MapBuilder {
-	private static final String ROOT_SHEET_NAME = "root";
+    private static final String ROOT_SHEET_NAME = "root";
 
-	/**
-	 * EXCELに記載されたデータから、テンプレート埋め込み用{@link Map}を生成して戻します。
-	 * @param wb 埋め込みデータが記載された{@link HSSFWorkbook}
-	 * @return テンプレート埋め込み用{@link Map}
-	 */
-	public Map buildMapFrom(HSSFWorkbook wb) {
-		WorkbookWrapper workbook = new WorkbookWrapper(wb);
-		
-		SheetWrapper sheet = workbook.getSheetByName(ROOT_SHEET_NAME);
-		FPMapData root = new FPMapData(sheet, ROOT_SHEET_NAME);		
-		buildRootMapData(workbook, root);
-		return (Map) root.buildData();
-	}
+    /**
+     * EXCELに記載されたデータから、テンプレート埋め込み用{@link Map}を生成して戻します。
+     * @param wb 埋め込みデータが記載された{@link HSSFWorkbook}
+     * @return テンプレート埋め込み用{@link Map}
+     */
+    public Map buildMapFrom(HSSFWorkbook wb) {
+        WorkbookWrapper workbook = new WorkbookWrapper(wb);
 
-	private void buildRootMapData(WorkbookWrapper workbook, FPMapData root) {		
-		for(int i=0; i < workbook.getSheetCount(); i++){
-			SheetWrapper sheet = workbook.getSheetAt(i);
-			String keyName = getKeyNameFrom(sheet);
-			if(! ROOT_SHEET_NAME.equals(keyName)){
-				buildMapData(root, sheet, keyName);
-			}
-		}
-	}
-	
-	private String getKeyNameFrom(SheetWrapper sheet){
-		String col = sheet.getRow(0).getCell(0).getStringValue();				
-		
-		if(!StringUtil.isEmpty(col) && Pattern.matches(FPConsts.REGEX_BIND_VAR, col)){
-			sheet.removeRow(0);
-			BindVariable var = new BindVariable(col);
-			return var.getName();
-		}else{		
-			return sheet.getSheetName();
-		}
-		
-	}
-	
-	private void buildMapData(FPMapData parent, SheetWrapper sheet, String keyName){
-		int idx = keyName.indexOf('#');
-		if(idx == -1){
-			parent.addChild(sheet, keyName);			
-		}else{
-			buildMapDataComposition(parent, sheet, keyName, idx);
-		}
-	}
+        SheetWrapper sheet = workbook.getSheetByName(ROOT_SHEET_NAME);
+        FPMapData root = new FPMapData(sheet, ROOT_SHEET_NAME);
+        buildRootMapData(workbook, root);
+        return (Map) root.buildData();
+    }
 
-	private void buildMapDataComposition(FPMapData grandParent, SheetWrapper sheet,String keyName, int idx) {
-		String selfKeyName = keyName.substring(idx + 1);
-		String parentKeyName = keyName.substring(0, idx);
-		FPMapData parent= grandParent.getChildByKey(parentKeyName);
-		if(parent == null){
-			throw new FPPreviewException(FPConsts.MESSAGE_ID_PREVIEW_LACCK_OF_PARENT,new Object[]{parentKeyName});
-		}
-		buildMapData(parent, sheet, selfKeyName);
-	}
-	
-	
+    private void buildRootMapData(WorkbookWrapper workbook, FPMapData root) {
+        for(int i=0; i < workbook.getSheetCount(); i++){
+            SheetWrapper sheet = workbook.getSheetAt(i);
+            String keyName = getKeyNameFrom(sheet);
+            if(! ROOT_SHEET_NAME.equals(keyName)){
+                buildMapData(root, sheet, keyName);
+            }
+        }
+    }
+
+    private String getKeyNameFrom(SheetWrapper sheet){
+        String col = sheet.getRow(0).getCell(0).getStringValue();
+
+        if(!StringUtil.isEmpty(col) && Pattern.matches(FPConsts.REGEX_BIND_VAR, col)){
+            sheet.removeRow(0);
+            BindVariable var = new BindVariable(col);
+            return var.getName();
+        }else{
+            return sheet.getSheetName();
+        }
+
+    }
+
+    private void buildMapData(FPMapData parent, SheetWrapper sheet, String keyName){
+        int idx = keyName.indexOf('#');
+        if(idx == -1){
+            parent.addChild(sheet, keyName);
+        }else{
+            buildMapDataComposition(parent, sheet, keyName, idx);
+        }
+    }
+
+    private void buildMapDataComposition(FPMapData grandParent, SheetWrapper sheet,String keyName, int idx) {
+        String selfKeyName = keyName.substring(idx + 1);
+        String parentKeyName = keyName.substring(0, idx);
+        FPMapData parent= grandParent.getChildByKey(parentKeyName);
+        if(parent == null){
+            throw new FPPreviewException(FPConsts.MESSAGE_ID_PREVIEW_LACCK_OF_PARENT,new Object[]{parentKeyName});
+        }
+        buildMapData(parent, sheet, selfKeyName);
+    }
+
+
 
 }

@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -28,36 +28,36 @@ import org.seasar.fisshplate.template.FPTemplate;
  * @author rokugen
  */
 public class FPPreviewUtil {
-	private FPPreviewUtil(){}
-	
-	/**
-	 * テンプレートファイルにデータファイル内のデータを埋め込んだ出力ファイルを戻します。
-	 * 
-	 * @param template テンプレート用ファイル
-	 * @param data データ用ファイル
-	 * @return データを埋め込んだワークブック
-	 * @throws FPException 
-	 */
-	public static final HSSFWorkbook getWorkbook(HSSFWorkbook template, HSSFWorkbook data) throws FPException{
-		FPTemplate fptemp = new FPTemplate();
-		MapBuilder mb = new MapBuilder();
-		Map map = mb.buildMapFrom(data);
-		return fptemp.process(template, map);
-	}
-	
-	/**
-	 * テンプレートファイルのストリームと、データ用ファイルのストリームから出力ファイルを生成して戻します。
-	 * 
-	 * @param template テンプレート用ストリーム
-	 * @param data データ用ストリーム
-	 * @return データを埋め込んだワークブック
-	 * @throws FPException
-	 * @throws IOException
-	 */
-	public static final HSSFWorkbook getWorkbook(InputStream template, InputStream data) throws FPException, IOException{
-		HSSFWorkbook tempWb = new HSSFWorkbook(template);
-		HSSFWorkbook dataWb = new HSSFWorkbook(data);
-		return getWorkbook(tempWb, dataWb);
-	}
+    private FPPreviewUtil(){}
+
+    /**
+     * テンプレートファイルにデータファイル内のデータを埋め込んだ出力ファイルを戻します。
+     *
+     * @param template テンプレート用ファイル
+     * @param data データ用ファイル
+     * @return データを埋め込んだワークブック
+     * @throws FPException
+     */
+    public static final HSSFWorkbook getWorkbook(HSSFWorkbook template, HSSFWorkbook data) throws FPException{
+        FPTemplate fptemp = new FPTemplate();
+        MapBuilder mb = new MapBuilder();
+        Map map = mb.buildMapFrom(data);
+        return fptemp.process(template, map);
+    }
+
+    /**
+     * テンプレートファイルのストリームと、データ用ファイルのストリームから出力ファイルを生成して戻します。
+     *
+     * @param template テンプレート用ストリーム
+     * @param data データ用ストリーム
+     * @return データを埋め込んだワークブック
+     * @throws FPException
+     * @throws IOException
+     */
+    public static final HSSFWorkbook getWorkbook(InputStream template, InputStream data) throws FPException, IOException{
+        HSSFWorkbook tempWb = new HSSFWorkbook(template);
+        HSSFWorkbook dataWb = new HSSFWorkbook(data);
+        return getWorkbook(tempWb, dataWb);
+    }
 
 }

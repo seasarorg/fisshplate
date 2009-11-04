@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -25,20 +25,20 @@ import org.seasar.fisshplate.core.element.ElseIfBlock;
  * @author rokugen
  */
 public class ElseIfBlockParser extends AbstractElseParser{
-	private static final Pattern patElseIf = Pattern.compile("^\\s*#else\\s+if\\s*(.+)");
-	
-	/* (non-Javadoc)
-	 * @see org.seasar.fisshplate.core.parser.AbstractElseParser#createElement(java.lang.String)
-	 */
-	protected AbstractBlock createElement(String condition) {
-		return new ElseIfBlock(condition);
-	}
-	/* (non-Javadoc)
-	 * @see org.seasar.fisshplate.core.parser.AbstractElseParser#getPattern()
-	 */
-	protected Pattern getPattern() {		
-		return patElseIf;
-	}
+    private static final Pattern patElseIf = Pattern.compile("^\\s*#else\\s+if\\s*(.+)");
+
+    /* (non-Javadoc)
+     * @see org.seasar.fisshplate.core.parser.AbstractElseParser#createElement(java.lang.String)
+     */
+    protected AbstractBlock createElement(String condition) {
+        return new ElseIfBlock(condition);
+    }
+    /* (non-Javadoc)
+     * @see org.seasar.fisshplate.core.parser.AbstractElseParser#getPattern()
+     */
+    protected Pattern getPattern() {
+        return patElseIf;
+    }
 
 
 }

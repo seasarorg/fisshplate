@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -70,7 +70,7 @@ public class RowParserHandler {
      * @param cell パースするセル
      * @param parser 呼び出し元FPParser
      * @return パース対象であればtrue
-     * @throws FPParseException 解析時にエラーが発生した際に投げられます。 
+     * @throws FPParseException 解析時にエラーが発生した際に投げられます。
      */
     public boolean parse(CellWrapper cell,FPParser parser) throws FPParseException{
         for(int i=0; i < builtInRowParsers.length; i++){
@@ -78,7 +78,7 @@ public class RowParserHandler {
                 return true;
             }
         }
-        
+
         for(int i=0; i < addOnRowParser.size(); i++){
             if ( ((RowParser) addOnRowParser.get(i)).process(cell, parser) ){
                 return true;
@@ -86,7 +86,7 @@ public class RowParserHandler {
         }
         return false;
     }
-    
+
     /**
      * 独自にカスタマイズしたパーサを追加します。
      * @param parser 追加するパーサ

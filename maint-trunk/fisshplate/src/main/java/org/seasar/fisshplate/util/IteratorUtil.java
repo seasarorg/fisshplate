@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -43,10 +43,10 @@ public class IteratorUtil {
             ite = getIterator(Arrays.asList((Object[])o),iteratorName,row);
         } else{
             throw new FPMergeException(FPConsts.MESSAGE_ID_NOT_ITERATABLE,
-                    new Object[]{iteratorName},row);            
+                    new Object[]{iteratorName},row);
         }
-        return ite; 
+        return ite;
     }
- 
+
 
 }

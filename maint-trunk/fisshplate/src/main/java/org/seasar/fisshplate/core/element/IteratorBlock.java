@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -25,21 +25,21 @@ import org.seasar.fisshplate.util.IteratorUtil;
 import org.seasar.fisshplate.util.OgnlUtil;
 import org.seasar.fisshplate.wrapper.RowWrapper;
 
-public class IteratorBlock extends AbstractBlock{   
+public class IteratorBlock extends AbstractBlock{
     private String varName;
     private String iteratorName;
     private String indexName;
     private int max;
     private RowWrapper row;
     private int lineNumPerPage;
-    
+
     /**
      * 要素を保持する変数名とイテレータ自身の名前とループのインデックス名とループの最大繰り返し回数を受け取ります。
      * @param row テンプレート上の行
      * @param varName イテレータ内の要素を保持する変数名
      * @param iteratorName イテレータ名
      * @param indexName ループのインデックス名
-     * @param max ループの最大繰り返し回数 
+     * @param max ループの最大繰り返し回数
      */
     public IteratorBlock(RowWrapper row, String varName, String iteratorName, String indexName, int max){
         this.varName = varName;
@@ -62,33 +62,33 @@ public class IteratorBlock extends AbstractBlock{
         Iterator ite = IteratorUtil.getIterator(o,iteratorName,row);
         mergeIteratively(context, ite, data);
     }
-    
-    
+
+
     private void mergeIteratively(FPContext context, Iterator ite,Map data) throws FPMergeException{
         context.setCurrentIterator(this);
         initLineNumPerPage();
         int index = 0;
-        while(ite.hasNext()){           
+        while(ite.hasNext()){
             Object var = ite.next();
-            data.put(varName, var); 
+            data.put(varName, var);
             data.put(indexName, new Integer(index));
             lineNumPerPage ++;
             index ++;
             mergeChildren(context);
-            
+
         }
-        
+
         context.setSkipMerge(true);
         context.clearCurrentIterator();
         while (max > lineNumPerPage){
             data.put(indexName, new Integer(index));
             lineNumPerPage ++;
             index ++;
-            mergeChildren(context);         
+            mergeChildren(context);
         }
-        context.setSkipMerge(false);        
-    }   
-    
+        context.setSkipMerge(false);
+    }
+
 
     /**
      * 現在のページごとの行番号を戻します。
@@ -97,7 +97,7 @@ public class IteratorBlock extends AbstractBlock{
     public int getLineNumPerPage() {
         return lineNumPerPage;
     }
-    
+
     /**
      * 現在のページごとの行番号を初期化します。
      */

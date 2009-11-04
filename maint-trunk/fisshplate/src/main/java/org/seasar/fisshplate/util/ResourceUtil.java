@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -29,14 +29,14 @@ import java.util.ResourceBundle;
  *
  */
 public class ResourceUtil {
-	public static final String MESSAGE_RESOURCE_NAME = "fisshplateMessages";
-	
-	/**
+    public static final String MESSAGE_RESOURCE_NAME = "fisshplateMessages";
+
+    /**
      * アプリケーション固有の例外用リソースバンドルを戻します。
-	 * @return リソースバンドル
-	 */
-	public static final ResourceBundle getAppExceptionBundle(){
-		return ResourceBundle.getBundle(MESSAGE_RESOURCE_NAME);
-	}
+     * @return リソースバンドル
+     */
+    public static final ResourceBundle getAppExceptionBundle(){
+        return ResourceBundle.getBundle(MESSAGE_RESOURCE_NAME);
+    }
 
 }

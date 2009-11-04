@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -21,14 +21,14 @@ import ognl.Ognl;
 import ognl.OgnlException;
 
 public class OgnlUtil {
-	private OgnlUtil(){}
-	
-	public static final Object getValue(String expression, Map data){
-		try {
-			return Ognl.getValue(expression, data);
-		} catch (OgnlException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    private OgnlUtil(){}
+
+    public static final Object getValue(String expression, Map data){
+        try {
+            return Ognl.getValue(expression, data);
+        } catch (OgnlException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

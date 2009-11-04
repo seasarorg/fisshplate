@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -27,33 +27,33 @@ import org.seasar.fisshplate.exception.FPMergeException;
  * @author rokugen
  */
 public class Suspend implements TemplateElement {
-	private El el;
-	private Stack targetCellStack = new Stack();
-	
-	public Suspend(El el) {
-		this.el = el;		
-	}
-	
+    private El el;
+    private Stack targetCellStack = new Stack();
 
-	public void merge(FPContext context) throws FPMergeException {
-		context.addSuspendedSet(this);
-		HSSFCell out =  context.getCurrentCell();
-		targetCellStack.push(out);
-		el.targetElement.copyCellStyle(context,out);
-		context.nextCell();
-	}
-	
-	public void resume(FPContext context) throws FPMergeException{
-		Object value = el.getBoundValue(context);
-		el.targetElement.setCellValue(value);
-		while(!targetCellStack.empty()){
-			HSSFCell out = (HSSFCell) targetCellStack.pop();
-			el.targetElement.mergeImpl(context, out);
-		}		
-	}
-	
-	public El getEl(){
-		return el;
-	}
-	
+    public Suspend(El el) {
+        this.el = el;
+    }
+
+
+    public void merge(FPContext context) throws FPMergeException {
+        context.addSuspendedSet(this);
+        HSSFCell out =  context.getCurrentCell();
+        targetCellStack.push(out);
+        el.targetElement.copyCellStyle(context,out);
+        context.nextCell();
+    }
+
+    public void resume(FPContext context) throws FPMergeException{
+        Object value = el.getBoundValue(context);
+        el.targetElement.setCellValue(value);
+        while(!targetCellStack.empty()){
+            HSSFCell out = (HSSFCell) targetCellStack.pop();
+            el.targetElement.mergeImpl(context, out);
+        }
+    }
+
+    public El getEl(){
+        return el;
+    }
+
 }

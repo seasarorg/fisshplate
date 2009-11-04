@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -25,16 +25,16 @@ import org.seasar.fisshplate.util.OgnlUtil;
  * @author rokugen
  */
 public class Exec implements TemplateElement {
-	private String expression;	
-	
-	public Exec(String expression){
-		this.expression = expression;
-				
-	}
+    private String expression;
 
-	public void merge(FPContext context) throws FPMergeException {
-		Map data = context.getData();
-		OgnlUtil.getValue(expression, data);
-	}
+    public Exec(String expression){
+        this.expression = expression;
+
+    }
+
+    public void merge(FPContext context) throws FPMergeException {
+        Map data = context.getData();
+        OgnlUtil.getValue(expression, data);
+    }
 
 }
