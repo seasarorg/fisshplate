@@ -37,6 +37,7 @@ public class HorizontalIteratorBlock extends AbstractBlock{
     private String varName;
     private String iteratorName;
     private String indexName;
+    private int cols;
     private int startCellIndex;
     private RowWrapper row;
     /**
@@ -44,11 +45,13 @@ public class HorizontalIteratorBlock extends AbstractBlock{
      * @param varName イテレータ内の要素を保持する変数名
      * @param iteratorName イテレータ名
      * @param indexName ループのインデックス名
+     * @param cols ループする列数
      * @param cell タグの書かれたセル
      */
-    public HorizontalIteratorBlock(String varName, String iteratorName, String indexName, CellWrapper cell){
+    public HorizontalIteratorBlock(String varName, String iteratorName, String indexName, int cols, CellWrapper cell){
         this.varName = varName;
         this.iteratorName = iteratorName;
+        this.cols = cols;
         this.startCellIndex = cell.getCellIndex();
         this.row = cell.getRow();
         if(indexName == null || "".equals(indexName.trim())){
@@ -71,7 +74,7 @@ public class HorizontalIteratorBlock extends AbstractBlock{
         int index = 0;
         int startRowNum = context.getCurrentRowNum();
         int startCell = startCellIndex;
-        int maxCellNum = getMaxCellElementListSize() - startCellIndex;
+        int maxCellNum = getMaxCellNum();
 
         mergeNoIterationBlock(context);
 
@@ -81,23 +84,30 @@ public class HorizontalIteratorBlock extends AbstractBlock{
             data.put(indexName, new Integer(index));
             index ++;
             context.moveCurrentRowTo(startRowNum);
-            mergeBlock(context,startCell);
+            mergeBlock(context,startCell,maxCellNum);
             startCell += maxCellNum;
         }
     }
 
-    protected void mergeBlock(FPContext context, int startCell) throws FPMergeException {
+    protected void mergeBlock(FPContext context, int startCell, int maxCellNum) throws FPMergeException {
 
         for (int i = 0; i < childList.size(); i++) {
             TemplateElement elem = (TemplateElement) childList.get(i);
             if(elem instanceof Row){
                 context.moveCurrentCellTo((short) startCell);
-                mergeRow(context, (Row)elem);
+                mergeRow(context, (Row)elem, maxCellNum);
 
             }else{
                 elem.merge(context);
             }
         }
+    }
+
+    private int getMaxCellNum() {
+        if (cols < 0) {
+            return getMaxCellElementListSize() - startCellIndex;
+        }
+        return cols;
     }
 
     private int getMaxCellElementListSize(){
@@ -112,14 +122,17 @@ public class HorizontalIteratorBlock extends AbstractBlock{
         return max;
     }
 
-    private void mergeRow(FPContext context, Row row) throws FPMergeException {
+    private void mergeRow(FPContext context, Row row, int maxCellNum) throws FPMergeException {
         HSSFRow outRow = context.getCurrentRow();
         outRow.setHeight(row.getRowHeight());
         Map data = context.getData();
         data.put(FPConsts.ROW_NUMBER_NAME, new Integer(context.getCurrentRowNum() + 1));
+        int maxCellIndex = startCellIndex + maxCellNum - 1;
         for (int i = 0; i < row.getCellElementList().size(); i++) {
             if(i < startCellIndex){
                 continue;
+            }else if(i > maxCellIndex){
+                break;
             }
             adjustColumnWidth(context,(short) i);
             TemplateElement elem = (TemplateElement) row.getCellElementList().get(i);

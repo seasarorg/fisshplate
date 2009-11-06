@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -33,7 +33,7 @@ import org.seasar.fisshplate.template.FPTemplate;
  */
 public class HorizontalIteratorBlockTest extends TestCase {
     public void test普通に横展開()throws Exception{
-        
+
         InputStream is = getClass().getResourceAsStream("/HorizontalIteratorTest.xls");
         List list = new ArrayList();
         list.add(new Data(){{setMonth(1);setAmountA(10);setAmountB(20);setAmountC(30);setAmountD(40);}});
@@ -50,7 +50,7 @@ public class HorizontalIteratorBlockTest extends TestCase {
     }
 
     public void test普通に横展開_素のテンプレート()throws Exception{
-        
+
         InputStream is = getClass().getResourceAsStream("/HorizontalTest2.xls");
         List list = new ArrayList();
         list.add(new Data(){{setMonth(1);setAmountA(10);setAmountB(20);setAmountC(30);setAmountD(40);}});
@@ -72,7 +72,7 @@ public class HorizontalIteratorBlockTest extends TestCase {
         private int amountC;
         private int amountD;
         private int month;
-        
+
         public int getAmountA() {
             return amountA;
         }

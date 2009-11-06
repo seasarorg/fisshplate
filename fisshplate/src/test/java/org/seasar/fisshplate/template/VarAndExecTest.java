@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -28,29 +28,29 @@ import junit.framework.TestCase;
  */
 public class VarAndExecTest extends TestCase {
 
-	public VarAndExecTest(String name) {
-		super(name);
-	}
+    public VarAndExecTest(String name) {
+        super(name);
+    }
 
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
 
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
-	
-	public void test変数宣言と実行でキーブレイク()throws Exception{
-		InputStream template = getClass().getResourceAsStream("/VarAndExecTest_template.xls");
-		InputStream data = getClass().getResourceAsStream("/VarAndExecTest_data.xls");
-		
-		HSSFWorkbook out = FPPreviewUtil.getWorkbook(template, data);
-		FileOutputStream os = new FileOutputStream("target/VarAndExecTest_out.xls");
-		out.write(os);
-		template.close();
-		data.close();
-		os.close();
-	}
-	
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+    public void test変数宣言と実行でキーブレイク()throws Exception{
+        InputStream template = getClass().getResourceAsStream("/VarAndExecTest_template.xls");
+        InputStream data = getClass().getResourceAsStream("/VarAndExecTest_data.xls");
+
+        HSSFWorkbook out = FPPreviewUtil.getWorkbook(template, data);
+        FileOutputStream os = new FileOutputStream("target/VarAndExecTest_out.xls");
+        out.write(os);
+        template.close();
+        data.close();
+        os.close();
+    }
+
 
 }

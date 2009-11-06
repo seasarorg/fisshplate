@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -23,20 +23,20 @@ import java.io.InputStream;
  */
 public class InputStreamUtil {
 
-	public static InputStream getResourceAsStream(String name) {
-		ClassLoader loader = null;
-		loader = Thread.currentThread().getContextClassLoader();
-		return loader.getResourceAsStream(name);
-	}
+    public static InputStream getResourceAsStream(String name) {
+        ClassLoader loader = null;
+        loader = Thread.currentThread().getContextClassLoader();
+        return loader.getResourceAsStream(name);
+    }
 
-	public static void close(InputStream is) {
-		try {
-			if (is != null) {
-				is.close();
-			}
-		} catch (IOException e) {
-			throw new RuntimeException("ファイルを閉じる際にエラーが発生しました", e);
-		}
-	}
+    public static void close(InputStream is) {
+        try {
+            if (is != null) {
+                is.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("ファイルを閉じる際にエラーが発生しました", e);
+        }
+    }
 
 }

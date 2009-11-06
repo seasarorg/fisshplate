@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -25,39 +25,39 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
  * @author rokugen
  */
 public class WorkbookWrapper {
-	private HSSFWorkbook hssfWorkbook;
-	private List sheetList = new ArrayList();
-	
-	public WorkbookWrapper(HSSFWorkbook workbook){
-		this.hssfWorkbook = workbook;
-		for(int i=0; i < workbook.getNumberOfSheets();i++){
-			sheetList.add(new SheetWrapper(workbook.getSheetAt(i),this,i));
-		}
-	}
-	
-	public HSSFWorkbook getHSSFWorkbook(){
-		return hssfWorkbook;
-	}
-	
-	public SheetWrapper getSheetAt(int index){
-		return (SheetWrapper) sheetList.get(index);
-	}
+    private HSSFWorkbook hssfWorkbook;
+    private List sheetList = new ArrayList();
 
-	public SheetWrapper getSheetByName(String sheetName) {
-		for(int i=0; i < sheetList.size(); i++){
-			SheetWrapper sheet = (SheetWrapper) sheetList.get(i);
-			String name = sheet.getSheetName();
-			if(name.equals(sheetName)){
-				return sheet;
-			}			
-		}
+    public WorkbookWrapper(HSSFWorkbook workbook){
+        this.hssfWorkbook = workbook;
+        for(int i=0; i < workbook.getNumberOfSheets();i++){
+            sheetList.add(new SheetWrapper(workbook.getSheetAt(i),this,i));
+        }
+    }
 
-		return null;
-	}
+    public HSSFWorkbook getHSSFWorkbook(){
+        return hssfWorkbook;
+    }
 
-	public int getSheetCount() {
-		return sheetList.size();
-	}
-	
+    public SheetWrapper getSheetAt(int index){
+        return (SheetWrapper) sheetList.get(index);
+    }
+
+    public SheetWrapper getSheetByName(String sheetName) {
+        for(int i=0; i < sheetList.size(); i++){
+            SheetWrapper sheet = (SheetWrapper) sheetList.get(i);
+            String name = sheet.getSheetName();
+            if(name.equals(sheetName)){
+                return sheet;
+            }
+        }
+
+        return null;
+    }
+
+    public int getSheetCount() {
+        return sheetList.size();
+    }
+
 
 }

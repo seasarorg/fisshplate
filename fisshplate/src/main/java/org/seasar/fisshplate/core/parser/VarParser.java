@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -28,22 +28,22 @@ import org.seasar.fisshplate.wrapper.RowWrapper;
  * @author rokugen
  */
 public class VarParser implements RowParser{
-	private static final Pattern patVar = Pattern.compile("#var\\s+(.+)");
-	/* (non-Javadoc)
-	 * @see org.seasar.fisshplate.core.parser.StatementParser#process(org.seasar.fisshplate.wrapper.CellWrapper, org.seasar.fisshplate.core.parser.FPParser)
-	 */
-	public boolean process(CellWrapper cell, FPParser parser)	throws FPParseException {
-		String value = cell.getStringValue();
-		Matcher mat = patVar.matcher(value);
-		if(!mat.find()){
-			return false;
-		}
-		RowWrapper row = cell.getRow();
-		String vars = mat.group(1);
-		Var elem = new Var(vars, row);
-		parser.addTemplateElement(elem);
-		
-		return true;
-	}
+    private static final Pattern patVar = Pattern.compile("#var\\s+(.+)");
+    /* (non-Javadoc)
+     * @see org.seasar.fisshplate.core.parser.StatementParser#process(org.seasar.fisshplate.wrapper.CellWrapper, org.seasar.fisshplate.core.parser.FPParser)
+     */
+    public boolean process(CellWrapper cell, FPParser parser)	throws FPParseException {
+        String value = cell.getStringValue();
+        Matcher mat = patVar.matcher(value);
+        if(!mat.find()){
+            return false;
+        }
+        RowWrapper row = cell.getRow();
+        String vars = mat.group(1);
+        Var elem = new Var(vars, row);
+        parser.addTemplateElement(elem);
+
+        return true;
+    }
 
 }

@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -22,24 +22,24 @@ import org.apache.poi.hssf.usermodel.HSSFHyperlink;
  */
 public class LinkElementType {
     private int linkType;
-    
+
     public static final LinkElementType URL = new LinkElementType(HSSFHyperlink.LINK_URL);
     public static final LinkElementType EMAIL = new LinkElementType(HSSFHyperlink.LINK_EMAIL);
     public static final LinkElementType THIS = new LinkElementType(HSSFHyperlink.LINK_DOCUMENT);
     public static final LinkElementType FILE = new LinkElementType(HSSFHyperlink.LINK_FILE);
-    
+
     private LinkElementType(int type){
         this.linkType = type;
     }
-    
+
     public int getType(){
         return linkType;
     }
-    
+
     public HSSFHyperlink createHyperLink(){
         return new HSSFHyperlink(linkType);
     }
-    
+
     public static LinkElementType get(String type){
         if("url".equals(type)){
             return URL;

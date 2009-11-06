@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -27,27 +27,27 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
  */
 public class VarExecAndWhileTest extends TestCase {
 
-	public VarExecAndWhileTest(String name) {
-		super(name);
-	}
+    public VarExecAndWhileTest(String name) {
+        super(name);
+    }
 
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
 
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
-	
-	public void test変数宣言と実行でwhileループ()throws Exception{
-		InputStream template = getClass().getResourceAsStream("/VarExecAndWhileTest.xls");		
-		FPTemplate fpt = new FPTemplate();
-		HSSFWorkbook out = fpt.process(template, null);
-		FileOutputStream os = new FileOutputStream("target/VarExecAndWhileTest_out.xls");
-		out.write(os);
-		template.close();		
-		os.close();
-	}
-	
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+    public void test変数宣言と実行でwhileループ()throws Exception{
+        InputStream template = getClass().getResourceAsStream("/VarExecAndWhileTest.xls");
+        FPTemplate fpt = new FPTemplate();
+        HSSFWorkbook out = fpt.process(template, null);
+        FileOutputStream os = new FileOutputStream("target/VarExecAndWhileTest_out.xls");
+        out.write(os);
+        template.close();
+        os.close();
+    }
+
 
 }

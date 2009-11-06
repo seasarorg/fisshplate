@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -32,16 +32,16 @@ import org.seasar.fisshplate.wrapper.SheetWrapper;
 
 /**
  * テンプレート側のシートを解析し、要素クラスの構造を組み立てて保持します。
- * 
+ *
  * @author rokugen
  * @author a-conv
- * 
+ *
  */
 public class FPParser {
 
     private Root rootElement;
     private Stack blockStack = new Stack();
-    
+
     private RowParserHandler rowParserHandler = new RowParserHandler();
     private CellParserHandler cellParserHandler = new CellParserHandler();
 
@@ -49,7 +49,7 @@ public class FPParser {
      * コンストラクタです。
      */
     public FPParser(){
-        
+
     }
 
     /**
@@ -74,7 +74,7 @@ public class FPParser {
         return rootElement;
     }
 
-    
+
     /**
      * ルートの要素リストを戻します。
      * @return 要素リスト
@@ -92,23 +92,23 @@ public class FPParser {
 
         for(int i=0; i < row.getCellCount(); i ++){
             CellWrapper cell = row.getCell(i);
-            
+
             if(!isCellParsable(cell)){
                 continue;
             }
-            
+
             if(rowParserHandler.parse(cell, this)){
                 return;
             }
         }
         createRowElement(row);
     }
-    
-    
+
+
     private void createRowElement(RowWrapper row){
         Row rowElem = new Row(row, rootElement,cellParserHandler);
         addTemplateElement(rowElem);
-    }   
+    }
 
     private boolean isCellParsable(CellWrapper cell){
         if(cell == null){
@@ -119,10 +119,10 @@ public class FPParser {
         if (hssfCell == null || (hssfCell.getCellType() != HSSFCell.CELL_TYPE_STRING)) {
             return false;
         }
-        
+
         return true;
     }
-    
+
     /**
      * ブロック要素に親要素がある場合、その親要素にブロック要素を子要素として追加します。
      * @param block ブロック要素
@@ -131,10 +131,10 @@ public class FPParser {
         if (! isBlockStackBlank()) {
             AbstractBlock parentBlock = (AbstractBlock) blockStack.lastElement();
             parentBlock.addChild(block);
-        }       
+        }
         pushBlockToStack(block);
     }
-    
+
     /**
      * ブロックの閉じ判定用スタックにブロック要素を追加します。
      * @param block ブロック要素
@@ -142,7 +142,7 @@ public class FPParser {
     public void pushBlockToStack(AbstractBlock block){
         blockStack.push(block);
     }
-    
+
     /**
      * 要素を親要素があれば子要素として追加します。親要素がなければルートにボディ要素として追加します。
      * @param elem 要素
@@ -153,17 +153,17 @@ public class FPParser {
             block.addChild(elem);
         } else {
             rootElement.addBody(elem);
-        }       
+        }
     }
-    
+
     /**
      * ブロックの閉じ判定用スタックが空か否かを戻します。
      * @return 空ならばtrue。
      */
     public boolean isBlockStackBlank(){
-        return (blockStack.size() < 1);     
-    }   
-    
+        return (blockStack.size() < 1);
+    }
+
     /**
      * ブロックの閉じ判定用スタックからポップします。
      * @return ブロック要素
@@ -171,7 +171,7 @@ public class FPParser {
     public AbstractBlock popFromBlockStack(){
         return (AbstractBlock) blockStack.pop();
     }
-    
+
     /**
      * ブロックの閉じ判定用スタックから最後の要素を取得して戻します。
      * @return 最後の要素
@@ -179,7 +179,7 @@ public class FPParser {
     public AbstractBlock getLastElementFromStack(){
         return (AbstractBlock) blockStack.lastElement();
     }
-    
+
     /**
      * 独自にカスタマイズした行単位のパーサを追加します。
      * @param parser 追加するパーサ

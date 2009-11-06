@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -27,30 +27,30 @@ import javax.imageio.ImageIO;
  */
 public class ImageIOUtil {
 
-	public static BufferedImage read(FileInputStream fis) {
-		try {
-			return ImageIO.read(fis);
-		} catch (IOException e) {
-			throw new RuntimeException("対象ファイルを開く際にエラーが発生しました", e);
-		}
-	}
+    public static BufferedImage read(FileInputStream fis) {
+        try {
+            return ImageIO.read(fis);
+        } catch (IOException e) {
+            throw new RuntimeException("対象ファイルを開く際にエラーが発生しました", e);
+        }
+    }
 
-	public static void write(BufferedImage img, String suffix, ByteArrayOutputStream baos) {
-		try {
-			ImageIO.write(img, suffix, baos);
-		} catch (IOException e) {
-			throw new RuntimeException("対象ファイルを開く際にエラーが発生しました", e);
-		}
-	}
+    public static void write(BufferedImage img, String suffix, ByteArrayOutputStream baos) {
+        try {
+            ImageIO.write(img, suffix, baos);
+        } catch (IOException e) {
+            throw new RuntimeException("対象ファイルを開く際にエラーが発生しました", e);
+        }
+    }
 
-	public static void close(ByteArrayOutputStream baos) {
-		try {
-			if (baos != null) {
-				baos.close();
-			}
-		} catch (IOException e) {
-			throw new RuntimeException("対象ファイルを閉じる際にエラーが発生しました", e);
-		}
-	}
+    public static void close(ByteArrayOutputStream baos) {
+        try {
+            if (baos != null) {
+                baos.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("対象ファイルを閉じる際にエラーが発生しました", e);
+        }
+    }
 
 }

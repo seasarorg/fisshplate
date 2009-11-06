@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -27,54 +27,54 @@ import org.seasar.fisshplate.wrapper.CellWrapper;
  * @author rokugen
  *
  */
-public class GenericCell extends AbstractCell {	
+public class GenericCell extends AbstractCell {
 
-	/**
-	 * コンストラクタです。
-	 * @param cell 保持するテンプレート側のセル
-	 */
-	public GenericCell(CellWrapper cell) {
-		super(cell);
-	}
+    /**
+     * コンストラクタです。
+     * @param cell 保持するテンプレート側のセル
+     */
+    public GenericCell(CellWrapper cell) {
+        super(cell);
+    }
 
-	/* (non-Javadoc)
-	 * @see org.seasar.fisshplate.element.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
-	 */
-	protected void mergeImpl(FPContext context,HSSFCell out) {
-		HSSFCell templateCell = cell.getHSSFCell();
-		Object cellValue = getCellValue();
-		
-		int cellType = templateCell.getCellType();
-		if(cellType == HSSFCell.CELL_TYPE_FORMULA){
-			out.setCellFormula((String)cellValue);
-		}else if(cellType == HSSFCell.CELL_TYPE_ERROR){
-			out.setCellErrorValue(((Byte)cellValue).byteValue());
-		}else if(cellValue instanceof Date){			
-			out.setCellValue(((Date)cellValue));
-			out.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
-		}else if(cellValue instanceof String){			
-			out.setCellValue(new HSSFRichTextString((String)cellValue));
-			out.setCellType(HSSFCell.CELL_TYPE_STRING);
-		}else if(cellValue instanceof Boolean){			
-			out.setCellValue(((Boolean)cellValue).booleanValue());
-			out.setCellType(HSSFCell.CELL_TYPE_BOOLEAN);
-		}else if(isNumber(cellValue)){			
-			out.setCellValue(Double.valueOf(cellValue.toString()).doubleValue());
-			out.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
-		}
-	}
-	
-	private boolean isNumber(Object value){
-		if(value == null || value instanceof String){
-			return false;
-		}
-		
-		try{
-			Double.valueOf(value.toString());
-			return true;
-		}catch (NumberFormatException e) {
-			return false;
-		}
-	}
+    /* (non-Javadoc)
+     * @see org.seasar.fisshplate.element.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
+     */
+    protected void mergeImpl(FPContext context,HSSFCell out) {
+        HSSFCell templateCell = cell.getHSSFCell();
+        Object cellValue = getCellValue();
+
+        int cellType = templateCell.getCellType();
+        if(cellType == HSSFCell.CELL_TYPE_FORMULA){
+            out.setCellFormula((String)cellValue);
+        }else if(cellType == HSSFCell.CELL_TYPE_ERROR){
+            out.setCellErrorValue(((Byte)cellValue).byteValue());
+        }else if(cellValue instanceof Date){
+            out.setCellValue(((Date)cellValue));
+            out.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+        }else if(cellValue instanceof String){
+            out.setCellValue(new HSSFRichTextString((String)cellValue));
+            out.setCellType(HSSFCell.CELL_TYPE_STRING);
+        }else if(cellValue instanceof Boolean){
+            out.setCellValue(((Boolean)cellValue).booleanValue());
+            out.setCellType(HSSFCell.CELL_TYPE_BOOLEAN);
+        }else if(isNumber(cellValue)){
+            out.setCellValue(Double.valueOf(cellValue.toString()).doubleValue());
+            out.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+        }
+    }
+
+    private boolean isNumber(Object value){
+        if(value == null || value instanceof String){
+            return false;
+        }
+
+        try{
+            Double.valueOf(value.toString());
+            return true;
+        }catch (NumberFormatException e) {
+            return false;
+        }
+    }
 
 }

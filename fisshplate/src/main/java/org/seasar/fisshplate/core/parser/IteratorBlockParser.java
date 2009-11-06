@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -30,42 +30,42 @@ import org.seasar.fisshplate.wrapper.RowWrapper;
  * @author rokugen
  */
 public class IteratorBlockParser implements RowParser{
-	private static final Pattern patIterator = Pattern.compile("^\\s*#foreach\\s+(\\S+)\\s*:\\s*(\\S+)(\\s+index=(\\S+))*(\\s+max=(\\S+))*\\s*$");
-	
+    private static final Pattern patIterator = Pattern.compile("^\\s*#foreach\\s+(\\S+)\\s*:\\s*(\\S+)(\\s+index=(\\S+))*(\\s+max=(\\S+))*\\s*$");
 
-	/* (non-Javadoc)
-	 * @see org.seasar.fisshplate.core.parser.StatementParser#process(org.seasar.fisshplate.wrapper.CellWrapper, org.seasar.fisshplate.core.parser.FPParser)
-	 */
-	public boolean process(CellWrapper cell, FPParser parser)	throws FPParseException {		
-		String value = cell.getStringValue();
-		Matcher mat = patIterator.matcher(value);
-		if(!mat.find()){
-			return false;
-		}
-		AbstractBlock block = buildElement(cell, mat);
-		
-		parser.addBlockElement(block);		
-		return true;
-	}
-	
-	private AbstractBlock buildElement(CellWrapper cell, Matcher mat) throws FPParseException{
-		RowWrapper row = cell.getRow();
-		
-		String varName = mat.group(1);
-		String iteratorName = mat.group(2);
-		String indexName = mat.group(4);
-		String maxString = mat.group(6);		
-		int max = 0;
-		if(maxString != null){
-			try{
-				max = Integer.parseInt(maxString);
-			}catch(NumberFormatException ex){
-				throw new FPParseException(FPConsts.MESSAGE_ID_NOT_ITERATOR_INVALID_MAX,row);
-			}
-		}
-		
-		return new IteratorBlock(row, varName, iteratorName, indexName, max);
-		
-	}
+
+    /* (non-Javadoc)
+     * @see org.seasar.fisshplate.core.parser.StatementParser#process(org.seasar.fisshplate.wrapper.CellWrapper, org.seasar.fisshplate.core.parser.FPParser)
+     */
+    public boolean process(CellWrapper cell, FPParser parser)	throws FPParseException {
+        String value = cell.getStringValue();
+        Matcher mat = patIterator.matcher(value);
+        if(!mat.find()){
+            return false;
+        }
+        AbstractBlock block = buildElement(cell, mat);
+
+        parser.addBlockElement(block);
+        return true;
+    }
+
+    private AbstractBlock buildElement(CellWrapper cell, Matcher mat) throws FPParseException{
+        RowWrapper row = cell.getRow();
+
+        String varName = mat.group(1);
+        String iteratorName = mat.group(2);
+        String indexName = mat.group(4);
+        String maxString = mat.group(6);
+        int max = 0;
+        if(maxString != null){
+            try{
+                max = Integer.parseInt(maxString);
+            }catch(NumberFormatException ex){
+                throw new FPParseException(FPConsts.MESSAGE_ID_NOT_ITERATOR_INVALID_MAX,row);
+            }
+        }
+
+        return new IteratorBlock(row, varName, iteratorName, indexName, max);
+
+    }
 
 }

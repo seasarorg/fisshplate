@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -27,19 +27,19 @@ import org.seasar.fisshplate.wrapper.CellWrapper;
  * @author rokugen
  */
 public class ExecParser implements RowParser {
-	private static final Pattern patExec = Pattern.compile("#exec\\s+(.+)");
-	public boolean process(CellWrapper cell, FPParser parser)	throws FPParseException {
-		String value= cell.getStringValue();
-		Matcher mat = patExec.matcher(value);
-		if(!mat.find()){
-			return false;
-		}
-		
-		String expression = mat.group(1);
-		Exec elem = new Exec(expression);
-		parser.addTemplateElement(elem);
+    private static final Pattern patExec = Pattern.compile("#exec\\s+(.+)");
+    public boolean process(CellWrapper cell, FPParser parser)	throws FPParseException {
+        String value= cell.getStringValue();
+        Matcher mat = patExec.matcher(value);
+        if(!mat.find()){
+            return false;
+        }
 
-		return true;
-	}
+        String expression = mat.group(1);
+        Exec elem = new Exec(expression);
+        parser.addTemplateElement(elem);
+
+        return true;
+    }
 
 }

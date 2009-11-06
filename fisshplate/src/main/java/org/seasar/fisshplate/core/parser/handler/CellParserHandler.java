@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -38,7 +38,7 @@ public class CellParserHandler {
     private static final Pattern patEl = Pattern.compile(FPConsts.REGEX_BIND_VAR);
     private static final Pattern patSuspend = Pattern.compile("^\\s*#suspend\\s+(.*" + FPConsts.REGEX_BIND_VAR + ".*)");
 
-    private static CellParser[] builtInCellParser = 
+    private static CellParser[] builtInCellParser =
         new CellParser[]{
             new PictureParser(),
             new LinkParser()
@@ -59,18 +59,18 @@ public class CellParserHandler {
             return new GenericCell(cell);
         }
 
-                
+
         AbstractCell cellElem = getElementByParsers(cell, value);
-        
+
         Matcher mat = patEl.matcher(value);
-        if(mat.find()){         
+        if(mat.find()){
             return createEl(cellElem,value);
         }else{
             return cellElem;
         }
 
     }
-    
+
     private AbstractCell getElementByParsers(CellWrapper cell, String value){
         AbstractCell cellElem = null;
         for(int i=0; i < builtInCellParser.length; i++){
@@ -84,11 +84,11 @@ public class CellParserHandler {
         if(cellElem == null){
             cellElem = new GenericCell(cell);
         }
-        
+
         return cellElem;
 
     }
-    
+
     private String getCellValue(CellWrapper cell){
         HSSFCell hssfCell = cell.getHSSFCell();
         String value = null;
@@ -100,9 +100,9 @@ public class CellParserHandler {
         return value;
     }
 
-    
+
     private TemplateElement createEl(AbstractCell cellElem, String value){
-        
+
         Matcher mat = patSuspend.matcher(value);
         if(mat.find()){
             cellElem.setCellValue(mat.group(1));

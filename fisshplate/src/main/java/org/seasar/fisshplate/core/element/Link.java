@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
@@ -32,9 +32,9 @@ import org.seasar.fisshplate.wrapper.CellWrapper;
  * @author rokugen
  */
 public class Link extends AbstractCell {
-    
+
     private static Pattern pat = Pattern.compile(FPConsts.REGEX_LINK);
-    
+
     public Link(CellWrapper cell){
         super(cell);
     }
@@ -50,7 +50,7 @@ public class Link extends AbstractCell {
         String type = mat.group(1);
         String link = mat.group(2);
         String text = mat.group(3);
-        
+
         LinkElementType linkType = LinkElementType.get(type);
         HSSFHyperlink hyperLink = linkType.createHyperLink();
         hyperLink.setAddress(link);
