@@ -6,6 +6,7 @@
   <artifactId>fisshplate-project</artifactId>
   <packaging>pom</packaging>
   <version>0.2.0-SNAPSHOT</version>
+  <inceptionYear>2007</inceptionYear>
   <name>Fisshplate</name>
   <description>Fisshplate is a template engine for HSSF of POI.</description>
 
@@ -75,6 +76,29 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+          <plugin>
+            <groupId>com.mycila.maven-license-plugin</groupId>
+            <artifactId>maven-license-plugin</artifactId>
+            <configuration>
+              <header>license_header.txt</header>
+              <aggregate>true</aggregate>
+              <encoding>UTF-8</encoding>
+              <properties>
+                <year>2010</year>
+              </properties>
+              <includes>
+                <include>src/**</include>
+              </includes>
+              <excludes>
+                <exclude>**/*.xls</exclude>
+              </excludes>
+              <mapping>
+                <dicon>XML_STYLE</dicon>
+              </mapping>
+            </configuration>
+          </plugin>
+        </plugins>
     </build>
 <!-- ******************************************************************************* -->
   <repositories>
