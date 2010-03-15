@@ -56,9 +56,9 @@ public class FPTemplateTest extends TestCase {
         HSSFWorkbook wb;
         try {
             template = new FPTemplate();
-            Map map = new HashMap();
+            Map<String, Object> map = new HashMap<String, Object>();
             map.put("title", "タイトルである");
-            List aList = new ArrayList();
+            List<A> aList = new ArrayList<A>();
             aList.add(new A("1行目",10,new Date()));
             aList.add(new A("2行目",20,new Date()));
             aList.add(new A("3行目",30,new Date()));
@@ -87,9 +87,9 @@ public class FPTemplateTest extends TestCase {
         HSSFWorkbook wb;
         try {
             template = new FPTemplate();
-            Map map = new HashMap();
+            Map<String, Object> map = new HashMap<String, Object>();
             map.put("title", "タイトルである");
-            List aList = new ArrayList();
+            List<A> aList = new ArrayList<A>();
             aList.add(new A("1行目",10,new Date()));
             map.put("b", aList);
 
@@ -113,7 +113,7 @@ public class FPTemplateTest extends TestCase {
         HSSFWorkbook wb;
         try {
             template = new FPTemplate();
-            Map map = new HashMap();
+            Map<String, Object> map = new HashMap<String, Object>();
             map.put("title", "配列のテストである");
             A[] aList = new A[]{
             new A("1行目",10,new Date()),
@@ -147,7 +147,7 @@ public class FPTemplateTest extends TestCase {
                     new String[]{"子供5","子供6","子供7","子供8"},
                     new String[]{"子供9","子供10","子供11","子供12"}
             };
-            Map map = new HashMap();
+            Map<String, Object> map = new HashMap<String, Object>();
             map.put("parentList", parentList);
 
                 wb = template.process(is,map);
@@ -169,9 +169,9 @@ public class FPTemplateTest extends TestCase {
         HSSFWorkbook wb;
         try {
             template = new FPTemplate();
-            Map map = new HashMap();
+            Map<String, Object> map = new HashMap<String, Object>();
             map.put("title", "タイトルである");
-            List aList = new ArrayList();
+            List<A> aList = new ArrayList<A>();
             aList.add(new A("1行目",10,new Date()));
             aList.add(new A("2行目",20,new Date()));
             aList.add(new A("3行目",30,new Date()));
@@ -202,9 +202,9 @@ public class FPTemplateTest extends TestCase {
         HSSFWorkbook wb;
         try {
             template = new FPTemplate();
-            Map map = new HashMap();
+            Map<String, Object> map = new HashMap<String, Object>();
             map.put("title", "タイトルである");
-            List aList = new ArrayList();
+            List<A> aList = new ArrayList<A>();
             aList.add(new A("1行目",10,new Date()));
             aList.add(new A("2行目",20,new Date()));
             aList.add(new A("3行目",30,new Date()));
@@ -235,9 +235,9 @@ public class FPTemplateTest extends TestCase {
         HSSFWorkbook wb;
         try {
             template = new FPTemplate();
-            Map map = new HashMap();
+            Map<String, Object> map = new HashMap<String, Object>();
             map.put("title", "タイトルである");
-            List aList = new ArrayList();
+            List<A> aList = new ArrayList<A>();
             aList.add(new A("1行目",10,new Date()));
             aList.add(new A("2行目",20,new Date()));
             aList.add(new A("3行目",30,new Date()));
@@ -264,9 +264,9 @@ public class FPTemplateTest extends TestCase {
         HSSFWorkbook wb;
         try {
             template = new FPTemplate();
-            Map map = new HashMap();
+            Map<String, Object> map = new HashMap<String, Object>();
             map.put("title", "タイトルである");
-            List aList = new ArrayList();
+            List<A> aList = new ArrayList<A>();
             aList.add(new A("1行目",10,new Date()));
             aList.add(new A("2行目",20,new Date()));
             aList.add(new A("3行目",30,new Date()));
@@ -309,9 +309,9 @@ public class FPTemplateTest extends TestCase {
                     parser.addTemplateElement(elem);
                     return true;
                 }});
-            Map map = new HashMap();
+            Map<String, Object> map = new HashMap<String, Object>();
             map.put("title", "タイトルである");
-            List aList = new ArrayList();
+            List<A> aList = new ArrayList<A>();
             aList.add(new A("1行目",10,new Date()));
             aList.add(new A("2行目",20,new Date()));
             aList.add(new A("3行目",30,new Date()));
@@ -340,9 +340,9 @@ public class FPTemplateTest extends TestCase {
         HSSFWorkbook wb;
         try {
             template = new FPTemplate();
-            Map map = new HashMap();
+            Map<String, Object> map = new HashMap<String, Object>();
             map.put("title", "タイトルである");
-            List aList = new ArrayList();
+            List<A> aList = new ArrayList<A>();
             aList.add(new A("1行目",10,new Date()));
             aList.add(new A("2行目",20,new Date()));
             aList.add(new A("3行目",30,new Date()));

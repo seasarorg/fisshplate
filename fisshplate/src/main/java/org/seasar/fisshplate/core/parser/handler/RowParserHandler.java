@@ -62,7 +62,7 @@ public class RowParserHandler {
             new HorizontalIteratorBlockParser()
     };
 
-    private List addOnRowParser = new ArrayList();
+    private List<RowParser> addOnRowParser = new ArrayList<RowParser>();
 
     /**
      * 自身に登録された{@link RowParser}を使ってcellを解析します。

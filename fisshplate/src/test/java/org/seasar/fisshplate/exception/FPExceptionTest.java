@@ -24,6 +24,7 @@ import junit.framework.TestCase;
 public class FPExceptionTest extends TestCase {
     public void testリソースのカスタマイズ(){
         FPException ex = new FPException("00001"){
+            private static final long serialVersionUID = 1L;
             protected ResourceBundle getExceptionBundle(){
                 return ResourceBundle.getBundle("customMessages");
             }

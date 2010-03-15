@@ -35,7 +35,7 @@ public class Exec implements TemplateElement {
     }
 
     public void merge(FPContext context) throws FPMergeException {
-        Map data = context.getData();
+        Map<String, Object> data = context.getData();
         OgnlUtil.getValue(expression, data);
     }
 

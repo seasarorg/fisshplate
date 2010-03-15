@@ -49,7 +49,7 @@ public class WhileBlock extends AbstractBlock {
 
 
     private boolean IsConditionTrue(FPContext context) throws FPMergeException{
-        Map data = context.getData();
+        Map<String, Object> data = context.getData();
         try{
             return ((Boolean)OgnlUtil.getValue("(" + condition + ")", data)).booleanValue();
         }catch(RuntimeException e){

@@ -43,7 +43,7 @@ public class FPPreviewUtil {
     public static final HSSFWorkbook getWorkbook(HSSFWorkbook template, HSSFWorkbook data) throws FPException{
         FPTemplate fptemp = new FPTemplate();
         MapBuilder mb = new MapBuilder();
-        Map map = mb.buildMapFrom(data);
+        Map<String, Object> map = mb.buildMapFrom(data);
         return fptemp.process(template, map);
     }
 

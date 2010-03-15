@@ -34,7 +34,7 @@ import org.seasar.fisshplate.wrapper.SheetWrapper;
 public class FPMapData  {
     protected String keyName;
     protected SheetWrapper sheet;
-    protected List childList = new ArrayList();
+    protected List<FPMapData> childList = new ArrayList<FPMapData>();
 
     /**
      * @param sheet シート
@@ -86,7 +86,7 @@ public class FPMapData  {
         }else if(sheet.getRowCount() <= 2){
             String firstCell = sheet.getRow(0).getCell(0).getStringValue();
             if(FPConsts.PREVIEW_EMPTY_LIST_SIGN.equals(firstCell)){
-                return new ArrayList();
+                return new ArrayList<Object>();
             }else{
                 return buildMapData();
             }
@@ -100,8 +100,8 @@ public class FPMapData  {
      * {@link Map}として埋め込みデータを生成します。
      * @return 埋め込みデータ
      */
-    protected Map buildMapData() {
-        Map data = new HashMap();
+    protected Map<String, Object> buildMapData() {
+        Map<String, Object> data = new HashMap<String, Object>();
         if(sheet != null){
             RowWrapper keys = sheet.getRow(0);
             RowWrapper vals = sheet.getRow(1);
@@ -117,11 +117,11 @@ public class FPMapData  {
      * {@link Map}の{@link List}として埋め込みデータを生成します。
      * @return 埋め込みデータ
      */
-    protected List buildListData() {
+    protected List<Map<String, Object>> buildListData() {
         RowWrapper keys = sheet.getRow(0);
-        List list = new ArrayList();
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         for(int i=1; i < sheet.getRowCount(); i++){
-            Map item = new HashMap();
+            Map<String, Object> item = new HashMap<String, Object>();
             RowWrapper vals = sheet.getRow(i);
             putValueToMap(item, keys, vals);
             buildChildData(item);
@@ -134,7 +134,7 @@ public class FPMapData  {
      * このデータが保持する子要素の埋め込みデータを生成します。
      * @param data 子要素データを追加する{@link Map}
      */
-    protected void buildChildData(Map data){
+    protected void buildChildData(Map<String, Object> data){
         for(int i=0; i < childList.size(); i++){
             FPMapData mapData = (FPMapData) childList.get(i);
             Object childData = mapData.buildData();
@@ -148,7 +148,7 @@ public class FPMapData  {
      * @param keys {@link Map}のキーとなる行
      * @param vals {@link Map}の値となる行
      */
-    protected void putValueToMap(Map data, RowWrapper keys, RowWrapper vals){
+    protected void putValueToMap(Map<String, Object> data, RowWrapper keys, RowWrapper vals){
         for(int i=0; i < keys.getCellCount(); i++){
             CellWrapper key = keys.getCell(i);
             if(key.isNullCell()){

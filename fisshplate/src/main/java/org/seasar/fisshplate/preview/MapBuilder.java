@@ -41,13 +41,14 @@ public class MapBuilder {
      * @param wb 埋め込みデータが記載された{@link HSSFWorkbook}
      * @return テンプレート埋め込み用{@link Map}
      */
-    public Map buildMapFrom(HSSFWorkbook wb) {
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> buildMapFrom(HSSFWorkbook wb) {
         WorkbookWrapper workbook = new WorkbookWrapper(wb);
 
         SheetWrapper sheet = workbook.getSheetByName(ROOT_SHEET_NAME);
         FPMapData root = new FPMapData(sheet, ROOT_SHEET_NAME);
         buildRootMapData(workbook, root);
-        return (Map) root.buildData();
+        return (Map<String,Object>) root.buildData();
     }
 
     private void buildRootMapData(WorkbookWrapper workbook, FPMapData root) {

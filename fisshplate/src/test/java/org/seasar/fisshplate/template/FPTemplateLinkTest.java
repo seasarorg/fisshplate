@@ -47,9 +47,9 @@ public class FPTemplateLinkTest extends TestCase {
         HSSFWorkbook wb;
         try {
             template = new FPTemplate();
-            Map map = new HashMap();
+            Map<String, Object> map = new HashMap<String, Object>();
             map.put("title", "タイトルである");
-            List aList = new ArrayList();
+            List<A> aList = new ArrayList<A>();
             aList.add(new A("1行目", 10, new Date(), "http://www.google.com"));
             aList.add(new A("2行目", 20, new Date(), "http://d.hatena.ne.jp"));
             aList.add(new A("3行目", 30, new Date(), "http://www.yahoo.co.jp"));
@@ -75,9 +75,9 @@ public class FPTemplateLinkTest extends TestCase {
             InputStream is = getClass().getResourceAsStream("/FPTemplateLinkTest.xls");
             try {
                 template = new FPTemplate();
-                Map map = new HashMap();
+                Map<String, Object> map = new HashMap<String, Object>();
                 map.put("title", "タイトルである");
-                List aList = new ArrayList();
+                List<A> aList = new ArrayList<A>();
                 aList.add(new A("1行目", 10, new Date(), null));
                 map.put("fooList", aList);
 

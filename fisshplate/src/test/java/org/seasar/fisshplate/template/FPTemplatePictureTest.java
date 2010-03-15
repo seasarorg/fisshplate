@@ -47,9 +47,9 @@ public class FPTemplatePictureTest extends TestCase {
         HSSFWorkbook wb;
         try {
             template = new FPTemplate();
-            Map map = new HashMap();
+            Map<String, Object> map = new HashMap<String, Object>();
             map.put("title", "タイトルである");
-            List aList = new ArrayList();
+            List<A> aList = new ArrayList<A>();
             aList.add(new A("1行目", 10, new Date(), "image/logoKarmokar4.png"));
             aList.add(new A("2行目", 20, new Date(), null));
             aList.add(new A("3行目", 30, new Date(), "image/logoKarmokar5.png"));
@@ -77,7 +77,7 @@ public class FPTemplatePictureTest extends TestCase {
         HSSFWorkbook wb;
         try {
             template = new FPTemplate();
-            Map map = new HashMap();
+            Map<String, Object> map = new HashMap<String, Object>();
             map.put("data", new A("1行目", 10, new Date(), "image/logoKarmokar4.png"));
             wb = template.process("FPTemplatePictureTest.xls", map);
         } catch (FPException e) {
@@ -97,7 +97,7 @@ public class FPTemplatePictureTest extends TestCase {
         HSSFWorkbook wb;
         try {
             template = new FPTemplate();
-            Map map = new HashMap();
+            Map<String, Object> map = new HashMap<String, Object>();
             map.put("data", "hoge");
             wb = template.process("FPTemplatePictureTest3.xls", map);
         } catch (FPException e) {

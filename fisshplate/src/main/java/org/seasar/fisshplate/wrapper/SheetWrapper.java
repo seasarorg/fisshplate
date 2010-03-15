@@ -30,7 +30,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 public class SheetWrapper {
     private HSSFSheet hssfSheet;
     private WorkbookWrapper workbook;
-    private List rowList = new ArrayList();
+    private List<RowWrapper> rowList = new ArrayList<RowWrapper>();
     private int sheetIndex;
 
     public SheetWrapper(HSSFSheet sheet, WorkbookWrapper workbook, int sheetIndex){

@@ -67,79 +67,79 @@ public class FPParserTest extends TestCase {
         assertEquals(root.getPageHeader().getClass(), NullElement.class);
         assertEquals(root.getPageFooter().getClass(), NullElement.class);
 
-        List bodyList = root.getBodyElementList();
-        TemplateElement row = (TemplateElement) bodyList.get(0);
+        List<TemplateElement> bodyList = root.getBodyElementList();
+        TemplateElement row = bodyList.get(0);
         assertEquals(Row.class,row.getClass());
-        List cellList = ((Row)row).getCellElementList();
-        TemplateElement cell = (TemplateElement) cellList.get(0);
+        List<TemplateElement> cellList = ((Row)row).getCellElementList();
+        TemplateElement cell = cellList.get(0);
         assertEquals(GenericCell.class,cell.getClass());
 //		cell = (TemplateElement) cellList.get(1);
 //		assertEquals(NullCell.class,cell.getClass());
 
-        row = (TemplateElement) bodyList.get(1);
+        row = bodyList.get(1);
         cellList = ((Row)row).getCellElementList();
-        cell = (TemplateElement) cellList.get(0);
+        cell = cellList.get(0);
         assertEquals(El.class, cell.getClass());
-        cell = (TemplateElement) cellList.get(2);
+        cell = cellList.get(2);
         assertEquals(El.class, cell.getClass());
-        cell = (TemplateElement) cellList.get(3);
+        cell = cellList.get(3);
         assertEquals(GenericCell.class,cell.getClass());
 
-        row = (TemplateElement) bodyList.get(2);
+        row = bodyList.get(2);
         cellList = ((Row)row).getCellElementList();
-        cell = (TemplateElement) cellList.get(0);
+        cell = cellList.get(0);
         assertEquals(GenericCell.class,cell.getClass());
-        cell = (TemplateElement) cellList.get(1);
+        cell = cellList.get(1);
         assertEquals(GenericCell.class,cell.getClass());
-        cell = (TemplateElement) cellList.get(2);
+        cell = cellList.get(2);
         assertEquals(GenericCell.class,cell.getClass());
 
-        row = (TemplateElement) bodyList.get(3);
+        row = bodyList.get(3);
         assertEquals(IteratorBlock.class, row.getClass());
-        List childList = ((IteratorBlock)row).getChildList();
+        List<TemplateElement> childList = ((IteratorBlock)row).getChildList();
         assertEquals(1, childList.size());
-        TemplateElement child = (TemplateElement) childList.get(0);
+        TemplateElement child = childList.get(0);
         assertEquals(IfBlock.class, child.getClass());
-        row = (TemplateElement) ((IfBlock)child).getChildList().get(0);
+        row = ((IfBlock)child).getChildList().get(0);
         cellList = ((Row)row).getCellElementList();
-        cell = (TemplateElement) cellList.get(0);
+        cell = cellList.get(0);
         assertEquals(El.class, cell.getClass());
-        cell = (TemplateElement) cellList.get(1);
+        cell = cellList.get(1);
         assertEquals(El.class, cell.getClass());
-        cell = (TemplateElement) cellList.get(2);
+        cell = cellList.get(2);
         assertEquals(El.class, cell.getClass());
-        cell = (TemplateElement) cellList.get(3);
+        cell = cellList.get(3);
         assertEquals(NullCell.class, cell.getClass());
-        cell = (TemplateElement) cellList.get(4);
+        cell = cellList.get(4);
         assertEquals(NullCell.class, cell.getClass());
-        cell = (TemplateElement) cellList.get(5);
+        cell = cellList.get(5);
         assertEquals(El.class, cell.getClass());
 
         TemplateElement next = ((IfBlock)child).getNextBlock();
         assertEquals(ElseBlock.class, next.getClass());
-        row = (TemplateElement) ((ElseBlock)next).getChildList().get(0);
+        row = ((ElseBlock)next).getChildList().get(0);
         cellList = ((Row)row).getCellElementList();
-        cell = (TemplateElement) cellList.get(0);
+        cell = cellList.get(0);
         assertEquals(El.class, cell.getClass());
-        cell = (TemplateElement) cellList.get(1);
+        cell = cellList.get(1);
         assertEquals(El.class, cell.getClass());
-        cell = (TemplateElement) cellList.get(2);
+        cell = cellList.get(2);
         assertEquals(El.class, cell.getClass());
-        cell = (TemplateElement) cellList.get(3);
+        cell = cellList.get(3);
         assertEquals(El.class, cell.getClass());
-        row = (TemplateElement) ((ElseBlock)next).getChildList().get(1);
+        row = ((ElseBlock)next).getChildList().get(1);
         assertEquals(PageBreak.class, row.getClass());
 
-        row = (TemplateElement) bodyList.get(4);
+        row = bodyList.get(4);
         assertEquals(PageBreak.class, row.getClass());
 
-        row = (TemplateElement) bodyList.get(5);
+        row = bodyList.get(5);
         assertEquals(IteratorBlock.class, row.getClass());
         childList = ((IteratorBlock)row).getChildList();
         assertEquals(2, childList.size());
-        child = (TemplateElement) childList.get(0);
+        child = childList.get(0);
         assertEquals(IfBlock.class, child.getClass());
-        row = (TemplateElement) ((IfBlock)child).getChildList().get(0);
+        row = ((IfBlock)child).getChildList().get(0);
         cellList = ((Row)row).getCellElementList();
         assertEquals(GenericCell.class, cellList.get(0).getClass());
         assertEquals(GenericCell.class, cellList.get(1).getClass());
@@ -148,7 +148,7 @@ public class FPParserTest extends TestCase {
 
         next = ((IfBlock)child).getNextBlock();
         assertEquals(ElseIfBlock.class, next.getClass());
-        row = (TemplateElement) ((ElseIfBlock)next).getChildList().get(0);
+        row = ((ElseIfBlock)next).getChildList().get(0);
         cellList = ((Row)row).getCellElementList();
         assertEquals(GenericCell.class, cellList.get(0).getClass());
         assertEquals(GenericCell.class, cellList.get(1).getClass());
@@ -157,14 +157,14 @@ public class FPParserTest extends TestCase {
 
         TemplateElement next2 = ((ElseIfBlock)next).getNextBlock();
         assertEquals(ElseIfBlock.class, next2.getClass());
-        row = (TemplateElement) ((ElseIfBlock)next2).getChildList().get(0);
+        row = ((ElseIfBlock)next2).getChildList().get(0);
         cellList = ((Row)row).getCellElementList();
         assertEquals(GenericCell.class, cellList.get(0).getClass());
         assertEquals(GenericCell.class, cellList.get(1).getClass());
         assertEquals(GenericCell.class, cellList.get(2).getClass());
         assertEquals(El.class, cellList.get(3).getClass());
 
-        child = (TemplateElement) childList.get(1);
+        child = childList.get(1);
         assertEquals(Row.class, child.getClass());
         cellList = ((Row)child).getCellElementList();
         assertEquals(El.class, cellList.get(0).getClass());
@@ -172,10 +172,10 @@ public class FPParserTest extends TestCase {
         assertEquals(El.class, cellList.get(2).getClass());
         assertEquals(El.class, cellList.get(3).getClass());
 
-        row = (TemplateElement) bodyList.get(6);
+        row = bodyList.get(6);
         assertEquals(Var.class, row.getClass());
 
-        row = (TemplateElement) bodyList.get(7);
+        row = bodyList.get(7);
         assertEquals(Exec.class, row.getClass());
 
     }
@@ -203,18 +203,18 @@ public class FPParserTest extends TestCase {
         assertEquals(root.getPageFooter().getClass(), NullElement.class);
 
         //1行目がNullElementになるだけで後は変わらず
-        List bodyList = root.getBodyElementList();
-        TemplateElement row = (TemplateElement) bodyList.get(0);
+        List<TemplateElement> bodyList = root.getBodyElementList();
+        TemplateElement row = bodyList.get(0);
         assertEquals(NullElement.class,row.getClass());
 
 
-        row = (TemplateElement) bodyList.get(1);
-        List cellList = ((Row)row).getCellElementList();
-        TemplateElement cell = (TemplateElement) cellList.get(0);
+        row = bodyList.get(1);
+        List<TemplateElement> cellList = ((Row)row).getCellElementList();
+        TemplateElement cell = cellList.get(0);
         assertEquals(El.class, cell.getClass());
-        cell = (TemplateElement) cellList.get(2);
+        cell =  cellList.get(2);
         assertEquals(El.class, cell.getClass());
-        cell = (TemplateElement) cellList.get(3);
+        cell =  cellList.get(3);
         assertEquals(GenericCell.class,cell.getClass());
 
 

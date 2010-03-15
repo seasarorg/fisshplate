@@ -57,7 +57,7 @@ public class IfBlock extends AbstractBlock {
      * @see org.seasar.fisshplate.core.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
      */
     public void merge(FPContext context) throws FPMergeException {
-        Map data = context.getData();
+        Map<String, Object> data = context.getData();
         boolean isTarget = ((Boolean)OgnlUtil.getValue("(" + condition + ")", data)).booleanValue();
         if(isTarget){
             mergeChildren(context);

@@ -54,8 +54,8 @@ public class SuspendTest extends TestCase {
         WorkbookWrapper workbook = new WorkbookWrapper(templateWb);
 
         Row row = new Row(workbook.getSheetAt(0).getRow(0), root,new CellParserHandler());
-        List elementList = row.getCellElementList();
-        TemplateElement elem = (TemplateElement) elementList.get(0);
+        List<TemplateElement> elementList = row.getCellElementList();
+        TemplateElement elem = elementList.get(0);
         assertTrue(elem.getClass() == Suspend.class);
 
 

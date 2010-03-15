@@ -35,9 +35,9 @@ public class Resume implements TemplateElement {
     }
 
     public void merge(FPContext context) throws FPMergeException {
-        Set susSet = context.getSuspendedSet();
-        for(Iterator itr = susSet.iterator();itr.hasNext();){
-            Suspend sus = (Suspend) itr.next();
+        Set<Suspend> susSet = context.getSuspendedSet();
+        for(Iterator<Suspend> itr = susSet.iterator();itr.hasNext();){
+            Suspend sus = itr.next();
             String targetStr = sus.getEl().getOriginalCellValue();
             if(targetStr.contains(targetVar)){
                 sus.resume(context);

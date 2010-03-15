@@ -60,7 +60,7 @@ public class EndParser implements RowParser {
     private void processEnd(FPParser parser)	throws FPParseException {
         Root root = parser.getRoot();
         AbstractBlock block = parser.popFromBlockStack();
-        Class clazz = block.getClass();
+        Class<? extends AbstractBlock> clazz = block.getClass();
 
         if (clazz == ElseBlock.class || clazz == ElseIfBlock.class) {
             block = getIfBlockFromStack(parser);

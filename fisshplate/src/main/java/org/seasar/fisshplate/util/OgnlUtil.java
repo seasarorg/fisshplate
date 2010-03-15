@@ -25,7 +25,7 @@ import ognl.OgnlException;
 public class OgnlUtil {
     private OgnlUtil(){}
 
-    public static final Object getValue(String expression, Map data){
+    public static final Object getValue(String expression, Map<String, Object> data){
         try {
             return Ognl.getValue(expression, data);
         } catch (OgnlException e) {

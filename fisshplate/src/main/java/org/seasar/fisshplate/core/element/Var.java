@@ -41,7 +41,7 @@ public class Var implements TemplateElement {
     }
 
     public void merge(FPContext context) throws FPMergeException {
-        Map data = context.getData();
+        Map<String, Object> data = context.getData();
         for(int i=0; i < expressions.length; i++){
             String expression = expressions[i].trim();
             evalExpression(data, expression);
@@ -49,7 +49,7 @@ public class Var implements TemplateElement {
 
     }
 
-    private void evalExpression(Map data, String expression) throws FPMergeException{
+    private void evalExpression(Map<String, Object> data, String expression) throws FPMergeException{
         Matcher mat = patDeclr.matcher(expression);
         if(! mat.find()){
             throwMergeException(FPConsts.MESSAGE_ID_VAR_DECLARATION_INVALID, expression, row);
@@ -63,14 +63,14 @@ public class Var implements TemplateElement {
         }
     }
 
-    private void assignVariable(Map data, String varName) throws FPMergeException{
+    private void assignVariable(Map<String, Object> data, String varName) throws FPMergeException{
         if(data.containsKey(varName)){
             throwMergeException(FPConsts.MESSAGE_ID_VARNAME_ALREADY_EXISTS, varName, row);
         }
         data.put(varName, "");
     }
 
-    private void initializeVariable(Map data, String expression) throws FPMergeException{
+    private void initializeVariable(Map<String, Object> data, String expression) throws FPMergeException{
         try{
             OgnlUtil.getValue(expression, data);
         }catch (RuntimeException e) {

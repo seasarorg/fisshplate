@@ -61,7 +61,7 @@ public class ElTest extends TestCase {
         HSSFWorkbook template = getTemplate("/ElTest.xls");
         WorkbookWrapper workbook = new WorkbookWrapper(template);
 
-        Map data = new HashMap();
+        Map<String, Object> data = new HashMap<String, Object>();
         data.put("code", "01234");
         data.put("num", new Integer(-1234));
 
@@ -88,7 +88,7 @@ public class ElTest extends TestCase {
         HSSFWorkbook template = getTemplate("/ElTest.xls");
         WorkbookWrapper workbook = new WorkbookWrapper(template);
 
-        Map data = new HashMap();
+        Map<String, Object> data = new HashMap<String, Object>();
 
         FPContext context = new FPContext(template.getSheetAt(0),data);
 
@@ -126,7 +126,7 @@ public class ElTest extends TestCase {
     public void test文字列に埋め込み() throws Exception{
         HSSFWorkbook template = getTemplate("/ElTest.xls");
         WorkbookWrapper workbook = new WorkbookWrapper(template);
-        Map data = new HashMap();
+        Map<String, Object> data = new HashMap<String, Object>();
         data.put("embeded", new Integer(123));
         FPContext context = new FPContext(template.getSheetAt(0),data);
         context.nextRow();
@@ -146,7 +146,7 @@ public class ElTest extends TestCase {
     public void test文字列に埋め込み_複数対応() throws Exception{
         HSSFWorkbook template = getTemplate("/ElTest_multi.xls");
         WorkbookWrapper workbook = new WorkbookWrapper(template);
-        Map data = new HashMap();
+        Map<String, Object> data = new HashMap<String, Object>();
         data.put("embeded1", new Integer(123));
         data.put("embeded2", new Integer(456));
         FPContext context = new FPContext(template.getSheetAt(0),data);
@@ -185,7 +185,7 @@ public class ElTest extends TestCase {
         HSSFWorkbook template = getTemplate("/ElTest.xls");
         WorkbookWrapper workbook = new WorkbookWrapper(template);
 
-        Map data = new HashMap();
+        Map<String, Object> data = new HashMap<String, Object>();
         data.put("code", "0\n12\r34");
         data.put("num", "番号\r\nはこれ");
 
@@ -230,8 +230,8 @@ public class ElTest extends TestCase {
     public void testバインド変数でメソッドや配列要素アクセス() throws Exception{
         HSSFWorkbook template = getTemplate("/ElTest_method.xls");
         WorkbookWrapper workbook = new WorkbookWrapper(template);
-        Map data = new HashMap();
-        List dataList = new ArrayList();
+        Map<String, Object> data = new HashMap<String, Object>();
+        List<Object> dataList = new ArrayList<Object>();
         dataList.add("ほげ");
         dataList.add(new Integer[]{new Integer(123)});
         data.put("dataList", dataList);

@@ -59,14 +59,14 @@ public class IteratorBlock extends AbstractBlock{
      * @see org.seasar.fisshplate.core.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
      */
     public void merge(FPContext context) throws FPMergeException {
-        Map data = context.getData();
+        Map<String, Object> data = context.getData();
         Object o = OgnlUtil.getValue(iteratorName, data);
-        Iterator ite = IteratorUtil.getIterator(o,iteratorName,row);
+        Iterator<?> ite = IteratorUtil.getIterator(o,iteratorName,row);
         mergeIteratively(context, ite, data);
     }
 
 
-    private void mergeIteratively(FPContext context, Iterator ite,Map data) throws FPMergeException{
+    private void mergeIteratively(FPContext context, Iterator<?> ite,Map<String, Object> data) throws FPMergeException{
         context.setCurrentIterator(this);
         initLineNumPerPage();
         int index = 0;

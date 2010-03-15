@@ -30,7 +30,7 @@ import org.seasar.fisshplate.exception.FPMergeException;
  *
  */
 public abstract class AbstractBlock implements TemplateElement {
-    protected List childList = new ArrayList();
+    protected List<TemplateElement> childList = new ArrayList<TemplateElement>();
 
     /**
      * ブロック内の子要素を追加します。
@@ -44,7 +44,7 @@ public abstract class AbstractBlock implements TemplateElement {
      * ブロック内の子要素のリストを戻します。
      * @return 子要素のリスト
      */
-    public List getChildList(){
+    public List<TemplateElement> getChildList(){
         return childList;
     }
 

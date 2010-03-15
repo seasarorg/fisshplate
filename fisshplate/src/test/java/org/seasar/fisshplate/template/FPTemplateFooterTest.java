@@ -47,9 +47,9 @@ public class FPTemplateFooterTest extends TestCase {
         HSSFWorkbook wb = null;
         try {
             template = new FPTemplate();
-            Map map = new HashMap();
+            Map<String, Object> map = new HashMap<String, Object>();
             map.put("title", "Fisshplateサンプル");
-            List aList = new ArrayList();
+            List<A> aList = new ArrayList<A>();
             aList.add(new A("1行目", 10, new Date()));
             aList.add(new A("2行目", 20, new Date()));
             aList.add(new A("3行目", 30, new Date()));

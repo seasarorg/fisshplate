@@ -80,32 +80,32 @@ public class RowTest extends TestCase {
         WorkbookWrapper workbook = new WorkbookWrapper(templateWb);
 
         Row row = new Row(workbook.getSheetAt(0).getRow(0), root, new CellParserHandler());
-        List elementList = row.getCellElementList();
+        List<TemplateElement> elementList = row.getCellElementList();
 
-        TemplateElement elem = (TemplateElement) elementList.get(0);
+        TemplateElement elem = elementList.get(0);
         assertTrue(elem.getClass() == GenericCell.class );
-        elem = (TemplateElement) elementList.get(1);
+        elem = elementList.get(1);
         assertTrue(elem.getClass() == GenericCell.class);
-        elem = (TemplateElement) elementList.get(2);
+        elem = elementList.get(2);
         assertTrue(elem.getClass() == NullCell.class);
-        elem = (TemplateElement) elementList.get(3);
+        elem = elementList.get(3);
         assertTrue(elem.getClass() == El.class);
         assertTrue(((El)elem).targetElement.getClass() == GenericCell.class);
-        elem = (TemplateElement) elementList.get(4);
+        elem = elementList.get(4);
         assertTrue(elem.getClass() == Picture.class);
-        elem = (TemplateElement) elementList.get(5);
+        elem = elementList.get(5);
         assertTrue(elem.getClass() == El.class);
         assertTrue(((El)elem).targetElement.getClass() == Picture.class);
-        elem = (TemplateElement) elementList.get(6);
+        elem = elementList.get(6);
         assertTrue(elem.getClass() == Suspend.class);
         assertEquals("TEST is ${hoge}", ((Suspend)elem).getEl().targetElement.getCellValue());
-        elem = (TemplateElement) elementList.get(7);
+        elem = elementList.get(7);
         assertTrue(elem.getClass() == GenericCell.class);
-        elem = (TemplateElement) elementList.get(8);
+        elem = elementList.get(8);
         assertTrue(elem.getClass() == El.class);
-        elem = (TemplateElement) elementList.get(9);
+        elem = elementList.get(9);
         assertTrue(elem.getClass() == Link.class);
-        elem = (TemplateElement) elementList.get(10);
+        elem = elementList.get(10);
         assertTrue(((El)elem).targetElement.getClass() == Link.class);
 
     }

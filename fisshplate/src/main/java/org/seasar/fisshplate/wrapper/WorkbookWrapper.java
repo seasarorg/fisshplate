@@ -28,7 +28,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
  */
 public class WorkbookWrapper {
     private HSSFWorkbook hssfWorkbook;
-    private List sheetList = new ArrayList();
+    private List<SheetWrapper> sheetList = new ArrayList<SheetWrapper>();
 
     public WorkbookWrapper(HSSFWorkbook workbook){
         this.hssfWorkbook = workbook;

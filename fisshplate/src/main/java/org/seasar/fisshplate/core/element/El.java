@@ -39,7 +39,7 @@ import org.seasar.fisshplate.util.OgnlUtil;
  *
  */
 public class El implements TemplateElement{
-    private Map expressionMap = new HashMap();
+    private Map<String, Object> expressionMap = new HashMap<String, Object>();
     protected AbstractCell targetElement;
     private String originalCellValue;
 
@@ -78,9 +78,9 @@ public class El implements TemplateElement{
     }
 
     private void putValueToMap(FPContext context) throws FPMergeException{
-        Map data = context.getData();
-        Set key = expressionMap.keySet();
-        for(Iterator itr = key.iterator(); itr.hasNext();){
+        Map<String, Object> data = context.getData();
+        Set<String> key = expressionMap.keySet();
+        for(Iterator<String> itr = key.iterator(); itr.hasNext();){
             String expString = (String) itr.next();
             BindVariable bindVar = new BindVariable(expString);
             Object value = getValue(data,bindVar);
@@ -100,7 +100,7 @@ public class El implements TemplateElement{
     private Object buildValue(){
 
         if(onlySingleBindVarIn(originalCellValue)){
-            Set keySet = expressionMap.keySet();
+            Set<String> keySet = expressionMap.keySet();
             return expressionMap.get(keySet.iterator().next());
         }else{
             return replaceAllBindVariable(originalCellValue);
@@ -108,8 +108,8 @@ public class El implements TemplateElement{
     }
 
     private String replaceAllBindVariable(String cellValue){
-        Set keySet = expressionMap.keySet();
-        for(Iterator itr = keySet.iterator(); itr.hasNext();){
+        Set<String> keySet = expressionMap.keySet();
+        for(Iterator<String> itr = keySet.iterator(); itr.hasNext();){
             String key = (String) itr.next();
             cellValue = cellValue.replaceAll(Pattern.quote(key), expressionMap.get(key).toString());
         }
@@ -129,7 +129,7 @@ public class El implements TemplateElement{
 
 
 
-    private Object getValue(Map data, BindVariable bindVar) throws FPMergeException{
+    private Object getValue(Map<String, Object> data, BindVariable bindVar) throws FPMergeException{
         Object value = null;
         try{
             value = OgnlUtil.getValue(bindVar.getName(), data);

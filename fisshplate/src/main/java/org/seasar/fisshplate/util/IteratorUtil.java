@@ -37,10 +37,10 @@ public class IteratorUtil {
      * @return {@link Iterator}クラス
      * @throws FPMergeException 第1引数が{@link Iterator}を持たないクラスだった場合に投げられます。
      */
-    public static Iterator getIterator(Object o, String iteratorName, RowWrapper row) throws FPMergeException{
-        Iterator ite;
-        if(o instanceof List){
-            ite = ((List)o).iterator();
+    public static Iterator<?> getIterator(Object o, String iteratorName, RowWrapper row) throws FPMergeException{
+        Iterator<?> ite;
+        if(o instanceof List<?>){
+            ite = ((List<?>)o).iterator();
         } else if(o instanceof Object[]){
             ite = getIterator(Arrays.asList((Object[])o),iteratorName,row);
         } else{

@@ -36,7 +36,7 @@ import org.seasar.fisshplate.wrapper.RowWrapper;
  *
  */
 public class Row implements TemplateElement {
-    private List cellElementList = new ArrayList();
+    private List<TemplateElement> cellElementList = new ArrayList<TemplateElement>();
     private short rowHeight;
     private Root root;
 
@@ -82,7 +82,7 @@ public class Row implements TemplateElement {
 
         HSSFRow outRow = context.createCurrentRow();
         outRow.setHeight(rowHeight);
-        Map data = context.getData();
+        Map<String, Object> data = context.getData();
         data.put(FPConsts.ROW_NUMBER_NAME, new Integer(context.getCurrentRowNum() + 1));
         for (int i = 0; i < cellElementList.size(); i++) {
             TemplateElement elem = (TemplateElement) cellElementList.get(i);
@@ -99,7 +99,7 @@ public class Row implements TemplateElement {
      * 行に含まれるセルのリストを戻します。
      * @return セルのリスト
      */
-    public List getCellElementList(){
+    public List<TemplateElement> getCellElementList(){
         return cellElementList;
     }
 

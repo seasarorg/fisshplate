@@ -31,7 +31,7 @@ import org.seasar.fisshplate.exception.FPMergeException;
  */
 public class Root implements TemplateElement {
     private TemplateElement pageHeaderBlock = new NullElement();
-    private List bodyElementList = new ArrayList();
+    private List<TemplateElement> bodyElementList = new ArrayList<TemplateElement>();
     private TemplateElement pageFooterBlock = new NullElement();
 
     public void merge(FPContext context) throws FPMergeException {
@@ -98,7 +98,7 @@ public class Root implements TemplateElement {
      * ボディ要素のリストを戻します。
      * @return ボディ要素のリスト
      */
-    public List getBodyElementList(){
+    public List<TemplateElement> getBodyElementList(){
         return bodyElementList;
     }
 

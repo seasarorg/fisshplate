@@ -37,12 +37,12 @@ public class HorizontalIteratorBlockTest extends TestCase {
     public void test普通に横展開()throws Exception{
 
         InputStream is = getClass().getResourceAsStream("/HorizontalIteratorTest.xls");
-        List list = new ArrayList();
+        List<Data> list = new ArrayList<Data>();
         list.add(new Data(){{setMonth(1);setAmountA(10);setAmountB(20);setAmountC(30);setAmountD(40);}});
         list.add(new Data(){{setMonth(2);setAmountA(12);setAmountB(21);setAmountC(31);setAmountD(50);}});
         list.add(new Data(){{setMonth(3);setAmountA(14);setAmountB(19);setAmountC(32);setAmountD(60);}});
         list.add(new Data(){{setMonth(4);setAmountA(16);setAmountB(18);setAmountC(33);setAmountD(70);}});
-        Map data = new HashMap();
+        Map<String,Object> data = new HashMap<String, Object>();
         data.put("list", list);
         FPTemplate fp = new FPTemplate();
         HSSFWorkbook wb = fp.process(is, data);
@@ -54,12 +54,12 @@ public class HorizontalIteratorBlockTest extends TestCase {
     public void test普通に横展開_素のテンプレート()throws Exception{
 
         InputStream is = getClass().getResourceAsStream("/HorizontalTest2.xls");
-        List list = new ArrayList();
+        List<Data> list = new ArrayList<Data>();
         list.add(new Data(){{setMonth(1);setAmountA(10);setAmountB(20);setAmountC(30);setAmountD(40);}});
         list.add(new Data(){{setMonth(2);setAmountA(12);setAmountB(21);setAmountC(31);setAmountD(50);}});
         list.add(new Data(){{setMonth(3);setAmountA(14);setAmountB(19);setAmountC(32);setAmountD(60);}});
         list.add(new Data(){{setMonth(4);setAmountA(16);setAmountB(18);setAmountC(33);setAmountD(70);}});
-        Map data = new HashMap();
+        Map<String, Object> data = new HashMap<String, Object>();
         data.put("list", list);
         FPTemplate fp = new FPTemplate();
         HSSFWorkbook wb = fp.process(is, data);

@@ -29,7 +29,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 public class RowWrapper {
     private HSSFRow hssfRow;
     private SheetWrapper sheet;
-    private List cellList = new ArrayList();
+    private List<CellWrapper> cellList = new ArrayList<CellWrapper>();
 
     public RowWrapper(HSSFRow row, SheetWrapper sheet){
         this.sheet = sheet;

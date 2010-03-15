@@ -42,7 +42,7 @@ import org.seasar.fisshplate.wrapper.SheetWrapper;
 public class FPParser {
 
     private Root rootElement;
-    private Stack blockStack = new Stack();
+    private Stack<AbstractBlock> blockStack = new Stack<AbstractBlock>();
 
     private RowParserHandler rowParserHandler = new RowParserHandler();
     private CellParserHandler cellParserHandler = new CellParserHandler();

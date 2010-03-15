@@ -65,14 +65,14 @@ public class HorizontalIteratorBlock extends AbstractBlock{
     }
 
     public void merge(FPContext context) throws FPMergeException {
-        Map data = context.getData();
+        Map<String, Object> data = context.getData();
         Object o = OgnlUtil.getValue(iteratorName, data);
-        Iterator ite = IteratorUtil.getIterator(o,iteratorName,row);
+        Iterator<?> ite = IteratorUtil.getIterator(o,iteratorName,row);
         mergeIteratively(context, ite, data);
     }
 
 
-    private void mergeIteratively(FPContext context, Iterator ite,Map data) throws FPMergeException{
+    private void mergeIteratively(FPContext context, Iterator<?> ite,Map<String, Object> data) throws FPMergeException{
         int index = 0;
         int startRowNum = context.getCurrentRowNum();
         int startCell = startCellIndex;
@@ -127,7 +127,7 @@ public class HorizontalIteratorBlock extends AbstractBlock{
     private void mergeRow(FPContext context, Row row, int maxCellNum) throws FPMergeException {
         HSSFRow outRow = context.getCurrentRow();
         outRow.setHeight(row.getRowHeight());
-        Map data = context.getData();
+        Map<String, Object> data = context.getData();
         data.put(FPConsts.ROW_NUMBER_NAME, new Integer(context.getCurrentRowNum() + 1));
         int maxCellIndex = startCellIndex + maxCellNum - 1;
         for (int i = 0; i < row.getCellElementList().size(); i++) {
@@ -163,7 +163,7 @@ public class HorizontalIteratorBlock extends AbstractBlock{
     private void mergeNoIterationRow(FPContext context, Row row) throws FPMergeException {
         HSSFRow outRow = context.createCurrentRow();
         outRow.setHeight(row.getRowHeight());
-        Map data = context.getData();
+        Map<String, Object> data = context.getData();
         data.put(FPConsts.ROW_NUMBER_NAME, new Integer(context.getCurrentRowNum() + 1));
         for (int i = 0; i < row.getCellElementList().size(); i++) {
             if(i >= startCellIndex){

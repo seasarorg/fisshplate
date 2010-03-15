@@ -40,13 +40,13 @@ public class FPContext {
     private HSSFSheet outSheet;
     private int currentRowNum;
     private int currentCellNum;
-    private Map data;
+    private Map<String, Object> data;
     private boolean shouldHeaderOut;
     private boolean shouldFooterOut;
     private boolean skipMerge = false;
     private HSSFPatriarch patriarch;
     private IteratorBlock currentIterator;
-    private Set suspendedSet = new HashSet();
+    private Set<Suspend> suspendedSet = new HashSet<Suspend>();
 
     /**
      * コンストラクタです。
@@ -55,7 +55,7 @@ public class FPContext {
      * @param data
      *            埋め込むデータ
      */
-    public FPContext(HSSFSheet out, Map data) {
+    public FPContext(HSSFSheet out, Map<String,Object> data) {
         this.outSheet = out;
         this.data = data;
         init();
@@ -73,7 +73,7 @@ public class FPContext {
      *            埋め込むデータ
      */
     @Deprecated
-    public FPContext(HSSFWorkbook outWorkbook, HSSFSheet outSheet, Map data) {
+    public FPContext(HSSFWorkbook outWorkbook, HSSFSheet outSheet, Map<String,Object> data) {
         this(outSheet, data);
     }
 
@@ -105,7 +105,7 @@ public class FPContext {
      *
      * @return 埋め込みデータ
      */
-    public Map getData() {
+    public Map<String,Object> getData() {
         return data;
     }
 
@@ -280,7 +280,7 @@ public class FPContext {
      * 保留リストを戻します。
      * @return 保留リスト
      */
-    public Set getSuspendedSet(){
+    public Set<Suspend> getSuspendedSet(){
         return suspendedSet;
     }
 

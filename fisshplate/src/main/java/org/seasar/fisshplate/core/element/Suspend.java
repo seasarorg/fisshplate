@@ -30,7 +30,7 @@ import org.seasar.fisshplate.exception.FPMergeException;
  */
 public class Suspend implements TemplateElement {
     private El el;
-    private Stack targetCellStack = new Stack();
+    private Stack<HSSFCell> targetCellStack = new Stack<HSSFCell>();
 
     public Suspend(El el) {
         this.el = el;

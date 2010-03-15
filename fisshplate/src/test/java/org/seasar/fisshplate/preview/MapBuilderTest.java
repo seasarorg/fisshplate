@@ -46,9 +46,10 @@ public class MapBuilderTest extends TestCase {
         super.tearDown();
     }
 
+    @SuppressWarnings({ "deprecation", "unchecked" })
     public void testMap生成()throws Exception{
         //期待値生成
-        Map expected = new HashMap();
+        Map<String, Object> expected = new HashMap<String, Object>();
         expected.put("repnum", new Double(101D));
         expected.put("title","タイトルです。");
 
@@ -56,46 +57,47 @@ public class MapBuilderTest extends TestCase {
         InputStream is = getClass().getResourceAsStream("/MapBuilderTest.xls");
         HSSFWorkbook wb = new HSSFWorkbook(is);
         MapBuilder builder = new MapBuilder();
-        Map actual = builder.buildMapFrom(wb);
+        Map<String, Object> actual = builder.buildMapFrom(wb);
 
         assertEquals(expected.get("repnum"), actual.get("repnum"));
         assertEquals(expected.get("title"), actual.get("title"));
 
         assertEquals(new Date(2008 - 1900,0,28), actual.get("date"));
 
-        List itemList = (List) actual.get("itemList");
+        List<Map<String,Object>> itemList = (List<Map<String, Object>>) actual.get("itemList");
         assertEquals(10, itemList.size());
         for(int i=0; i < itemList.size();i++){
-            Map item = (Map) itemList.get(i);
+            Map<String, Object> item = itemList.get(i);
             assertEquals(new Double(i + 1), item.get("num"));
         }
 
-        Map item = (Map) itemList.get(0);
+        Map item = itemList.get(0);
         List childList = (List) item.get("childList");
 
         assertEquals(5, childList.size());
 
 
-        Map data = (Map) actual.get("data");
+        Map<String, Object> data = (Map<String, Object>) actual.get("data");
         assertEquals("ループじゃないの", data.get("val"));
-        itemList = (List) data.get("itemList");
+        itemList = (List<Map<String,Object>>) data.get("itemList");
         assertEquals(6, itemList.size());
 
-        Map dataChild = (Map) data.get("child");
+        Map<String, Object> dataChild = (Map<String, Object>) data.get("child");
         assertEquals("子供のデータ", dataChild.get("childVal"));
 
-        Map dataGrandChild = (Map) dataChild.get("grandChild");
+        Map<String, Object> dataGrandChild = (Map<String, Object>) dataChild.get("grandChild");
         assertEquals("dataの孫の値", dataGrandChild.get("grandChildVal"));
 
-        Map dataGrand2 = (Map) dataGrandChild.get("grand2");
+        Map<String, Object> dataGrand2 = (Map<String, Object>) dataGrandChild.get("grand2");
         assertEquals("dataのひ孫", dataGrand2.get("val"));
 
 
     }
 
+    @SuppressWarnings({ "deprecation", "unchecked" })
     public void testMap生成_要素名を1行目に書くバージョン()throws Exception{
         //期待値生成
-        Map expected = new HashMap();
+        HashMap<String, Object> expected = new HashMap<String, Object>();
         expected.put("repnum", new Double(101D));
         expected.put("title","タイトルです。");
 
@@ -103,37 +105,37 @@ public class MapBuilderTest extends TestCase {
         InputStream is = getClass().getResourceAsStream("/MapBuilderTest2.xls");
         HSSFWorkbook wb = new HSSFWorkbook(is);
         MapBuilder builder = new MapBuilder();
-        Map actual = builder.buildMapFrom(wb);
+        Map<String, Object> actual = builder.buildMapFrom(wb);
 
         assertEquals(expected.get("repnum"), actual.get("repnum"));
         assertEquals(expected.get("title"), actual.get("title"));
         assertEquals(new Date(2008 - 1900, 0, 28), actual.get("date"));
 
-        List itemList = (List) actual.get("itemList");
+        List<Map<String,Object>> itemList = (List<Map<String, Object>>) actual.get("itemList");
         assertEquals(10, itemList.size());
         for(int i=0; i < itemList.size();i++){
-            Map item = (Map) itemList.get(i);
+            Map<String, Object> item = itemList.get(i);
             assertEquals(new Double(i + 1), item.get("num"));
         }
 
-        Map item = (Map) itemList.get(0);
-        List childList = (List) item.get("childList");
+        Map<String, Object> item = itemList.get(0);
+        List<Map<String,Object>> childList = (List<Map<String, Object>>) item.get("childList");
 
         assertEquals(5, childList.size());
 
 
-        Map data = (Map) actual.get("data");
+        Map<String,Object> data = (Map<String, Object>) actual.get("data");
         assertEquals("ループじゃないの", data.get("val"));
-        itemList = (List) data.get("itemList");
+        itemList = (List<Map<String, Object>>) data.get("itemList");
         assertEquals(6, itemList.size());
 
-        Map dataChild = (Map) data.get("child");
+        Map<String, Object> dataChild = (Map<String, Object>) data.get("child");
         assertEquals("子供のデータ", dataChild.get("childVal"));
 
-        Map dataGrandChild = (Map) dataChild.get("grandChild");
+        Map<String, Object> dataGrandChild = (Map<String, Object>) dataChild.get("grandChild");
         assertEquals("dataの孫の値", dataGrandChild.get("grandChildVal"));
 
-        Map dataGrand2 = (Map) dataGrandChild.get("grand2");
+        Map<String, Object> dataGrand2 = (Map<String, Object>) dataGrandChild.get("grand2");
         assertEquals("dataのひ孫", dataGrand2.get("val"));
 
 
@@ -143,7 +145,7 @@ public class MapBuilderTest extends TestCase {
         InputStream tempIs = getClass().getResourceAsStream("/MapBuilderTest_template.xls");
         HSSFWorkbook wb = new HSSFWorkbook(is);
         MapBuilder builder = new MapBuilder();
-        Map data = builder.buildMapFrom(wb);
+        Map<String, Object> data = builder.buildMapFrom(wb);
 
         FPTemplate template = new FPTemplate();
         HSSFWorkbook out = template.process(new HSSFWorkbook(tempIs), data);
@@ -163,7 +165,7 @@ public class MapBuilderTest extends TestCase {
         InputStream tempIs = getClass().getResourceAsStream("/MapBuilderTest_template.xls");
         HSSFWorkbook wb = new HSSFWorkbook(is);
         MapBuilder builder = new MapBuilder();
-        Map data = builder.buildMapFrom(wb);
+        Map<String, Object> data = builder.buildMapFrom(wb);
 
         FPTemplate template = new FPTemplate();
         HSSFWorkbook out = template.process(new HSSFWorkbook(tempIs), data);
@@ -183,7 +185,7 @@ public class MapBuilderTest extends TestCase {
         InputStream tempIs = getClass().getResourceAsStream("/MapBuilderTest_without_root_template.xls");
         HSSFWorkbook wb = new HSSFWorkbook(is);
         MapBuilder builder = new MapBuilder();
-        Map data = builder.buildMapFrom(wb);
+        Map<String, Object> data = builder.buildMapFrom(wb);
 
         FPTemplate template = new FPTemplate();
         HSSFWorkbook out = template.process(new HSSFWorkbook(tempIs), data);
