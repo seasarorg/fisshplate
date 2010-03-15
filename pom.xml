@@ -58,6 +58,14 @@
       <timezone>+9</timezone>
     </developer>
   </developers>
+  <contributors>
+    <contributor>
+      <email>go_at_haw.co.jp</email>
+      <name>go takahashi</name>
+      <organization>HAW International Inc.</organization>
+      <organizationUrl>http://www.haw.co.jp/</organizationUrl>
+    </contributor>
+  </contributors>
   <issueManagement>
     <system>JIRA</system>
     <url><![CDATA[https://www.seasar.org/issues/browse/FISSHPLATE]]></url>
