@@ -83,7 +83,7 @@ public class Row implements TemplateElement {
         HSSFRow outRow = context.createCurrentRow();
         outRow.setHeight(rowHeight);
         Map<String, Object> data = context.getData();
-        data.put(FPConsts.ROW_NUMBER_NAME, new Integer(context.getCurrentRowNum() + 1));
+        data.put(FPConsts.ROW_NUMBER_NAME, Integer.valueOf(context.getCurrentRowNum() + 1));
         for (int i = 0; i < cellElementList.size(); i++) {
             TemplateElement elem = (TemplateElement) cellElementList.get(i);
             elem.merge(context);

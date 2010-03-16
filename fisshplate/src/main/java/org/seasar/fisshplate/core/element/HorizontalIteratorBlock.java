@@ -83,7 +83,7 @@ public class HorizontalIteratorBlock extends AbstractBlock{
         while(ite.hasNext()){
             Object var = ite.next();
             data.put(varName, var);
-            data.put(indexName, new Integer(index));
+            data.put(indexName, Integer.valueOf(index));
             index ++;
             context.moveCurrentRowTo(startRowNum);
             mergeBlock(context,startCell,maxCellNum);
@@ -128,7 +128,7 @@ public class HorizontalIteratorBlock extends AbstractBlock{
         HSSFRow outRow = context.getCurrentRow();
         outRow.setHeight(row.getRowHeight());
         Map<String, Object> data = context.getData();
-        data.put(FPConsts.ROW_NUMBER_NAME, new Integer(context.getCurrentRowNum() + 1));
+        data.put(FPConsts.ROW_NUMBER_NAME, Integer.valueOf(context.getCurrentRowNum() + 1));
         int maxCellIndex = startCellIndex + maxCellNum - 1;
         for (int i = 0; i < row.getCellElementList().size(); i++) {
             if(i < startCellIndex){
@@ -164,7 +164,7 @@ public class HorizontalIteratorBlock extends AbstractBlock{
         HSSFRow outRow = context.createCurrentRow();
         outRow.setHeight(row.getRowHeight());
         Map<String, Object> data = context.getData();
-        data.put(FPConsts.ROW_NUMBER_NAME, new Integer(context.getCurrentRowNum() + 1));
+        data.put(FPConsts.ROW_NUMBER_NAME, Integer.valueOf(context.getCurrentRowNum() + 1));
         for (int i = 0; i < row.getCellElementList().size(); i++) {
             if(i >= startCellIndex){
                 break;

@@ -73,7 +73,7 @@ public class IteratorBlock extends AbstractBlock{
         while(ite.hasNext()){
             Object var = ite.next();
             data.put(varName, var);
-            data.put(indexName, new Integer(index));
+            data.put(indexName, Integer.valueOf(index));
             lineNumPerPage ++;
             index ++;
             mergeChildren(context);
@@ -83,7 +83,7 @@ public class IteratorBlock extends AbstractBlock{
         context.setSkipMerge(true);
         context.clearCurrentIterator();
         while (max > lineNumPerPage){
-            data.put(indexName, new Integer(index));
+            data.put(indexName, Integer.valueOf(index));
             lineNumPerPage ++;
             index ++;
             mergeChildren(context);

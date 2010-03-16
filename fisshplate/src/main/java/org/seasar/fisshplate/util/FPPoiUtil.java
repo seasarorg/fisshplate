@@ -70,7 +70,7 @@ public class FPPoiUtil {
         if(str.matches("\\d+-.+-\\d+")){
             return cell.getDateCellValue();
         }else{
-            return new Double(cell.getNumericCellValue());
+            return Double.valueOf(cell.getNumericCellValue());
         }
     }
 
