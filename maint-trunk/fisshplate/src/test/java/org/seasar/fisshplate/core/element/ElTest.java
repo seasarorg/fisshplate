@@ -93,9 +93,8 @@ public class ElTest extends TestCase {
         CellWrapper cell = workbook.getSheetAt(0).getRow(0).getCell(2);//${hoge}
         CellWrapper cellNull = workbook.getSheetAt(0).getRow(0).getCell(3);//${hoge!}
         CellWrapper cellNullValue = workbook.getSheetAt(0).getRow(0).getCell(4);//${hoge!NULL時デフォルト値}
-
-
-
+        CellWrapper cellNullWithLf = workbook.getSheetAt(0).getRow(2).getCell(0);//改行入りデフォルト値
+        
         el = new El(new GenericCell(cell));
         try{
             el.merge(context);
@@ -119,6 +118,11 @@ public class ElTest extends TestCase {
         el.merge(context);
         actual = template.getSheetAt(0).getRow(0).getCell( 2);
         assertEquals("null value","", actual.getRichStringCellValue().getString());
+
+        el = new El(new GenericCell(cellNullWithLf));
+        el.merge(context);
+        actual = template.getSheetAt(0).getRow(0).getCell(3);
+        assertEquals("null value with lf","改行\nコード", actual.getRichStringCellValue().getString());
     }
 
     public void test文字列に埋め込み() throws Exception{
@@ -128,7 +132,6 @@ public class ElTest extends TestCase {
         data.put("embeded", new Integer(123));
         FPContext context = new FPContext(template, template.getSheetAt(0),data);
         context.nextRow();
-
 
         CellWrapper cell = workbook.getSheetAt(0).getRow(1).getCell(0);//埋め込み番号は${embeded}です。
 
