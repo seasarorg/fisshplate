@@ -44,7 +44,7 @@ public class BindVariable {
      *            セル上に記載されたバインド変数
      */
     public BindVariable(String var) {
-        String baseVar = var.replaceAll("^" + FPConsts.REGEX_BIND_VAR_START + "(.+)" + FPConsts.REGEX_BIND_VAR_END + "$", "$1");
+        String baseVar = var.replaceAll(FPConsts.REGEX_BIND_VAR_START,"").replaceAll(FPConsts.REGEX_BIND_VAR_END, "");
         int idx = baseVar.indexOf(FPConsts.NULL_VALUE_OPERATOR);
         nullAllowed = (idx >= 1);
         if (nullAllowed) {
