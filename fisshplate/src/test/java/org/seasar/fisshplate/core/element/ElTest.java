@@ -131,7 +131,7 @@ public class ElTest extends TestCase {
         HSSFWorkbook template = getTemplate("/ElTest.xls");
         WorkbookWrapper workbook = new WorkbookWrapper(template);
         Map<String, Object> data = new HashMap<String, Object>();
-        data.put("hoge", null);
+        data.put("embeded", Integer.valueOf(123));
         FPContext context = new FPContext(template.getSheetAt(0),data);
         context.nextRow();
 
