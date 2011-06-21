@@ -199,3 +199,52 @@ public class SampleParser implements RowParser{
   すると、FPParser が、この行から最初に「#end」が見つかるまでの間の行を子要素として自動的に登録します。
 
    こちらも詳細は、「org.seasar.fisshplate.core.parser.WhileParser」などを参考にして下さい。
+
+独自例外メッセージ
+
+  Fisshplateでは、内部でFPExceptionというクラスで例外ハンドリングしています。
+  
+  独自のタグを作成した場合、その中で例外メッセージをカスタマイズして出力したい場合があります。その場合はFPExceptionを継承します。
+
+* propertiesファイルを作る
+  
+  propertiesファイルを作り、独自メッセージを定義します。
+  
+  ルートパッケージ直下に以下の内容で「customMessages.properties」を作ったとします。
+
++--
+00001=this is customized message.
+sample=this is sample message.
++--
+
+  ファイル名を「customMessages_ja.properties」とすると、日本語ロケール用になります。ResourceBundleの仕様に基づいています。
+
+* 例外クラスを作る
+
+  独自例外をFPExceptionを継承して作ります。
+
++--
+public class CustomException extends FPException{
+    private static final long serialVersionUID = 1L;
+
+    public CustomException(String messageId) {
+        super(messageId);
+    }
+    //このメソッドをオーバーライドして、ResourceBundleを先ほど作ったpropertiesファイルに指定します。
+    protected ResourceBundle getExceptionBundle(){
+        return ResourceBundle.getBundle("customMessages");
+    }
+}
++--
+
+* 例外を投げる
+
+  例外メッセージを投げたい場所でthrowします。
+
++--
+//this is customized message. 
+throw new CustomException("00001");
+
+//this is sample message.
+throw new CustomException("sample");
++--
