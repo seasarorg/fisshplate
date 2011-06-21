@@ -23,10 +23,12 @@
   2008/01/10
   
   * {{{#S2Fisshplateとは}S2Fisshplateとは}}
-  
+
   * {{{#基本的な使い方}基本的な使い方}}
-  
-  * {{{#SMART deploy}SMART deploy}}
+
+  * {{{#独自タグの追加}独自タグの追加}}
+
+  * {{{#SMART}SMART deploy}}
 
 {S2Fisshplateとは}
 
@@ -126,7 +128,30 @@ public void Hoge(){
 
   このようにして、データ埋め込み済みのHSSFWorkbookを取得する事が出来ます。
 
-{SMART deploy}
+{独自タグの追加}
+
+  S2Fisshplateを利用した場合でも、独自タグを利用出来ます。
+
+  独自タグ用に「com.example.Parser」と「com.example.OtherParser」というクラスを使いたい場合は、diconファイルへ以下の内容を追記して下さい。
+  
++--
+  <component name="addOnParserContainer" class="org.seasar.fisshplate.core.parser.container.AddOnParserContainer" >
+    <initMethod name="addRowParser" >
+      <arg>
+        <component class="com.example.Parser" ></component>
+      </arg>
+    </initMethod>
+    <initMethod name="addRowParser" >
+      <arg>
+        <component class="com.example.OtherParser" ></component>
+      </arg>
+    </initMethod>
+  </component>
++--
+
+  「addOnParserContainer」というコンポーネント名で、AddOnParserContainerを定義すれば自動的に独自タグが反映されます。
+  
+{SMART} deploy
 
   S2Fisshplateは、S2のSMART deployをサポートしています。
   
