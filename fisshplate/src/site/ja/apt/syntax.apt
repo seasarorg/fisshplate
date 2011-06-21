@@ -170,7 +170,7 @@ map.put("fooList", list);
 * 構文
 
 +--
-#hforeach var : list index=indexname
+#hforeach var : list index=indexname cols=columns
 [繰り返す行]
 #end
 +--
@@ -182,6 +182,9 @@ map.put("fooList", list);
   [indexname] ループ内で参照する、ループインデックス名です。0スタートになります。これは必須ではありません。
   指定しない場合、「index」で参照する事が出来ます。
 
+  [columns] ループする列数を指定します。このタグが書かれている列からこの値分の列がループされ、それより外側の列はループされません。
+  指定しない場合、このタグが書かれている列から右の列は全てループします。
+  
 * 例
 
   テンプレートを作ります
