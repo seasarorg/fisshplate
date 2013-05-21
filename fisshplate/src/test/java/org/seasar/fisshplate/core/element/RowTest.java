@@ -39,6 +39,7 @@ import org.seasar.fisshplate.wrapper.WorkbookWrapper;
 /**
  * @author rokugen
  */
+@SuppressWarnings("deprecation")
 public class RowTest extends TestCase {
 
     public RowTest(String name){

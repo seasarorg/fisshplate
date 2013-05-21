@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class TestFisshplateDto {
     private String title;
-    private List itemList;
+    private List<TestItem> itemList;
 
     public String getTitle() {
         return title;
@@ -32,10 +32,10 @@ public class TestFisshplateDto {
     public void setTitle(String title) {
         this.title = title;
     }
-    public List getItemList() {
+    public List<TestItem> getItemList() {
         return itemList;
     }
-    public void setItemList(List itemList) {
+    public void setItemList(List<TestItem> itemList) {
         this.itemList = itemList;
     }
 

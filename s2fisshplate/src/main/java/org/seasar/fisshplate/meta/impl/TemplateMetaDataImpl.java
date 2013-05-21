@@ -35,13 +35,13 @@ import org.seasar.framework.util.ResourceUtil;
  * @author rokugen
  */
 public class TemplateMetaDataImpl implements TemplateMetaData {
-    private Map filePathCache = new HashMap();
+    private Map<String, String> filePathCache = new HashMap<String, String>();
 
     /* (non-Javadoc)
      * @see org.seasar.fisshplate.meta.TemplateMetaData#getTemplate(java.lang.reflect.Method)
      */
     public synchronized  HSSFWorkbook getWorkbook(Method method) {
-        String filePath = (String) filePathCache.get(method.getName());
+        String filePath = filePathCache.get(method.getName());
         if(filePath == null){
             filePath = getFilePath(method);
             filePathCache.put(method.getName(), filePath);
@@ -62,7 +62,7 @@ public class TemplateMetaDataImpl implements TemplateMetaData {
     }
 
     protected String getFilePath(final Method method){
-        Class clazz = method.getDeclaringClass();
+        Class<?> clazz = method.getDeclaringClass();
         String templatePath = clazz.getName().replaceAll("\\.", "/") + "_"
                 + method.getName() + "." + S2FPConsts.EXCEL_EXTENSION;
 

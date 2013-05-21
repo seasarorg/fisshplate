@@ -28,7 +28,7 @@ import org.seasar.fisshplate.core.parser.RowParser;
  *
  */
 public class AddOnParserContainer {
-    private List addOnRowParsers = new ArrayList();
+    private List<RowParser> addOnRowParsers = new ArrayList<RowParser>();
 
     /**
      * 独自の行パーサを登録します。
@@ -44,7 +44,7 @@ public class AddOnParserContainer {
      * @return インデックスに該当するパーサ
      */
     public RowParser getRowParser(int i){
-        return (RowParser) addOnRowParsers.get(i);
+        return addOnRowParsers.get(i);
     }
 
     /**

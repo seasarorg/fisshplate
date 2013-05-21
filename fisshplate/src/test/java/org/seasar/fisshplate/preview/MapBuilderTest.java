@@ -71,8 +71,8 @@ public class MapBuilderTest extends TestCase {
             assertEquals(new Double(i + 1), item.get("num"));
         }
 
-        Map item = itemList.get(0);
-        List childList = (List) item.get("childList");
+        Map<String, Object> item = itemList.get(0);
+        List<?> childList = (List<?>) item.get("childList");
 
         assertEquals(5, childList.size());
 

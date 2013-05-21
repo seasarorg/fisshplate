@@ -41,8 +41,7 @@ public class FisshplateUtil {
      * @param addOnParserContainer 独自のパーサを保持するコンテナ
      * @return 出力するワークブック
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
-	public static final Workbook process(Workbook workbook, Map data, AddOnParserContainer addOnParserContainer){
+	public static final Workbook process(Workbook workbook, Map<String, Object> data, AddOnParserContainer addOnParserContainer){
         try {
             FPTemplate template = new FPTemplate();
             addRowParsersToTemplate(template, addOnParserContainer);
