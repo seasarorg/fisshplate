@@ -20,24 +20,24 @@ package org.seasar.fisshplate.wrapper;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 
 /**
  * HSSFWorkbookのラッパークラスです。
  * @author rokugen
  */
 public class WorkbookWrapper {
-    private HSSFWorkbook hssfWorkbook;
+    private Workbook hssfWorkbook;
     private List<SheetWrapper> sheetList = new ArrayList<SheetWrapper>();
 
-    public WorkbookWrapper(HSSFWorkbook workbook){
+    public WorkbookWrapper(Workbook workbook){
         this.hssfWorkbook = workbook;
         for(int i=0; i < workbook.getNumberOfSheets();i++){
             sheetList.add(new SheetWrapper(workbook.getSheetAt(i),this,i));
         }
     }
 
-    public HSSFWorkbook getHSSFWorkbook(){
+    public Workbook getHSSFWorkbook(){
         return hssfWorkbook;
     }
 

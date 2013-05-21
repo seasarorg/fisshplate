@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.core.parser.handler.CellParserHandler;
@@ -58,7 +57,7 @@ public class Row implements TemplateElement {
             cellElementList.add(new NullElement());
             return;
         }
-        HSSFRow hssfRow = templateRow.getHSSFRow();
+        org.apache.poi.ss.usermodel.Row hssfRow = templateRow.getHSSFRow();
         this.rowHeight = hssfRow.getHeight();
         for (int i = 0; i < templateRow.getCellCount(); i++) {
             CellWrapper templateCell = templateRow.getCell(i);
@@ -80,7 +79,7 @@ public class Row implements TemplateElement {
         }
         context.setShouldFooterOut(true);
 
-        HSSFRow outRow = context.createCurrentRow();
+        org.apache.poi.ss.usermodel.Row outRow = context.createCurrentRow();
         outRow.setHeight(rowHeight);
         Map<String, Object> data = context.getData();
         data.put(FPConsts.ROW_NUMBER_NAME, Integer.valueOf(context.getCurrentRowNum() + 1));

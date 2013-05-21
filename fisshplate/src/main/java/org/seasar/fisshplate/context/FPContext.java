@@ -21,11 +21,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFPatriarch;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.seasar.fisshplate.core.element.IteratorBlock;
 import org.seasar.fisshplate.core.element.Suspend;
 
@@ -37,14 +37,14 @@ import org.seasar.fisshplate.core.element.Suspend;
  *
  */
 public class FPContext {
-    private HSSFSheet outSheet;
+    private Sheet outSheet;
     private int currentRowNum;
     private int currentCellNum;
     private Map<String, Object> data;
     private boolean shouldHeaderOut;
     private boolean shouldFooterOut;
     private boolean skipMerge = false;
-    private HSSFPatriarch patriarch;
+    private Drawing patriarch;
     private IteratorBlock currentIterator;
     private Set<Suspend> suspendedSet = new HashSet<Suspend>();
 
@@ -55,7 +55,7 @@ public class FPContext {
      * @param data
      *            埋め込むデータ
      */
-    public FPContext(HSSFSheet out, Map<String,Object> data) {
+    public FPContext(Sheet out, Map<String,Object> data) {
         this.outSheet = out;
         this.data = data;
         init();
@@ -73,7 +73,7 @@ public class FPContext {
      *            埋め込むデータ
      */
     @Deprecated
-    public FPContext(HSSFWorkbook outWorkbook, HSSFSheet outSheet, Map<String,Object> data) {
+    public FPContext(Workbook outWorkbook, Sheet outSheet, Map<String,Object> data) {
         this(outSheet, data);
     }
 
@@ -115,8 +115,8 @@ public class FPContext {
      *
      * @return 出力対象行
      */
-    public HSSFRow getCurrentRow() {
-        HSSFRow row = outSheet.getRow(currentRowNum);
+    public Row getCurrentRow() {
+        Row row = outSheet.getRow(currentRowNum);
         if (row == null) {
             row = outSheet.createRow(currentRowNum);
         }
@@ -127,7 +127,7 @@ public class FPContext {
      * 現在の出力対象行を新たに生成します。
      * @return 現在の出力行
      */
-    public HSSFRow createCurrentRow(){
+    public Row createCurrentRow(){
         return outSheet.createRow(currentRowNum);
     }
 
@@ -136,7 +136,7 @@ public class FPContext {
      * @param rowNum 移動先の行番号
      * @return 出力対象行
      */
-    public HSSFRow moveCurrentRowTo(int rowNum){
+    public Row moveCurrentRowTo(int rowNum){
         currentRowNum = rowNum;
         return getCurrentRow();
     }
@@ -146,10 +146,10 @@ public class FPContext {
      *
      * @return 出力対象セル
      */
-    public HSSFCell getCurrentCell() {
-        HSSFRow row = getCurrentRow();
+    public Cell getCurrentCell() {
+        Row row = getCurrentRow();
 
-        HSSFCell cell = row.getCell(currentCellNum);
+        Cell cell = row.getCell(currentCellNum);
         if (cell == null) {
             cell = row.createCell(currentCellNum);
         }
@@ -161,7 +161,7 @@ public class FPContext {
      * @param cellNum 移動先のセル番号
      * @return 出力対象セル
      */
-    public HSSFCell moveCurrentCellTo(int cellNum){
+    public Cell moveCurrentCellTo(int cellNum){
         currentCellNum = cellNum;
         return getCurrentCell();
     }
@@ -189,7 +189,7 @@ public class FPContext {
      *
      * @return ワークブック
      */
-    public HSSFWorkbook getOutWorkbook() {
+    public Workbook getOutWorkbook() {
         if(outSheet == null){
             return null;
         }
@@ -201,7 +201,7 @@ public class FPContext {
      *
      * @return シート
      */
-    public HSSFSheet getOutSheet() {
+    public Sheet getOutSheet() {
         return outSheet;
     }
 
@@ -230,7 +230,7 @@ public class FPContext {
         this.skipMerge = skipMerge;
     }
 
-    public HSSFPatriarch getPartriarch(){
+    public Drawing getPartriarch(){
         if(patriarch == null){
             patriarch = outSheet.createDrawingPatriarch();
         }

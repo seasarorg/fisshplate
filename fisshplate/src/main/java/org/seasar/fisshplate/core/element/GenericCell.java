@@ -19,8 +19,7 @@ package org.seasar.fisshplate.core.element;
 
 import java.util.Date;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.ss.usermodel.Cell;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.wrapper.CellWrapper;
 
@@ -42,27 +41,26 @@ public class GenericCell extends AbstractCell {
     /* (non-Javadoc)
      * @see org.seasar.fisshplate.element.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
      */
-    protected void mergeImpl(FPContext context,HSSFCell out) {
-        HSSFCell templateCell = cell.getHSSFCell();
+    protected void mergeImpl(FPContext context,Cell out) {
         Object cellValue = getCellValue();
 
-        int cellType = templateCell.getCellType();
-        if(cellType == HSSFCell.CELL_TYPE_FORMULA){
+        int cellType = cell.getCellType();
+        if(cellType == Cell.CELL_TYPE_FORMULA){
             out.setCellFormula((String)cellValue);
-        }else if(cellType == HSSFCell.CELL_TYPE_ERROR){
+        }else if(cellType == Cell.CELL_TYPE_ERROR){
             out.setCellErrorValue(((Byte)cellValue).byteValue());
         }else if(cellValue instanceof Date){
             out.setCellValue(((Date)cellValue));
-            out.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+            out.setCellType(Cell.CELL_TYPE_NUMERIC);
         }else if(cellValue instanceof String){
-            out.setCellValue(new HSSFRichTextString((String)cellValue));
-            out.setCellType(HSSFCell.CELL_TYPE_STRING);
+            out.setCellValue((String)cellValue);
+            out.setCellType(Cell.CELL_TYPE_STRING);
         }else if(cellValue instanceof Boolean){
             out.setCellValue(((Boolean)cellValue).booleanValue());
-            out.setCellType(HSSFCell.CELL_TYPE_BOOLEAN);
+            out.setCellType(Cell.CELL_TYPE_BOOLEAN);
         }else if(isNumber(cellValue)){
             out.setCellValue(Double.valueOf(cellValue.toString()).doubleValue());
-            out.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+            out.setCellType(Cell.CELL_TYPE_NUMERIC);
         }
     }
 

@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.seasar.fisshplate.exception.FPException;
 import org.seasar.fisshplate.template.FPTemplate;
 
@@ -40,7 +41,7 @@ public class FPPreviewUtil {
      * @return データを埋め込んだワークブック
      * @throws FPException
      */
-    public static final HSSFWorkbook getWorkbook(HSSFWorkbook template, HSSFWorkbook data) throws FPException{
+    public static final <T extends Workbook> T getWorkbook(T template, Workbook data) throws FPException{
         FPTemplate fptemp = new FPTemplate();
         MapBuilder mb = new MapBuilder();
         Map<String, Object> map = mb.buildMapFrom(data);

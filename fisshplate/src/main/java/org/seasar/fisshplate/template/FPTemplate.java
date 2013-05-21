@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.context.PageContext;
@@ -103,8 +104,8 @@ public class FPTemplate {
      * @throws FPParseException 解析時にエラーが発生した際に投げられます。
      * @throws FPMergeException データ埋め込み時にエラーが発生した際に投げられます。
      */
-    public HSSFWorkbook process(HSSFWorkbook hssfWorkbook, Map<String, Object> data) throws FPParseException,FPMergeException {
-        WorkbookWrapper workbook = new WorkbookWrapper(hssfWorkbook);
+    public <T extends Workbook> T process(T ssWorkbook, Map<String, Object> data) throws FPParseException,FPMergeException {
+        WorkbookWrapper workbook = new WorkbookWrapper(ssWorkbook);
         for(int i=0; i < workbook.getSheetCount(); i++){
             SheetWrapper sheet = workbook.getSheetAt(i);
             if(sheet.getRowCount() < 1){
@@ -124,7 +125,7 @@ public class FPTemplate {
             root.merge(context);
         }
 
-        return hssfWorkbook;
+        return ssWorkbook;
     }
 
 

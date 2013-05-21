@@ -23,10 +23,12 @@ import java.io.FileInputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
-import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
@@ -37,9 +39,11 @@ import org.seasar.fisshplate.wrapper.CellWrapper;
 
 /**
  * 画像処理用の要素クラスです
+ * まだ実装も途中の隠しきのうなので、OOXMLには対応してません。
  *
  * @author a-conv
  */
+@Deprecated
 public class Picture extends AbstractCell {
 
     /**
@@ -57,7 +61,7 @@ public class Picture extends AbstractCell {
      *
      * @see org.seasar.fisshplate.core.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
      */
-    protected void mergeImpl(FPContext context,HSSFCell out) throws FPMergeException {
+    protected void mergeImpl(FPContext context,Cell out) throws FPMergeException {
         String cellValue = getCellValue().toString();
         Pattern pat = Pattern.compile("^\\s*\\#picture\\((.*)\\s+cell=(.+)\\s*\\s+row=(.+)\\)");
         Matcher mat = pat.matcher(cellValue);
@@ -97,7 +101,7 @@ public class Picture extends AbstractCell {
      * @param cellRangeIntVal
      * @return
      */
-    private HSSFClientAnchor createAnchor(int width, int height, int cellNo, int rowNo, int cellRangeIntVal, int rowRangeIntVal) {
+    private ClientAnchor createAnchor(int width, int height, int cellNo, int rowNo, int cellRangeIntVal, int rowRangeIntVal) {
         HSSFClientAnchor anchor = new HSSFClientAnchor();
         // TODO サイズを指定が利かないので最大値で初期化
         anchor.setDx1(0);
@@ -150,14 +154,14 @@ public class Picture extends AbstractCell {
         BufferedImage img = ImageIOUtil.read(imgFis);
         FileInputStreamUtil.close(imgFis);
 
-        HSSFWorkbook workbook = cell.getRow().getSheet().getWorkbook().getHSSFWorkbook();
-        HSSFPatriarch patriarch = context.getPartriarch();
+        Workbook workbook = cell.getRow().getSheet().getWorkbook().getHSSFWorkbook();
+        Drawing patriarch = context.getPartriarch();
 
         int imgWidth = img.getWidth();
         int imgHeight = img.getHeight();
         int cellNo = context.getCurrentCellNum();
         int rowNo = context.getCurrentRowNum();
-        HSSFClientAnchor anchor = createAnchor(imgWidth, imgHeight, cellNo, rowNo, cellRangeIntVal, rowRangeIntVal);
+        ClientAnchor anchor = createAnchor(imgWidth, imgHeight, cellNo, rowNo, cellRangeIntVal, rowRangeIntVal);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         String suffix = StringUtil.parseSuffix(picturepath);

@@ -20,7 +20,6 @@ package org.seasar.fisshplate.core.element;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
@@ -125,7 +124,7 @@ public class HorizontalIteratorBlock extends AbstractBlock{
     }
 
     private void mergeRow(FPContext context, Row row, int maxCellNum) throws FPMergeException {
-        HSSFRow outRow = context.getCurrentRow();
+       org.apache.poi.ss.usermodel.Row outRow = context.getCurrentRow();
         outRow.setHeight(row.getRowHeight());
         Map<String, Object> data = context.getData();
         data.put(FPConsts.ROW_NUMBER_NAME, Integer.valueOf(context.getCurrentRowNum() + 1));
@@ -161,7 +160,7 @@ public class HorizontalIteratorBlock extends AbstractBlock{
 
     }
     private void mergeNoIterationRow(FPContext context, Row row) throws FPMergeException {
-        HSSFRow outRow = context.createCurrentRow();
+        org.apache.poi.ss.usermodel.Row outRow = context.createCurrentRow();
         outRow.setHeight(row.getRowHeight());
         Map<String, Object> data = context.getData();
         data.put(FPConsts.ROW_NUMBER_NAME, Integer.valueOf(context.getCurrentRowNum() + 1));

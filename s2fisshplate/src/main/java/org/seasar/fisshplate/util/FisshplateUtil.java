@@ -19,7 +19,7 @@ package org.seasar.fisshplate.util;
 
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.seasar.fisshplate.core.parser.RowParser;
 import org.seasar.fisshplate.core.parser.container.AddOnParserContainer;
 import org.seasar.fisshplate.exception.FPMergeException;
@@ -41,7 +41,8 @@ public class FisshplateUtil {
      * @param addOnParserContainer 独自のパーサを保持するコンテナ
      * @return 出力するワークブック
      */
-    public static final HSSFWorkbook process(HSSFWorkbook workbook, Map data, AddOnParserContainer addOnParserContainer){
+    @SuppressWarnings({"rawtypes", "unchecked"})
+	public static final Workbook process(Workbook workbook, Map data, AddOnParserContainer addOnParserContainer){
         try {
             FPTemplate template = new FPTemplate();
             addRowParsersToTemplate(template, addOnParserContainer);

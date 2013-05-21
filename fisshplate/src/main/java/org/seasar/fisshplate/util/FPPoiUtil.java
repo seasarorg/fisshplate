@@ -18,7 +18,8 @@
 package org.seasar.fisshplate.util;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.RichTextString;
 
 /**
  * POIの操作の便利メソッドを集めたユーティリティクラスです。
@@ -33,7 +34,7 @@ public class FPPoiUtil {
      * @param hssfCell
      * @return セルの値
      */
-    public static Object getCellValueAsObject(HSSFCell hssfCell) {
+    public static Object getCellValueAsObject(Cell hssfCell) {
         if(hssfCell == null){
             return null;
         }
@@ -65,7 +66,7 @@ public class FPPoiUtil {
         return ret;
     }
 
-    private static Object getValueFromNumericCell(HSSFCell cell){
+    private static Object getValueFromNumericCell(Cell cell){
         String str = cell.toString();
         if(str.matches("\\d+-.+-\\d+")){
             return cell.getDateCellValue();
@@ -80,18 +81,18 @@ public class FPPoiUtil {
      * @param hssfCell
      * @return セルの値
      */
-    public static String getStringValue(HSSFCell hssfCell){
+    public static String getStringValue(Cell hssfCell){
         if(! isStringCell(hssfCell)){
             return null;
         }
-        HSSFRichTextString richVal =  hssfCell.getRichStringCellValue();
+        RichTextString richVal =  hssfCell.getRichStringCellValue();
         if(richVal == null){
             return null;
         }
         return richVal.getString();
     }
 
-    private static boolean isStringCell(HSSFCell hssfCell){
+    private static boolean isStringCell(Cell hssfCell){
         if(hssfCell == null){
             return false;
         }

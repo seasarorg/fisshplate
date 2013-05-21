@@ -20,7 +20,7 @@ package org.seasar.fisshplate.core.element;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
 
@@ -53,7 +53,7 @@ public class Root implements TemplateElement {
 
     private void removeUnwantedRows(FPContext context){
         //ゴミ清掃
-        HSSFSheet outSheet = context.getOutSheet();
+        Sheet outSheet = context.getOutSheet();
         int currentRowNum = context.getCurrentRowNum();
         int lastRowNum = outSheet.getLastRowNum();
 

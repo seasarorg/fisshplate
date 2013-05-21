@@ -19,7 +19,7 @@ package org.seasar.fisshplate.core.parser;
 
 import java.util.Stack;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.ss.usermodel.Cell;
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.core.element.AbstractBlock;
 import org.seasar.fisshplate.core.element.Root;
@@ -117,8 +117,8 @@ public class FPParser {
             return false;
         }
 
-        HSSFCell hssfCell = cell.getHSSFCell();
-        if (hssfCell == null || (hssfCell.getCellType() != HSSFCell.CELL_TYPE_STRING)) {
+        Cell hssfCell = cell.getHSSFCell();
+        if (hssfCell == null || (hssfCell.getCellType() != Cell.CELL_TYPE_STRING)) {
             return false;
         }
 

@@ -17,9 +17,9 @@
 
 package org.seasar.fisshplate.core.element;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
@@ -48,7 +48,7 @@ public abstract class AbstractCell implements TemplateElement {
      */
     AbstractCell(CellWrapper cell) {
         this.cell = cell;
-        HSSFSheet templateSheet = cell.getRow().getSheet().getHSSFSheet();
+        Sheet templateSheet = cell.getRow().getSheet().getHSSFSheet();
         int rowNum = cell.getRow().getHSSFRow().getRowNum();
 
         //マージ情報をなめて、スタート地点が合致すれば保存しておく。
@@ -69,7 +69,7 @@ public abstract class AbstractCell implements TemplateElement {
      * @see org.seasar.fisshplate.core.element.TemplateElement#merge(org.seasar.fisshplate.context.FPContext)
      */
     public void merge(FPContext context) throws FPMergeException {
-        HSSFCell out = context.getCurrentCell();
+        Cell out = context.getCurrentCell();
         copyCellStyle(context, out);
 
         mergeImpl(context,out);
@@ -83,7 +83,7 @@ public abstract class AbstractCell implements TemplateElement {
      * @param out 出力先のセル
      * @throws FPMergeException データ埋め込み時にエラーが発生した際に投げられる例外です。
      */
-    abstract void mergeImpl(FPContext context, HSSFCell out) throws FPMergeException ;
+    abstract void mergeImpl(FPContext context, Cell out) throws FPMergeException ;
 
 
 
@@ -103,9 +103,8 @@ public abstract class AbstractCell implements TemplateElement {
      * @param context コンテキスト
      * @param outCell 出力するセル
      */
-    protected void copyCellStyle(FPContext context, HSSFCell outCell) {
-        HSSFCell hssfCell = cell.getHSSFCell();
-        HSSFCellStyle outStyle = hssfCell.getCellStyle();
+    protected void copyCellStyle(FPContext context, Cell outCell) {
+        CellStyle outStyle = cell.getCellStyle();
         outCell.setCellStyle(outStyle);
         if(isMergedCell){
             mergeCell(context);
@@ -119,7 +118,7 @@ public abstract class AbstractCell implements TemplateElement {
         CellRangeAddress reg = new CellRangeAddress(
                 rowFrom, rowFrom + relativeMergedRowNumTo,
                 columnFrom, columnFrom + relativeMergedColumnTo);
-        HSSFSheet hssfSheet = context.getOutSheet();
+        Sheet hssfSheet = context.getOutSheet();
         hssfSheet.addMergedRegion(reg);
     }
 

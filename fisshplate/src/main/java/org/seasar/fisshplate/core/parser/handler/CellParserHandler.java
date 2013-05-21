@@ -20,7 +20,7 @@ package org.seasar.fisshplate.core.parser.handler;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.ss.usermodel.Cell;
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.core.element.AbstractCell;
 import org.seasar.fisshplate.core.element.El;
@@ -40,7 +40,7 @@ public class CellParserHandler {
     private static final Pattern patEl = Pattern.compile(FPConsts.REGEX_BIND_VAR);
     private static final Pattern patSuspend = Pattern.compile("^\\s*#suspend\\s+(.*" + FPConsts.REGEX_BIND_VAR + ".*)");
 
-    private static CellParser[] builtInCellParser =
+	private static CellParser[] builtInCellParser =
         new CellParser[]{
             new PictureParser(),
             new LinkParser()
@@ -92,11 +92,11 @@ public class CellParserHandler {
     }
 
     private String getCellValue(CellWrapper cell){
-        HSSFCell hssfCell = cell.getHSSFCell();
+        Cell hssfCell = cell.getHSSFCell();
         String value = null;
-        if (hssfCell.getCellType() == HSSFCell.CELL_TYPE_STRING){
+        if (hssfCell.getCellType() == Cell.CELL_TYPE_STRING){
             value = hssfCell.getRichStringCellValue().getString();
-        }else if(hssfCell.getCellType() == HSSFCell.CELL_TYPE_FORMULA ){
+        }else if(hssfCell.getCellType() == Cell.CELL_TYPE_FORMULA ){
             value = hssfCell.getCellFormula();
         }
         return value;

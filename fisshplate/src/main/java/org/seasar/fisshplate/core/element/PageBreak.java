@@ -17,7 +17,7 @@
 
 package org.seasar.fisshplate.core.element;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.context.PageContext;
@@ -64,7 +64,7 @@ public class PageBreak implements TemplateElement {
     }
 
     private void pageBreak(FPContext context) {
-        HSSFSheet sheet = context.getOutSheet();
+        Sheet sheet = context.getOutSheet();
         int currentRowNum = context.getCurrentRowNum();
         sheet.setRowBreak(currentRowNum - 1);
     }

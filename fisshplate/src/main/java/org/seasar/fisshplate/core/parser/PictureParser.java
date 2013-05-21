@@ -29,13 +29,14 @@ import org.seasar.fisshplate.wrapper.CellWrapper;
  * @author rokugen
  *
  */
+@SuppressWarnings("deprecation")
 public class PictureParser implements CellParser {
     private static final Pattern patPicture = Pattern.compile("^\\s*\\#picture\\(.+\\s+cell=.+\\s*\\s+row=.+\\)");
 
     /* (non-Javadoc)
      * @see org.seasar.fisshplate.core.parser.CellParser#getElement(org.seasar.fisshplate.wrapper.CellWrapper, java.lang.String)
      */
-    public AbstractCell getElement(CellWrapper cell, String value) {
+	public AbstractCell getElement(CellWrapper cell, String value) {
         AbstractCell cellElem = null;
         Matcher mat = patPicture.matcher(value);
 

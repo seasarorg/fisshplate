@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.core.BindVariable;
 import org.seasar.fisshplate.exception.FPPreviewException;
@@ -42,7 +43,7 @@ public class MapBuilder {
      * @return テンプレート埋め込み用{@link Map}
      */
     @SuppressWarnings("unchecked")
-    public Map<String, Object> buildMapFrom(HSSFWorkbook wb) {
+    public Map<String, Object> buildMapFrom(Workbook wb) {
         WorkbookWrapper workbook = new WorkbookWrapper(wb);
 
         SheetWrapper sheet = workbook.getSheetByName(ROOT_SHEET_NAME);

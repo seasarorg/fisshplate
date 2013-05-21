@@ -17,7 +17,8 @@
 
 package org.seasar.fisshplate.wrapper;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.seasar.fisshplate.util.FPPoiUtil;
 
 /**
@@ -25,21 +26,34 @@ import org.seasar.fisshplate.util.FPPoiUtil;
  * @author rokugen
  */
 public class CellWrapper {
-    private HSSFCell hssfCell;
+    private Cell hssfCell;
+    private CellStyle cellStyle;
+    private int cellType;
     private RowWrapper row;
 
-    public CellWrapper(HSSFCell cell, RowWrapper row){
+    public CellWrapper(Cell cell, RowWrapper row){
         this.row = row;
         this.hssfCell = cell;
-
+        if(cell != null){
+	        this.cellStyle = cell.getCellStyle();
+	        this.cellType = cell.getCellType();
+        }
     }
 
-    public HSSFCell getHSSFCell(){
+    public Cell getHSSFCell(){
         return hssfCell;
     }
 
     public RowWrapper getRow(){
         return row;
+    }
+    
+    public CellStyle getCellStyle(){
+    	return cellStyle;
+    }
+    
+    public int getCellType(){
+    	return cellType;
     }
 
     public boolean isNullCell() {

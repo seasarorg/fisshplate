@@ -20,18 +20,18 @@ package org.seasar.fisshplate.wrapper;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.ss.usermodel.Row;
 
 /**
  * HSSFRowのラッパークラスです。
  * @author rokugen
  */
 public class RowWrapper {
-    private HSSFRow hssfRow;
+    private Row hssfRow;
     private SheetWrapper sheet;
     private List<CellWrapper> cellList = new ArrayList<CellWrapper>();
 
-    public RowWrapper(HSSFRow row, SheetWrapper sheet){
+    public RowWrapper(Row row, SheetWrapper sheet){
         this.sheet = sheet;
         this.hssfRow = row;
         if(row != null){
@@ -39,7 +39,7 @@ public class RowWrapper {
         }
     }
 
-    private void addCellsToList(HSSFRow row){
+    private void addCellsToList(Row row){
         for(int i=0; i < row.getLastCellNum(); i++){
             cellList.add(new CellWrapper(row.getCell(i),this));
         }
@@ -49,7 +49,7 @@ public class RowWrapper {
         return hssfRow == null;
     }
 
-    public HSSFRow getHSSFRow(){
+    public Row getHSSFRow(){
         return hssfRow;
     }
 

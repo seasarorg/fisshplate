@@ -20,20 +20,20 @@ package org.seasar.fisshplate.wrapper;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 
 /**
  * HSSFSheetのラッパークラスです。
  * @author rokugen
  */
 public class SheetWrapper {
-    private HSSFSheet hssfSheet;
+    private Sheet hssfSheet;
     private WorkbookWrapper workbook;
     private List<RowWrapper> rowList = new ArrayList<RowWrapper>();
     private int sheetIndex;
 
-    public SheetWrapper(HSSFSheet sheet, WorkbookWrapper workbook, int sheetIndex){
+    public SheetWrapper(Sheet sheet, WorkbookWrapper workbook, int sheetIndex){
         this.workbook = workbook;
         this.hssfSheet = sheet;
         this.sheetIndex = sheetIndex;
@@ -42,7 +42,7 @@ public class SheetWrapper {
         }
     }
 
-    public HSSFSheet getHSSFSheet(){
+    public Sheet getHSSFSheet(){
         return hssfSheet;
     }
 
@@ -80,21 +80,16 @@ public class SheetWrapper {
     }
 
     private void removeAllRow(){
-        //POIのバグへの対策
-        //1行だけのシートだったら繰り返し行もないはずだからクリアする必要はない、はず。
-        // 3.2-FINALにて、バグフィックスされたので、削除。
-//        if(getRowCount() < 2){
-//            return;
-//        }
-        for(int i=0; i < getRowCount();i++){
-            HSSFRow hssfRow = getRow(i).getHSSFRow();
+       for(int i=0; i < getRowCount();i++){
+            Row hssfRow = getRow(i).getHSSFRow();
             if(hssfRow != null){
                 hssfSheet.removeRow(hssfRow);
             }
         }
     }
 
-    private void removeAllMergedRegion(){
+    @SuppressWarnings("unused")
+	private void removeAllMergedRegion(){
         for(int i=0; 0 < hssfSheet.getNumMergedRegions();i++){
             hssfSheet.removeMergedRegion(0);
         }

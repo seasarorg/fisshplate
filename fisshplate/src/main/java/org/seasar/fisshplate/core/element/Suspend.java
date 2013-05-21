@@ -19,7 +19,7 @@ package org.seasar.fisshplate.core.element;
 
 import java.util.Stack;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.ss.usermodel.Cell;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.exception.FPMergeException;
 
@@ -30,7 +30,7 @@ import org.seasar.fisshplate.exception.FPMergeException;
  */
 public class Suspend implements TemplateElement {
     private El el;
-    private Stack<HSSFCell> targetCellStack = new Stack<HSSFCell>();
+    private Stack<Cell> targetCellStack = new Stack<Cell>();
 
     public Suspend(El el) {
         this.el = el;
@@ -39,7 +39,7 @@ public class Suspend implements TemplateElement {
 
     public void merge(FPContext context) throws FPMergeException {
         context.addSuspendedSet(this);
-        HSSFCell out =  context.getCurrentCell();
+        Cell out =  context.getCurrentCell();
         targetCellStack.push(out);
         el.targetElement.copyCellStyle(context,out);
         context.nextCell();
@@ -49,7 +49,7 @@ public class Suspend implements TemplateElement {
         Object value = el.getBoundValue(context);
         el.targetElement.setCellValue(value);
         while(!targetCellStack.empty()){
-            HSSFCell out = (HSSFCell) targetCellStack.pop();
+            Cell out = targetCellStack.pop();
             el.targetElement.mergeImpl(context, out);
         }
     }

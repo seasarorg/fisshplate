@@ -20,9 +20,8 @@ package org.seasar.fisshplate.core.element;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFHyperlink;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Hyperlink;
 import org.seasar.fisshplate.consts.FPConsts;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.enums.LinkElementType;
@@ -41,7 +40,7 @@ public class Link extends AbstractCell {
         super(cell);
     }
 
-    void mergeImpl(FPContext context, HSSFCell out) throws FPMergeException {
+    void mergeImpl(FPContext context, Cell out) throws FPMergeException {
         String cellValue = getCellValue().toString();
         Matcher mat = pat.matcher(cellValue);
         if(!mat.find()){
@@ -54,10 +53,10 @@ public class Link extends AbstractCell {
         String text = mat.group(3);
 
         LinkElementType linkType = LinkElementType.get(type);
-        HSSFHyperlink hyperLink = linkType.createHyperLink();
+        Hyperlink hyperLink = linkType.createHyperLink();
         hyperLink.setAddress(link);
         out.setHyperlink(hyperLink);
-        out.setCellValue(new HSSFRichTextString(text));
+        out.setCellValue(text);
 
     }
 

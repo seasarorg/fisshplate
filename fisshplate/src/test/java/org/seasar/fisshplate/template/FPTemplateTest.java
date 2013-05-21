@@ -28,9 +28,9 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.seasar.fisshplate.context.FPContext;
 import org.seasar.fisshplate.core.element.TemplateElement;
 import org.seasar.fisshplate.core.parser.FPParser;
@@ -377,7 +377,7 @@ public class FPTemplateTest extends TestCase {
         }
 
         public void merge(FPContext context) throws FPMergeException {
-            HSSFCell currentCell = context.getCurrentCell();
+            Cell currentCell = context.getCurrentCell();
             currentCell.setCellStyle(originalCell.getHSSFCell().getCellStyle());
             currentCell.setCellValue(new HSSFRichTextString("独自タグテストです"));
             context.nextRow();
