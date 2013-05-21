@@ -1,149 +1,133 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.seasar.fisshplate</groupId>
-  <artifactId>fisshplate</artifactId>
-  <packaging>jar</packaging>
-  <name>Fisshplate</name>
-  <description>Fisshplate is a template engine for HSSF of POI.</description>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.seasar.fisshplate</groupId>
+    <artifactId>fisshplate</artifactId>
+    <packaging>jar</packaging>
+    <name>Fisshplate</name>
+    <description>Fisshplate is a template engine for HSSF of POI.</description>
 
-  <parent>
-      <artifactId>fisshplate-project</artifactId>
-      <groupId>org.seasar.fisshplate</groupId>
-      <version>0.2.0-SNAPSHOT</version>
-  </parent>
+    <parent>
+        <artifactId>fisshplate-project</artifactId>
+        <groupId>org.seasar.fisshplate</groupId>
+        <version>0.2.0-SNAPSHOT</version>
+    </parent>
 
 <!-- ******************************************************************************* -->
 
-  <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <source>1.5</source>
-            <target>1.5</target>
-            <encoding>UTF-8</encoding>
-          </configuration>
-        </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-site-plugin</artifactId>
-            <configuration>
+    <build>
+        <pluginManagement>
+            <plugins>
+               <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <configuration>
                         <inputEncoding>UTF-8</inputEncoding>
                         <outputEncoding>UTF-8</outputEncoding>
-              <locales>en,ja</locales>
-            </configuration>
-          </plugin>
-      </plugins>
-    </pluginManagement>
-    <plugins>
-      <plugin>
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>source-jar</id>
-            <phase>package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <source>1.5</source>
-          <encoding>UTF-8</encoding>
-          <docencoding>UTF-8</docencoding>
-          <charset>UTF-8</charset>
-          <outputDirectory>${project.reporting.outputDirectory}/apidocs/fisshplate</outputDirectory>
-          <links>
-              <link>http://java.sun.com/j2se/1.5.0/ja/docs/ja/api/</link>
-            <link>http://java.sun.com/j2ee/1.4/docs/api/</link>
-            <link>http://poi.apache.org/apidocs/</link>
-          </links>
-        </configuration>
-        <executions>
-          <execution>
-            <id>javadoc-jar</id>
-            <phase>package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-<!--           <execution>
-              <id>javadoc</id>
-            <phase>site</phase>
-            <goals>
-              <goal>javadoc</goal>
-            </goals>
-          </execution> -->
-        </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>ant-dist</id>
-            <phase>site</phase>
-            <configuration>
-              <tasks>
-                <ant antfile="build.xml" target="dist">
-                  <property name="ver" value="${version}"/>
-                </ant>
-              </tasks>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+                        <locales>en,ja</locales>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>source-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <encoding>UTF-8</encoding>
+                    <docencoding>UTF-8</docencoding>
+                    <charset>UTF-8</charset>
+                    <outputDirectory>${project.reporting.outputDirectory}/apidocs/fisshplate</outputDirectory>
+                    <links>
+                        <link>http://java.sun.com/j2se/1.5.0/ja/docs/ja/api/</link>
+                        <link>http://java.sun.com/j2ee/1.4/docs/api/</link>
+                        <link>http://poi.apache.org/apidocs/</link>
+                    </links>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>javadoc-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+               </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>ant-dist</id>
+                        <phase>site</phase>
+                        <configuration>
+                            <tasks>
+                                <ant antfile="build.xml" target="dist">
+                                    <property name="ver" value="${version}"/>
+                                </ant>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
-                <finalName>
-                    fisshplate
-                </finalName>
-                <outputDirectory>${project.build.directory}/assembly</outputDirectory>
-                <descriptors>
-                    <descriptor>src/main/assembly/bin.xml</descriptor>
-                </descriptors>
+                    <finalName>
+                        fisshplate
+                    </finalName>
+                    <outputDirectory>${project.build.directory}/assembly</outputDirectory>
+                    <descriptors>
+                        <descriptor>src/main/assembly/bin.xml</descriptor>
+                    </descriptors>
                 </configuration>
             </plugin>
-    </plugins>
-      <extensions>
-          <extension>
-              <groupId>org.apache.maven.wagon</groupId>
-              <artifactId>wagon-webdav</artifactId>
-                 <version>1.0-beta-2</version>
-          </extension>
-      </extensions>
-  </build>
+        </plugins>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav</artifactId>
+                <version>1.0-beta-2</version>
+            </extension>
+        </extensions>
+    </build>
 
 <!-- ******************************************************************************* -->
 
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.poi</groupId>
-      <artifactId>poi</artifactId>
-      <version>3.9</version>
-    </dependency>
-    <dependency>
-      <groupId>ognl</groupId>
-      <artifactId>ognl</artifactId>
-      <version>2.6.9-patch-20090427</version>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.2</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.9</version>
+        </dependency>
+        <dependency>
+            <groupId>ognl</groupId>
+            <artifactId>ognl</artifactId>
+            <version>2.6.9-patch-20090427</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 <!-- ******************************************************************************* -->
 
