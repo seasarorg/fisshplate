@@ -130,7 +130,36 @@ public class FPXTemplateTest extends TestCase {
         FileOutputStream fos = new FileOutputStream("target/out_iteratorMax.xlsx");
         wb.write(fos);
     }
+    public void test行の要素がリストの場合_マクロあり() throws Exception  {
+        InputStream is = getClass().getResourceAsStream("/FPXTemplateTest_macro.xlsm");
+        Workbook wb;
+        try {
+            template = new FPXTemplate();
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("title", "タイトルである");
+            List<A> aList = new ArrayList<A>();
+            aList.add(new A("1行目",10,new Date()));
+            aList.add(new A("2行目",20,new Date()));
+            aList.add(new A("3行目",30,new Date()));
+            aList.add(new A("4行目",10,new Date()));
+            aList.add(new A("5行目",20,new Date()));
+            aList.add(new A("6行目",30,new Date()));
+            map.put("b", aList);
 
+            wb = template.process(is,map);
+        } catch (FPParseException e) {
+            throw e;
+        } catch (IOException e) {
+            throw e;
+        }finally{
+            is.close();
+        }
+
+        FileOutputStream fos = new FileOutputStream("target/out_macro.xlsm");
+        wb.write(fos);
+        fos.close();
+
+    }
 //    public void test空行指定テスト_改ページ対応() throws Exception{
 //        InputStream is = getClass().getResourceAsStream("/FPTemplateTest_iteratorMax_pageBreak.xls");
 //        HSSFWorkbook wb;
