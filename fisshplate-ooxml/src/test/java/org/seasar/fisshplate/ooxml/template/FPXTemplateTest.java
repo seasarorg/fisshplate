@@ -31,7 +31,6 @@ import junit.framework.TestCase;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.seasar.fisshplate.exception.FPException;
 import org.seasar.fisshplate.exception.FPParseException;
-import org.seasar.fisshplate.template.FPTemplate;
 
 public class FPXTemplateTest extends TestCase {
     private FPXTemplate template;
@@ -160,132 +159,35 @@ public class FPXTemplateTest extends TestCase {
         fos.close();
 
     }
-//    public void test空行指定テスト_改ページ対応() throws Exception{
-//        InputStream is = getClass().getResourceAsStream("/FPTemplateTest_iteratorMax_pageBreak.xls");
-//        HSSFWorkbook wb;
-//        try {
-//            template = new FPTemplate();
-//            Map<String, Object> map = new HashMap<String, Object>();
-//            map.put("title", "タイトルである");
-//            List<A> aList = new ArrayList<A>();
-//            aList.add(new A("1行目",10,new Date()));
-//            aList.add(new A("2行目",20,new Date()));
-//            aList.add(new A("3行目",30,new Date()));
-//            aList.add(new A("4行目",10,new Date()));
-//            aList.add(new A("5行目",20,new Date()));
-//            aList.add(new A("6行目",30,new Date()));
-//            aList.add(new A("7行目",10,new Date()));
-//            aList.add(new A("8行目",20,new Date()));
-//            aList.add(new A("9行目",30,new Date()));
-//            aList.add(new A("10行目",10,new Date()));
-//            aList.add(new A("11行目",20,new Date()));
-//            aList.add(new A("12行目",30,new Date()));
-//            map.put("b", aList);
-//
-//            wb = template.process(is,map);
-//        } catch (FPException e) {
-//            throw e;
-//        } catch (IOException e) {
-//            throw e;
-//        }finally{
-//            is.close();
-//        }
-//
-//        FileOutputStream fos = new FileOutputStream("target/out_iteratorMax_pageBreak.xls");
-//        wb.write(fos);
-//    }
-//
-//    public void test独自パーサ適用例() throws Exception  {
-//        InputStream is = getClass().getResourceAsStream("/FPTemplateTest.xls");
-//        HSSFWorkbook wb;
-//        try {
-//            template = new FPTemplate();
-//            template.addRowParser(new RowParser(){
-//                public boolean process(CellWrapper cell, FPParser parser)	throws FPParseException {
-//                    String value =cell.getStringValue();
-//                    if(!"あれやこれや".equals(value)){
-//                        return false;
-//                    }
-//                    TemplateElement elem = new Areya(cell);
-//                    parser.addTemplateElement(elem);
-//                    return true;
-//                }});
-//            Map<String, Object> map = new HashMap<String, Object>();
-//            map.put("title", "タイトルである");
-//            List<A> aList = new ArrayList<A>();
-//            aList.add(new A("1行目",10,new Date()));
-//            aList.add(new A("2行目",20,new Date()));
-//            aList.add(new A("3行目",30,new Date()));
-//            aList.add(new A("4行目",10,new Date()));
-//            aList.add(new A("5行目",20,new Date()));
-//            aList.add(new A("6行目",30,new Date()));
-//            map.put("b", aList);
-//
-//            wb = template.process(is,map);
-//        } catch (FPParseException e) {
-//            throw e;
-//        } catch (IOException e) {
-//            throw e;
-//        }finally{
-//            is.close();
-//        }
-//
-//        FileOutputStream fos = new FileOutputStream("target/out_customparser.xls");
-//        wb.write(fos);
-//        fos.close();
-//
-//    }
-//
-//    public void test一行だけの場合のエラーテスト()throws Exception{
-//        InputStream is = getClass().getResourceAsStream("/onlyOneRowErrorTest.xls");
-//        HSSFWorkbook wb;
-//        try {
-//            template = new FPTemplate();
-//            Map<String, Object> map = new HashMap<String, Object>();
-//            map.put("title", "タイトルである");
-//            List<A> aList = new ArrayList<A>();
-//            aList.add(new A("1行目",10,new Date()));
-//            aList.add(new A("2行目",20,new Date()));
-//            aList.add(new A("3行目",30,new Date()));
-//            aList.add(new A("4行目",10,new Date()));
-//            aList.add(new A("5行目",20,new Date()));
-//            aList.add(new A("6行目",30,new Date()));
-//            map.put("b", aList);
-//
-//            wb = template.process(is,map);
-//        } catch (FPException e) {
-//            throw e;
-//        } catch (IOException e) {
-//            throw e;
-//        }finally{
-//            is.close();
-//        }
-//
-//        FileOutputStream fos = new FileOutputStream("target/out_onlyOneRowErrorTest.xls");
-//        wb.write(fos);
-//    }
-//
-//    public void testカメラがある場合のテスト() throws Exception{
-//        InputStream is = getClass().getResourceAsStream("/withCameraTest.xls");
-//        new HSSFWorkbook(is);
-//    }
-//
-//    private class Areya implements TemplateElement{
-//        private CellWrapper originalCell;
-//
-//        public Areya(CellWrapper cell){
-//            originalCell = cell;
-//        }
-//
-//        public void merge(FPContext context) throws FPMergeException {
-//            Cell currentCell = context.getCurrentCell();
-//            currentCell.setCellStyle(originalCell.getHSSFCell().getCellStyle());
-//            currentCell.setCellValue(new HSSFRichTextString("独自タグテストです"));
-//            context.nextRow();
-//        }
-//
-//    }
 
+    public void test一行だけの場合のエラーテスト()throws Exception{
+        InputStream is = getClass().getResourceAsStream("/onlyOneRowErrorTest.xlsx");
+        Workbook wb;
+        try {
+            template = new FPXTemplate();
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("title", "タイトルである");
+            List<A> aList = new ArrayList<A>();
+            aList.add(new A("1行目",10,new Date()));
+            aList.add(new A("2行目",20,new Date()));
+            aList.add(new A("3行目",30,new Date()));
+            aList.add(new A("4行目",10,new Date()));
+            aList.add(new A("5行目",20,new Date()));
+            aList.add(new A("6行目",30,new Date()));
+            map.put("b", aList);
+
+            wb = template.process(is,map);
+        } catch (FPException e) {
+            throw e;
+        } catch (IOException e) {
+            throw e;
+        }finally{
+            is.close();
+        }
+
+        FileOutputStream fos = new FileOutputStream("target/out_onlyOneRowErrorTest.xlsx");
+        wb.write(fos);
+    }
 
     public class A{
         private String name;
