@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.aopalliance.intercept.MethodInvocation;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.seasar.fisshplate.consts.S2FPConsts;
 import org.seasar.fisshplate.core.parser.container.AddOnParserContainer;
 import org.seasar.fisshplate.meta.TemplateMetaData;
@@ -62,7 +62,7 @@ public class S2FisshplateInterceptor extends AbstractInterceptor {
 
         Class<?> clazz = method.getDeclaringClass();
         TemplateMetaData metaData = metaDataFactory.getMetaData(clazz);
-        HSSFWorkbook workbook = metaData.getWorkbook(method);
+        Workbook workbook = metaData.getWorkbook(method);
         return FisshplateUtil.process(workbook, map, addOnParserContainer);
     }
 
